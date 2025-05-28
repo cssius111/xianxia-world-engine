@@ -1,0 +1,328 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "description": "玄苍界玩家角色创建模板，定义初始属性与成长框架"
+  },
+  "character_creation": {
+    "basic_info": {
+      "name": {
+        "type": "string",
+        "constraints": ["2-8个汉字", "不含特殊符号", "不与现有NPC重名"],
+        "suggestion": "可选择道号或俗名，建议符合修仙风格"
+      },
+      "gender": {
+        "type": "enum",
+        "values": ["男", "女"],
+        "description": "影响部分剧情分支和社交互动"
+      },
+      "age": {
+        "type": "integer",
+        "range": [16, 25],
+        "description": "起始年龄，影响初始属性分配"
+      }
+    },
+    "background_origin": [
+      {
+        "id": "MORTAL_COMMONER",
+        "name": "平民出身",
+        "probability": 0.6,
+        "description": "普通凡人家庭，白手起家",
+        "initial_bonuses": {
+          "wealth": 100,
+          "reputation": 0,
+          "relationships": []
+        },
+        "special_traits": ["坚韧不拔", "珍惜机缘"]
+      },
+      {
+        "id": "MERCHANT_FAMILY",
+        "name": "商贾之家",
+        "probability": 0.2,
+        "description": "商人家族出身，不缺修炼资源",
+        "initial_bonuses": {
+          "wealth": 1000,
+          "reputation": 50,
+          "relationships": [{"type": "商会", "intimacy": 30}]
+        },
+        "special_traits": ["商业头脑", "人脉广泛"]
+      },
+      {
+        "id": "FALLEN_NOBLE",
+        "name": "没落世家",
+        "probability": 0.15,
+        "description": "曾经辉煌的修仙家族后裔",
+        "initial_bonuses": {
+          "wealth": 300,
+          "reputation": -20,
+          "relationships": [{"type": "家族遗老", "intimacy": 60}]
+        },
+        "special_traits": ["家学渊源", "背负宿怨"],
+        "hidden_benefits": ["可能获得家族秘传", "隐藏身份优势"]
+      },
+      {
+        "id": "ORPHAN",
+        "name": "孤儿身世",
+        "probability": 0.05,
+        "description": "身世成谜的孤儿，可能有特殊血脉",
+        "initial_bonuses": {
+          "wealth": 50,
+          "reputation": 0,
+          "relationships": []
+        },
+        "special_traits": ["身世之谜", "潜力无限"],
+        "hidden_benefits": ["特殊血脉觉醒可能", "主角模板加成"]
+      }
+    ],
+    "spiritual_root_determination": {
+      "generation_method": "随机+背景修正",
+      "probability_table": {
+        "单灵根": 0.05,
+        "双灵根": 0.20, 
+        "三灵根": 0.35,
+        "四灵根": 0.30,
+        "五灵根": 0.10
+      },
+      "quality_modifiers": {
+        "天灵根": 0.01,
+        "异灵根": 0.05,
+        "上品灵根": 0.15,
+        "中品灵根": 0.50,
+        "下品灵根": 0.29
+      },
+      "background_bonuses": {
+        "FALLEN_NOBLE": "灵根品质+1档次概率",
+        "ORPHAN": "异灵根概率x2"
+      }
+    }
+  },
+  "initial_attributes": {
+    "cultivation_stats": {
+      "realm": {
+        "fixed_value": "聚气期1层",
+        "description": "所有玩家统一起点"
+      },
+      "experience": {
+        "current": 0,
+        "required": 100,
+        "description": "修炼经验值"
+      },
+      "cultivation_talent": {
+        "type": "float",
+        "range": [0.5, 2.0],
+        "formula": "灵根品质 x 随机系数 x 背景修正",
+        "description": "天赋影响修炼速度"
+      }
+    },
+    "combat_stats": {
+      "health": {
+        "base": 100,
+        "modifier": "根据体质灵根调整",
+        "description": "生命值上限"
+      },
+      "spiritual_power": {
+        "base": 50,
+        "modifier": "根据主灵根属性调整",
+        "description": "法力值上限"
+      },
+      "attack_power": {
+        "base": 10,
+        "modifier": "根据功法和境界调整",
+        "description": "攻击力基础值"
+      },
+      "defense_power": {
+        "base": 5,
+        "modifier": "根据体质和功法调整",  
+        "description": "防御力基础值"
+      },
+      "speed": {
+        "base": 10,
+        "modifier": "根据敏捷度和身法调整",
+        "description": "移动和反应速度"
+      }
+    },
+    "social_stats": {
+      "reputation": {
+        "initial": "根据出身背景",
+        "range": [-100, 100],
+        "description": "江湖声望值"
+      },
+      "karma": {
+        "initial": 0,
+        "description": "因果业力初始为零"
+      },
+      "faction_standing": {
+        "type": "object",
+        "default": {},
+        "description": "与各势力的关系"
+      }
+    },
+    "personal_stats": {
+      "comprehension": {
+        "type": "float",
+        "range": [0.3, 1.5],
+        "description": "悟性，影响学习功法速度"
+      },
+      "willpower": {
+        "type": "float", 
+        "range": [0.5, 1.2],
+        "description": "意志力，抵抗心魔和诱惑"
+      },
+      "charisma": {
+        "type": "float",
+        "range": [0.4, 1.3],
+        "description": "魅力，影响社交成功率"
+      },
+      "luck": {
+        "type": "float",
+        "range": [0.2, 1.8], 
+        "modifier": "命格决定基础值",
+        "description": "气运值，影响随机事件"
+      }
+    }
+  },
+  "starting_resources": {
+    "wealth": {
+      "base_amount": "根据出身背景",
+      "currency": "灵石",
+      "additional_items": ["基础生活用品", "简单衣物"]
+    },
+    "techniques": [
+      {
+        "name": "基础吐纳术",
+        "grade": "黄阶下品",
+        "proficiency": 0.1,
+        "description": "最基础的修炼功法"
+      }
+    ],
+    "items": [
+      {
+        "name": "凡铁剑",
+        "type": "武器",
+        "grade": "凡品",
+        "durability": 100,
+        "description": "普通的铁制长剑"
+      },
+      {
+        "name": "粗布道袍",
+        "type": "防具",
+        "grade": "凡品", 
+        "durability": 80,
+        "description": "简单的修士服装"
+      }
+    ]
+  },
+  "progression_framework": {
+    "experience_sources": [
+      {
+        "source": "日常修炼",
+        "base_gain": 1,
+        "modifiers": ["天赋", "功法品质", "修炼环境"]
+      },
+      {
+        "source": "实战经验",
+        "base_gain": 5,
+        "modifiers": ["战斗难度", "胜负结果", "学习能力"]
+      },
+      {
+        "source": "师长指导",
+        "base_gain": 3,
+        "modifiers": ["师父水平", "关系亲密度", "悟性"]
+      },
+      {
+        "source": "机缘造化",
+        "base_gain": 10,
+        "modifiers": ["机缘品质", "个人福缘", "把握能力"]
+      }
+    ],
+    "attribute_growth": {
+      "health_per_level": "5 + 体质修正",
+      "spiritual_power_per_level": "3 + 灵根修正",
+      "skill_points_per_level": 2,
+      "attribute_points_per_breakthrough": 1
+    }
+  },
+  "character_customization": {
+    "appearance": {
+      "height": {
+        "type": "enum",
+        "values": ["矮小", "中等", "高大"],
+        "effects": "影响第一印象和某些互动"
+      },
+      "build": {
+        "type": "enum", 
+        "values": ["瘦弱", "匀称", "健壮"],
+        "effects": "影响战斗风格印象"
+      },
+      "distinctive_features": {
+        "type": "array",
+        "options": ["剑眉星目", "仙风道骨", "英姿飒爽", "温文尔雅", "冷峻寡言"],
+        "max_select": 2,
+        "effects": "影响NPC第一印象"
+      }
+    },
+    "personality_traits": {
+      "primary_trait": {
+        "type": "enum",
+        "values": ["正义", "野心", "求知", "自由", "权力", "财富"],
+        "description": "主要性格驱动，影响对话选项"
+      },
+      "secondary_traits": {
+        "type": "array",
+        "options": ["谨慎", "冲动", "仁慈", "冷酷", "幽默", "严肃"],
+        "max_select": 2,
+        "description": "次要性格特征"
+      }
+    },
+    "initial_goals": {
+      "short_term": {
+        "type": "enum",
+        "values": ["突破境界", "赚取灵石", "寻找师父", "探索世界", "报仇雪恨"],
+        "description": "决定初期任务倾向"
+      },
+      "long_term": {
+        "type": "enum",
+        "values": ["成仙得道", "称霸一方", "保护亲友", "探索真理", "改变世界"],
+        "description": "影响重大选择倾向"
+      }
+    }
+  },
+  "difficulty_settings": {
+    "cultivation_speed": {
+      "type": "enum",
+      "values": ["简单", "正常", "困难", "地狱"],
+      "modifiers": [1.5, 1.0, 0.7, 0.5],
+      "description": "影响修炼和突破速度"
+    },
+    "resource_scarcity": {
+      "type": "enum", 
+      "values": ["富足", "正常", "稀缺", "极缺"],
+      "modifiers": [1.5, 1.0, 0.7, 0.4],
+      "description": "影响灵石和材料获得"
+    },
+    "danger_level": {
+      "type": "enum",
+      "values": ["和谐", "正常", "危险", "修罗"],
+      "modifiers": [0.5, 1.0, 1.5, 2.0],
+      "description": "影响随机遭遇的敌意和强度"
+    }
+  },
+  "achievement_system": {
+    "milestone_tracking": [
+      {
+        "category": "修炼成就",
+        "achievements": ["初窥门径", "筑基成功", "结丹圆满", "婴化神通"],
+        "rewards": "经验加成和特殊奖励"
+      },
+      {
+        "category": "社交成就", 
+        "achievements": ["人脉广泛", "名动一方", "威震江湖", "德高望重"],
+        "rewards": "声望提升和人际关系"
+      },
+      {
+        "category": "探索成就",
+        "achievements": ["初出茅庐", "游历天下", "秘境探索", "机缘无数"],
+        "rewards": "特殊知识和隐藏内容"
+      }
+    ]
+  }
+}

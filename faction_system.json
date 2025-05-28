@@ -1,0 +1,392 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "description": "玄苍界势力系统，定义宗门、家族、散修等各方势力关系"
+  },
+  "faction_types": {
+    "righteous_sects": {
+      "description": "正道宗门",
+      "characteristics": ["重视品德", "修炼正统", "维护秩序"],
+      "advantages": ["资源丰富", "传承完整", "社会声望高"],
+      "disadvantages": ["规矩束缚", "等级森严", "创新不足"]
+    },
+    "demonic_sects": {
+      "description": "魔道宗门", 
+      "characteristics": ["弱肉强食", "快速提升", "手段不择"],
+      "advantages": ["实力增长快", "少有束缚", "战斗力强"],
+      "disadvantages": ["内部残杀", "声名狼藉", "易走火入魔"]
+    },
+    "neutral_forces": {
+      "description": "中立势力",
+      "characteristics": ["不问是非", "利益至上", "灵活变通"],
+      "advantages": ["适应性强", "关系网广", "生存能力强"],
+      "disadvantages": ["缺乏依靠", "立场不稳", "资源有限"]
+    },
+    "special_groups": {
+      "description": "特殊群体",
+      "characteristics": ["独特传承", "特殊目标", "神秘莫测"],
+      "examples": ["上古遗民", "异族部落", "秘密组织"]
+    }
+  },
+  "major_factions": [
+    {
+      "id": "QINGYUN_SECT",
+      "name": "青云宗",
+      "type": "righteous_sects",
+      "rank": "九品大宗",
+      "founded": "灵元纪1200年",
+      "location": "天南大陆青云山",
+      "description": "天南地区最大的正道宗门，以剑修和阵法闻名",
+      "core_teachings": {
+        "primary": "青云剑诀",
+        "secondary": ["青云阵法", "正心诀", "养气术"],
+        "forbidden": ["魔道功法", "血炼之术"]
+      },
+      "hierarchy": {
+        "掌门": 1,
+        "太上长老": 3,
+        "长老": 12,
+        "执事": 30,
+        "内门弟子": 200,
+        "外门弟子": 1000
+      },
+      "resources": {
+        "territory": "青云山脉方圆千里",
+        "mineral_veins": ["青云石矿", "寒铁矿", "聚灵矿"],
+        "special_locations": ["剑冢", "青云塔", "传承殿"],
+        "annual_income": "100万灵石"
+      },
+      "relationships": {
+        "allies": ["天机门", "万兽谷", "正道联盟"],
+        "enemies": ["血魔教", "万毒门"],
+        "neutral": ["商会联盟", "散修联盟"]
+      },
+      "entry_requirements": {
+        "age_limit": "16-25岁",
+        "spiritual_root": "中品以上",
+        "character_test": "品德考核",
+        "talent_test": "剑术或阵法天赋"
+      },
+      "benefits": {
+        "cultivation_resources": "每月50灵石",
+        "technique_access": "宗门功法库",
+        "protection": "宗门庇护",
+        "advancement_opportunities": "任务奖励和晋升机会"
+      },
+      "obligations": {
+        "monthly_tasks": "完成宗门任务",
+        "sect_defense": "参与宗门战争",
+        "discipline": "遵守宗门戒律",
+        "loyalty": "不得背叛宗门"
+      }
+    },
+    {
+      "id": "BLOOD_DEMON_CULT",
+      "name": "血魔教",
+      "type": "demonic_sects",
+      "rank": "八品魔宗",
+      "founded": "灵元纪2100年",
+      "location": "天南大陆堕月山脉",
+      "description": "臭名昭著的魔道宗门，修炼血魔功法",
+      "core_teachings": {
+        "primary": "血魔大法",
+        "secondary": ["噬血术", "血炼之法", "魔心诀"],
+        "forbidden": ["正道功法", "慈悲心法"]
+      },
+      "hierarchy": {
+        "教主": 1,
+        "护法": 4,
+        "长老": 8,
+        "堂主": 20,
+        "血徒": 100,
+        "外围成员": 500
+      },
+      "resources": {
+        "territory": "堕月山脉暗域",
+        "special_locations": ["血池", "炼魂塔", "魔窟"],
+        "income_sources": ["掠夺", "血祭", "地下交易"]
+      },
+      "relationships": {
+        "allies": ["万毒门", "其他魔道势力"],
+        "enemies": ["青云宗", "所有正道宗门"],
+        "neutral": ["部分中立商会"]
+      },
+      "entry_methods": {
+        "voluntary": "主动投靠",
+        "coercion": "被胁迫加入",
+        "bloodline": "魔修血脉",
+        "corruption": "正道堕落"
+      }
+    },
+    {
+      "id": "MERCHANT_ALLIANCE",
+      "name": "商会联盟",
+      "type": "neutral_forces",
+      "rank": "特殊势力",
+      "founded": "灵元纪2800年",
+      "location": "分布各大城市",
+      "description": "由各大商会组成的经济联盟",
+      "core_business": {
+        "trade": "灵石、法宝、丹药交易",
+        "information": "情报买卖",
+        "logistics": "货物运输",
+        "finance": "资金借贷"
+      },
+      "structure": {
+        "总商会会长": 1,
+        "分会会长": 12,
+        "大商人": 50,
+        "商人": 200,
+        "伙计": 1000
+      },
+      "influence": {
+        "economic": "控制80%的大宗贸易",
+        "political": "与各方势力保持关系",
+        "information": "庞大的情报网络"
+      },
+      "services": {
+        "trading": "物品买卖交易",
+        "storage": "仓储和保管服务",
+        "transport": "货物运输护送",
+        "banking": "灵石存取和贷款",
+        "intelligence": "信息和情报服务"
+      }
+    },
+    {
+      "id": "WANDERER_UNION",
+      "name": "散修联盟",
+      "type": "neutral_forces", 
+      "rank": "松散联盟",
+      "founded": "灵元纪3000年",
+      "location": "各地聚集点",
+      "description": "散修自发组成的互助组织",
+      "purpose": {
+        "mutual_aid": "互相帮助和支持",
+        "resource_sharing": "共享修炼资源",
+        "information_exchange": "交流修炼心得",
+        "collective_bargaining": "与其他势力谈判"
+      },
+      "structure": {
+        "elected_council": "民选议事会",
+        "regional_representatives": "地区代表",
+        "ordinary_members": "普通成员"
+      },
+      "benefits": {
+        "information_network": "情报共享网络",
+        "bulk_purchasing": "集体采购优惠",
+        "mutual_protection": "成员间互相保护",
+        "skill_exchange": "技能和经验交流"
+      }
+    },
+    {
+      "id": "BEAST_VALLEY",
+      "name": "万兽谷",
+      "type": "special_groups",
+      "rank": "隐世势力",
+      "founded": "上古时期",
+      "location": "南荒兽域",
+      "description": "由御兽师和各种灵兽组成的特殊势力",
+      "characteristics": {
+        "human_beast_harmony": "人兽和谐共存",
+        "nature_protection": "保护自然环境",
+        "ancient_traditions": "传承上古御兽术"
+      },
+      "structure": {
+        "兽王": 1,
+        "兽尊": 6,
+        "兽使": 30,
+        "驯兽师": 100,
+        "灵兽": "数万"
+      },
+      "unique_resources": {
+        "beast_contracts": "各类灵兽契约",
+        "taming_techniques": "驯兽秘法",
+        "natural_treasures": "天然灵药",
+        "beast_materials": "兽类材料"
+      }
+    }
+  ],
+  "relationship_system": {
+    "relationship_levels": {
+      "alliance": {
+        "value": 80,
+        "description": "盟友关系",
+        "effects": ["资源共享", "军事互助", "信息互通"]
+      },
+      "friendly": {
+        "value": 60,
+        "description": "友好关系", 
+        "effects": ["贸易优惠", "互不侵犯", "适度合作"]
+      },
+      "neutral": {
+        "value": 40,
+        "description": "中立关系",
+        "effects": ["正常交往", "有限合作", "保持距离"]
+      },
+      "tense": {
+        "value": 20,
+        "description": "紧张关系",
+        "effects": ["限制交流", "潜在冲突", "相互警惕"]
+      },
+      "hostile": {
+        "value": 0,
+        "description": "敌对关系",
+        "effects": ["禁止交往", "主动攻击", "全面对抗"]
+      }
+    },
+    "relationship_changes": {
+      "positive_events": [
+        "共同对敌",
+        "互相援助",
+        "联姻结盟",
+        "贸易合作",
+        "文化交流"
+      ],
+      "negative_events": [
+        "资源争夺",
+        "领土冲突",
+        "弟子仇杀",
+        "理念分歧",
+        "背叛行为"
+      ],
+      "change_rate": "每次事件±5-20点关系值"
+    }
+  },
+  "faction_mechanics": {
+    "reputation_system": {
+      "measurement": "在各势力中的声望值",
+      "effects": {
+        "high_reputation": ["优惠价格", "特殊任务", "高级功法"],
+        "low_reputation": ["被拒绝", "额外费用", "敌视态度"]
+      },
+      "gain_methods": [
+        "完成任务",
+        "捐献资源",
+        "立下功勋",
+        "维护利益"
+      ],
+      "loss_methods": [
+        "任务失败",
+        "背叛行为",
+        "损害利益",
+        "违反戒律"
+      ]
+    },
+    "faction_wars": {
+      "war_triggers": [
+        "资源争夺",
+        "领土扩张",
+        "理念冲突",
+        "复仇行为",
+        "第三方挑拨"
+      ],
+      "war_phases": {
+        "preparation": "双方准备，集结力量",
+        "skirmishes": "小规模冲突试探",
+        "full_war": "全面战争状态",
+        "resolution": "决战和结果"
+      },
+      "war_effects": {
+        "winners": ["领土扩大", "资源增加", "声望提升"],
+        "losers": ["损失惨重", "实力下降", "可能解散"],
+        "neutral": ["渔翁得利", "被迫选边", "贸易中断"]
+      }
+    },
+    "succession_systems": {
+      "hereditary": {
+        "description": "世袭制",
+        "advantages": ["稳定传承", "忠诚度高"],
+        "disadvantages": ["可能昏庸", "血脉限制"]
+      },
+      "meritocracy": {
+        "description": "能力制",
+        "advantages": ["人才选拔", "激励竞争"],
+        "disadvantages": ["内部斗争", "不够稳定"]
+      },
+      "election": {
+        "description": "选举制",
+        "advantages": ["民主决策", "广泛支持"],
+        "disadvantages": ["效率较低", "可能分裂"]
+      },
+      "strength_based": {
+        "description": "实力制",
+        "advantages": ["强者为尊", "适应性强"],
+        "disadvantages": ["缺乏稳定", "容易暴力"]
+      }
+    }
+  },
+  "player_interactions": {
+    "joining_factions": {
+      "benefits": [
+        "获得身份认同",
+        "接受系统训练",
+        "获得资源支持",
+        "建立人际网络",
+        "参与重大事件"
+      ],
+      "obligations": [
+        "遵守组织规则",
+        "完成分配任务",
+        "维护组织利益",
+        "参与组织活动",
+        "保守组织秘密"
+      ],
+      "advancement_paths": [
+        "任务贡献",
+        "实力提升",
+        "人际关系",
+        "特殊才能",
+        "机遇把握"
+      ]
+    },
+    "faction_quests": {
+      "daily_tasks": "日常任务，维持声望",
+      "urgent_missions": "紧急任务，奖励丰厚",
+      "faction_wars": "参与派系战争",
+      "exploration": "探索新领域",
+      "diplomacy": "外交任务"
+    },
+    "betrayal_consequences": {
+      "immediate": ["身份剥夺", "资产没收", "追杀令"],
+      "long_term": ["声望损失", "关系恶化", "机会减少"],
+      "redemption": "可能通过特殊任务恢复关系"
+    }
+  },
+  "dynamic_evolution": {
+    "faction_rise_fall": {
+      "rise_factors": [
+        "杰出领导者出现",
+        "获得强大传承",
+        "占领重要资源",
+        "成功的军事行动",
+        "有利的政治联盟"
+      ],
+      "decline_factors": [
+        "领导层腐败",
+        "内部分裂",
+        "外部打击",
+        "资源枯竭",
+        "时代变迁"
+      ]
+    },
+    "new_faction_emergence": {
+      "conditions": [
+        "社会需求变化",
+        "新的修炼理念",
+        "外来势力入侵",
+        "革命性发现",
+        "灾难后重建"
+      ],
+      "examples": [
+        "技术革新派",
+        "和平主义者",
+        "环境保护者",
+        "平等主义者"
+      ]
+    },
+    "faction_merger": {
+      "reasons": ["共同威胁", "资源整合", "理念趋同", "生存需要"],
+      "challenges": ["文化冲突", "权力分配", "利益协调", "身份认同"]
+    }
+  }
+}

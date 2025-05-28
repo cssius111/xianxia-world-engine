@@ -1,0 +1,254 @@
+{
+  "meta": {
+    "version": "2.0.0",
+    "description": "玄苍界增强版灵根系统，支持多职业适配与杂灵根成长路径"
+  },
+  "spiritual_roots": [
+    {
+      "id": "SR_METAL",
+      "name": "金灵根",
+      "description": "增强金系能量操控，适配剑修锋锐、符箓稳定、机关制造等方向。",
+      "element": "金",
+      "rarity": "常见",
+      "attributes": {
+        "absorption_rate": 1.2,
+        "stability": 0.9,
+        "剑术锋锐度": "+15%",
+        "符箓稳定性": "+10%",
+        "机关精度": "+12%"
+      },
+      "compatible_professions": ["剑修", "符修", "机关师", "炼器师"],
+      "mutations": ["SR_LIGHTNING"],
+      "restrictions": ["木灵根纯度>0.4时符箓失败率+8%"],
+      "synergy_bonus": {
+        "土灵根": "炼器成功率+5%",
+        "水灵根": "剑意流畅度+10%"
+      }
+    },
+    {
+      "id": "SR_WOOD",
+      "name": "木灵根", 
+      "description": "增强木系生机能量，适配御兽契约、毒素配制、治疗术法等方向。",
+      "element": "木",
+      "rarity": "常见",
+      "attributes": {
+        "absorption_rate": 1.1,
+        "stability": 0.85,
+        "灵兽契约成功率": "+10%",
+        "草木毒素伤害": "+12%",
+        "治疗效果": "+8%"
+      },
+      "compatible_professions": ["御兽师", "毒修", "治疗师", "药师"],
+      "mutations": ["SR_WIND"],
+      "restrictions": ["金灵根纯度>0.5时灵兽契约反噬率+15%"],
+      "synergy_bonus": {
+        "火灵根": "毒火伤害+15%",
+        "水灵根": "治疗持续时间+20%"
+      }
+    },
+    {
+      "id": "SR_WATER",
+      "name": "水灵根",
+      "description": "增强水系灵活能量，适配冰系控制、治疗增强、毒修配合等方向。",
+      "element": "水",
+      "rarity": "常见", 
+      "attributes": {
+        "absorption_rate": 1.0,
+        "stability": 0.95,
+        "治疗增强": "+10%",
+        "冰系控制加成": "+15%",
+        "毒素扩散率": "+8%"
+      },
+      "compatible_professions": ["冰法师", "治疗师", "毒修", "阵法师"],
+      "mutations": ["SR_ICE"],
+      "restrictions": ["火灵根纯度>0.6时冰系法术威力-20%"],
+      "synergy_bonus": {
+        "木灵根": "毒素持续伤害+12%",
+        "土灵根": "防御阵法稳定性+10%"
+      }
+    },
+    {
+      "id": "SR_FIRE",
+      "name": "火灵根",
+      "description": "增强火系能量操控，适配丹火控温、炎爆法术、灵兽契约等方向。",
+      "element": "火",
+      "rarity": "常见",
+      "attributes": {
+        "absorption_rate": 1.3,
+        "stability": 0.8,
+        "炼丹效率加成": "+15%",
+        "炎爆伤害倍率": "+20%",
+        "火灵兽亲和": "+18%"
+      },
+      "compatible_professions": ["丹修", "炎法师", "炼器师", "火灵兽使"],
+      "mutations": ["SR_BLAZE"],
+      "restrictions": ["水灵根纯度>0.3时炼丹失败率+10%"],
+      "synergy_bonus": {
+        "木灵根": "药材提炼效率+12%",
+        "土灵根": "炼器火候控制+10%"
+      }
+    },
+    {
+      "id": "SR_EARTH",
+      "name": "土灵根",
+      "description": "增强土系厚重能量，适配体修强化、阵法构建、傀儡制造等方向。",
+      "element": "土",
+      "rarity": "常见",
+      "attributes": {
+        "absorption_rate": 1.0,
+        "stability": 1.0,
+        "体修强化": "+20%",
+        "阵法加成": "+12%",
+        "傀儡稳定性": "+15%"
+      },
+      "compatible_professions": ["体修", "阵法师", "傀儡师", "建筑师"],
+      "mutations": ["SR_CRYSTAL"],
+      "restrictions": ["风灵根存在时移动速度-15%"],
+      "synergy_bonus": {
+        "金灵根": "防御法宝品质+8%",
+        "火灵根": "阵法能量传导+10%"
+      }
+    },
+    {
+      "id": "SR_WIND",
+      "name": "风灵根",
+      "description": "由木火灵根变异而来，增强速度与身法，适配遁术、暗杀、信息传递。",
+      "element": "风",
+      "rarity": "稀有",
+      "attributes": {
+        "absorption_rate": 1.2,
+        "stability": 0.7,
+        "移动速度": "+25%",
+        "闪避率": "+15%",
+        "暗杀成功率": "+10%"
+      },
+      "compatible_professions": ["身法修士", "刺客", "信使", "侦察者"],
+      "mutations": ["SR_STORM"],
+      "restrictions": ["需木火灵根组合", "土灵根存在时效果减半"],
+      "special_abilities": ["风遁术", "无声移动", "气流感知"]
+    },
+    {
+      "id": "SR_LIGHTNING",
+      "name": "雷灵根",
+      "description": "由金水灵根变异而来，增强攻击力与爆发力，适配雷法、体修、炼器。",
+      "element": "雷",
+      "rarity": "稀有",
+      "attributes": {
+        "absorption_rate": 1.4,
+        "stability": 0.6,
+        "雷系爆发伤害": "+30%",
+        "体修雷炼": "+25%",
+        "炼器雷淬": "+20%"
+      },
+      "compatible_professions": ["雷法师", "雷体修士", "雷炼师", "渡劫专家"],
+      "mutations": ["SR_DIVINE_THUNDER"],
+      "restrictions": ["需金水灵根组合", "修炼时走火入魔率+20%"],
+      "special_abilities": ["雷遁", "雷罚", "感应天劫"]
+    },
+    {
+      "id": "SR_ICE",
+      "name": "冰灵根",
+      "description": "由水木灵根变异而来，增强控制与防御能力，适配冰封、保鲜、医疗。",
+      "element": "冰",
+      "rarity": "稀有",
+      "attributes": {
+        "absorption_rate": 1.1,
+        "stability": 0.9,
+        "冰封控制": "+20%",
+        "防御增强": "+15%",
+        "保鲜效果": "+50%"
+      },
+      "compatible_professions": ["冰法师", "防御修士", "药师", "储藏师"],
+      "mutations": ["SR_ABSOLUTE_ZERO"],
+      "restrictions": ["需水木灵根组合", "火系环境修炼效率-30%"],
+      "special_abilities": ["冰封术", "寒气护体", "时间延缓"]
+    },
+    {
+      "id": "SR_DARK",
+      "name": "暗灵根",
+      "description": "由土金灵根变异而来，增强隐匿与诡秘能力，适配刺杀、幻术、死灵。",
+      "element": "暗",
+      "rarity": "稀有",
+      "attributes": {
+        "absorption_rate": 1.0,
+        "stability": 0.85,
+        "隐匿效果": "+30%",
+        "幻术强度": "+20%",
+        "死灵感应": "+25%"
+      },
+      "compatible_professions": ["刺客修士", "幻术师", "死灵法师", "暗杀者"],
+      "mutations": ["SR_VOID"],
+      "restrictions": ["需土金灵根组合", "光系法术威力-50%"],
+      "special_abilities": ["影遁", "心灵幻象", "死灵沟通"]
+    },
+    {
+      "id": "SR_CHAOS",
+      "name": "混沌灵根",
+      "description": "五行融合的究极形态，平衡所有元素，适配混沌法术、创世术法。",
+      "element": "混沌",
+      "rarity": "传说",
+      "attributes": {
+        "absorption_rate": 2.0,
+        "stability": 1.2,
+        "全属性精通": "+50%",
+        "法术融合": "+40%",
+        "创造能力": "+100%"
+      },
+      "compatible_professions": ["混沌法师", "创世者", "平衡守护者", "大道修士"],
+      "mutations": [],
+      "restrictions": ["需五灵根纯度均≥0.6", "修炼难度极高"],
+      "special_abilities": ["元素融合", "创造术", "平衡调节", "大道感悟"],
+      "unlock_condition": "五灵根共鸣达到完美平衡"
+    }
+  ],
+  "root_growth_system": {
+    "purity_enhancement": {
+      "description": "灵根纯度提升机制",
+      "methods": [
+        "洗髓伐骨",
+        "天材地宝淬炼",
+        "特殊功法修炼",
+        "奇遇机缘",
+        "血脉觉醒"
+      ],
+      "max_purity": 1.0,
+      "enhancement_difficulty": "随纯度提升而指数增长"
+    },
+    "resonance_system": {
+      "description": "五行共鸣机制",
+      "conditions": {
+        "相生共鸣": "相邻属性纯度差≤0.2",
+        "相克平衡": "相克属性纯度差≤0.1", 
+        "完美平衡": "五属性纯度差≤0.05"
+      },
+      "effects": {
+        "相生共鸣": "对应技能威力+15%",
+        "相克平衡": "法术稳定性+20%",
+        "完美平衡": "解锁混沌灵根路径"
+      }
+    },
+    "mutation_triggers": {
+      "双属性融合": "两个主要灵根纯度≥0.8",
+      "极限突破": "单一灵根纯度≥0.95",
+      "特殊环境": "在对应元素极限环境修炼",
+      "血脉觉醒": "激活祖先血脉记忆",
+      "天劫洗礼": "在天劫中存活并获得感悟"
+    }
+  },
+  "mixed_root_compensation": {
+    "description": "杂灵根补偿机制",
+    "efficiency_formula": "V杂 = Σ(Pi) × (1 + 0.05 × N) / (T / 10)",
+    "benefits": [
+      "多元化发展路径",
+      "技能组合创新",
+      "适应性强",
+      "突破瓶颈时有额外选择"
+    ],
+    "special_events": {
+      "逆天改命": "概率+300%",
+      "五行顿悟": "专属事件",
+      "平衡之道": "特殊修炼法门",
+      "混沌初开": "终极进化路径"
+    }
+  }
+}

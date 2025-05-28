@@ -1,0 +1,361 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "description": "玄苍界历史时间线，记录重大历史事件与周期性变动"
+  },
+  "calendar_system": {
+    "era_name": "灵元纪",
+    "current_year": 3847,
+    "time_units": {
+      "year": "365天",
+      "month": "30天，共12月",
+      "day": "12时辰",
+      "hour_names": ["子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"]
+    },
+    "seasonal_effects": {
+      "春季": {
+        "months": [1, 2, 3],
+        "effects": ["万物复苏", "木系灵气旺盛", "突破概率提升"],
+        "special_days": ["惊蛰日：灵兽活跃", "春分日：阴阳平衡"]
+      },
+      "夏季": {
+        "months": [4, 5, 6],
+        "effects": ["阳气鼎盛", "火系法术增强", "修炼速度加快"],
+        "special_days": ["夏至日：极阳之时", "立夏日：火灵根觉醒期"]
+      },
+      "秋季": {
+        "months": [7, 8, 9],
+        "effects": ["收获时节", "金系锐气增长", "丹药品质提升"],
+        "special_days": ["秋分日：收获庆典", "霜降日：杀伐之气盛"]
+      },
+      "冬季": {
+        "months": [10, 11, 12],
+        "effects": ["万物闭藏", "水系寒气凝结", "静修效果佳"],
+        "special_days": ["冬至日：极阴之时", "大寒日：冰灵根觉醒期"]
+      }
+    }
+  },
+  "historical_periods": [
+    {
+      "period_name": "开天纪元",
+      "timespan": "0 - 500年",
+      "description": "传说中的开天辟地时代",
+      "major_events": [
+        {
+          "year": 1,
+          "event": "盘古开天",
+          "description": "传说中的创世神盘古开辟天地，形成玄苍界基础格局",
+          "impact": "奠定了玄苍界的基本法则和地理结构"
+        },
+        {
+          "year": 108,
+          "event": "三皇立世",
+          "description": "天皇、地皇、人皇相继出现，建立最初的秩序",
+          "impact": "确立了修炼体系的基础框架"
+        },
+        {
+          "year": 365,
+          "event": "五帝分治",
+          "description": "五位大帝分别统御五个方位，奠定势力分布",
+          "impact": "形成了五大陆的基本格局"
+        }
+      ],
+      "legacy": ["修炼法则确立", "地理格局形成", "早期文明建立"]
+    },
+    {
+      "period_name": "上古时代",
+      "timespan": "501 - 1500年",
+      "description": "修仙文明的黄金时代",
+      "major_events": [
+        {
+          "year": 666,
+          "event": "第一次魔劫",
+          "description": "域外天魔入侵，正魔大战爆发",
+          "impact": "正道与魔道的分化正式开始"
+        },
+        {
+          "year": 888,
+          "event": "万宗盛会",
+          "description": "天下所有宗门齐聚天机山，建立修仙界秩序",
+          "impact": "确立了宗门等级制度和资源分配规则"
+        },
+        {
+          "year": 1234,
+          "event": "仙门大开",
+          "description": "仙界与凡界的通道开启，大量修士飞升",
+          "impact": "修仙目标明确化，飞升成为终极追求"
+        },
+        {
+          "year": 1456,
+          "event": "龙族覆灭",
+          "description": "真龙一族因傲慢触怒天道，遭受灭族之灾",
+          "impact": "妖族地位下降，人族崛起加速"
+        }
+      ],
+      "legacy": ["宗门体系成熟", "修炼理论完善", "种族格局确定"]
+    },
+    {
+      "period_name": "中古时期",
+      "timespan": "1501 - 2800年",
+      "description": "动荡与变革的时代",
+      "major_events": [
+        {
+          "year": 1888,
+          "event": "第二次魔劫",
+          "description": "魔族大举入侵，天南大陆几乎沦陷",
+          "impact": "正魔力量对比发生重大变化"
+        },
+        {
+          "year": 2100,
+          "event": "散修崛起",
+          "description": "大量修士脱离宗门，散修势力兴起",
+          "impact": "打破了宗门垄断，修炼资源分散化"
+        },
+        {
+          "year": 2345,
+          "event": "灵气枯竭危机",
+          "description": "天地灵气突然减少，引发修仙界恐慌",
+          "impact": "推动了对修炼方法的革新和改进"
+        },
+        {
+          "year": 2567,
+          "event": "妖族复兴",
+          "description": "新的妖王出现，重新统一妖族势力",
+          "impact": "三足鼎立格局形成：人族、妖族、魔族"
+        },
+        {
+          "year": 2777,
+          "event": "天机门创立",
+          "description": "预言师们建立天机门，专门研究命运和预言",
+          "impact": "因果系统的理论化和系统化"
+        }
+      ],
+      "legacy": ["势力多元化", "修炼方法革新", "因果理论发展"]
+    },
+    {
+      "period_name": "近古时期", 
+      "timespan": "2801 - 3500年",
+      "description": "秩序重建与稳定发展",
+      "major_events": [
+        {
+          "year": 3000,
+          "event": "三方会盟",
+          "description": "人族、妖族、魔族签署互不侵犯条约",
+          "impact": "建立了相对稳定的和平秩序"
+        },
+        {
+          "year": 3123,
+          "event": "坠魔谷封印",
+          "description": "正道联盟封印坠魔谷，阻止古魔复苏",
+          "impact": "正道威望大增，魔道势力被压制"
+        },
+        {
+          "year": 3234,
+          "event": "灵石矿发现",
+          "description": "在天南大陆发现大型灵石矿脉",
+          "impact": "引发了新一轮的势力争夺和重新洗牌"
+        },
+        {
+          "year": 3345,
+          "event": "修炼法改革",
+          "description": "新型修炼方法的推广，提高了突破成功率",
+          "impact": "整体修炼水平提升，境界分布上移"
+        },
+        {
+          "year": 3456,
+          "event": "商会联盟成立",
+          "description": "各大商会联合，控制修炼资源的流通",
+          "impact": "经济力量开始影响修仙界的政治格局"
+        }
+      ],
+      "legacy": ["和平秩序建立", "经济体系完善", "修炼水平提升"]
+    },
+    {
+      "period_name": "当代",
+      "timespan": "3501年至今（3847年）",
+      "description": "现在进行时的历史",
+      "major_events": [
+        {
+          "year": 3666,
+          "event": "天象异变",
+          "description": "九星连珠现象持续七日，天地灵气暴涨",
+          "impact": "大批修士突破境界，修仙界实力整体提升"
+        },
+        {
+          "year": 3721,
+          "event": "新兴宗门崛起",
+          "description": "多个新建宗门快速发展，挑战传统势力",
+          "impact": "权力格局开始松动，竞争日趋激烈"
+        },
+        {
+          "year": 3789,
+          "event": "秘境开启",
+          "description": "多处上古秘境同时开启，引发寻宝热潮",
+          "impact": "大量机缘涌现，但也伴随着更多危险"
+        },
+        {
+          "year": 3823,
+          "event": "魔气复苏迹象",
+          "description": "坠魔谷封印出现松动，魔气开始泄露",
+          "impact": "正魔关系再次紧张，战争阴云密布"
+        },
+        {
+          "year": 3847,
+          "event": "当前时点",
+          "description": "玩家进入世界的时间节点",
+          "impact": "各种势力暗流涌动，变革即将到来"
+        }
+      ],
+      "current_situation": [
+        "正道内部出现分歧，统一性下降",
+        "魔道蠢蠢欲动，试图重新崛起",
+        "妖族保持中立，暗中发展实力", 
+        "散修势力不断壮大，影响力提升",
+        "商会势力介入政治，经济战开始",
+        "天象预示着重大变革即将到来"
+      ]
+    }
+  ],
+  "cyclical_events": {
+    "description": "周期性发生的世界事件",
+    "short_cycles": [
+      {
+        "name": "季节轮回",
+        "period": "1年",
+        "description": "四季变换带来的灵气和修炼效果变化",
+        "effects": "参见seasonal_effects部分"
+      },
+      {
+        "name": "月圆影响",
+        "period": "1月",
+        "description": "月相变化对修炼和妖族的影响",
+        "effects": {
+          "新月": "阴气最盛，鬼修受益",
+          "上弦月": "阴阳平衡，适合突破",
+          "满月": "阳气鼎盛，狼人变身",
+          "下弦月": "适合炼丹炼器"
+        }
+      },
+      {
+        "name": "潮汐灵气",
+        "period": "1日",
+        "description": "一日内灵气浓度的波动",
+        "peak_hours": ["子时：极阴", "午时：极阳", "卯时：朝阳", "酉时：夕阳"]
+      }
+    ],
+    "medium_cycles": [
+      {
+        "name": "天象周期",
+        "period": "12年",
+        "description": "十二生肖年的循环，每年有不同的天象影响",
+        "effects": {
+          "鼠年": "隐匿类功法效果提升",
+          "牛年": "体修突破容易",
+          "虎年": "战斗类技能增强",
+          "兔年": "速度类功法受益",
+          "龙年": "所有修炼速度加快",
+          "蛇年": "毒功和阴冷功法增强",
+          "马年": "移动和探索效果好",
+          "羊年": "温和功法适合修炼",
+          "猴年": "机缘事件增多",
+          "鸡年": "早起修炼效果佳",
+          "狗年": "忠诚和守护法术强",
+          "猪年": "财运和丰收运好"
+        }
+      },
+      {
+        "name": "宗门大比",
+        "period": "10年",
+        "description": "各大宗门举行的定期比武大会",
+        "impact": "重新排定宗门等级，分配修炼资源"
+      },
+      {
+        "name": "秘境开启",
+        "period": "不定期(5-20年)",
+        "description": "上古秘境的周期性开启",
+        "trigger_conditions": ["特定天象", "封印松动", "钥匙齐全"]
+      }
+    ],
+    "long_cycles": [
+      {
+        "name": "大劫周期",
+        "period": "500-1000年",
+        "description": "世界性灾难的周期性出现",
+        "types": ["魔劫", "天劫", "灵气枯竭", "种族大战"],
+        "prediction": "下次大劫预计在3900-4100年间"
+      },
+      {
+        "name": "仙界连通",
+        "period": "约1000年",
+        "description": "仙界与凡界通道的开启周期",
+        "last_occurrence": 1234,
+        "next_predicted": 4234,
+        "effects": ["大量飞升机会", "仙人降临", "天地法则变化"]
+      },
+      {
+        "name": "世界重塑",
+        "period": "数千年",
+        "description": "世界格局的根本性变化",
+        "manifestations": ["大陆漂移", "种族兴替", "修炼体系革新"],
+        "unpredictable": true
+      }
+    ]
+  },
+  "prophecies_and_omens": {
+    "description": "关于未来的预言和征兆",
+    "major_prophecies": [
+      {
+        "name": "黄昏预言",
+        "content": "当血月三现，群星陨落之时，旧世界将入黄昏，新纪元将到来",
+        "interpretation": "预示着当前时代即将结束，新的历史时期开始",
+        "fulfillment_signs": ["血月已现一次", "有流星雨记录", "各种异象增多"]
+      },
+      {
+        "name": "真仙归来",
+        "content": "千年轮回满，真仙重降世，天地法则新，修炼道路变",
+        "interpretation": "仙人将重新降临凡界，带来修炼方式的革新",
+        "timeline": "可能在近百年内应验"
+      },
+      {
+        "name": "三才合一",
+        "content": "天地人三才归一时，万法回归本源，大道显于世间",
+        "interpretation": "修炼的最终奥秘将被揭示",
+        "conditions": ["天时：特定天象", "地利：地脉汇聚", "人和：众心归一"]
+      }
+    ],
+    "current_omens": [
+      {
+        "phenomenon": "灵兽暴动",
+        "description": "各地灵兽行为异常，似有预感",
+        "interpretation": "预示着重大变故即将发生"
+      },
+      {
+        "phenomenon": "天象频繁",
+        "description": "异常天象出现频率增加",
+        "interpretation": "天道意志活跃，世界变革在即"
+      },
+      {
+        "phenomenon": "古迹苏醒",
+        "description": "多处上古遗迹出现能量波动",
+        "interpretation": "过去的力量正在觉醒"
+      }
+    ]
+  },
+  "timeline_mechanics": {
+    "time_progression": {
+      "player_actions": "玩家行为可以推进时间",
+      "world_events": "重大事件按时间表自动发生",
+      "npc_growth": "NPC角色随时间成长变化"
+    },
+    "historical_influence": {
+      "butterfly_effect": "玩家的重大行为可能改变历史进程",
+      "fixed_points": "某些关键历史节点无法改变",
+      "branch_creation": "玩家选择可能创造历史分支"
+    },
+    "future_planning": {
+      "event_scheduling": "未来事件可以提前规划",
+      "prophecy_mechanics": "预言的自我实现或自我破坏",
+      "player_impact": "玩家影响力随实力增长而扩大"
+    }
+  }
+}

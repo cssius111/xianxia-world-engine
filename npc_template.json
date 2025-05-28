@@ -1,0 +1,300 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "description": "玄苍界NPC角色模板，定义角色属性、行为模式与成长逻辑"
+  },
+  "base_template": {
+    "identity": {
+      "name": {
+        "type": "string",
+        "generation_rule": "随机姓氏+道号/法号组合",
+        "examples": ["李太虚", "王无极", "张玄机", "赵明心"]
+      },
+      "age": {
+        "type": "integer",
+        "range": [16, 10000],
+        "modifier": "根据修为境界调整"
+      },
+      "gender": {
+        "type": "enum",
+        "values": ["男", "女", "无性(器灵/妖物)"]
+      },
+      "race": {
+        "type": "enum", 
+        "values": ["人族", "妖族", "魔族", "器灵", "鬼魂"],
+        "default": "人族"
+      }
+    },
+    "cultivation_profile": {
+      "current_realm": {
+        "type": "string",
+        "reference": "cultivation_rules.json",
+        "examples": ["聚气期3层", "筑基期7层", "金丹期1层"]
+      },
+      "spiritual_roots": {
+        "type": "array",
+        "reference": "spiritual_root.json",
+        "max_count": 3,
+        "examples": [["金灵根"], ["火灵根", "土灵根"], ["雷灵根"]]
+      },
+      "cultivation_path": {
+        "type": "string",
+        "reference": "cultivation_rules.json",
+        "examples": ["剑修", "体修", "法修", "御兽师"]
+      },
+      "techniques": {
+        "type": "array",
+        "structure": {
+          "name": "string",
+          "grade": "enum[黄阶,玄阶,地阶,天阶,仙阶]",
+          "proficiency": "float[0.0-1.0]"
+        },
+        "examples": [
+          {"name": "基础剑法", "grade": "黄阶", "proficiency": 0.8},
+          {"name": "烈火神掌", "grade": "玄阶", "proficiency": 0.6}
+        ]
+      }
+    },
+    "social_profile": {
+      "faction": {
+        "type": "string",
+        "reference": "world_config.json社会层",
+        "examples": ["青云宗", "魔教", "散修联盟", "妖族部落"]
+      },
+      "position": {
+        "type": "string",
+        "examples": ["宗门长老", "内门弟子", "坊市商人", "流浪散修"]
+      },
+      "reputation": {
+        "type": "integer",
+        "range": [-1000, 1000],
+        "description": "正值为正道声望，负值为魔道声望"
+      },
+      "relationships": {
+        "type": "array",
+        "structure": {
+          "target_id": "string",
+          "relationship_type": "enum[师父,弟子,道侣,仇敌,朋友,陌生人]",
+          "intimacy": "integer[-100,100]",
+          "fate_thread": "reference[destiny.json]"
+        }
+      }
+    },
+    "personality": {
+      "disposition": {
+        "type": "enum",
+        "values": ["冷漠", "热情", "谨慎", "冲动", "阴险", "正直", "贪婪", "淡泊"]
+      },
+      "moral_alignment": {
+        "type": "enum",
+        "values": ["至善", "中正", "中性", "偏恶", "至恶"]
+      },
+      "intelligence": {
+        "type": "float",
+        "range": [0.1, 2.0],
+        "description": "影响对话质量和决策能力"
+      },
+      "ambition": {
+        "type": "float", 
+        "range": [0.0, 1.0],
+        "description": "追求更高境界的欲望"
+      },
+      "loyalty": {
+        "type": "float",
+        "range": [0.0, 1.0],
+        "description": "对所属势力的忠诚度"
+      }
+    },
+    "resources": {
+      "wealth": {
+        "type": "integer",
+        "range": [0, 1000000],
+        "currency": "灵石",
+        "description": "拥有的灵石数量"
+      },
+      "items": {
+        "type": "array",
+        "reference": "item_template.json",
+        "categories": ["法宝", "丹药", "材料", "功法"]
+      },
+      "territory": {
+        "type": "object",
+        "properties": {
+          "type": "enum[洞府,药园,矿脉,商铺,无]",
+          "location": "reference[region_map.json]",
+          "value": "integer[0-1000000]"
+        }
+      }
+    }
+  },
+  "behavior_patterns": {
+    "daily_routine": [
+      {
+        "id": "CULTIVATION",
+        "name": "修炼",
+        "priority": 0.8,
+        "duration": "4-12小时",
+        "conditions": ["无紧急事务", "灵气充足"],
+        "effects": ["修为增长", "技能熟练度提升"]
+      },
+      {
+        "id": "SOCIALIZING",
+        "name": "社交",
+        "priority": 0.3,
+        "duration": "1-4小时", 
+        "conditions": ["性格外向", "有社交需求"],
+        "effects": ["关系变化", "信息获取"]
+      },
+      {
+        "id": "RESOURCE_GATHERING",
+        "name": "资源收集",
+        "priority": 0.6,
+        "duration": "2-8小时",
+        "conditions": ["资源不足", "有空闲时间"],
+        "effects": ["财富增加", "材料获得"]
+      },
+      {
+        "id": "EXPLORING",
+        "name": "探索",
+        "priority": 0.4,
+        "duration": "数日至数月",
+        "conditions": ["冒险精神高", "实力足够"],
+        "effects": ["机缘获得", "经验增长", "风险承担"]
+      }
+    ],
+    "combat_behavior": {
+      "aggression_level": {
+        "type": "float",
+        "range": [0.0, 1.0],
+        "modifiers": ["性格", "实力差距", "利益考量"]
+      },
+      "preferred_tactics": {
+        "type": "array",
+        "values": ["正面硬刚", "游击战", "群体围攻", "偷袭暗杀", "法宝压制"]
+      },
+      "retreat_threshold": {
+        "type": "float",
+        "range": [0.1, 0.9],
+        "description": "生命值低于此比例时考虑逃跑"
+      }
+    },
+    "interaction_rules": [
+      {
+        "condition": "初次见面",
+        "attitude_modifier": "根据声望差异和阵营关系",
+        "dialogue_style": "谨慎试探"
+      },
+      {
+        "condition": "熟人关系",
+        "attitude_modifier": "根据历史互动记录",
+        "dialogue_style": "根据亲密度调整"
+      },
+      {
+        "condition": "敌对关系",
+        "attitude_modifier": "-50基础",
+        "dialogue_style": "冷嘲热讽或直接动手"
+      }
+    ]
+  },
+  "special_npc_types": [
+    {
+      "type": "SECT_ELDER",
+      "name": "宗门长老",
+      "special_attributes": {
+        "teaching_ability": "float[0.5-1.0]",
+        "authority_level": "integer[1-10]",
+        "resource_access": "enum[低,中,高,极高]"
+      },
+      "unique_behaviors": ["传授功法", "发布任务", "门派决策"]
+    },
+    {
+      "type": "MERCHANT",
+      "name": "商人",
+      "special_attributes": {
+        "bargaining_skill": "float[0.3-0.9]",
+        "market_knowledge": "float[0.5-1.0]",
+        "inventory_size": "integer[10-1000]"
+      },
+      "unique_behaviors": ["物品交易", "价格波动", "商路拓展"]
+    },
+    {
+      "type": "HERMIT_EXPERT",
+      "name": "隐世高人",
+      "special_attributes": {
+        "hidden_cultivation": "可能远超表面境界",
+        "eccentricity": "float[0.5-1.0]",
+        "test_tendency": "喜欢考验他人"
+      },
+      "unique_behaviors": ["奇异考验", "传授绝学", "神秘消失"]
+    },
+    {
+      "type": "DEMON_CULTIVATOR",
+      "name": "魔修",
+      "special_attributes": {
+        "corruption_level": "float[0.3-1.0]",
+        "blood_thirst": "float[0.2-0.8]",
+        "dark_techniques": "array[魔功名称]"
+      },
+      "unique_behaviors": ["邪恶献祭", "血炼法宝", "魅惑操控"]
+    }
+  ],
+  "growth_system": {
+    "cultivation_progress": {
+      "daily_gain": {
+        "base_rate": "根据天赋和努力程度",
+        "modifiers": ["灵根品质", "功法等级", "修炼环境", "资源投入"]
+      },
+      "breakthrough_attempts": {
+        "frequency": "每隔一段时间自动尝试",
+        "success_calculation": "参考cultivation_rules.json"
+      }
+    },
+    "skill_development": {
+      "combat_skills": {
+        "improvement_rate": 0.001,
+        "experience_sources": ["实战", "切磋", "指导"]
+      },
+      "life_skills": {
+        "improvement_rate": 0.005,
+        "experience_sources": ["日常使用", "专门练习"]
+      }
+    },
+    "relationship_evolution": {
+      "intimacy_change": {
+        "positive_events": ["互相帮助", "共同经历", "价值观认同"],
+        "negative_events": ["利益冲突", "背叛行为", "价值观冲突"],
+        "change_rate": "±1-10每次事件"
+      }
+    }
+  },
+  "dialogue_system": {
+    "response_generation": {
+      "personality_influence": 0.4,
+      "relationship_influence": 0.3,
+      "context_influence": 0.2,
+      "random_variation": 0.1
+    },
+    "topic_categories": [
+      {
+        "category": "修炼心得",
+        "availability": "根据修为差距和关系亲密度",
+        "information_value": "高"
+      },
+      {
+        "category": "江湖传闻",
+        "availability": "普遍可获得",
+        "information_value": "中"
+      },
+      {
+        "category": "个人隐私",
+        "availability": "需要高亲密度",
+        "information_value": "极高"
+      },
+      {
+        "category": "交易信息",
+        "availability": "商人类NPC专属",
+        "information_value": "实用"
+      }
+    ]
+  }
+}

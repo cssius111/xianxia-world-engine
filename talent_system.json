@@ -1,0 +1,440 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "description": "玄苍界天赋系统，定义角色在特定方向的天生能力优势"
+  },
+  "talent_categories": {
+    "combat": "战斗类天赋",
+    "crafting": "制作类天赋", 
+    "support": "辅助类天赋",
+    "special": "特殊类天赋",
+    "rare": "稀有类天赋",
+    "legendary": "传说类天赋"
+  },
+  "combat_talents": [
+    {
+      "id": "INFERNO_HEART",
+      "name": "炼火之心",
+      "type": "炼丹",
+      "category": "crafting",
+      "rarity": "uncommon",
+      "description": "对火焰温差极为敏感，炼丹速度+20%，但爆炉概率+10%",
+      "effects": {
+        "炼丹效率": "+20%",
+        "爆炉概率": "+10%",
+        "火候感知": "+30%"
+      },
+      "synergies": ["火灵根", "丹修"],
+      "conflicts": ["水灵根过强"]
+    },
+    {
+      "id": "BEAST_WHISPERER",
+      "name": "灵兽低语者",
+      "type": "御兽",
+      "category": "support",
+      "rarity": "rare",
+      "description": "能理解灵兽情绪，驯服成功率+30%，契约反噬率-10%",
+      "effects": {
+        "驯化成功率": "+30%",
+        "契约反噬率": "-10%",
+        "兽语理解": "完全理解"
+      },
+      "synergies": ["木灵根", "御兽师"],
+      "special_abilities": ["与灵兽心灵沟通", "感知兽类意图"]
+    },
+    {
+      "id": "SWORD_SENSE",
+      "name": "剑感天成",
+      "type": "战斗",
+      "category": "combat",
+      "rarity": "uncommon",
+      "description": "天生对剑意极敏锐，剑术悟性+25%，攻击速度+10%",
+      "effects": {
+        "剑术悟性": "+25%",
+        "攻击速度": "+10%",
+        "剑意领悟": "+40%"
+      },
+      "synergies": ["金灵根", "剑修"],
+      "special_abilities": ["预判敌人剑招", "剑心通明"]
+    },
+    {
+      "id": "IRON_BONES",
+      "name": "铁骨铜皮",
+      "type": "体修",
+      "category": "combat", 
+      "rarity": "common",
+      "description": "天生筋骨强健，体修效率+15%，物理抗性+20%",
+      "effects": {
+        "体修效率": "+15%",
+        "物理抗性": "+20%",
+        "恢复速度": "+10%"
+      },
+      "synergies": ["土灵根", "体修"],
+      "drawbacks": ["法术修炼效率-5%"]
+    },
+    {
+      "id": "THUNDER_AFFINITY",
+      "name": "雷电亲和",
+      "type": "战斗",
+      "category": "combat",
+      "rarity": "rare",
+      "description": "天生对雷电免疫，雷系法术威力+35%，引雷概率+15%",
+      "effects": {
+        "雷电免疫": "100%",
+        "雷系法术威力": "+35%",
+        "引雷概率": "+15%"
+      },
+      "synergies": ["雷灵根", "雷法师"],
+      "special_abilities": ["召唤天雷", "雷电操控"]
+    }
+  ],
+  "crafting_talents": [
+    {
+      "id": "GOLDEN_FINGERS",
+      "name": "巧手天工",
+      "type": "炼器",
+      "category": "crafting",
+      "rarity": "uncommon",
+      "description": "手指灵巧异常，炼器成功率+18%，精品概率+8%",
+      "effects": {
+        "炼器成功率": "+18%",
+        "精品概率": "+8%",
+        "操作精度": "+25%"
+      },
+      "synergies": ["金灵根", "炼器师"],
+      "special_abilities": ["细致入微的操作", "感知材料特性"]
+    },
+    {
+      "id": "HERB_SIGHT",
+      "name": "药眼识草",
+      "type": "药师",
+      "category": "crafting",
+      "rarity": "uncommon",
+      "description": "能看透药材年份和品质，采药效率+20%，识别准确率+30%",
+      "effects": {
+        "采药效率": "+20%",
+        "识别准确率": "+30%",
+        "药性分析": "+25%"
+      },
+      "synergies": ["木灵根", "药师", "丹修"],
+      "special_abilities": ["透视药材内部", "感知药材生长状态"]
+    },
+    {
+      "id": "FORMATION_GENIUS",
+      "name": "阵道天才",
+      "type": "阵法",
+      "category": "crafting",
+      "rarity": "rare",
+      "description": "对阵法布置有天生直觉，阵法稳定性+30%，创新概率+20%",
+      "effects": {
+        "阵法稳定性": "+30%",
+        "布阵速度": "+25%",
+        "创新概率": "+20%"
+      },
+      "synergies": ["土灵根", "阵法师"],
+      "special_abilities": ["直觉布阵", "阵法创新"]
+    },
+    {
+      "id": "RUNE_MASTERY",
+      "name": "符文精通",
+      "type": "符箓",
+      "category": "crafting",
+      "rarity": "rare",
+      "description": "对符文有超凡理解，符箓效果+25%，绘制成功率+20%",
+      "effects": {
+        "符箓效果": "+25%",
+        "绘制成功率": "+20%",
+        "符文创新": "+15%"
+      },
+      "synergies": ["金灵根", "符修"],
+      "special_abilities": ["符文创造", "古文字解读"]
+    }
+  ],
+  "support_talents": [
+    {
+      "id": "HEALING_TOUCH",
+      "name": "治疗之手",
+      "type": "治疗",
+      "category": "support",
+      "rarity": "uncommon",
+      "description": "天生治疗能力，治疗效果+25%，消耗-15%",
+      "effects": {
+        "治疗效果": "+25%",
+        "治疗消耗": "-15%",
+        "诊断准确率": "+20%"
+      },
+      "synergies": ["木灵根", "水灵根", "治疗师"],
+      "special_abilities": ["生命感知", "快速诊断"]
+    },
+    {
+      "id": "MERCHANT_NOSE",
+      "name": "商贾嗅觉",
+      "type": "商业",
+      "category": "support",
+      "rarity": "common",
+      "description": "对商机敏感，交易收益+15%，讨价还价成功率+20%",
+      "effects": {
+        "交易收益": "+15%",
+        "讨价还价": "+20%",
+        "市场洞察": "+25%"
+      },
+      "synergies": ["商人职业"],
+      "special_abilities": ["价值评估", "市场预测"]
+    },
+    {
+      "id": "SOCIAL_BUTTERFLY",
+      "name": "八面玲珑",
+      "type": "社交",
+      "category": "support", 
+      "rarity": "uncommon",
+      "description": "社交能力出众，好感度获得+30%，信息收集+25%",
+      "effects": {
+        "好感度获得": "+30%",
+        "信息收集": "+25%",
+        "说服成功率": "+20%"
+      },
+      "synergies": ["高魅力"],
+      "special_abilities": ["读心术", "氛围掌控"]
+    }
+  ],
+  "special_talents": [
+    {
+      "id": "LUCKY_STAR",
+      "name": "福星高照",
+      "type": "特殊",
+      "category": "special",
+      "rarity": "rare",
+      "description": "天生幸运，机缘事件概率+50%，危险规避+20%",
+      "effects": {
+        "机缘概率": "+50%",
+        "危险规避": "+20%",
+        "意外收获": "+30%"
+      },
+      "synergies": ["福命", "天命"],
+      "special_abilities": ["预感危险", "吸引机缘"]
+    },
+    {
+      "id": "CURSE_BEARER",
+      "name": "诅咒之身",
+      "type": "特殊",
+      "category": "special",
+      "rarity": "rare",
+      "description": "承受诅咒但获得力量，战力+40%，但持续失血",
+      "effects": {
+        "战斗力": "+40%",
+        "持续失血": "每日-5HP",
+        "诅咒抗性": "+60%"
+      },
+      "synergies": ["劫命"],
+      "drawbacks": ["持续生命流失", "容易被正道排斥"],
+      "special_abilities": ["诅咒免疫", "黑暗力量"]
+    },
+    {
+      "id": "TIME_SENSE",
+      "name": "时间感知",
+      "type": "特殊",
+      "category": "special",
+      "rarity": "legendary",
+      "description": "能感知时间流动，预知短期未来，闪避率+50%",
+      "effects": {
+        "未来预知": "3秒内",
+        "闪避率": "+50%",
+        "反应速度": "+100%"
+      },
+      "synergies": ["极高悟性"],
+      "restrictions": ["极度稀有", "可能引起时空混乱"],
+      "special_abilities": ["短期预知", "时间加速感知"]
+    },
+    {
+      "id": "VOID_WALKER",
+      "name": "虚空行者",
+      "type": "特殊",
+      "category": "special",
+      "rarity": "legendary",
+      "description": "能够短暂进入虚空，获得虚无化能力",
+      "effects": {
+        "虚无化持续": "10秒",
+        "空间传送": "短距离",
+        "虚空感知": "+100%"
+      },
+      "synergies": ["暗灵根", "界域旅者"],
+      "restrictions": ["使用次数限制", "可能迷失虚空"],
+      "special_abilities": ["虚无化", "空间跳跃", "虚空隐藏"]
+    }
+  ],
+  "rare_talents": [
+    {
+      "id": "ELEMENTAL_HARMONY",
+      "name": "元素和谐",
+      "type": "特殊",
+      "category": "rare",
+      "rarity": "rare",
+      "description": "天生五行平衡，杂灵根冲突-80%，融合成功率+40%",
+      "effects": {
+        "灵根冲突": "-80%",
+        "融合成功率": "+40%",
+        "元素亲和": "+25%"
+      },
+      "synergies": ["五行俱全", "平衡守护者"],
+      "special_abilities": ["元素调和", "冲突化解", "平衡维护"]
+    },
+    {
+      "id": "BREAKTHROUGH_KING",
+      "name": "破境之王",
+      "type": "修炼",
+      "category": "rare",
+      "rarity": "rare",
+      "description": "突破天赋异禀，突破成功率+60%，巩固时间-70%",
+      "effects": {
+        "突破成功率": "+60%",
+        "巩固时间": "-70%",
+        "境界稳固度": "+30%"
+      },
+      "synergies": ["高悟性", "强意志力"],
+      "special_abilities": ["快速突破", "境界稳固", "瓶颈突破"]
+    },
+    {
+      "id": "INNOVATION_MIND",
+      "name": "创新之心",
+      "type": "特殊",
+      "category": "rare",
+      "rarity": "rare",
+      "description": "创新能力超群，创造新技能概率+100%，学习速度+50%",
+      "effects": {
+        "技能创新": "+100%",
+        "学习速度": "+50%",
+        "理解能力": "+40%"
+      },
+      "synergies": ["极高悟性", "创新职业"],
+      "special_abilities": ["技能融合", "新法创造", "理论突破"]
+    }
+  ],
+  "legendary_talents": [
+    {
+      "id": "CHAOS_BORN",
+      "name": "混沌天生",
+      "type": "传说",
+      "category": "legendary",
+      "rarity": "legendary",
+      "description": "天生混沌体质，可直接修炼混沌功法，免疫所有元素伤害",
+      "effects": {
+        "元素免疫": "100%",
+        "混沌亲和": "天生满级",
+        "创造能力": "+200%"
+      },
+      "synergies": ["混沌灵根"],
+      "restrictions": ["万中无一", "天道关注"],
+      "special_abilities": ["混沌操控", "创世之力", "万法归宗"]
+    },
+    {
+      "id": "FATE_DEFIER",
+      "name": "逆命者",
+      "type": "传说",
+      "category": "legendary", 
+      "rarity": "legendary",
+      "description": "天生逆天体质，可改写自身命运，免疫预言和诅咒",
+      "effects": {
+        "命运掌控": "部分自主",
+        "预言免疫": "100%",
+        "诅咒免疫": "100%"
+      },
+      "synergies": ["劫命", "强意志力"],
+      "restrictions": ["天道敌视", "极度稀有"],
+      "special_abilities": ["改写命运", "逆转因果", "破除定数"]
+    }
+  ],
+  "talent_interactions": {
+    "synergy_combinations": [
+      {
+        "talents": ["SWORD_SENSE", "THUNDER_AFFINITY"],
+        "combination_name": "雷剑双绝",
+        "bonus_effects": {
+          "雷剑威力": "+50%",
+          "攻击速度": "+30%"
+        }
+      },
+      {
+        "talents": ["INFERNO_HEART", "HERB_SIGHT"],
+        "combination_name": "药火精通",
+        "bonus_effects": {
+          "丹药品质": "+25%",
+          "特殊丹药": "可炼制"
+        }
+      },
+      {
+        "talents": ["ELEMENTAL_HARMONY", "FORMATION_GENIUS"],
+        "combination_name": "五行阵宗",
+        "bonus_effects": {
+          "五行阵法": "威力翻倍",
+          "阵法融合": "可创新组合"
+        }
+      }
+    ],
+    "conflict_combinations": [
+      {
+        "talents": ["INFERNO_HEART", "治疗相关天赋"],
+        "conflict_name": "火治相冲",
+        "penalty": "治疗效果-30%，火焰控制不稳定"
+      },
+      {
+        "talents": ["CURSE_BEARER", "LUCKY_STAR"],
+        "conflict_name": "福祸并存",
+        "effect": "效果随机波动，不可预测"
+      }
+    ]
+  },
+  "awakening_conditions": {
+    "natural_awakening": {
+      "probability": 0.05,
+      "triggers": ["重大突破", "生死关头", "深度感悟"],
+      "age_factor": "越年轻越容易觉醒"
+    },
+    "induced_awakening": {
+      "methods": [
+        {
+          "name": "天赋觉醒丹",
+          "success_rate": 0.3,
+          "side_effects": "可能觉醒意外天赋"
+        },
+        {
+          "name": "传承仪式",
+          "success_rate": 0.6,
+          "requirements": "对应血脉或师承"
+        },
+        {
+          "name": "极限试炼",
+          "success_rate": 0.4,
+          "risks": "失败可能废除现有天赋"
+        }
+      ]
+    },
+    "destiny_linkage": {
+      "description": "某些命格更容易获得特定天赋",
+      "links": {
+        "天命": ["CHAOS_BORN", "FATE_DEFIER"],
+        "福命": ["LUCKY_STAR", "BREAKTHROUGH_KING"],
+        "贵命": ["SOCIAL_BUTTERFLY", "MERCHANT_NOSE"],
+        "劫命": ["CURSE_BEARER", "TIME_SENSE"]
+      }
+    }
+  },
+  "talent_evolution": {
+    "growth_system": {
+      "description": "天赋可以通过使用和修炼得到加强",
+      "enhancement_methods": [
+        "频繁使用对应能力",
+        "专门的天赋修炼法",
+        "相关的奇遇和机缘",
+        "与其他天赋的协同作用"
+      ]
+    },
+    "evolution_paths": {
+      "description": "低级天赋可能进化为高级天赋",
+      "examples": [
+        "SWORD_SENSE → 剑心通明 → 剑道至圣",
+        "INFERNO_HEART → 丹火大师 → 造化丹神",
+        "ELEMENTAL_HARMONY → 五行宗师 → 混沌初开"
+      ]
+    }
+  }
+}
