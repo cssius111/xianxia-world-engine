@@ -607,7 +607,7 @@ class DialogueSystem:
     def _load_json_dialogues(self):
         """加载JSON对话数据"""
         import os
-        json_path = os.path.join(os.path.dirname(__file__), '../../data/npc/dialogues.json')
+        json_path = os.path.join(os.path.dirname(__file__), '../data/npc/dialogues.json')
         
         try:
             with open(json_path, 'r', encoding='utf-8') as f:

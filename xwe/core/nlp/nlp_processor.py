@@ -206,9 +206,9 @@ class NLPProcessor:
                 params = parsed.get("parameters", {})
                 if command_type == CommandType.CULTIVATE and "duration" not in params:
                     # 尝试从原文本提取时长
-                    duration_match = re.search(r'(\d+)\s*([年月天日时])', text)
-                    if duration_match:
-                        params["duration"] = f"{duration_match.group(1)}{duration_match.group(2)}"
+                    duration = self._extract_duration(text)
+                    if duration:
+                        params["duration"] = duration
                 
                 return ParsedCommand(
                     command_type=command_type,
@@ -272,6 +272,21 @@ class NLPProcessor:
             if target in response:
                 return target
         return None
+
+    def _extract_duration(self, text: str) -> Optional[str]:
+        """从文本中提取时长，例如 '修炼3个月' → '3月'"""
+        match = re.search(r'([0-9]+|[一二三四五六七八九十两]+)\s*(?:个)?\s*([年月天日时])', text)
+        if match:
+            num = match.group(1)
+            if not num.isdigit():
+                num_map = {
+                    '一': '1', '二': '2', '三': '3', '四': '4', '五': '5',
+                    '六': '6', '七': '7', '八': '8', '九': '9', '十': '10',
+                    '两': '2'
+                }
+                num = num_map.get(num, '1')
+            return f"{num}{match.group(2)}"
+        return None
     
     def _fuzzy_parse(self, text: str) -> ParsedCommand:
         """增强的模糊匹配 - 支持更多自然语言"""
@@ -281,10 +296,10 @@ class NLPProcessor:
         if any(w in text_lower for w in ["修炼", "修行", "打坐", "练功", "闭关"]):
             # 提取时长
             import re
-            duration_match = re.search(r'(\d+)\s*([年月天日时])', text)
             params = {}
-            if duration_match:
-                params["duration"] = f"{duration_match.group(1)}{duration_match.group(2)}"
+            duration = self._extract_duration(text)
+            if duration:
+                params["duration"] = duration
             
             return ParsedCommand(
                 command_type=CommandType.CULTIVATE,
