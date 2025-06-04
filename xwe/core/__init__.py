@@ -6,6 +6,7 @@ XWE核心游戏系统模块
 from .data_loader import DataLoader
 from .attributes import AttributeSystem, CharacterAttributes
 from .character import Character
+from .inventory import Inventory
 from .skills import SkillSystem, Skill
 from .combat import CombatSystem, CombatResult
 from .ai import AIController
@@ -18,6 +19,7 @@ __all__ = [
     'AttributeSystem',
     'CharacterAttributes',
     'Character',
+    'Inventory',
     'SkillSystem',
     'Skill',
     'CombatSystem',

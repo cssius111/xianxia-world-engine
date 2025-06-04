@@ -13,6 +13,7 @@ import logging
 
 from .attributes import CharacterAttributes
 from .status import StatusEffectManager
+from .inventory import Inventory
 
 logger = logging.getLogger(__name__)
 
@@ -62,7 +63,7 @@ class Character:
     
     # 装备和物品
     equipment: Dict[str, str] = field(default_factory=dict)  # 装备位置 -> 物品ID
-    inventory: List[str] = field(default_factory=list)  # 背包物品ID列表
+    inventory: Inventory = field(default_factory=Inventory)  # 背包物品
     
     # 社交关系
     faction: str = ""  # 所属门派
@@ -325,9 +326,42 @@ class Character:
             'spiritual_root': self.spiritual_root,
             'skills': self.skills,
             'equipment': self.equipment,
+            'inventory': self.inventory.to_dict(),
             'faction': self.faction,
             'ai_profile': self.ai_profile,
         }
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> 'Character':
+        """从字典数据构建角色"""
+        attrs = CharacterAttributes.from_dict(data.get('attributes', {}))
+        try:
+            char_type = CharacterType(data.get('character_type', 'npc'))
+        except ValueError:
+            char_type = CharacterType.NPC
+        try:
+            state = CharacterState(data.get('state', 'normal'))
+        except ValueError:
+            state = CharacterState.NORMAL
+
+        character = cls(
+            id=data.get('id', str(uuid.uuid4())),
+            name=data.get('name', '未命名'),
+            character_type=char_type,
+            attributes=attrs,
+            state=state,
+            cultivation_path=data.get('cultivation_path', ''),
+            spiritual_root=data.get('spiritual_root', {}),
+            skills=data.get('skills', []),
+            equipment=data.get('equipment', {}),
+            inventory=Inventory.from_dict(data.get('inventory', {})),
+            faction=data.get('faction', ''),
+            ai_profile=data.get('ai_profile', 'default'),
+        )
+
+        character.relationships = data.get('relationships', {})
+        character.extra_data = data.get('extra_data', {})
+        return character
     
     @classmethod
     def from_template(cls, template: Dict[str, Any]) -> 'Character':
