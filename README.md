@@ -10,6 +10,16 @@
 - **完整游戏系统**: 战斗、技能、探索、NPC交互、对话系统
 - **模块化架构**: 清晰的代码结构，易于扩展和维护
 
+## ✨ 2.0 更新亮点
+- 🐉 中国龙ASCII艺术和彩色输出，营造浓厚氛围
+- 📊 智能状态显示与渐进式成就系统
+- ⚙️ 命令优先级和智能命令处理，更好理解玩家意图
+- 🌟 开局事件及沉浸式剧情系统
+- 📦 MOD生态与内容热更新
+- 🤖 AI个性化推荐与社区反馈收集
+- 🛠️ 自动存档和性能监控
+
+
 ## 📂 项目结构
 
 ```
@@ -58,14 +68,17 @@ export DEEPSEEK_API_KEY="your-api-key"
 ### 运行游戏
 
 ```bash
-# 方式1：主菜单模式（推荐）
+# 方式1：一键启动（推荐）
+python run_game.py
+
+# 方式2：主菜单模式
 python main_menu.py
 
-# 方式2：直接开始游戏
+# 方式3：直接开始游戏
 python main.py
 
-# 方式3：快速启动
-python scripts/quick_start.py
+# 方式4：快速启动脚本
+python quick_start.py
 ```
 
 ## 🎮 游戏特性
@@ -135,6 +148,7 @@ python scripts/test_nlp.py       # 测试NLP系统
 - `scripts/tools/check_status.py` - 检查项目状态
 - `scripts/demos/demo_all_features.py` - 功能演示
 - `scripts/verify_project.py` - 验证项目完整性
+更多文档请参见 `docs/README.md`、`FEATURES_GUIDE.md` 与 `OPTIMIZATION_SUMMARY.md`。
 
 ## 🤝 贡献指南
 
@@ -155,6 +169,6 @@ python scripts/test_nlp.py       # 测试NLP系统
 
 ---
 
-**项目状态**: 活跃开发中 | **版本**: 1.0.0 | **最后更新**: 2025-06-02
+**项目状态**: 活跃开发中 | **版本**: 2.0.0 | **最后更新**: 2025-06-04
 
 如有问题或建议，欢迎提交Issue或联系开发者。

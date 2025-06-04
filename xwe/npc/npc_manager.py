@@ -333,7 +333,7 @@ class NPCManager:
         return [npc_id for npc_id, loc in self.npc_locations.items() if loc == location]
     
     def start_dialogue(self, player_id: str, npc_id: str, player_info: Dict[str, Any] = None,
-                      use_enhanced: bool = True) -> Tuple[Optional[DialogueNode], Optional[Any]]:
+                      use_enhanced: bool = True) -> Optional[DialogueNode]:
         """
         开始与NPC对话
         
@@ -364,10 +364,10 @@ class NPCManager:
         
         if use_enhanced:
             # 使用增强版对话系统
-            node, context = self.enhanced_dialogue.start_dialogue(
+            node, _ = self.enhanced_dialogue.start_dialogue(
                 player_id, npc_id, npc_info, player_info
             )
-            return node, context
+            return node
         else:
             # 使用基础对话系统
             character = self.npc_characters.get(npc_id)
@@ -385,7 +385,7 @@ class NPCManager:
             
             # 开始对话
             node = self.dialogue_system.start_dialogue(player_id, npc_id, profile.dialogue_id)
-            return node, context
+            return node
     
     def get_npc_info(self, npc_id: str) -> Dict[str, Any]:
         """

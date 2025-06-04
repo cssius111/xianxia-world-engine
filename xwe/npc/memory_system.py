@@ -547,8 +547,36 @@ class MemorySystem:
         )
 
     def get_memory_profile(self, npc_id: str, player_id: str) -> dict:
-        return {'recent_events': [], 'affinity': 0, 'total_memories': 0, 'memory_types': {}, 'first_meeting': None, 'last_interaction': None}
-
-    def get_memory_profile(self, npc_id: str, player_id: str) -> dict:
         """获取NPC对玩家的记忆概况"""
-        return {"recent_events": [], "affinity": 0, "total_memories": 0, "memory_types": {}, "first_meeting": None, "last_interaction": None}
+        return {
+            "recent_events": [],
+            "affinity": 0,
+            "total_memories": 0,
+            "memory_types": {},
+            "first_meeting": None,
+            "last_interaction": None,
+        }
+
+    def generate_memory_context(self, npc_id: str, player_id: str) -> str:
+        """生成NPC记忆上下文摘要"""
+        profile = self.get_memory_profile(npc_id, player_id)
+        events = profile.get("recent_events", [])
+        if events:
+            return "; ".join(events)
+        return ""
+
+    def create_memory(self, npc_id: str, player_id: str, memory_type: str,
+                      game_time: int = 0, **content) -> str:
+        """兼容旧接口的创建记忆方法"""
+        try:
+            mtype = MemoryType(memory_type)
+        except Exception:
+            mtype = MemoryType.GENERAL
+        return self.add_memory(
+            npc_id=npc_id,
+            memory_type=mtype,
+            subject=player_id,
+            content=content,
+            importance=MemoryImportance.MINOR,
+            game_time=game_time,
+        )

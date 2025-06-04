@@ -25,7 +25,7 @@
    - 自动记录你分析出的变更记录，格式如下：
      ## 更新日志（自动生成）
 
-     - 🗂️ 合并文件：enhanced_npc_dialogues.json + npc_dialogues.json → npc/dialogues.json
+     - 🗂️ 合并文件：enhanced_npc_dialogues.json + npc_dialogues.json → xwe/data/npc/dialogues.json
      - 🧹 删除废弃数据：old_ai_behavior.json（已转移至 ai/behavior_tree.json）
      - 🔄 重命名模块：core/skills.py → gameplay/skills_core.py（符合模块语义）
      - 📁 新增分类目录：data/items/, data/skills/

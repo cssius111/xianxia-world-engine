@@ -51,6 +51,15 @@ class EmotionState:
     def current_emotion(self) -> EmotionType:
         """获取当前情绪（兼容旧代码）"""
         return self.primary
+
+    # 兼容旧字段名 emotion_intensity
+    @property
+    def emotion_intensity(self) -> float:
+        return self.intensity
+
+    @emotion_intensity.setter
+    def emotion_intensity(self, value: float):
+        self.intensity = value
     
     def get_dominant_emotion(self) -> Tuple[EmotionType, float]:
         """获取主导情绪"""

@@ -8,7 +8,7 @@
 - 警告数: 7
 
 ## 错误列表 (2)
-- ❌ 缺少NPC对话文件: data/npc/dialogues.json
+- ❌ 缺少NPC对话文件: xwe/data/npc/dialogues.json
 - ❌ 缺少角色开局配置文件
 
 ## 警告列表 (7)

@@ -295,13 +295,13 @@ class EnhancedDialogueSystem:
         
         # 触发情绪反应
         if context.first_meeting:
-            self.emotion_system.trigger_emotion(npc_id, "first_meeting", {
-                "relationship": context.relationship
-            })
+            self.emotion_system.trigger_emotion(
+                npc_id, EmotionType.HAPPY, 0.6, "first_meeting"
+            )
         else:
-            self.emotion_system.trigger_emotion(npc_id, "greeting", {
-                "relationship": context.relationship
-            })
+            self.emotion_system.trigger_emotion(
+                npc_id, EmotionType.HAPPY, 0.3, "greeting"
+            )
         
         # 记录记忆
         if context.first_meeting:
@@ -403,7 +403,7 @@ class EnhancedDialogueSystem:
         """创建对话上下文"""
         # 获取记忆
         memory_profile = self.memory_system.get_memory_profile(npc_id, player_id)
-        first_meeting = memory_profile is None
+        first_meeting = not memory_profile or not memory_profile.get('first_meeting')
         
         # 获取情感状态
         emotion_state = self.emotion_system.get_emotion_state(npc_id)
@@ -430,7 +430,7 @@ class EnhancedDialogueSystem:
         # 添加记忆上下文
         if memory_profile:
             context.memory_context = self.memory_system.generate_memory_context(npc_id, player_id)
-            context.recent_memories = memory_profile.get_recent_memories(3)
+            context.recent_memories = memory_profile.get('recent_events', [])
         
         return context
     
