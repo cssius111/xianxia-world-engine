@@ -1,0 +1,135 @@
+{
+  "character_creation": {
+    "name": "角色创建配置",
+    "description": "定义新角色的初始状态和开局选项",
+    "starting_options": [
+      {
+        "id": "wandering_cultivator",
+        "name": "散修",
+        "description": "无门无派的修炼者，自由但资源匮乏",
+        "attributes": {
+          "health": 100,
+          "mana": 50,
+          "attack": 12,
+          "defense": 8,
+          "speed": 10
+        },
+        "starting_items": [
+          {
+            "id": "basic_sword",
+            "quantity": 1
+          },
+          {
+            "id": "healing_potion",
+            "quantity": 3
+          },
+          {
+            "id": "spirit_stone",
+            "quantity": 10
+          }
+        ],
+        "starting_skills": ["basic_fist", "meditation"],
+        "starting_location": "qingyun_city",
+        "bonus": {
+          "exp_gain": 1.1,
+          "description": "散修经历丰富，获得经验+10%"
+        }
+      },
+      {
+        "id": "sect_disciple",
+        "name": "宗门弟子",
+        "description": "出身名门正派，有良好的修炼资源",
+        "attributes": {
+          "health": 120,
+          "mana": 60,
+          "attack": 10,
+          "defense": 10,
+          "speed": 10
+        },
+        "starting_items": [
+          {
+            "id": "sect_uniform",
+            "quantity": 1
+          },
+          {
+            "id": "sect_sword",
+            "quantity": 1
+          },
+          {
+            "id": "healing_potion",
+            "quantity": 5
+          },
+          {
+            "id": "mana_potion",
+            "quantity": 3
+          }
+        ],
+        "starting_skills": ["sword_slash", "meditation", "iron_body"],
+        "starting_location": "sect_hall",
+        "starting_faction": "qingyun_sect",
+        "bonus": {
+          "skill_points": 2,
+          "description": "宗门传承，额外获得2个技能点"
+        }
+      },
+      {
+        "id": "merchant_heir",
+        "name": "商贾之子",
+        "description": "富商之后，财力雄厚但战斗力较弱",
+        "attributes": {
+          "health": 80,
+          "mana": 60,
+          "attack": 8,
+          "defense": 6,
+          "speed": 12
+        },
+        "starting_items": [
+          {
+            "id": "spirit_stone",
+            "quantity": 100
+          },
+          {
+            "id": "storage_ring",
+            "quantity": 1
+          },
+          {
+            "id": "healing_potion",
+            "quantity": 10
+          },
+          {
+            "id": "escape_talisman",
+            "quantity": 3
+          }
+        ],
+        "starting_skills": ["swift_movement", "spiritual_perception"],
+        "starting_location": "tiannan_market",
+        "bonus": {
+          "shop_discount": 0.2,
+          "sell_price_bonus": 0.2,
+          "description": "商业天赋，买卖物品享受20%优惠"
+        }
+      }
+    ],
+    "spiritual_root_generation": {
+      "random_weights": {
+        "single": 0.05,
+        "dual": 0.15,
+        "triple": 0.30,
+        "quad": 0.35,
+        "penta": 0.15
+      },
+      "quality_weights": {
+        "inferior": 0.40,
+        "common": 0.35,
+        "superior": 0.20,
+        "supreme": 0.04,
+        "divine": 0.01
+      }
+    },
+    "name_generation": {
+      "surnames": ["李", "王", "张", "刘", "陈", "杨", "赵", "黄", "周", "吴"],
+      "male_names": ["天", "龙", "云", "风", "雷", "阳", "明", "浩", "宇", "辰"],
+      "female_names": ["雪", "月", "霜", "梦", "瑶", "琳", "婷", "燕", "莲", "凤"]
+    }
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "category": "spells",
+  "name": "法术",
+  "description": "消耗法力释放的远程技能",
+  "skills": {
+    "fireball": {
+      "id": "fireball",
+      "name": "火球术",
+      "description": "释放一个火球攻击敌人",
+      "type": "attack",
+      "element": "fire",
+      "cost": {
+        "mana": 10
+      },
+      "cooldown": 1,
+      "damage": "mana * 1.5 + level * 3",
+      "requirements": {
+        "level": 1,
+        "element_affinity": "fire"
+      }
+    },
+    "ice_spike": {
+      "id": "ice_spike",
+      "name": "冰刺术",
+      "description": "召唤冰刺刺穿敌人",
+      "type": "attack",
+      "element": "water",
+      "cost": {
+        "mana": 15
+      },
+      "cooldown": 2,
+      "damage": "mana * 2.0",
+      "effects": [
+        {
+          "type": "debuff",
+          "name": "冰冻",
+          "duration": 2,
+          "effect": "speed * 0.5"
+        }
+      ],
+      "requirements": {
+        "level": 5,
+        "element_affinity": "water"
+      }
+    },
+    "lightning_bolt": {
+      "id": "lightning_bolt",
+      "name": "雷击术",
+      "description": "召唤天雷轰击敌人",
+      "type": "attack",
+      "element": "metal",
+      "cost": {
+        "mana": 30
+      },
+      "cooldown": 3,
+      "damage": "mana * 3.0 + attack * 0.5",
+      "effects": [
+        {
+          "type": "debuff",
+          "name": "麻痹",
+          "duration": 1,
+          "chance": 0.3
+        }
+      ],
+      "requirements": {
+        "level": 15,
+        "realm": "foundation"
+      }
+    },
+    "healing_light": {
+      "id": "healing_light",
+      "name": "治愈之光",
+      "description": "释放治愈之光恢复生命",
+      "type": "support",
+      "element": "wood",
+      "target": "self",
+      "cost": {
+        "mana": 20
+      },
+      "cooldown": 5,
+      "heal": "mana * 2.5 + level * 10",
+      "requirements": {
+        "level": 10,
+        "element_affinity": "wood"
+      }
+    }
+  }
+}

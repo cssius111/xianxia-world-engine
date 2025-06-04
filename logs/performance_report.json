@@ -1,0 +1,22 @@
+{
+  "performance": {
+    "current": {
+      "cpu_usage": 0.0,
+      "memory_usage": 6474.8125
+    },
+    "average": {
+      "memory_usage": 6474.8125,
+      "cpu_usage": 0.0
+    },
+    "peak": {
+      "memory_usage": 6474.8125,
+      "cpu_usage": 0.0
+    }
+  },
+  "errors": {
+    "total_errors": 0,
+    "error_types": {},
+    "recent_errors": []
+  },
+  "timestamp": 1748998160.268352
+}

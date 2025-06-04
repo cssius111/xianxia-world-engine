@@ -1,0 +1,38 @@
+{
+  "template": {
+    "name": "NPC模板",
+    "description": "定义NPC的基础属性和行为",
+    "base_attributes": {
+      "health": 100,
+      "mana": 50,
+      "attack": 10,
+      "defense": 5,
+      "speed": 10
+    },
+    "behavior_types": [
+      "static",
+      "patrol",
+      "wander",
+      "merchant",
+      "quest_giver"
+    ],
+    "dialogue_structure": {
+      "greeting": "初次见面的对话",
+      "options": "玩家可选择的对话选项",
+      "responses": "NPC的回应",
+      "conditions": "触发特定对话的条件"
+    },
+    "relationship": {
+      "initial": 0,
+      "min": -100,
+      "max": 100,
+      "levels": {
+        "hostile": -50,
+        "unfriendly": -20,
+        "neutral": 0,
+        "friendly": 20,
+        "intimate": 50
+      }
+    }
+  }
+}

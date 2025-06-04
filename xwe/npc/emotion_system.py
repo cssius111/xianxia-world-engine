@@ -1,0 +1,510 @@
+# npc/emotion_system.py
+"""
+NPC情感系统
+
+管理NPC的情绪状态和性格特征。
+"""
+
+import logging
+from typing import Dict, List, Optional, Tuple
+from dataclasses import dataclass, field
+from enum import Enum
+import random
+
+logger = logging.getLogger(__name__)
+
+
+class EmotionType(Enum):
+    """情绪类型"""
+    HAPPY = "happy"          # 快乐
+    SAD = "sad"              # 悲伤
+    ANGRY = "angry"          # 愤怒
+    FEARFUL = "fearful"      # 恐惧
+    DISGUSTED = "disgusted"  # 厌恶
+    SURPRISED = "surprised"  # 惊讶
+    NEUTRAL = "neutral"      # 中性
+
+
+class PersonalityTrait(Enum):
+    """性格特征"""
+    FRIENDLY = "friendly"        # 友善
+    HOSTILE = "hostile"          # 敌对
+    GREEDY = "greedy"           # 贪婪
+    GENEROUS = "generous"        # 慷慨
+    CAUTIOUS = "cautious"        # 谨慎
+    RECKLESS = "reckless"        # 鲁莽
+    PROUD = "proud"             # 傲慢
+    HUMBLE = "humble"           # 谦逊
+    SERIOUS = "serious"         # 严肃
+    PLAYFUL = "playful"         # 活泼
+
+
+@dataclass
+class EmotionState:
+    """情绪状态"""
+    primary: EmotionType = EmotionType.NEUTRAL
+    intensity: float = 0.5  # 0-1
+    secondary: Optional[EmotionType] = None
+    secondary_intensity: float = 0.0
+    
+    @property
+    def current_emotion(self) -> EmotionType:
+        """获取当前情绪（兼容旧代码）"""
+        return self.primary
+    
+    def get_dominant_emotion(self) -> Tuple[EmotionType, float]:
+        """获取主导情绪"""
+        if self.secondary and self.secondary_intensity > self.intensity:
+            return self.secondary, self.secondary_intensity
+        return self.primary, self.intensity
+    
+    def blend_with(self, other: 'EmotionState', weight: float = 0.3):
+        """混合情绪"""
+        # 如果新情绪强度更高，可能替换主情绪
+        if other.intensity > self.intensity * 1.5:
+            self.secondary = self.primary
+            self.secondary_intensity = self.intensity * 0.7
+            self.primary = other.primary
+            self.intensity = other.intensity
+        else:
+            # 否则作为次要情绪
+            self.secondary = other.primary
+            self.secondary_intensity = other.intensity * weight
+    
+    def decay(self, amount: float = 0.1):
+        """情绪衰减"""
+        self.intensity = max(0, self.intensity - amount)
+        if self.secondary:
+            self.secondary_intensity = max(0, self.secondary_intensity - amount)
+            if self.secondary_intensity == 0:
+                self.secondary = None
+        
+        # 如果主情绪衰减到0，恢复中性
+        if self.intensity == 0:
+            self.primary = EmotionType.NEUTRAL
+            self.intensity = 0.5
+
+
+@dataclass
+class Personality:
+    """NPC性格"""
+    traits: List[PersonalityTrait] = field(default_factory=list)
+    trait_weights: Dict[PersonalityTrait, float] = field(default_factory=dict)
+    
+    # 情绪倾向
+    emotion_tendencies: Dict[EmotionType, float] = field(default_factory=dict)
+    
+    # 反应阈值
+    anger_threshold: float = 0.7
+    fear_threshold: float = 0.6
+    happiness_threshold: float = 0.4
+    
+    def has_trait(self, trait: PersonalityTrait) -> bool:
+        """是否具有某个性格特征"""
+        return trait in self.traits
+    
+    def get_trait_strength(self, trait: PersonalityTrait) -> float:
+        """获取性格特征强度"""
+        return self.trait_weights.get(trait, 0.0)
+    
+    def calculate_emotion_modifier(self, emotion: EmotionType) -> float:
+        """计算性格对情绪的影响"""
+        base_modifier = self.emotion_tendencies.get(emotion, 0.0)
+        
+        # 性格特征影响
+        if emotion == EmotionType.HAPPY:
+            if self.has_trait(PersonalityTrait.FRIENDLY):
+                base_modifier += 0.2
+            if self.has_trait(PersonalityTrait.PLAYFUL):
+                base_modifier += 0.15
+        elif emotion == EmotionType.ANGRY:
+            if self.has_trait(PersonalityTrait.HOSTILE):
+                base_modifier += 0.25
+            if self.has_trait(PersonalityTrait.PROUD):
+                base_modifier += 0.15
+        elif emotion == EmotionType.FEARFUL:
+            if self.has_trait(PersonalityTrait.CAUTIOUS):
+                base_modifier += 0.2
+            if self.has_trait(PersonalityTrait.RECKLESS):
+                base_modifier -= 0.3
+        
+        return max(-1.0, min(1.0, base_modifier))
+
+
+class EmotionSystem:
+    """
+    情感系统
+    
+    管理NPC的情绪变化和性格表现。
+    """
+    
+    def __init__(self):
+        """初始化情感系统"""
+        self.npc_emotions: Dict[str, EmotionState] = {}
+        self.npc_personalities: Dict[str, Personality] = {}
+        
+        # 预设性格模板
+        self.personality_templates = self._init_personality_templates()
+        
+        logger.info("情感系统初始化")
+    
+    def _init_personality_templates(self) -> Dict[str, Personality]:
+        """初始化性格模板"""
+        templates = {}
+        
+        # 商人性格
+        templates['merchant'] = Personality(
+            traits=[PersonalityTrait.GREEDY, PersonalityTrait.FRIENDLY, PersonalityTrait.CAUTIOUS],
+            trait_weights={
+                PersonalityTrait.GREEDY: 0.7,
+                PersonalityTrait.FRIENDLY: 0.6,
+                PersonalityTrait.CAUTIOUS: 0.5
+            },
+            emotion_tendencies={
+                EmotionType.HAPPY: 0.3,
+                EmotionType.NEUTRAL: 0.5,
+                EmotionType.ANGRY: -0.2
+            },
+            anger_threshold=0.8,
+            happiness_threshold=0.3
+        )
+        
+        # 守卫性格
+        templates['guard'] = Personality(
+            traits=[PersonalityTrait.SERIOUS, PersonalityTrait.CAUTIOUS, PersonalityTrait.HOSTILE],
+            trait_weights={
+                PersonalityTrait.SERIOUS: 0.8,
+                PersonalityTrait.CAUTIOUS: 0.7,
+                PersonalityTrait.HOSTILE: 0.4
+            },
+            emotion_tendencies={
+                EmotionType.NEUTRAL: 0.6,
+                EmotionType.ANGRY: 0.2,
+                EmotionType.HAPPY: -0.3
+            },
+            anger_threshold=0.5,
+            fear_threshold=0.8
+        )
+        
+        # 长老性格
+        templates['elder'] = Personality(
+            traits=[PersonalityTrait.SERIOUS, PersonalityTrait.PROUD, PersonalityTrait.CAUTIOUS],
+            trait_weights={
+                PersonalityTrait.SERIOUS: 0.9,
+                PersonalityTrait.PROUD: 0.6,
+                PersonalityTrait.CAUTIOUS: 0.7
+            },
+            emotion_tendencies={
+                EmotionType.NEUTRAL: 0.7,
+                EmotionType.DISGUSTED: 0.1,
+                EmotionType.HAPPY: -0.2
+            },
+            anger_threshold=0.7,
+            happiness_threshold=0.6
+        )
+        
+        # 天才弟子性格
+        templates['genius'] = Personality(
+            traits=[PersonalityTrait.PROUD, PersonalityTrait.RECKLESS, PersonalityTrait.PLAYFUL],
+            trait_weights={
+                PersonalityTrait.PROUD: 0.8,
+                PersonalityTrait.RECKLESS: 0.5,
+                PersonalityTrait.PLAYFUL: 0.4
+            },
+            emotion_tendencies={
+                EmotionType.HAPPY: 0.2,
+                EmotionType.ANGRY: 0.1,
+                EmotionType.SURPRISED: -0.3
+            },
+            anger_threshold=0.6,
+            fear_threshold=0.9
+        )
+        
+        return templates
+    
+    def register_npc(self, npc_id: str, personality_template: Optional[str] = None):
+        """
+        注册NPC
+        
+        Args:
+            npc_id: NPC ID
+            personality_template: 性格模板名称
+        """
+        # 初始化情绪状态
+        self.npc_emotions[npc_id] = EmotionState()
+        
+        # 设置性格
+        if personality_template and personality_template in self.personality_templates:
+            self.npc_personalities[npc_id] = self.personality_templates[personality_template]
+        else:
+            # 随机性格
+            self.npc_personalities[npc_id] = self._generate_random_personality()
+        
+        logger.debug(f"注册NPC情感: {npc_id} (模板: {personality_template})")
+    
+    def _generate_random_personality(self) -> Personality:
+        """生成随机性格"""
+        # 随机选择2-3个性格特征
+        num_traits = random.randint(2, 3)
+        traits = random.sample(list(PersonalityTrait), num_traits)
+        
+        # 生成权重
+        trait_weights = {}
+        for trait in traits:
+            trait_weights[trait] = random.uniform(0.3, 0.9)
+        
+        # 生成情绪倾向
+        emotion_tendencies = {}
+        for emotion in EmotionType:
+            if emotion != EmotionType.NEUTRAL:
+                emotion_tendencies[emotion] = random.uniform(-0.5, 0.5)
+            else:
+                emotion_tendencies[emotion] = random.uniform(0.3, 0.7)
+        
+        return Personality(
+            traits=traits,
+            trait_weights=trait_weights,
+            emotion_tendencies=emotion_tendencies,
+            anger_threshold=random.uniform(0.5, 0.9),
+            fear_threshold=random.uniform(0.4, 0.8),
+            happiness_threshold=random.uniform(0.3, 0.7)
+        )
+    
+    def get_emotion_state(self, npc_id: str) -> Optional[EmotionState]:
+        """获取NPC当前情绪状态"""
+        return self.npc_emotions.get(npc_id)
+    
+    def get_personality(self, npc_id: str) -> Optional[Personality]:
+        """获取NPC性格"""
+        return self.npc_personalities.get(npc_id)
+    
+    def trigger_emotion(self, npc_id: str, emotion: EmotionType, 
+                       intensity: float, reason: str = ""):
+        """
+        触发情绪
+        
+        Args:
+            npc_id: NPC ID
+            emotion: 情绪类型
+            intensity: 强度(0-1)
+            reason: 原因（用于日志）
+        """
+        if npc_id not in self.npc_emotions:
+            return
+        
+        current_state = self.npc_emotions[npc_id]
+        personality = self.npc_personalities.get(npc_id)
+        
+        # 应用性格修正
+        if personality:
+            modifier = personality.calculate_emotion_modifier(emotion)
+            intensity = max(0, min(1, intensity + modifier))
+        
+        # 创建新情绪状态
+        new_emotion = EmotionState(primary=emotion, intensity=intensity)
+        
+        # 混合到当前状态
+        current_state.blend_with(new_emotion)
+        
+        logger.debug(f"NPC {npc_id} 情绪变化: {emotion.value} "
+                    f"(强度: {intensity}, 原因: {reason})")
+    
+    def react_to_event(self, npc_id: str, event_type: str, 
+                      event_data: Dict[str, any]) -> Optional[EmotionType]:
+        """
+        对事件做出情绪反应
+        
+        Args:
+            npc_id: NPC ID
+            event_type: 事件类型
+            event_data: 事件数据
+            
+        Returns:
+            触发的情绪类型
+        """
+        personality = self.npc_personalities.get(npc_id)
+        if not personality:
+            return None
+        
+        # 根据事件类型和性格决定情绪反应
+        emotion = None
+        intensity = 0.5
+        
+        if event_type == "player_gift":
+            # 收到礼物
+            if personality.has_trait(PersonalityTrait.GREEDY):
+                emotion = EmotionType.HAPPY
+                intensity = 0.8
+            elif personality.has_trait(PersonalityTrait.PROUD):
+                emotion = EmotionType.NEUTRAL
+                intensity = 0.3
+            else:
+                emotion = EmotionType.HAPPY
+                intensity = 0.6
+                
+        elif event_type == "player_insult":
+            # 被侮辱
+            if personality.has_trait(PersonalityTrait.PROUD):
+                emotion = EmotionType.ANGRY
+                intensity = 0.9
+            elif personality.has_trait(PersonalityTrait.HUMBLE):
+                emotion = EmotionType.SAD
+                intensity = 0.4
+            else:
+                emotion = EmotionType.ANGRY
+                intensity = 0.6
+                
+        elif event_type == "player_threat":
+            # 被威胁
+            if personality.has_trait(PersonalityTrait.CAUTIOUS):
+                emotion = EmotionType.FEARFUL
+                intensity = 0.7
+            elif personality.has_trait(PersonalityTrait.RECKLESS):
+                emotion = EmotionType.ANGRY
+                intensity = 0.7
+            else:
+                emotion = EmotionType.FEARFUL
+                intensity = 0.5
+                
+        elif event_type == "player_help":
+            # 被帮助
+            if personality.has_trait(PersonalityTrait.FRIENDLY):
+                emotion = EmotionType.HAPPY
+                intensity = 0.8
+            elif personality.has_trait(PersonalityTrait.PROUD):
+                emotion = EmotionType.SURPRISED
+                intensity = 0.5
+            else:
+                emotion = EmotionType.HAPPY
+                intensity = 0.6
+        
+        if emotion:
+            self.trigger_emotion(npc_id, emotion, intensity, event_type)
+        
+        return emotion
+    
+    def update_emotions(self, delta_time: float = 1.0):
+        """
+        更新所有NPC的情绪（情绪衰减）
+        
+        Args:
+            delta_time: 时间间隔
+        """
+        decay_rate = 0.05 * delta_time
+        
+        for npc_id, emotion_state in self.npc_emotions.items():
+            emotion_state.decay(decay_rate)
+    
+    def get_emotion_modifier_for_dialogue(self, npc_id: str) -> Dict[str, float]:
+        """
+        获取情绪对对话的影响
+        
+        Returns:
+            对话修饰符字典
+        """
+        emotion_state = self.npc_emotions.get(npc_id)
+        if not emotion_state:
+            return {}
+        
+        emotion, intensity = emotion_state.get_dominant_emotion()
+        
+        modifiers = {
+            'friendliness': 0.0,
+            'patience': 0.0,
+            'generosity': 0.0,
+            'trust': 0.0
+        }
+        
+        # 根据情绪调整修饰符
+        if emotion == EmotionType.HAPPY:
+            modifiers['friendliness'] += intensity * 0.3
+            modifiers['patience'] += intensity * 0.2
+            modifiers['generosity'] += intensity * 0.25
+            modifiers['trust'] += intensity * 0.1
+            
+        elif emotion == EmotionType.ANGRY:
+            modifiers['friendliness'] -= intensity * 0.4
+            modifiers['patience'] -= intensity * 0.5
+            modifiers['trust'] -= intensity * 0.2
+            
+        elif emotion == EmotionType.FEARFUL:
+            modifiers['friendliness'] -= intensity * 0.2
+            modifiers['trust'] -= intensity * 0.4
+            modifiers['patience'] -= intensity * 0.3
+            
+        elif emotion == EmotionType.SAD:
+            modifiers['friendliness'] -= intensity * 0.1
+            modifiers['patience'] -= intensity * 0.2
+            modifiers['generosity'] -= intensity * 0.1
+        
+        return modifiers
+    
+    def get_emotion_description(self, npc_id: str) -> str:
+        """获取情绪描述"""
+        emotion_state = self.npc_emotions.get(npc_id)
+        if not emotion_state:
+            return "表情平静"
+        
+        emotion, intensity = emotion_state.get_dominant_emotion()
+        
+        # 根据情绪和强度生成描述
+        descriptions = {
+            EmotionType.HAPPY: {
+                0.3: "嘴角微微上扬",
+                0.6: "面带笑容",
+                0.8: "笑容满面",
+                1.0: "开怀大笑"
+            },
+            EmotionType.ANGRY: {
+                0.3: "眉头微皱",
+                0.6: "面色不悦",
+                0.8: "怒目而视",
+                1.0: "怒发冲冠"
+            },
+            EmotionType.FEARFUL: {
+                0.3: "神色紧张",
+                0.6: "面露惧色",
+                0.8: "瑟瑟发抖",
+                1.0: "惊恐万分"
+            },
+            EmotionType.SAD: {
+                0.3: "神情落寞",
+                0.6: "愁眉不展",
+                0.8: "黯然神伤",
+                1.0: "泪流满面"
+            },
+            EmotionType.DISGUSTED: {
+                0.3: "眉头轻蹙",
+                0.6: "面露嫌恶",
+                0.8: "厌恶之色溢于言表",
+                1.0: "恶心反胃"
+            },
+            EmotionType.SURPRISED: {
+                0.3: "微微一怔",
+                0.6: "面露惊讶",
+                0.8: "瞠目结舌",
+                1.0: "惊得目瞪口呆"
+            },
+            EmotionType.NEUTRAL: {
+                0.0: "表情平静",
+                1.0: "面无表情"
+            }
+        }
+        
+        # 找到合适的描述
+        emotion_descs = descriptions.get(emotion, descriptions[EmotionType.NEUTRAL])
+        
+        for threshold in sorted(emotion_descs.keys()):
+            if intensity <= threshold:
+                return emotion_descs[threshold]
+        
+        return emotion_descs[max(emotion_descs.keys())]
+
+
+    def get_dialogue_modifiers(self, npc_id: str) -> dict:
+        """获取对话修饰符"""
+        return {
+            'friendliness': 1.0,
+            'price_modifier': 1.0,
+            'quest_reward_modifier': 1.0
+        }

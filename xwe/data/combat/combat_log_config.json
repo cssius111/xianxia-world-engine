@@ -1,0 +1,253 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "description": "玄苍界战斗日志系统，定义战斗过程的记录、显示和回放"
+  },
+  "log_levels": {
+    "MINIMAL": {
+      "description": "仅记录关键结果",
+      "includes": ["final_result", "critical_events"]
+    },
+    "STANDARD": {
+      "description": "标准详细度",
+      "includes": ["actions", "damage", "status_changes", "important_events"]
+    },
+    "DETAILED": {
+      "description": "详细记录",
+      "includes": ["all_calculations", "decision_process", "environmental_factors"]
+    },
+    "DEBUG": {
+      "description": "调试级别",
+      "includes": ["formula_breakdown", "random_rolls", "ai_decisions", "system_internals"]
+    }
+  },
+  "message_templates": {
+    "damage_dealt": {
+      "template": "{attacker}对{target}造成了{damage}点{damage_type}伤害",
+      "variants": {
+        "critical": "{attacker}对{target}造成暴击！{damage}点{damage_type}伤害",
+        "elemental": "{attacker}使用{element}系攻击对{target}造成{damage}点伤害",
+        "blocked": "{attacker}的攻击被{target}格挡，仅造成{damage}点伤害",
+        "resisted": "{target}抵抗了部分{element}伤害，受到{damage}点伤害"
+      },
+      "color_coding": {
+        "physical_damage": "#FF4444",
+        "magical_damage": "#4444FF",
+        "true_damage": "#FF44FF",
+        "healing": "#44FF44"
+      }
+    },
+    "skill_usage": {
+      "template": "{caster}使用了{skill_name}",
+      "variants": {
+        "with_target": "{caster}对{target}使用了{skill_name}",
+        "area_effect": "{caster}使用{skill_name}，影响范围内所有目标",
+        "failed": "{caster}尝试使用{skill_name}，但是失败了",
+        "interrupted": "{caster}的{skill_name}被打断"
+      },
+      "additional_info": {
+        "mana_cost": "消耗{mana}点法力",
+        "cooldown": "进入{cooldown}秒冷却",
+        "combo_part": "连招第{combo_step}式"
+      }
+    },
+    "status_effects": {
+      "applied": "{target}受到{effect_name}效果影响",
+      "removed": "{target}的{effect_name}效果消失",
+      "triggered": "{target}的{effect_name}效果发动，{effect_description}",
+      "resisted": "{target}抵抗了{effect_name}效果",
+      "variants": {
+        "positive": "{target}获得{effect_name}增益效果",
+        "negative": "{target}中了{effect_name}负面效果",
+        "dispelled": "{caster}驱散了{target}的{effect_name}效果"
+      }
+    },
+    "combat_flow": {
+      "initiative": "行动顺序：{initiative_order}",
+      "turn_start": "轮到{character}行动",
+      "turn_end": "{character}结束行动",
+      "round_start": "第{round_number}回合开始",
+      "combat_start": "战斗开始！{participants}",
+      "combat_end": "战斗结束！{result}",
+      "phase_change": "进入{phase_name}阶段"
+    },
+    "environmental": {
+      "weather_change": "天气变为{weather}，{effects}",
+      "terrain_effect": "{terrain}地形效应：{description}",
+      "time_effect": "{time_period}：{effects}",
+      "formation_activated": "{formation_name}阵法激活！{effects}"
+    }
+  },
+  "formatting_rules": {
+    "timestamp": {
+      "format": "[HH:MM:SS]",
+      "show_in_levels": ["DETAILED", "DEBUG"]
+    },
+    "character_names": {
+      "player_color": "#00FF00",
+      "ally_color": "#0080FF",
+      "enemy_color": "#FF0000",
+      "neutral_color": "#FFFF00",
+      "formatting": "bold"
+    },
+    "numbers": {
+      "damage_color": "#FF4444",
+      "healing_color": "#44FF44",
+      "mana_color": "#4444FF",
+      "formatting": "bold"
+    },
+    "skill_names": {
+      "color": "#FF8800",
+      "formatting": "italic"
+    },
+    "status_effects": {
+      "positive_color": "#44FF44",
+      "negative_color": "#FF4444",
+      "neutral_color": "#FFFF44"
+    }
+  },
+  "calculation_breakdown": {
+    "damage_calculation": {
+      "show_formula": true,
+      "show_modifiers": true,
+      "show_random_rolls": true,
+      "template": "伤害计算：基础{base} × 技能倍率{skill_mult} × 元素加成{element_mult} - 防御{defense} = {final}",
+      "detailed_template": "详细计算：\n基础攻击力：{base_attack}\n武器倍率：{weapon_mult}\n技能倍率：{skill_mult}\n元素克制：{element_mult}\n暴击倍率：{crit_mult}\n目标防御：{target_defense}\n最终伤害：{final_damage}"
+    },
+    "hit_calculation": {
+      "template": "命中判定：{accuracy} vs {evasion} = {result}",
+      "show_modifiers": ["terrain", "status_effects", "equipment"]
+    },
+    "save_calculation": {
+      "template": "抗性判定：{save_value} vs {dc} = {result}"
+    }
+  },
+  "special_events": {
+    "critical_hit": {
+      "message": "暴击！",
+      "effects": ["screen_shake", "special_sound", "particle_effect"],
+      "emphasis": "double_size_red_text"
+    },
+    "dodge": {
+      "message": "完美闪避！",
+      "effects": ["slow_motion", "wind_effect"]
+    },
+    "counter_attack": {
+      "message": "反击！",
+      "effects": ["counter_animation"]
+    },
+    "combo_completed": {
+      "message": "连招完成！",
+      "effects": ["combo_flash", "achievement_sound"]
+    },
+    "ultimate_skill": {
+      "message": "终极技能发动！",
+      "effects": ["screen_flash", "dramatic_pause", "epic_music"]
+    }
+  },
+  "ai_decision_logging": {
+    "show_ai_thoughts": {
+      "enabled_in_levels": ["DEBUG"],
+      "template": "[AI思考] {character}：{decision_process}",
+      "includes": [
+        "target_evaluation",
+        "skill_selection_reason",
+        "risk_assessment",
+        "strategic_considerations"
+      ]
+    },
+    "decision_factors": {
+      "template": "决策因素：生命{health_weight} 法力{mana_weight} 威胁{threat_weight} 环境{env_weight}",
+      "show_calculations": true
+    }
+  },
+  "replay_system": {
+    "save_format": {
+      "version": "1.0",
+      "compression": "gzip",
+      "includes": [
+        "combat_state_snapshots",
+        "action_sequence",
+        "random_seed",
+        "environmental_data"
+      ]
+    },
+    "playback_controls": {
+      "speed_options": [0.25, 0.5, 1.0, 2.0, 4.0],
+      "step_by_step": true,
+      "jump_to_events": ["skill_usage", "damage_dealt", "status_change", "turn_start"],
+      "analysis_mode": {
+        "show_calculations": true,
+        "highlight_decision_points": true,
+        "tactical_annotations": true
+      }
+    }
+  },
+  "statistics_tracking": {
+    "combat_stats": {
+      "total_damage_dealt": "by_character",
+      "total_damage_taken": "by_character", 
+      "skills_used": "count_by_skill",
+      "status_effects_applied": "count_by_effect",
+      "critical_hits": "count_and_percentage",
+      "healing_done": "by_character",
+      "mana_consumed": "by_character"
+    },
+    "performance_metrics": {
+      "combat_duration": "in_rounds_and_time",
+      "action_efficiency": "actions_per_turn",
+      "resource_efficiency": "damage_per_mana",
+      "survival_rate": "percentage"
+    },
+    "tactical_analysis": {
+      "most_effective_skills": "by_damage_and_usage",
+      "best_target_choices": "by_threat_elimination",
+      "optimal_timing": "for_skill_usage",
+      "resource_management": "efficiency_rating"
+    }
+  },
+  "export_options": {
+    "text_log": {
+      "format": "plain_text",
+      "filename": "combat_log_{timestamp}.txt",
+      "include_statistics": true
+    },
+    "html_report": {
+      "format": "html",
+      "filename": "combat_report_{timestamp}.html",
+      "includes": ["styled_log", "charts", "statistics", "replay_controls"]
+    },
+    "json_data": {
+      "format": "json",
+      "filename": "combat_data_{timestamp}.json",
+      "includes": ["raw_data", "calculations", "ai_decisions"]
+    },
+    "video_export": {
+      "format": "mp4",
+      "filename": "combat_replay_{timestamp}.mp4",
+      "quality": ["720p", "1080p"],
+      "includes": ["visual_replay", "overlay_info"]
+    }
+  },
+  "filtering_options": {
+    "by_character": "show_only_specific_character",
+    "by_action_type": ["attack", "spell", "movement", "item_use"],
+    "by_importance": ["critical_only", "major_events", "all_actions"],
+    "by_element": "filter_by_elemental_type",
+    "by_damage_threshold": "only_show_damage_above_threshold",
+    "hide_misses": "exclude_failed_attacks"
+  },
+  "localization": {
+    "supported_languages": ["zh_CN", "en_US"],
+    "template_translations": {
+      "zh_CN": {
+        "damage_dealt": "{attacker}对{target}造成了{damage}点{damage_type}伤害",
+        "skill_usage": "{caster}使用了{skill_name}"
+      },
+      "en_US": {
+        "damage_dealt": "{attacker} deals {damage} {damage_type} damage to {target}",
+        "skill_usage": "{caster} uses {skill_name}"
+      }
+    }
+  }
+}

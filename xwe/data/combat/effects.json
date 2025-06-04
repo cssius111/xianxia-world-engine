@@ -1,0 +1,14 @@
+{
+  "status_effects": {
+    "burn": {
+      "name": "灼烧",
+      "type": "dot",
+      "damage_per_turn": 10
+    },
+    "freeze": {
+      "name": "冰冻",
+      "type": "control",
+      "effect": "skip_turn"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "id": "mysterious_merchant",
+  "name": "神秘商人",
+  "description": "一位来历不明的商人",
+  "dialogue": {
+    "greeting": "欢迎光临，我这里有些特别的东西...",
+    "farewell": "期待下次见面。"
+  },
+  "inventory": [
+    "special_sword",
+    "rare_potion"
+  ],
+  "tags": [
+    "merchant",
+    "mysterious"
+  ]
+}

@@ -45,7 +45,7 @@ def check_status():
     
     # Check API config
     print("\n🔌 API Configuration:")
-    env_file = PROJECT_ROOT / ".env.example"
+    env_file = PROJECT_ROOT / ".env"
     if env_file.exists():
         with open(env_file, 'r') as f:
             content = f.read()

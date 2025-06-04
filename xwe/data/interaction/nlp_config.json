@@ -1,0 +1,184 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "description": "自然语言处理配置"
+  },
+  "nlp_config": {
+    "enable_llm": true,
+    "llm_provider": "mock",
+    "llm_providers": {
+      "deepseek": {
+        "api_base": "https://api.deepseek.com/v1",
+        "model": "deepseek-chat",
+        "temperature": 0.7,
+        "max_tokens": 500
+      },
+      "openai": {
+        "api_base": "https://api.openai.com/v1",
+        "model": "gpt-3.5-turbo",
+        "temperature": 0.7,
+        "max_tokens": 500
+      },
+      "mock": {
+        "description": "用于测试的模拟提供者"
+      }
+    },
+    "fallback_to_rules": true,
+    "confidence_threshold": 0.7,
+    "cache_enabled": true,
+    "cache_size": 100
+  },
+  "command_patterns": {
+    "combat": {
+      "attack": [
+        "攻击",
+        "打",
+        "揍",
+        "击杀",
+        "杀",
+        "砍",
+        "斩",
+        "刺",
+        "轰"
+      ],
+      "defend": [
+        "防御",
+        "防守",
+        "格挡",
+        "闪避",
+        "躲避",
+        "抵挡"
+      ],
+      "flee": [
+        "逃跑",
+        "逃走",
+        "撤退",
+        "跑路",
+        "溜",
+        "逃命",
+        "跑"
+      ],
+      "use_skill": [
+        "使用",
+        "施放",
+        "释放",
+        "用"
+      ]
+    },
+    "exploration": {
+      "move": [
+        "去",
+        "前往",
+        "移动到",
+        "走到",
+        "飞到"
+      ],
+      "explore": [
+        "探索",
+        "查看",
+        "观察",
+        "搜索",
+        "寻找"
+      ],
+      "pick_up": [
+        "拾取",
+        "捡起",
+        "获取",
+        "拿",
+        "收集"
+      ]
+    },
+    "cultivation": {
+      "cultivate": [
+        "修炼",
+        "修行",
+        "打坐",
+        "练功",
+        "闭关",
+        "吐纳",
+        "冥想"
+      ],
+      "learn": [
+        "学习",
+        "修习",
+        "领悟",
+        "参悟"
+      ],
+      "breakthrough": [
+        "突破",
+        "进阶",
+        "晋级",
+        "升级"
+      ]
+    },
+    "information": {
+      "status": [
+        "状态",
+        "属性",
+        "信息",
+        "面板",
+        "查看自己"
+      ],
+      "inventory": [
+        "背包",
+        "物品",
+        "道具",
+        "库存",
+        "包裹"
+      ],
+      "skills": [
+        "技能",
+        "功法",
+        "招式",
+        "绝学",
+        "法术"
+      ],
+      "map": [
+        "地图",
+        "位置",
+        "坐标",
+        "哪里",
+        "周围"
+      ]
+    },
+    "system": {
+      "help": [
+        "帮助",
+        "指令",
+        "命令",
+        "怎么玩",
+        "教程"
+      ],
+      "save": [
+        "保存",
+        "存档",
+        "存储"
+      ],
+      "quit": [
+        "退出",
+        "离开",
+        "结束"
+      ]
+    }
+  },
+  "context_rules": {
+    "combat_priority_commands": [
+      "attack",
+      "defend",
+      "use_skill",
+      "flee"
+    ],
+    "exploration_priority_commands": [
+      "move",
+      "explore",
+      "talk",
+      "pick_up"
+    ],
+    "safe_zone_disabled_commands": [
+      "attack",
+      "flee"
+    ]
+  },
+  "llm_provider": "deepseek",
+  "enable_llm": true
+}

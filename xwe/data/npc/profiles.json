@@ -1,0 +1,10 @@
+{
+  "npcs": {
+    "npc_wang_boss": {
+      "name": "王老板",
+      "title": "坊市商人",
+      "level": 20,
+      "faction": "天南商会"
+    }
+  }
+}

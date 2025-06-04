@@ -1,0 +1,310 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "description": "玄苍界表达式解析系统，用于统一处理各种公式计算"
+  },
+  "expression_types": {
+    "arithmetic": {
+      "operators": {
+        "+": {"precedence": 1, "associativity": "left", "function": "add"},
+        "-": {"precedence": 1, "associativity": "left", "function": "subtract"},
+        "*": {"precedence": 2, "associativity": "left", "function": "multiply"},
+        "/": {"precedence": 2, "associativity": "left", "function": "divide"},
+        "^": {"precedence": 3, "associativity": "right", "function": "power"},
+        "%": {"precedence": 2, "associativity": "left", "function": "modulo"}
+      }
+    },
+    "comparison": {
+      "operators": {
+        ">": {"function": "greater_than"},
+        "<": {"function": "less_than"},
+        ">=": {"function": "greater_equal"},
+        "<=": {"function": "less_equal"},
+        "==": {"function": "equal"},
+        "!=": {"function": "not_equal"}
+      }
+    },
+    "logical": {
+      "operators": {
+        "&&": {"precedence": 0, "function": "and"},
+        "||": {"precedence": 0, "function": "or"},
+        "!": {"precedence": 4, "function": "not"}
+      }
+    }
+  },
+  "built_in_functions": {
+    "math": {
+      "min": {
+        "args": "variable",
+        "description": "返回最小值",
+        "example": "min(a, b, c)"
+      },
+      "max": {
+        "args": "variable",
+        "description": "返回最大值",
+        "example": "max(a, b, c)"
+      },
+      "abs": {
+        "args": 1,
+        "description": "绝对值",
+        "example": "abs(-5)"
+      },
+      "floor": {
+        "args": 1,
+        "description": "向下取整",
+        "example": "floor(3.7)"
+      },
+      "ceil": {
+        "args": 1,
+        "description": "向上取整",
+        "example": "ceil(3.2)"
+      },
+      "round": {
+        "args": [1, 2],
+        "description": "四舍五入",
+        "example": "round(3.14159, 2)"
+      },
+      "sqrt": {
+        "args": 1,
+        "description": "平方根",
+        "example": "sqrt(16)"
+      },
+      "pow": {
+        "args": 2,
+        "description": "幂运算",
+        "example": "pow(2, 3)"
+      },
+      "log": {
+        "args": [1, 2],
+        "description": "对数",
+        "example": "log(100) or log(8, 2)"
+      },
+      "clamp": {
+        "args": 3,
+        "description": "限制在范围内",
+        "example": "clamp(value, min, max)"
+      }
+    },
+    "random": {
+      "random": {
+        "args": 0,
+        "description": "0-1随机数",
+        "example": "random()"
+      },
+      "randint": {
+        "args": 2,
+        "description": "整数范围随机",
+        "example": "randint(1, 100)"
+      },
+      "uniform": {
+        "args": 2,
+        "description": "浮点范围随机",
+        "example": "uniform(0.5, 1.5)"
+      },
+      "dice": {
+        "args": 2,
+        "description": "掷骰子",
+        "example": "dice(3, 6) // 3d6"
+      }
+    },
+    "conditional": {
+      "if": {
+        "args": 3,
+        "description": "条件判断",
+        "example": "if(health < 50, panic_mode, normal_mode)"
+      },
+      "switch": {
+        "args": "variable",
+        "description": "多条件判断",
+        "example": "switch(element, fire: 1.5, water: 0.5, default: 1.0)"
+      }
+    },
+    "aggregate": {
+      "sum": {
+        "args": "array",
+        "description": "求和",
+        "example": "sum(all_damage_bonuses)"
+      },
+      "avg": {
+        "args": "array",
+        "description": "平均值",
+        "example": "avg(party_levels)"
+      },
+      "count": {
+        "args": "array",
+        "description": "计数",
+        "example": "count(active_buffs)"
+      },
+      "product": {
+        "args": "array",
+        "description": "连乘",
+        "example": "product(all_multipliers)"
+      }
+    }
+  },
+  "variable_types": {
+    "attributes": {
+      "prefix": "",
+      "examples": ["strength", "intelligence", "agility"],
+      "access_method": "character.attributes[name]"
+    },
+    "modifiers": {
+      "prefix": "mod_",
+      "examples": ["mod_weapon_bonus", "mod_skill_multiplier"],
+      "access_method": "character.modifiers[name]"
+    },
+    "constants": {
+      "prefix": "const_",
+      "examples": ["const_pi", "const_golden_ratio"],
+      "access_method": "constants[name]"
+    },
+    "combat": {
+      "prefix": "combat_",
+      "examples": ["combat_distance", "combat_round"],
+      "access_method": "combat_context[name]"
+    },
+    "target": {
+      "prefix": "target_",
+      "examples": ["target_health", "target_defense"],
+      "access_method": "target.attributes[name]"
+    },
+    "skill": {
+      "prefix": "skill_",
+      "examples": ["skill_level", "skill_rank"],
+      "access_method": "skill_context[name]"
+    }
+  },
+  "expression_templates": {
+    "damage_formulas": {
+      "basic_physical": {
+        "expression": "attack_power * skill_multiplier * random(0.9, 1.1) - target_defense",
+        "min_value": 1
+      },
+      "critical_hit": {
+        "expression": "base_damage * (2 + critical_damage_bonus)",
+        "condition": "random() < critical_chance"
+      },
+      "elemental_damage": {
+        "expression": "spell_power * element_multiplier * (1 - target_resistance)",
+        "element_lookup": true
+      },
+      "true_damage": {
+        "expression": "base_true_damage * amplification",
+        "ignores": ["defense", "resistance"]
+      }
+    },
+    "healing_formulas": {
+      "basic_heal": {
+        "expression": "spell_power * healing_modifier * target_healing_received",
+        "can_crit": true
+      },
+      "percentage_heal": {
+        "expression": "target_max_health * percentage",
+        "capped_by": "missing_health"
+      }
+    },
+    "resource_formulas": {
+      "mana_cost": {
+        "expression": "base_cost * (1 - mana_efficiency) * realm_modifier"
+      },
+      "stamina_drain": {
+        "expression": "action_cost * (1 + encumbrance / max_weight)"
+      }
+    }
+  },
+  "optimization_rules": {
+    "constant_folding": {
+      "description": "预计算常量表达式",
+      "example": "2 * 3 + 4 -> 10"
+    },
+    "common_subexpression": {
+      "description": "缓存重复计算",
+      "example": "attack_power used multiple times"
+    },
+    "short_circuit": {
+      "description": "逻辑短路",
+      "example": "false && expensive_check() -> false"
+    }
+  },
+  "error_handling": {
+    "division_by_zero": {
+      "behavior": "return_default",
+      "default_value": 0,
+      "log_warning": true
+    },
+    "undefined_variable": {
+      "behavior": "use_default",
+      "default_value": 0,
+      "strict_mode": false
+    },
+    "type_mismatch": {
+      "behavior": "attempt_conversion",
+      "fallback": "error"
+    },
+    "circular_reference": {
+      "behavior": "detect_and_break",
+      "max_depth": 10
+    }
+  },
+  "performance_hints": {
+    "cache_duration": {
+      "static_values": "permanent",
+      "character_attributes": "until_modified",
+      "combat_values": "per_turn",
+      "random_values": "never"
+    },
+    "batch_processing": {
+      "enabled": true,
+      "min_batch_size": 10
+    },
+    "lazy_evaluation": {
+      "enabled": true,
+      "conditions_only": false
+    }
+  },
+  "debug_options": {
+    "trace_evaluation": {
+      "enabled": false,
+      "log_level": "verbose",
+      "include_values": true
+    },
+    "formula_validation": {
+      "on_load": true,
+      "runtime_checks": false
+    },
+    "performance_profiling": {
+      "enabled": false,
+      "threshold_ms": 1
+    }
+  },
+  "examples": {
+    "simple_damage": {
+      "formula": "strength * 2 + weapon_damage",
+      "variables": {
+        "strength": 50,
+        "weapon_damage": 100
+      },
+      "expected_result": 200
+    },
+    "complex_calculation": {
+      "formula": "max(1, (attack_power * skill_mult * if(is_crit, 2, 1) - defense) * element_bonus)",
+      "variables": {
+        "attack_power": 150,
+        "skill_mult": 1.5,
+        "is_crit": true,
+        "defense": 100,
+        "element_bonus": 1.2
+      },
+      "expected_result": 420
+    },
+    "conditional_effect": {
+      "formula": "if(target_health < target_max_health * 0.3, damage * 1.5, damage)",
+      "variables": {
+        "target_health": 100,
+        "target_max_health": 500,
+        "damage": 200
+      },
+      "expected_result": 300
+    }
+  }
+}

@@ -168,7 +168,7 @@ class VibeTester:
         
         try:
             # Check environment configuration
-            env_example = PROJECT_ROOT / '.env.example'
+            env_example = PROJECT_ROOT / '.env'
             if env_example.exists():
                 with open(env_example, 'r') as f:
                     content = f.read()
@@ -292,7 +292,7 @@ class VibeTester:
         print(f"• API Integration: {'🔧 Mock Mode' if api_status['mock_mode'] else '✅ Live API'}")
         
         print("\n⚙️  CONFIGURATION:")
-        print(f"• API Key in .env.example: {'✅ Yes' if api_status['deepseek_configured'] else '❌ No'}")
+        print(f"• API Key in .env: {'✅ Yes' if api_status['deepseek_configured'] else '❌ No'}")
         print(f"• Valid API Key: {'✅ Yes' if api_status['api_key_present'] else '⚠️  Placeholder'}")
         print(f"• Current Mode: {os.getenv('DEFAULT_LLM_PROVIDER', 'mock')}")
         
@@ -313,7 +313,7 @@ def main():
     print("• Run game: python main.py")
     print("• Run menu: python main_menu.py")
     print("• Run all tests: python -m pytest tests/ -v")
-    print("• Update API key: edit .env.example")
+    print("• Update API key: edit .env")
 
 if __name__ == "__main__":
     main()

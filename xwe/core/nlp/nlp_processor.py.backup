@@ -1,0 +1,307 @@
+"""
+修仙世界引擎 - NLP处理器
+真正集成DeepSeek API，不再是mock！
+"""
+
+import os
+import json
+import requests
+from typing import Dict, Any, Optional, List
+from dataclasses import dataclass
+import logging
+
+from ..command_parser import ParsedCommand, CommandType
+
+logger = logging.getLogger(__name__)
+
+
+@dataclass
+class NLPConfig:
+    """NLP配置"""
+    enable_llm: bool = True
+    llm_provider: str = "deepseek"
+    api_key: str = ""
+    api_url: str = "https://api.deepseek.com/v1/chat/completions"
+    fallback_to_rules: bool = True
+    confidence_threshold: float = 0.7
+    
+
+class NLPProcessor:
+    """
+    NLP处理器 - 真正的AI驱动
+    
+    优先级：
+    1. 本地精确匹配
+    2. DeepSeek API理解
+    3. 模糊规则匹配
+    4. 降级处理
+    """
+    
+    def __init__(self, command_parser=None, config: Optional[NLPConfig] = None):
+        self.command_parser = command_parser
+        self.config = config or NLPConfig()
+        
+        # 从环境变量获取API密钥
+        if not self.config.api_key:
+            self.config.api_key = os.getenv('DEEPSEEK_API_KEY', '')
+        
+        if not self.config.api_key and self.config.enable_llm:
+            logger.warning("未设置DEEPSEEK_API_KEY，将降级到规则匹配")
+            self.config.enable_llm = False
+    
+    def parse(self, user_input: str, context: Optional[Dict[str, Any]] = None) -> ParsedCommand:
+        """
+        解析用户输入
+        
+        Args:
+            user_input: 用户自然语言输入
+            context: 游戏上下文
+            
+        Returns:
+            ParsedCommand对象
+        """
+        if not user_input.strip():
+            return ParsedCommand(
+                command_type=CommandType.UNKNOWN,
+                raw_text=user_input,
+                confidence=0
+            )
+        
+        # 1. 尝试本地精确匹配
+        if self.command_parser:
+            local_result = self.command_parser.parse(user_input)
+            if local_result.confidence >= 0.9:
+                return local_result
+        
+        # 2. 使用DeepSeek API
+        if self.config.enable_llm and self.config.api_key:
+            try:
+                api_result = self._parse_with_deepseek(user_input, context)
+                if api_result.confidence >= self.config.confidence_threshold:
+                    return api_result
+            except Exception as e:
+                logger.error(f"DeepSeek API调用失败: {e}")
+        
+        # 3. 模糊规则匹配
+        fuzzy_result = self._fuzzy_parse(user_input, context)
+        if fuzzy_result.confidence > 0:
+            return fuzzy_result
+        
+        # 4. 无法理解 - 但提供建议
+        return ParsedCommand(
+            command_type=CommandType.UNKNOWN,
+            raw_text=user_input,
+            confidence=0,
+            parameters={"suggestions": self._get_suggestions(user_input)}
+        )
+    
+    def _parse_with_deepseek(self, user_input: str, context: Optional[Dict[str, Any]]) -> ParsedCommand:
+        """使用DeepSeek API解析"""
+        
+        # 构建prompt
+        system_prompt = """你是修仙游戏的NLP解析器。将玩家输入转换为游戏命令。
+
+可用命令：
+- ATTACK: 攻击
+- USE_SKILL: 使用技能
+- DEFEND: 防御
+- FLEE: 逃跑
+- CULTIVATE: 修炼
+- STATUS: 查看状态
+- INVENTORY: 背包
+- SKILLS: 技能列表
+- MAP: 地图
+- EXPLORE: 探索
+- MOVE: 移动
+- TALK: 对话
+- BREAKTHROUGH: 突破境界
+- TRADE: 交易
+
+返回JSON格式：
+{
+    "command": "命令类型",
+    "target": "目标（可选）",
+    "parameters": {"key": "value"},
+    "confidence": 0.0-1.0
+}
+"""
+        
+        user_prompt = f"玩家输入：{user_input}"
+        if context:
+            user_prompt += f"\n上下文：位置={context.get('location', '未知')}，战斗中={context.get('in_combat', False)}"
+        
+        # 调用API
+        headers = {
+            "Authorization": f"Bearer {self.config.api_key}",
+            "Content-Type": "application/json"
+        }
+        
+        data = {
+            "model": "deepseek-chat",
+            "messages": [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt}
+            ],
+            "temperature": 0.3,
+            "max_tokens": 150
+        }
+        
+        response = requests.post(
+            self.config.api_url,
+            headers=headers,
+            json=data,
+            timeout=10
+        )
+        
+        if response.status_code == 200:
+            result = response.json()
+            content = result['choices'][0]['message']['content']
+            
+            # 解析返回的JSON
+            try:
+                parsed = json.loads(content)
+                command_type = CommandType(parsed.get("command", "UNKNOWN"))
+                
+                return ParsedCommand(
+                    command_type=command_type,
+                    target=parsed.get("target"),
+                    parameters=parsed.get("parameters", {}),
+                    raw_text=user_input,
+                    confidence=parsed.get("confidence", 0.7)
+                )
+            except (json.JSONDecodeError, ValueError):
+                # JSON解析失败，尝试文本解析
+                return self._parse_deepseek_text(content, user_input)
+        
+        raise Exception(f"API请求失败: {response.status_code}")
+    
+    def _fuzzy_parse(self, user_input: str, context: Optional[Dict[str, Any]]) -> ParsedCommand:
+        """模糊规则匹配"""
+        text_lower = user_input.lower()
+        
+        # 修炼相关
+        if any(word in text_lower for word in ["修炼", "修行", "打坐", "闭关"]):
+            # 提取时长
+            import re
+            duration_match = re.search(r'(\d+)\s*([年月天日时])', text_lower)
+            params = {}
+            if duration_match:
+                params["duration"] = f"{duration_match.group(1)}{duration_match.group(2)}"
+            
+            return ParsedCommand(
+                command_type=CommandType.CULTIVATE,
+                parameters=params,
+                raw_text=user_input,
+                confidence=0.8
+            )
+        
+        # 攻击相关
+        elif any(word in text_lower for word in ["攻击", "打", "杀", "揍"]):
+            target = self._extract_target(text_lower)
+            return ParsedCommand(
+                command_type=CommandType.ATTACK,
+                target=target,
+                raw_text=user_input,
+                confidence=0.7
+            )
+        
+        # 状态查看
+        elif any(word in text_lower for word in ["状态", "属性", "信息", "面板"]):
+            return ParsedCommand(
+                command_type=CommandType.STATUS,
+                raw_text=user_input,
+                confidence=0.9
+            )
+        
+        # 突破
+        elif "突破" in text_lower:
+            return ParsedCommand(
+                command_type=CommandType.BREAKTHROUGH,
+                raw_text=user_input,
+                confidence=0.8
+            )
+        
+        return ParsedCommand(
+            command_type=CommandType.UNKNOWN,
+            raw_text=user_input,
+            confidence=0
+        )
+    
+    def _extract_target(self, text: str) -> Optional[str]:
+        """提取目标"""
+        # 简单的目标提取
+        targets = ["妖兽", "敌人", "怪物", "boss", "他", "它"]
+        for target in targets:
+            if target in text:
+                return target
+        return None
+    
+    def _get_suggestions(self, user_input: str) -> List[str]:
+        """获取命令建议"""
+        suggestions = [
+            "修炼一天",
+            "查看状态",
+            "攻击敌人",
+            "使用技能",
+            "探索周围",
+            "查看地图"
+        ]
+        
+        # 基于输入的模糊匹配建议
+        input_lower = user_input.lower()
+        if "修" in input_lower:
+            suggestions.insert(0, "修炼一年")
+        elif "打" in input_lower or "攻" in input_lower:
+            suggestions.insert(0, "攻击妖兽")
+        
+        return suggestions[:5]
+    
+    def _parse_deepseek_text(self, text: str, user_input: str) -> ParsedCommand:
+        """解析DeepSeek的文本响应"""
+        # 简单的关键词提取
+        text_lower = text.lower()
+        
+        command_map = {
+            "修炼": CommandType.CULTIVATE,
+            "攻击": CommandType.ATTACK,
+            "状态": CommandType.STATUS,
+            "突破": CommandType.BREAKTHROUGH,
+            "移动": CommandType.MOVE,
+            "探索": CommandType.EXPLORE
+        }
+        
+        for keyword, cmd_type in command_map.items():
+            if keyword in text_lower:
+                return ParsedCommand(
+                    command_type=cmd_type,
+                    raw_text=user_input,
+                    confidence=0.6
+                )
+        
+        return ParsedCommand(
+            command_type=CommandType.UNKNOWN,
+            raw_text=user_input,
+            confidence=0
+        )
+    
+    def process(self, *args, **kwargs):
+        """兼容旧版本的process方法"""
+        import warnings
+        warnings.warn(
+            "process()方法已废弃，请使用parse()方法",
+            DeprecationWarning,
+            stacklevel=2
+        )
+        if args:
+            return self.parse(args[0], args[1] if len(args) > 1 else None)
+        return self.parse(
+            kwargs.get('user_input', kwargs.get('text', '')),
+            kwargs.get('context')
+        )
+
+
+# 添加新的命令类型
+if not hasattr(CommandType, 'BREAKTHROUGH'):
+    CommandType.BREAKTHROUGH = "breakthrough"
+if not hasattr(CommandType, 'TRADE'):
+    CommandType.TRADE = "trade"

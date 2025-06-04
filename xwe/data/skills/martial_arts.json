@@ -1,0 +1,72 @@
+{
+  "category": "martial_arts",
+  "name": "武技",
+  "description": "以内力和身法为基础的近战技能",
+  "skills": {
+    "basic_fist": {
+      "id": "basic_fist",
+      "name": "基础拳法",
+      "description": "最基础的拳法招式",
+      "type": "attack",
+      "element": "neutral",
+      "cost": {
+        "mana": 5
+      },
+      "cooldown": 0,
+      "damage": "attack * 1.2",
+      "requirements": {
+        "level": 1
+      }
+    },
+    "sword_slash": {
+      "id": "sword_slash",
+      "name": "剑气斩",
+      "description": "凝聚剑气斩向敌人",
+      "type": "attack",
+      "element": "metal",
+      "cost": {
+        "mana": 15
+      },
+      "cooldown": 2,
+      "damage": "attack * 1.8 + level * 5",
+      "requirements": {
+        "level": 5,
+        "weapon_type": "sword"
+      }
+    },
+    "palm_strike": {
+      "id": "palm_strike",
+      "name": "掌心雷",
+      "description": "将内力凝聚于掌心，爆发强大威力",
+      "type": "attack",
+      "element": "neutral",
+      "cost": {
+        "mana": 20
+      },
+      "cooldown": 3,
+      "damage": "attack * 2.0 + mana * 0.5",
+      "requirements": {
+        "level": 10,
+        "realm": "foundation"
+      }
+    },
+    "whirlwind_kick": {
+      "id": "whirlwind_kick",
+      "name": "旋风腿",
+      "description": "快速旋转踢击周围所有敌人",
+      "type": "attack",
+      "element": "wind",
+      "target": "all_enemies",
+      "cost": {
+        "mana": 25,
+        "stamina": 10
+      },
+      "cooldown": 4,
+      "damage": "attack * 1.5",
+      "requirements": {
+        "level": 15,
+        "agility": 30
+      }
+    }
+  }
+}
