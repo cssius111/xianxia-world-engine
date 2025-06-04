@@ -16,6 +16,7 @@ from ..engine.expression import ExpressionParser
 from .data_loader import DataLoader
 from .attributes import AttributeSystem
 from .character import Character, CharacterType
+from .inventory import Inventory
 from .skills import SkillSystem
 from .combat import CombatSystem, CombatState, CombatAction, CombatActionType
 from .ai import AIController
@@ -832,11 +833,11 @@ class GameCore:
         
         self.output("=== 背包 ===")
         
-        if not player.inventory:
+        if len(player.inventory) == 0:
             self.output("背包是空的。")
         else:
-            # TODO: 实现物品系统
-            self.output("背包功能尚未实现。")
+            for name, qty in player.inventory.list_items():
+                self.output(f"- {name} x{qty}")
     
     def _show_skills(self):
         """显示技能列表"""
@@ -981,6 +982,7 @@ class GameCore:
             self.output("你找到了一些物品：")
             for item in result['found_items']:
                 self.output(f"- {item['quantity']}份{item['type']}")
+                player.inventory.add(item['type'], item['quantity'])
             self.output("")
         
         if result['found_npcs']:

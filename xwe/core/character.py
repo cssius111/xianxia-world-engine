@@ -13,6 +13,7 @@ import logging
 
 from .attributes import CharacterAttributes
 from .status import StatusEffectManager
+from .inventory import Inventory
 
 logger = logging.getLogger(__name__)
 
@@ -62,7 +63,7 @@ class Character:
     
     # 装备和物品
     equipment: Dict[str, str] = field(default_factory=dict)  # 装备位置 -> 物品ID
-    inventory: List[str] = field(default_factory=list)  # 背包物品ID列表
+    inventory: Inventory = field(default_factory=Inventory)  # 背包物品
     
     # 社交关系
     faction: str = ""  # 所属门派

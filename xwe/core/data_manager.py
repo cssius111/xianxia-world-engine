@@ -60,7 +60,7 @@ class DynamicDataManager:
                 "cultivation_speed": 1.0 + random.random() * 0.5,
                 "enlightenment_chance": 0.01
             },
-            "inventory": [],
+            "inventory": {},
             "skills": [],
             "achievements": [],
             "created_at": datetime.now().isoformat(),
