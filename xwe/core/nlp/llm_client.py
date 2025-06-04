@@ -179,21 +179,22 @@ class LLMClient:
     
     提供统一的接口访问不同的LLM服务。
     """
-    
-    def __init__(self, provider: str = "mock", config: Optional[Dict[str, Any]] = None):
+
+    def __init__(self, provider: Optional[str] = None, config: Optional[Dict[str, Any]] = None):
         """
         初始化LLM客户端
-        
+
         Args:
-            provider: 提供者名称 (deepseek, openai, mock)
+            provider: 提供者名称 (deepseek, openai, mock)，可从环境变量读取
             config: 配置字典
         """
-        self.provider_name = provider
+        # 优先使用传入的 provider，否则读取 .env 中 DEFAULT_LLM_PROVIDER
+        self.provider_name = provider or os.getenv("DEFAULT_LLM_PROVIDER", "mock")
         self.config = self._load_config(config)
         self.provider = self._create_provider()
-        
-        logger.info(f"初始化LLM客户端: {provider}")
-    
+
+        logger.info(f"初始化LLM客户端: {self.provider_name}")
+
     def _load_config(self, config: Optional[Dict[str, Any]]) -> LLMConfig:
         """加载配置"""
         # 默认配置

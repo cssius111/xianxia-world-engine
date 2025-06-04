@@ -6,9 +6,15 @@
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+from dotenv import load_dotenv
 
+# 加载环境变量
+load_dotenv()
 from xwe.core.game_core import GameCore
 import time
+
+if not os.getenv('DEEPSEEK_API_KEY'):
+    print("警告: DEEPSEEK_API_KEY 未设置，将使用降级模式")
 
 def show_optimization_info():
     """显示优化信息"""

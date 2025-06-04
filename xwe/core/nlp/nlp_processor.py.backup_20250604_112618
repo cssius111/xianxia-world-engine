@@ -46,39 +46,32 @@ class NLPProcessor:
         """智能解析各种格式的JSON，处理markdown包裹的情况"""
         if not raw_response:
             return None
-        
+
         # 1. 尝试直接解析
         try:
             return json.loads(raw_response)
         except:
             pass
-        
+
         # 2. 去除markdown代码块标记
         patterns = [
-            r"```json\s*\n([\s\S]*?)\n```",  # 匹配 ```json\n ... \n```
-            r"```\s*\n([\s\S]*?)\n```"  # 匹配 ```\n ... \n```
+            r'```json\s*\n?([\s\S]*?)\n?```',  # 匹配 ```json ... ```
+            r'```\s*\n?([\s\S]*?)\n?```',      # 匹配 ``` ... ```
+            r'\{[\s\S]*\}'                      # 直接匹配JSON对象
         ]
 
         for pattern in patterns:
             match = re.search(pattern, raw_response, re.DOTALL)
             if match:
                 try:
-                    json_str = match.group(1)
+                    json_str = match.group(1) if '```' in pattern else match.group(0)
                     return json.loads(json_str.strip())
                 except:
                     continue
-        
-        # 3. 尝试提取JSON对象
-        pattern = r'\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}'
-        matches = re.findall(pattern, raw_response)
-        for match in matches:
-            try:
-                return json.loads(match)
-            except:
-                continue
-        
-        # 4. 最后尝试：查找第一个{和最后一个}
+
+        # 3. 尝试提取JSON部分
         try:
+            # 查找第一个{和最后一个}
             start = raw_response.find('{')
             end = raw_response.rfind('}')
             if start != -1 and end != -1 and start < end:
@@ -88,6 +81,7 @@ class NLPProcessor:
             pass
         
         return None
+    
     def parse(self, user_input: str, context: Optional[Dict[str, Any]] = None) -> ParsedCommand:
         """解析用户输入 - 优先DeepSeek API"""
         
@@ -130,23 +124,38 @@ class NLPProcessor:
     def _call_deepseek(self, text: str, context: Optional[Dict[str, Any]] = None) -> Optional[ParsedCommand]:
         """调用DeepSeek API"""
         
-        system_prompt = """你是一个文本冒险游戏的指令解析器。请将玩家输入转为一个结构化的游戏命令。
+        system_prompt = """你是游戏NLP解析器。将玩家输入转换为游戏命令。
 
-格式要求：
+命令类型:
+- ATTACK: 攻击
+- USE_SKILL: 使用技能  
+- DEFEND: 防御
+- FLEE: 逃跑
+- CULTIVATE: 修炼
+- STATUS: 查看状态
+- INVENTORY: 背包
+- SKILLS: 技能列表
+- MAP: 地图
+- EXPLORE: 探索
+- MOVE: 移动
+- TALK: 对话
+- BREAKTHROUGH: 突破
+
+对于修炼命令，要提取时长信息，例如"修炼一年"应解析为:
 {
-  "command": "命令类型（ATTACK, CULTIVATE, STATUS, USE_SKILL, DEFEND, FLEE, INVENTORY, SKILLS, MAP, EXPLORE, MOVE, TALK, BREAKTHROUGH）",
-  "target": "可选目标",
-  "parameters": { 键值对参数 },
-  "confidence": 0.0-1.0,
-  "reasoning": "简要解释你的判断"
+    "command": "CULTIVATE",
+    "parameters": {"duration": "1年"},
+    "confidence": 0.9
 }
 
-示例：
-- 输入"修炼100天" → {"command": "CULTIVATE", "parameters": {"duration": "100天"}, "confidence": 0.95}
-- 输入"用剑气斩攻击妖兽" → {"command": "USE_SKILL", "target": "妖兽", "parameters": {"skill": "剑气斩"}, "confidence": 0.9}
-
-不要返回代码块符号（```）。只输出 JSON。
-Don't hold back. Give it your all. Be confident and concise."""
+返回JSON格式(不要加markdown标记):
+{
+    "command": "命令类型",
+    "target": "目标",
+    "parameters": {},
+    "confidence": 0.0-1.0,
+    "reasoning": "解析理由"
+}"""
         
         headers = {
             "Authorization": f"Bearer {self.config.api_key}",
@@ -170,8 +179,6 @@ Don't hold back. Give it your all. Be confident and concise."""
         
         if response.status_code == 200:
             content = response.json()['choices'][0]['message']['content']
-            logger.info(f"[NLP-INPUT] 玩家输入: {text}")
-            logger.debug(f"[NLP-RESP] 原始响应: {content[:200]}...")
             logger.debug(f"DeepSeek原始返回: {content}")
             
             # 使用新的JSON解析方法
