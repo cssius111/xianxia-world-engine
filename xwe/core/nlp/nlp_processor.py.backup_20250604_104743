@@ -27,46 +27,6 @@ class NLPConfig:
 
 class NLPProcessor:
     """NLP处理器 - 修复JSON解析"""
-def _parse_deepseek_json(self, raw_response: str) -> Optional[Dict[str, Any]]:
-    """智能解析各种格式的JSON，处理markdown包裹的情况"""
-    if not raw_response:
-        return None
-    
-    # 1. 尝试直接解析
-    try:
-        return self._parse_deepseek_json(raw_response)
-    except:
-        pass
-    
-    # 2. 去除markdown代码块标记
-    patterns = [
-        r'```json\s*([\s\S]*?)```',  # 匹配 ```json ... ```
-        r'```\s*([\s\S]*?)```',  # 匹配 ``` ... ```
-        r'\{[\s\S]*\}'  # 匹配裸 JSON 对象 {...}
-    ]
-
-    for pattern in patterns:
-        match = re.search(pattern, raw_response, re.DOTALL)
-        if match:
-            try:
-                json_str = match.group(1) if '```' in pattern else match.group(0)
-                return self._parse_deepseek_json(json_str.strip())
-            except:
-                continue
-    
-    # 3. 尝试提取JSON部分
-    try:
-        # 查找第一个{和最后一个}
-        start = raw_response.find('{')
-        end = raw_response.rfind('}')
-        if start != -1 and end != -1 and start < end:
-            json_str = raw_response[start:end+1]
-            return self._parse_deepseek_json(json_str)
-    except:
-        pass
-    
-    return None
-
     
     def __init__(self, command_parser=None, config: Optional[NLPConfig] = None):
         self.command_parser = command_parser
@@ -126,7 +86,7 @@ def _parse_deepseek_json(self, raw_response: str) -> Optional[Dict[str, Any]]:
         
         # 方法1: 尝试直接解析
         try:
-            return self._parse_deepseek_json(raw_response)
+            return json.loads(raw_response)
         except json.JSONDecodeError:
             pass
         
@@ -143,7 +103,7 @@ def _parse_deepseek_json(self, raw_response: str) -> Optional[Dict[str, Any]]:
             if match:
                 json_str = match.group(1) if len(match.groups()) > 0 else match.group(0)
                 try:
-                    return self._parse_deepseek_json(json_str.strip())
+                    return json.loads(json_str.strip())
                 except json.JSONDecodeError as e:
                     logger.debug(f"JSON解析失败 (pattern {pattern}): {e}")
                     continue
@@ -154,7 +114,7 @@ def _parse_deepseek_json(self, raw_response: str) -> Optional[Dict[str, Any]]:
         if start >= 0 and end > start:
             json_str = raw_response[start:end+1]
             try:
-                return self._parse_deepseek_json(json_str)
+                return json.loads(json_str)
             except json.JSONDecodeError as e:
                 logger.error(f"最终JSON解析失败: {e}")
         
