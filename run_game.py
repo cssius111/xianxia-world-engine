@@ -21,7 +21,7 @@ def check_dependencies():
         print("✅ psutil 安装完成")
     
     try:
-        import requests
+        import requestsNotDeepSeek
         print("✅ requests 已安装")
     except ImportError:
         print("⚠️ 缺少 requests，正在安装...")

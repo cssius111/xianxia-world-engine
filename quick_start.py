@@ -25,7 +25,7 @@ def check_environment():
     
     # 检查依赖
     try:
-        import requests
+        import requestsNotDeepSeek
         print("✅ 依赖库已安装")
     except ImportError:
         print("⚠️ 缺少依赖库，尝试安装...")
