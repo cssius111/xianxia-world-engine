@@ -12,6 +12,27 @@ import time
 from pathlib import Path
 from datetime import datetime
 
+
+def ensure_requests():
+    """确保可以导入requests库"""
+    try:
+        import requests  # noqa: F401
+        return
+    except ImportError:
+        vendor_path = Path(__file__).parent / "vendor"
+        if (vendor_path / "requests").exists():
+            sys.path.insert(0, str(vendor_path))
+            try:
+                import requests  # noqa: F401
+                print("✅ 使用 vendor 中的 requests")
+                return
+            except Exception:
+                sys.path.remove(str(vendor_path))
+
+        print("⚠️ 缺少 requests，使用存根")
+        import requestsNotDeepSeek as requests_stub
+        sys.modules['requests'] = requests_stub
+
 # 项目根目录
 PROJECT_ROOT = Path(__file__).parent
 sys.path.insert(0, str(PROJECT_ROOT))
@@ -45,11 +66,15 @@ class TestRunner:
         
         try:
             # 运行pytest
+            env = os.environ.copy()
+            vendor_path = str(PROJECT_ROOT / "vendor")
+            env["PYTHONPATH"] = vendor_path + os.pathsep + env.get("PYTHONPATH", "")
             result = subprocess.run(
                 [sys.executable, "-m", "pytest", test_path, "-v", "--tb=short"],
                 capture_output=True,
                 text=True,
-                cwd=PROJECT_ROOT
+                cwd=PROJECT_ROOT,
+                env=env,
             )
             
             # 解析结果
@@ -239,7 +264,9 @@ def main():
     """主函数"""
     print("🚀 XianXia World Engine - 自动化测试")
     print("="*60)
-    
+
+    ensure_requests()
+
     runner = TestRunner()
     
     # 1. 检查并修复常见问题

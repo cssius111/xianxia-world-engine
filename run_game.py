@@ -8,6 +8,34 @@ import sys
 import subprocess
 from pathlib import Path
 
+
+def ensure_requests():
+    """确保可以导入requests库，必要时使用vendor或存根"""
+    try:
+        import requests  # noqa: F401
+        print("✅ requests 已安装")
+        return
+    except ImportError:
+        vendor_path = Path(__file__).parent / "vendor"
+        if (vendor_path / "requests").exists():
+            sys.path.insert(0, str(vendor_path))
+            try:
+                import requests  # noqa: F401
+                print("✅ 使用 vendor 中的 requests")
+                return
+            except Exception:
+                sys.path.remove(str(vendor_path))
+
+        print("⚠️ 缺少 requests，正在安装...")
+        subprocess.run([sys.executable, "-m", "pip", "install", "requests"])
+        try:
+            import requests  # noqa: F401
+            print("✅ requests 安装完成")
+        except ImportError:
+            print("⚠️ 未能安装 requests，使用 requestsNotDeepSeek 存根")
+            import requestsNotDeepSeek as requests_stub
+            sys.modules['requests'] = requests_stub
+
 def check_dependencies():
     """检查并安装依赖"""
     print("检查依赖...")
@@ -19,14 +47,8 @@ def check_dependencies():
         print("⚠️ 缺少 psutil，正在安装...")
         subprocess.run([sys.executable, "-m", "pip", "install", "psutil"])
         print("✅ psutil 安装完成")
-    
-    try:
-        import requestsNotDeepSeek
-        print("✅ requests 已安装")
-    except ImportError:
-        print("⚠️ 缺少 requests，正在安装...")
-        subprocess.run([sys.executable, "-m", "pip", "install", "requests"])
-        print("✅ requests 安装完成")
+
+    ensure_requests()
 
 def create_directories():
     """创建必要的目录"""

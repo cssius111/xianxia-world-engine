@@ -9,6 +9,33 @@ import sys
 import subprocess
 from pathlib import Path
 
+
+def ensure_requests():
+    """确保可以导入requests库，必要时使用vendor或存根"""
+    try:
+        import requests  # noqa: F401
+        return
+    except ImportError:
+        vendor_path = Path(__file__).parent / "vendor"
+        if (vendor_path / "requests").exists():
+            sys.path.insert(0, str(vendor_path))
+            try:
+                import requests  # noqa: F401
+                print("✅ 使用 vendor 中的 requests")
+                return
+            except Exception:
+                sys.path.remove(str(vendor_path))
+
+        print("⚠️ 缺少 requests，尝试安装...")
+        subprocess.run([sys.executable, "-m", "pip", "install", "requests"])
+        try:
+            import requests  # noqa: F401
+            print("✅ requests 安装完成")
+        except ImportError:
+            print("⚠️ 未能安装 requests，使用 requestsNotDeepSeek 存根")
+            import requestsNotDeepSeek as requests_stub
+            sys.modules['requests'] = requests_stub
+
 # 项目根目录
 PROJECT_ROOT = Path(__file__).parent
 sys.path.insert(0, str(PROJECT_ROOT))
@@ -25,9 +52,9 @@ def check_environment():
     
     # 检查依赖
     try:
-        import requestsNotDeepSeek
+        ensure_requests()
         print("✅ 依赖库已安装")
-    except ImportError:
+    except Exception:
         print("⚠️ 缺少依赖库，尝试安装...")
         subprocess.run([sys.executable, "-m", "pip", "install", "-r", "requirements.txt"])
     

@@ -15,12 +15,13 @@
 ### 1. 环境要求
 
 - Python 3.8+
-- requests库（用于LLM API调用，可选）
+- requests库（用于LLM API调用，可选；可直接使用项目内 `vendor/requests`，否则 `run_game.py`/`quick_start.py` 会尝试安装，失败则使用 `requestsNotDeepSeek` 存根）
 
 ### 2. 安装依赖
 
 ```bash
 pip install -r requirements.txt
+pip install requests  # 如需完整功能，可手动安装（或将 vendor 目录加入 PYTHONPATH）
 ```
 
 ### 3. 运行测试
