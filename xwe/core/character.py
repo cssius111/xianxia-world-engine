@@ -65,6 +65,14 @@ class Character:
     equipment: Dict[str, str] = field(default_factory=dict)  # 装备位置 -> 物品ID
     inventory: Inventory = field(default_factory=Inventory)  # 背包物品
     
+    # 货币系统
+    lingshi: Dict[str, int] = field(default_factory=lambda: {
+        "low": 100,      # 下品灵石
+        "mid": 1,        # 中品灵石
+        "high": 0,       # 上品灵石
+        "supreme": 0     # 极品灵石
+    })
+    
     # 社交关系
     faction: str = ""  # 所属门派
     relationships: Dict[str, float] = field(default_factory=dict)  # 角色ID -> 好感度
@@ -77,6 +85,10 @@ class Character:
     # AI相关（仅NPC）
     ai_profile: str = "default"  # AI行为配置
     dialogue_state: Dict[str, Any] = field(default_factory=dict)  # 对话状态
+    
+    # 交易相关
+    charisma: int = 50  # 魅力值，影响交易和社交
+    bargain_skill: int = 0  # 讨价还价技能等级
     
     # 其他数据
     extra_data: Dict[str, Any] = field(default_factory=dict)
@@ -313,6 +325,114 @@ class Character:
         else:
             # 多灵根
             return "五行杂灵根"
+    
+    def get_total_lingshi(self) -> int:
+        """获取总灵石数（转换为下品灵石）"""
+        return (self.lingshi.get('low', 0) + 
+                self.lingshi.get('mid', 0) * 100 + 
+                self.lingshi.get('high', 0) * 10000 +
+                self.lingshi.get('supreme', 0) * 1000000)
+    
+    def spend_lingshi(self, amount: int) -> bool:
+        """
+        花费灵石
+        
+        Args:
+            amount: 花费数量（以下品灵石为单位）
+            
+        Returns:
+            是否成功花费
+        """
+        if self.get_total_lingshi() < amount:
+            return False
+        
+        # 优先使用下品灵石
+        remaining = amount
+        
+        # 使用下品
+        if self.lingshi['low'] >= remaining:
+            self.lingshi['low'] -= remaining
+            return True
+        else:
+            remaining -= self.lingshi['low']
+            self.lingshi['low'] = 0
+        
+        # 使用中品
+        mid_needed = (remaining + 99) // 100  # 向上取整
+        if self.lingshi['mid'] >= mid_needed:
+            self.lingshi['mid'] -= mid_needed
+            # 找零
+            change = mid_needed * 100 - remaining
+            if change > 0:
+                self.lingshi['low'] += change
+            return True
+        else:
+            remaining -= self.lingshi['mid'] * 100
+            self.lingshi['mid'] = 0
+        
+        # 使用上品
+        high_needed = (remaining + 9999) // 10000
+        if self.lingshi['high'] >= high_needed:
+            self.lingshi['high'] -= high_needed
+            # 找零
+            change = high_needed * 10000 - remaining
+            if change > 0:
+                self.add_lingshi(change)
+            return True
+        else:
+            remaining -= self.lingshi['high'] * 10000
+            self.lingshi['high'] = 0
+        
+        # 使用极品
+        supreme_needed = (remaining + 999999) // 1000000
+        if self.lingshi['supreme'] >= supreme_needed:
+            self.lingshi['supreme'] -= supreme_needed
+            # 找零
+            change = supreme_needed * 1000000 - remaining
+            if change > 0:
+                self.add_lingshi(change)
+            return True
+        
+        return False
+    
+    def add_lingshi(self, amount: int):
+        """
+        添加灵石
+        
+        Args:
+            amount: 添加数量（以下品灵石为单位）
+        """
+        # 自动转换为合适的面额
+        if amount >= 1000000:
+            self.lingshi['supreme'] += amount // 1000000
+            amount %= 1000000
+        
+        if amount >= 10000:
+            self.lingshi['high'] += amount // 10000
+            amount %= 10000
+        
+        if amount >= 100:
+            self.lingshi['mid'] += amount // 100
+            amount %= 100
+        
+        self.lingshi['low'] += amount
+    
+    def get_lingshi_description(self) -> str:
+        """获取灵石描述"""
+        parts = []
+        if self.lingshi['supreme'] > 0:
+            parts.append(f"{self.lingshi['supreme']}极品")
+        if self.lingshi['high'] > 0:
+            parts.append(f"{self.lingshi['high']}上品")
+        if self.lingshi['mid'] > 0:
+            parts.append(f"{self.lingshi['mid']}中品")
+        if self.lingshi['low'] > 0:
+            parts.append(f"{self.lingshi['low']}下品")
+        
+        if not parts:
+            return "无灵石"
+        
+        return "、".join(parts) + "灵石"
     
     def to_dict(self) -> Dict[str, Any]:
         """转换为字典格式"""
