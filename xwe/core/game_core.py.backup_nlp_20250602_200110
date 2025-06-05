@@ -820,7 +820,7 @@ class GameCore:
             
         self.output("=== 当前位置 ===")
         self.output(f"你在: {current_area.name}")
-        self.output(f"危险等级: {'\u2605' * current_area.danger_level}")
+        self.output(f"危险等级: {'★' * current_area.danger_level}")
         self.output("")
         
         # 显示已发现的大区域
@@ -839,7 +839,7 @@ class GameCore:
             self.output("【可前往的地点】")
             for area_info in nearby_areas:
                 status = "已探索" if area_info['discovered'] else "未探索"
-                danger = '\u2605' * area_info['danger_level']
+                danger = '★' * area_info['danger_level']
                 self.output(f"- {area_info['name']} ({area_info['type']}) "
                           f"[危险: {danger}] [{status}]")
     
