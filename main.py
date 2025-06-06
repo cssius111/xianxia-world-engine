@@ -10,7 +10,7 @@ import sys
 import logging
 import time
 from pathlib import Path
-from dotenv import load_dotenv
+from xwe.utils.dotenv_helper import load_dotenv
 load_dotenv()
 
 
@@ -19,7 +19,6 @@ project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
 
 from xwe.core import GameCore
-from dotenv import load_dotenv
 load_dotenv()  # 默认自动查找项目根目录的 .env 文件并加载
 
 # 配置日志

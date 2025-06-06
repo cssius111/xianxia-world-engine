@@ -6,7 +6,7 @@
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-from dotenv import load_dotenv
+from xwe.utils.dotenv_helper import load_dotenv
 
 # 加载环境变量
 load_dotenv()

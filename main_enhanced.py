@@ -28,7 +28,7 @@ from xwe.features import (
 )
 from xwe.features import HtmlGameLogger
 from xwe.features.visual_enhancement import TextAnimation, ProgressBar
-from dotenv import load_dotenv
+from xwe.utils.dotenv_helper import load_dotenv
 load_dotenv()
 
 # 配置日志
