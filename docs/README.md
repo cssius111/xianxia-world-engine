@@ -15,12 +15,13 @@
 ### 1. 环境要求
 
 - Python 3.8+
-- requests库（用于LLM API调用，可选）
+- requests库（用于LLM API调用，可选；可直接使用项目内 `vendor/requests`，脚本会通过 `xwe.utils.requests_helper` 尝试安装，失败则使用 `requestsNotDeepSeek` 存根）
 
 ### 2. 安装依赖
 
 ```bash
 pip install -r requirements.txt
+pip install requests  # 如需完整功能，可手动安装（或将 vendor 目录加入 PYTHONPATH）
 ```
 
 ### 3. 运行测试
@@ -90,10 +91,12 @@ xianxia_world_engine/
 │       ├── combat/         # 战斗配置
 │       ├── skills/         # 技能数据
 │       └── attribute/      # 属性配置
+├── archive/           # 旧版脚本与备份
 ├── main.py            # 游戏入口
 └── test_basic.py      # 基础测试
 
 ```
+所有历史文件都已迁至 `archive/`，方便后续整理。
 
 ## 开发特性
 

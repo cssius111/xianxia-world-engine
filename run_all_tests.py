@@ -11,6 +11,9 @@ import json
 import time
 from pathlib import Path
 from datetime import datetime
+from xwe.utils.requests_helper import ensure_requests
+
+
 
 # 项目根目录
 PROJECT_ROOT = Path(__file__).parent
@@ -45,11 +48,15 @@ class TestRunner:
         
         try:
             # 运行pytest
+            env = os.environ.copy()
+            vendor_path = str(PROJECT_ROOT / "vendor")
+            env["PYTHONPATH"] = vendor_path + os.pathsep + env.get("PYTHONPATH", "")
             result = subprocess.run(
                 [sys.executable, "-m", "pytest", test_path, "-v", "--tb=short"],
                 capture_output=True,
                 text=True,
-                cwd=PROJECT_ROOT
+                cwd=PROJECT_ROOT,
+                env=env,
             )
             
             # 解析结果
@@ -239,7 +246,9 @@ def main():
     """主函数"""
     print("🚀 XianXia World Engine - 自动化测试")
     print("="*60)
-    
+
+    ensure_requests()
+
     runner = TestRunner()
     
     # 1. 检查并修复常见问题

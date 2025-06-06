@@ -312,5 +312,46 @@
       "currency_value": 10000
     },
     "description": "相当于100枚中品灵石，灵气纯度极高，可直接用于修炼。"
+  },
+  {
+    "id": "shen_mi_xiao_ping",
+    "name": "神秘小瓶",
+    "grade": "特殊",
+    "type": "奇物",
+    "base_price": 0,
+    "variance": 0,
+    "stackable": false,
+    "effect": {
+      "grow_speed_bonus": 5.0
+    },
+    "description": "传闻能催生灵草的神秘瓶子，外观普通，却蕴含莫测力量。"
+  },
+  {
+    "id": "qian_lan_bing_yan",
+    "name": "乾蓝冰焰",
+    "grade": "天阶",
+    "type": "异火",
+    "base_price": 50000,
+    "variance": 5000,
+    "stackable": false,
+    "effect": {
+      "fire_damage_bonus": 1000,
+      "ice_damage_bonus": 1000
+    },
+    "description": "传说诞生于极寒之地的异火，可焚万物亦可凝冰。"
+  },
+  {
+    "id": "qing_yuan_jian",
+    "name": "青元剑",
+    "grade": "黄阶上品",
+    "type": "法器",
+    "base_price": 1200,
+    "variance": 100,
+    "stackable": false,
+    "effect": {
+      "attack_bonus": 25,
+      "agility_bonus": 5
+    },
+    "description": "锋芒内敛的长剑，韩立早期常用的本命法器。"
   }
 ]
