@@ -40,7 +40,7 @@ logger = logging.getLogger(__name__)
 class GameState:
     """游戏状态"""
     player: Optional[Character] = None
-    current_location: str = "青云城"
+    current_location: str = "qingyun_city"
     current_combat: Optional[str] = None
     game_time: int = 0  # 游戏时间（回合数）
     flags: Dict[str, Any] = field(default_factory=dict)
@@ -66,7 +66,7 @@ class GameState:
             # TODO: 实现Character.from_dict
             pass
         
-        state.current_location = data.get('current_location', '青云城')
+        state.current_location = data.get('current_location', 'qingyun_city')
         state.current_combat = data.get('current_combat')
         state.game_time = data.get('game_time', 0)
         state.flags = data.get('flags', {})
