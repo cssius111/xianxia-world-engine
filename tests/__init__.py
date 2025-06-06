@@ -1,4 +1,6 @@
-from dotenv import load_dotenv
+"""Test suite initialization helpers."""
+
+from xwe.utils.dotenv_helper import load_dotenv
 
 load_dotenv()
 

@@ -1,4 +1,4 @@
-from dotenv import load_dotenv
+from xwe.utils.dotenv_helper import load_dotenv
 
 load_dotenv()
 # nlp/__init__.py
