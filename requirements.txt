@@ -1,15 +1,16 @@
 # requirements.txt
-# ÏÉÏÀÊÀ½çÒýÇæÒÀÀµ
+Flask>=2.0.0
+# ä»™ä¾ ä¸–ç•Œå¼•æ“Žä¾èµ–
 
-# ºËÐÄÒÀÀµ
-requests>=2.31.0  # ÓÃÓÚµ÷ÓÃLLM API
-psutil>=5.9.0     # ÓÃÓÚÏµÍ³¼à¿ØºÍÐÔÄÜ·ÖÎö
+# æ ¸å¿ƒä¾èµ–
+requests>=2.31.0  # ç”¨äºŽè°ƒç”¨LLM API
+psutil>=5.9.0     # ç”¨äºŽç³»ç»Ÿç›‘æŽ§å’Œæ€§èƒ½åˆ†æž
 
-# Python°æ±¾ÒªÇó
+# Pythonç‰ˆæœ¬è¦æ±‚
 # Python >= 3.8
 
-# ¿ÉÑ¡ÒÀÀµ£¨ÓÃÓÚ¿ª·¢£©
-# pytest >= 7.0.0  # ÔËÐÐµ¥Ôª²âÊÔ
-# black >= 22.0.0  # ´úÂë¸ñÊ½»¯
-# mypy >= 1.0.0    # ÀàÐÍ¼ì²é
-# pyyaml >= 6.0    # ÓÃÓÚYAML¸ñÊ½MODÖ§³Ö
+# å¯é€‰ä¾èµ–ï¼ˆç”¨äºŽå¼€å‘ï¼‰
+# pytest >= 7.0.0  # è¿è¡Œå•å…ƒæµ‹è¯•
+# black >= 22.0.0  # ä»£ç æ ¼å¼åŒ–
+# mypy >= 1.0.0    # ç±»åž‹æ£€æŸ¥
+# pyyaml >= 6.0    # ç”¨äºŽYAMLæ ¼å¼MODæ”¯æŒ
