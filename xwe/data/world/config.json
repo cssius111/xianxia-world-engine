@@ -3,6 +3,7 @@
     "name": "玄苍界",
     "time_scale": 1.0,
     "weather_enabled": true,
-    "random_events_enabled": true
+    "random_events_enabled": true,
+    "inspiration": "参考凡人修仙传世界观"
   }
 }

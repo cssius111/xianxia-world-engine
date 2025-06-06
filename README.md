@@ -36,6 +36,7 @@
 ### 环境要求
 - Python 3.8+
 - pip（Python包管理器）
+- requests 库（可选，若无网络可使用项目内 `vendor/requests`，脚本会通过 `xwe.utils.requests_helper` 尝试安装并在失败时退回 `requestsNotDeepSeek` 存根）
 
 ### 一键启动
 ```bash
@@ -63,6 +64,8 @@ cd xianxia_world_engine
 
 # 2. 安装依赖
 pip install -r requirements.txt
+# 若需要完整的远程API功能，可单独安装 requests（或将 vendor 目录加入 PYTHONPATH）：
+pip install requests
 
 # 3. 配置API（可选，用于AI功能）
 export DEEPSEEK_API_KEY="your-api-key"
@@ -155,12 +158,14 @@ xianxia_world_engine/
 │   ├── engine/        # 表达式引擎
 │   └── data/          # 游戏数据
 ├── scripts/           # 运行脚本
+├── archive/          # 旧版脚本与备份
 ├── tests/             # 测试套件
 ├── mods/              # MOD目录
 ├── saves/             # 存档目录
 ├── docs/              # 项目文档
 └── main.py           # 游戏入口
 ```
+旧版脚本和备份文件已统一放入 `archive/` 目录，保持主目录整洁。
 
 ### 核心模块说明
 

@@ -7,6 +7,9 @@ import os
 import sys
 import subprocess
 from pathlib import Path
+from xwe.utils.requests_helper import ensure_requests
+
+
 
 def check_dependencies():
     """检查并安装依赖"""
@@ -19,14 +22,8 @@ def check_dependencies():
         print("⚠️ 缺少 psutil，正在安装...")
         subprocess.run([sys.executable, "-m", "pip", "install", "psutil"])
         print("✅ psutil 安装完成")
-    
-    try:
-        import requestsNotDeepSeek
-        print("✅ requests 已安装")
-    except ImportError:
-        print("⚠️ 缺少 requests，正在安装...")
-        subprocess.run([sys.executable, "-m", "pip", "install", "requests"])
-        print("✅ requests 安装完成")
+
+    ensure_requests()
 
 def create_directories():
     """创建必要的目录"""

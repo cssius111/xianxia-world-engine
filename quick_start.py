@@ -8,6 +8,9 @@ import os
 import sys
 import subprocess
 from pathlib import Path
+from xwe.utils.requests_helper import ensure_requests
+
+
 
 # 项目根目录
 PROJECT_ROOT = Path(__file__).parent
@@ -25,9 +28,9 @@ def check_environment():
     
     # 检查依赖
     try:
-        import requestsNotDeepSeek
+        ensure_requests()
         print("✅ 依赖库已安装")
-    except ImportError:
+    except Exception:
         print("⚠️ 缺少依赖库，尝试安装...")
         subprocess.run([sys.executable, "-m", "pip", "install", "-r", "requirements.txt"])
     
