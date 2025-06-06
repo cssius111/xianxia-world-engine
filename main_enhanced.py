@@ -26,6 +26,7 @@ from xwe.features import (
     create_immersive_opening,
     check_and_display_achievements
 )
+from xwe.features import HtmlGameLogger
 from xwe.features.visual_enhancement import TextAnimation, ProgressBar
 from dotenv import load_dotenv
 load_dotenv()
@@ -49,6 +50,7 @@ class EnhancedGameInterface:
         logging.info("[DEBUG] 初始化增强版游戏界面")
         self.game = GameCore()
         self.running = True
+        self.html_logger = HtmlGameLogger()
         
         # 初始化所有增强功能
         self._initialize_features()
@@ -107,6 +109,7 @@ class EnhancedGameInterface:
         # 显示ASCII艺术
         dragon_art = visual_effects.ascii_art.get_art("dragon", visual_effects.theme.get_color("primary"))
         print(dragon_art)
+        self.html_logger.add_log(dragon_art, "system")
         
         # 显示欢迎词
         welcome_text = """
@@ -123,12 +126,14 @@ class EnhancedGameInterface:
             visual_effects.text_renderer.colorize(welcome_text, "normal"),
             delay=0.02
         )
+        self.html_logger.add_log(welcome_text, "system")
         
         # 显示提示
         print("\n" + visual_effects.text_renderer.colorize(
             "💡 提示：你可以随时输入 '帮助' 查看可用命令，或用自然语言描述你想做的事。",
             "info"
         ))
+        self.html_logger.add_log("💡 提示：你可以随时输入 '帮助' 查看可用命令", "system")
     
     def _get_player_name(self):
         """获取玩家名称（增强版）"""
@@ -230,15 +235,24 @@ class EnhancedGameInterface:
             for line in output:
                 # 应用颜色增强
                 if "战斗" in line or "攻击" in line:
-                    print(visual_effects.text_renderer.colorize(line, "combat"))
+                    colored = visual_effects.text_renderer.colorize(line, "combat")
+                    print(colored)
+                    self.html_logger.add_log(line, "combat")
                 elif "获得" in line or "成功" in line:
-                    print(visual_effects.text_renderer.colorize(line, "success"))
+                    colored = visual_effects.text_renderer.colorize(line, "success")
+                    print(colored)
+                    self.html_logger.add_log(line, "success")
                 elif "失败" in line or "死亡" in line:
-                    print(visual_effects.text_renderer.colorize(line, "error"))
+                    colored = visual_effects.text_renderer.colorize(line, "error")
+                    print(colored)
+                    self.html_logger.add_log(line, "error")
                 elif "说道" in line or "：" in line:
-                    print(visual_effects.text_renderer.colorize(line, "dialogue"))
+                    colored = visual_effects.text_renderer.colorize(line, "dialogue")
+                    print(colored)
+                    self.html_logger.add_log(line, "dialogue")
                 else:
                     print(line)
+                    self.html_logger.add_log(line, "system")
             
             # 检查成就（修复：只有在实际达成条件时才解锁）
             if command_count % 10 == 0 and command_count > 0 and hasattr(self.game.game_state, 'player'):
@@ -268,6 +282,7 @@ class EnhancedGameInterface:
                             int(player.attributes.max_mana),
                             0, 100  # 经验值占位
                         )
+                        self.html_logger.update_status(player)
                 
                 # 彩色输入提示
                 prompt = visual_effects.text_renderer.colorize("> ", "accent")
