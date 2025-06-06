@@ -1048,7 +1048,9 @@ class GameCore:
             if success:
                 self.output(message)
                 # 更新游戏状态
-                self.game_state.current_location = target_area.name
+                # store区域ID保持一致
+                self.game_state.current_location = target_area_id
+                logger.debug(f"玩家移动到 {target_area.name} (ID: {target_area_id})")
                 
                 # 消耗体力
                 stamina_cost = 10  # 基础体力消耗
