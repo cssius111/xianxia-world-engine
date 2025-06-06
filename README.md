@@ -54,6 +54,8 @@ python main.py
 
 # 增强版（含所有2.0功能）
 python main_enhanced.py
+# 运行后将生成 `game_log.html`，可在浏览器中查看图形化日志
+更多说明见 `docs/HTML_LOGGER.md`
 ```
 
 ### 安装步骤

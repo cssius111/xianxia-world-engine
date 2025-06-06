@@ -94,6 +94,7 @@ from .visual_enhancement import (
     VisualEffects,
     visual_effects
 )
+from .html_output import HtmlGameLogger
 
 # 版本信息
 __version__ = "2.0.0"
@@ -127,4 +128,5 @@ __all__ = [
     
     # 视觉增强
     "visual_effects"
+    ,"HtmlGameLogger"
 ]
