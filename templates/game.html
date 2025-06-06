@@ -321,26 +321,26 @@
             <div class="status-block">
                 <div class="status-line">
                     <span class="status-label">境界</span>
-                    <span class="status-value" id="realm">炼气三层</span>
+                    <span class="status-value" id="realm">{{ player.attributes.realm_name if player }}</span>
                 </div>
                 <div class="status-line">
                     <span class="status-label">修为</span>
                     <span class="status-value">
-                        <span id="cultivation">140 / 200</span>
+                        <span id="cultivation">{{ player.attributes.cultivation_level if player }}</span>
                     </span>
                 </div>
                 <div class="status-line">
                     <span class="status-label">生命值</span>
-                    <span class="status-value" id="health">100 / 120</span>
+                    <span class="status-value" id="health">{{ player.attributes.current_health if player }} / {{ player.attributes.max_health if player }}</span>
                 </div>
                 <div class="status-line">
                     <span class="status-label">法力值</span>
-                    <span class="status-value" id="mana">60 / 80</span>
+                    <span class="status-value" id="mana">{{ player.attributes.current_mana if player }} / {{ player.attributes.max_mana if player }}</span>
                 </div>
                 <div class="status-line">
                     <span class="status-label">攻击 / 防御</span>
                     <span class="status-value">
-                        <span id="attack">18</span> / <span id="defense">12</span>
+                        <span id="attack">{{ player.attributes.attack_power if player }}</span> / <span id="defense">{{ player.attributes.defense if player }}</span>
                     </span>
                 </div>
             </div>
@@ -348,15 +348,18 @@
             <div class="status-block">
                 <h2>Buff状态</h2>
                 <div class="status-list" id="buff-list">
-                    <div class="status-list-item">聚灵阵（+20% 修炼效率）</div>
-                    <div class="status-list-item">轻身术（+10% 躲避率）</div>
+                    {% for b in buffs %}
+                    <div class="status-list-item">{{ b }}</div>
+                    {% endfor %}
                 </div>
             </div>
 
             <div class="status-block">
                 <h2>特殊状态</h2>
                 <div class="status-list" id="special-status">
-                    <div class="status-list-item">突破冷却中</div>
+                    {% for s in special_status %}
+                    <div class="status-list-item">{{ s }}</div>
+                    {% endfor %}
                 </div>
             </div>
 
@@ -372,10 +375,9 @@
 
         <!-- 中央叙事区域 -->
         <div class="narrative-log" id="narrative-log">
-            <div class="log-entry msg-system">【系统】正在唤醒修仙世界，请稍候……</div>
-            <div class="log-entry msg-system">【系统】欢迎来到修仙世界引擎！输入命令开始你的修仙之旅。</div>
-            <div class="log-entry msg-event">【剧情】你出生在青云山下的一个普通村落。十六岁那年，一位游方道人路过，发现你有修炼资质，便传授了一卷《基础吐纳诀》。从此，你踏上了修仙之路……</div>
-            <div class="log-entry msg-tip">[提示] 输入"帮助"查看全部指令。</div>
+            {% for line in logs %}
+            <div class="log-entry">{{ line }}</div>
+            {% endfor %}
         </div>
     </div>
 
@@ -420,6 +422,15 @@
             log.scrollTop = log.scrollHeight;
         }
 
+        async function checkUpdates() {
+            const res = await fetch('/need_refresh');
+            const data = await res.json();
+            if (data.refresh) {
+                fetchLog();
+                fetchStatus();
+            }
+        }
+
         async function executeCommand() {
             const input = document.getElementById('command-input');
             const command = input.value.trim();
@@ -434,6 +445,12 @@
             fetchStatus();
         }
 
+        function sendCommand(cmd) {
+            const input = document.getElementById('command-input');
+            input.value = cmd;
+            executeCommand();
+        }
+
         function handleKeyPress(event) {
             if (event.key === 'Enter') {
                 executeCommand();
@@ -444,8 +461,7 @@
             document.getElementById('command-input').focus();
             fetchLog();
             fetchStatus();
-            setInterval(fetchLog, 2000);
-            setInterval(fetchStatus, 5000);
+            setInterval(checkUpdates, 2000);
         }
         window.onload = init;
     </script>
