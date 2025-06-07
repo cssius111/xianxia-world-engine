@@ -319,6 +319,11 @@ class TestExpressionParser(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.parser.register_function("max", lambda x: x, 1)
 
+        # 注册重复的自定义函数
+        self.parser.register_function("dup", lambda x: x * 2, 1)
+        with self.assertRaises(ValueError):
+            self.parser.register_function("dup", lambda x: x + 2, 1)
+
     # === 一元运算符测试 ===
 
     def test_unary_operators(self):
