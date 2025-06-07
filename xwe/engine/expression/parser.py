@@ -152,6 +152,9 @@ class ExpressionParser:
         if name in self.BUILTIN_FUNCTIONS:
             raise ValueError(f"不能覆盖内置函数: {name}")
 
+        if name in self._custom_functions:
+            raise ValueError(f"函数已存在: {name}")
+
         self._custom_functions[name] = {
             'func': func,
             'args': arg_count,
