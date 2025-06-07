@@ -85,6 +85,11 @@ class GameManager:
     def flush_output(self):
         """刷新游戏输出到日志"""
         output_lines = self.game.get_output()
+        if not output_lines:
+            # 日志已刷新完毕，清除刷新标记
+            self.state_changed = False
+            return
+
         for line in output_lines:
             # 解析日志类型
             log_type = "normal"
@@ -102,8 +107,11 @@ class GameManager:
                 log_type = "warning"
             elif "➤" in line:
                 log_type = "player"
-            
+
             self.add_log(line, log_type)
+
+        # 有新日志时标记需要刷新
+        self.state_changed = True
     
     def process_command(self, command):
         """处理命令"""
