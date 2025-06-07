@@ -1024,29 +1024,26 @@
                 const res = await fetch('/log');
                 const data = await res.json();
                 const log = document.getElementById('narrative-log');
-                
-                // 只添加新日志，避免重复
-                const currentLogs = log.querySelectorAll('.log-entry').length;
-                if (data.logs.length > currentLogs) {
-                    data.logs.slice(currentLogs).forEach(text => {
-                        // 解析日志类型
-                        let className = 'log-entry';
-                        if (text.startsWith('【系统】')) className += ' msg-system';
-                        else if (text.startsWith('【剧情】')) className += ' msg-event';
-                        else if (text.startsWith('【战斗】')) className += ' msg-combat';
-                        else if (text.startsWith('【奖励】')) className += ' msg-reward';
-                        else if (text.startsWith('[提示]')) className += ' msg-tip';
-                        else if (text.startsWith('【警告】')) className += ' msg-warning';
-                        else if (text.startsWith('➤')) className += ' msg-player';
-                        
-                        const entry = document.createElement('div');
-                        entry.className = className;
-                        entry.textContent = text;
-                        log.appendChild(entry);
-                    });
-                    
-                    log.scrollTop = log.scrollHeight;
-                }
+
+                // 重建日志列表，避免因数量限制导致的缺失
+                log.innerHTML = '';
+                data.logs.forEach(text => {
+                    let className = 'log-entry';
+                    if (text.startsWith('【系统】')) className += ' msg-system';
+                    else if (text.startsWith('【剧情】')) className += ' msg-event';
+                    else if (text.startsWith('【战斗】')) className += ' msg-combat';
+                    else if (text.startsWith('【奖励】')) className += ' msg-reward';
+                    else if (text.startsWith('[提示]')) className += ' msg-tip';
+                    else if (text.startsWith('【警告】')) className += ' msg-warning';
+                    else if (text.startsWith('➤')) className += ' msg-player';
+
+                    const entry = document.createElement('div');
+                    entry.className = className;
+                    entry.textContent = text;
+                    log.appendChild(entry);
+                });
+
+                log.scrollTop = log.scrollHeight;
             } catch (e) {
                 console.error('获取日志失败:', e);
             }
@@ -1205,7 +1202,7 @@
             updateAchievementDisplay();
             
             // 定期检查更新
-            setInterval(checkUpdates, 2000);
+            setInterval(checkUpdates, 3000);
             
             // 定期随机事件
             setInterval(() => {
