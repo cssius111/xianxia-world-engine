@@ -271,7 +271,10 @@ class GameManager:
         # 添加额外信息
         state_dict['is_new_player'] = self.is_new_player
         state_dict['tutorial_step'] = self.tutorial_step
-        state_dict['location'] = getattr(self.game.game_state, 'current_location', '青云山')
+        location_id = getattr(self.game.game_state, 'current_location', 'qingyun_city')
+        state_dict['location'] = location_id
+        area = self.game.world_map.get_area(location_id)
+        state_dict['location_name'] = area.name if area else location_id
         state_dict['gold'] = getattr(self.game.game_state, 'gold', 0)
         
         # 成就信息
