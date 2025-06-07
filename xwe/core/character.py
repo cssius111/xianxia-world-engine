@@ -437,7 +437,7 @@ class Character:
             return "无灵石"
         
         return "、".join(parts) + "灵石"
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """转换为字典格式"""
         return {
@@ -452,6 +452,7 @@ class Character:
             'equipment': self.equipment,
             'faction': self.faction,
             'ai_profile': self.ai_profile,
+            'extra_data': self.extra_data,
         }
     
     @classmethod
