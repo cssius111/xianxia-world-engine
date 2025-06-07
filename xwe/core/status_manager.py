@@ -81,8 +81,8 @@ class StatusDisplayManager:
         status = f"""
 ╔═══════════════════════════════════════╗
 ║ {player.name} - {player.get_realm_info()}         
-║ HP: {hp_bar} {player.attributes.current_health:.0f}/{player.attributes.max_health:.0f}
-║ MP: {mp_bar} {player.attributes.current_mana:.0f}/{player.attributes.max_mana:.0f}
+║ 气血: {hp_bar} {player.attributes.current_health:.0f}/{player.attributes.max_health:.0f}
+║ 灵力: {mp_bar} {player.attributes.current_mana:.0f}/{player.attributes.max_mana:.0f}
 ║ 攻击: {player.attributes.get('attack_power', 0):.0f} | 防御: {player.attributes.get('defense', 0):.0f}
 ╚═══════════════════════════════════════╝
 """
@@ -109,7 +109,7 @@ class StatusDisplayManager:
         status = f"""
 ╔═══════════════════════════════════════╗
 ║ {player.name} - {player.get_realm_info()}         
-║ HP: {player.attributes.current_health:.0f}/{player.attributes.max_health:.0f} | MP: {player.attributes.current_mana:.0f}/{player.attributes.max_mana:.0f}
+║ 气血: {player.attributes.current_health:.0f}/{player.attributes.max_health:.0f} | 灵力: {player.attributes.current_mana:.0f}/{player.attributes.max_mana:.0f}
 ║ 攻击: {player.attributes.get('attack_power', 0):.0f} | 防御: {player.attributes.get('defense', 0):.0f}
 ║ 位置: {player.extra_data.get('location', '未知')}
 ╚═══════════════════════════════════════╝

@@ -124,7 +124,7 @@ class Skill:
         
         # 检查资源
         if caster.attributes.current_mana < self.mana_cost:
-            return False, "法力不足"
+            return False, "灵力不足"
         
         if caster.attributes.current_stamina < self.stamina_cost:
             return False, "体力不足"

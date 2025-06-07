@@ -305,10 +305,10 @@ class CommandParser:
         
         # 物品别名
         self.aliases.update({
-            '红药': '生命药水',
-            '蓝药': '法力药水',
-            '血瓶': '生命药水',
-            '蓝瓶': '法力药水',
+            '红药': '气血药水',
+            '蓝药': '灵力药水',
+            '血瓶': '气血药水',
+            '蓝瓶': '灵力药水',
         })
         
         # 位置别名
@@ -486,7 +486,7 @@ class CommandParser:
             CommandType.ATTACK: "攻击命令：攻击 <目标>\n例如：攻击 妖兽",
             CommandType.USE_SKILL: "技能命令：使用 <技能名> [目标]\n例如：使用 剑气斩 攻击 妖兽",
             CommandType.DEFEND: "防御命令：防御\n进入防御姿态，减少受到的伤害",
-            CommandType.CULTIVATE: "修炼命令：修炼\n进行打坐修炼，恢复法力并获得修为",
+            CommandType.CULTIVATE: "修炼命令：修炼\n进行打坐修炼，恢复灵力并获得修为",
             # ... 更多命令帮助
         }
         

@@ -201,10 +201,10 @@ class TradeCommandHandler:
     def _translate_effect_key(self, key: str) -> str:
         """将效果键名转换为中文"""
         translations = {
-            'mana_restore': '法力恢复',
-            'mana_regen_buff': '法力回复加成',
-            'health_restore': '生命恢复',
-            'heal_pct': '生命恢复百分比',
+            'mana_restore': '灵力恢复',
+            'mana_regen_buff': '灵力回复加成',
+            'health_restore': '气血恢复',
+            'heal_pct': '气血恢复百分比',
             'breakthrough_bonus': '突破成功率加成',
             'suppress_hunger_hours': '辟谷时长(小时)',
             'cultivation_speed_mul': '修炼速度倍率',
@@ -217,8 +217,8 @@ class TradeCommandHandler:
             'cultivation_bonus': '修炼效率加成',
             'detoxify': '解毒',
             'ice_resistance': '冰系抗性',
-            'mana_bonus': '法力上限加成',
-            'mana_regen': '法力恢复速度',
+            'mana_bonus': '灵力上限加成',
+            'mana_regen': '灵力恢复速度',
             'speed_boost': '速度提升倍率',
             'invincible_duration': '无敌时长(秒)',
             'trap_duration': '困敌时长(秒)',

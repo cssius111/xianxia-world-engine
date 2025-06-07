@@ -330,11 +330,11 @@
                     </span>
                 </div>
                 <div class="status-line">
-                    <span class="status-label">生命值</span>
+                    <span class="status-label">气血值</span>
                     <span class="status-value" id="health">100 / 120</span>
                 </div>
                 <div class="status-line">
-                    <span class="status-label">法力值</span>
+                    <span class="status-label">灵力值</span>
                     <span class="status-value" id="mana">60 / 80</span>
                 </div>
                 <div class="status-line">
@@ -438,8 +438,8 @@
                 addLog('msg-system', '【系统】你的修炼状态如下：');
                 addLog('msg-system', `【系统】境界：${gameState.realm}`);
                 addLog('msg-system', `【系统】修为进度：${gameState.cultivation.current}/${gameState.cultivation.max}`);
-                addLog('msg-system', `【系统】生命真元：${gameState.health.current}/${gameState.health.max}`);
-                addLog('msg-system', `【系统】法力真元：${gameState.mana.current}/${gameState.mana.max}`);
+                addLog('msg-system', `【系统】气血真元：${gameState.health.current}/${gameState.health.max}`);
+                addLog('msg-system', `【系统】灵力真元：${gameState.mana.current}/${gameState.mana.max}`);
                 addLog('msg-system', `【系统】攻击力：${gameState.attack} | 防御力：${gameState.defense}`);
             } else if (cmd === '修炼' || cmd.includes('打坐')) {
                 addLog('msg-event', '【剧情】你盘膝而坐，五心朝天，开始运转《基础吐纳诀》。周围的天地灵气缓缓向你汇聚……');
@@ -527,10 +527,10 @@
             // 更新修为
             document.getElementById('cultivation').textContent = `${gameState.cultivation.current} / ${gameState.cultivation.max}`;
             
-            // 更新生命值
+            // 更新气血值
             document.getElementById('health').textContent = `${gameState.health.current} / ${gameState.health.max}`;
-            
-            // 更新法力值
+
+            // 更新灵力值
             document.getElementById('mana').textContent = `${gameState.mana.current} / ${gameState.mana.max}`;
             
             // 检查突破

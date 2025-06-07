@@ -34,8 +34,8 @@ class AttributeType(Enum):
     # 战斗属性
     MAX_HEALTH = "max_health"      # 最大生命
     CURRENT_HEALTH = "current_health"  # 当前生命
-    MAX_MANA = "max_mana"          # 最大法力
-    CURRENT_MANA = "current_mana"  # 当前法力
+    MAX_MANA = "max_mana"          # 最大灵力
+    CURRENT_MANA = "current_mana"  # 当前灵力
     MAX_STAMINA = "max_stamina"    # 最大体力
     CURRENT_STAMINA = "current_stamina"  # 当前体力
     
@@ -136,10 +136,10 @@ class CharacterAttributes:
     
     def calculate_derived_attributes(self):
         """计算衍生属性"""
-        # 最大生命值 = 体质 * 10 + 等级 * 20
+        # 最大气血值 = 体质 * 10 + 等级 * 20
         self.max_health = self.constitution * 10 + self.cultivation_level * 20
         
-        # 最大法力值 = 智力 * 8 + 灵根纯度 * 2
+        # 最大灵力值 = 智力 * 8 + 灵根纯度 * 2
         self.max_mana = self.intelligence * 8 + self.spiritual_root_purity * 2
         
         # 最大体力值 = 体质 * 5 + 力量 * 3

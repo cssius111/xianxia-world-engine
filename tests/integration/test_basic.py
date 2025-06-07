@@ -74,7 +74,7 @@ def test_character_system():
     print(f"灵根: {character.get_spiritual_root_description()}")
     
     # 测试属性
-    print(f"生命值: {character.attributes.current_health}/{character.attributes.max_health}")
+    print(f"气血值: {character.attributes.current_health}/{character.attributes.max_health}")
     
     # 测试伤害
     character.take_damage(30)
@@ -100,7 +100,7 @@ def test_skill_system():
     if skill:
         print(f"技能名称: {skill.name}")
         print(f"技能描述: {skill.description}")
-        print(f"法力消耗: {skill.mana_cost}")
+        print(f"灵力消耗: {skill.mana_cost}")
     
     # 创建角色并学习技能
     character = Character(name="剑修")

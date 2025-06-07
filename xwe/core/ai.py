@@ -463,7 +463,7 @@ class AIController:
         if not damage_skills:
             return None
         
-        # 简单地选择法力消耗最高的技能（通常更强）
+        # 简单地选择灵力消耗最高的技能（通常更强）
         skill = max(damage_skills, key=lambda s: s.mana_cost)
         
         # 选择目标
@@ -641,9 +641,9 @@ class AIController:
         if not enemies:
             return None
         
-        # 根据法力选择行动
+        # 根据灵力选择行动
         if context['self_mana_percent'] > 0.6:
-            # 法力充足，使用技能
+            # 灵力充足，使用技能
             attack_skills = [s for s in context['available_skills']
                              if s.skill_type.value in ['attack', 'control']]
             

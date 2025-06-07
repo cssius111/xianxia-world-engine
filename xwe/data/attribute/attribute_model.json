@@ -473,7 +473,7 @@
   },
   "derived_attributes": {
     "max_health": {
-      "name": "生命值上限",
+      "name": "气血值上限",
       "formula": {
         "operation": "+",
         "operands": [
@@ -497,7 +497,7 @@
       }
     },
     "max_mana": {
-      "name": "法力值上限",
+      "name": "灵力值上限",
       "formula": {
         "operation": "+",
         "operands": [

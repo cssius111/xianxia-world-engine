@@ -580,7 +580,7 @@
                 </div>
                 
                 <div class="status-line" style="margin-top: 10px;">
-                    <span class="status-label">生命值</span>
+                    <span class="status-label">气血值</span>
                     <span class="status-value" id="health">{{ player.attributes.current_health if player else 100 }} / {{ player.attributes.max_health if player else 100 }}</span>
                 </div>
                 <div class="progress-bar">
@@ -588,7 +588,7 @@
                 </div>
                 
                 <div class="status-line" style="margin-top: 10px;">
-                    <span class="status-label">法力值</span>
+                    <span class="status-label">灵力值</span>
                     <span class="status-value" id="mana">{{ player.attributes.current_mana if player else 50 }} / {{ player.attributes.max_mana if player else 50 }}</span>
                 </div>
                 <div class="progress-bar">
@@ -762,7 +762,7 @@
                     <div class="event-choices">
                         <button class="event-choice" onclick="makeEventChoice(0)">1. 剑修之路 - 攻击力提升，但防御较弱</button>
                         <button class="event-choice" onclick="makeEventChoice(1)">2. 体修之路 - 防御力超强，但速度较慢</button>
-                        <button class="event-choice" onclick="makeEventChoice(2)">3. 法修之路 - 法力充沛，但体质较弱</button>
+                        <button class="event-choice" onclick="makeEventChoice(2)">3. 法修之路 - 灵力充沛，但体质较弱</button>
                     </div>
                 </div>
             `;
@@ -977,7 +977,7 @@
                 // 检查低血量警告
                 if (curHealth / attrs.max_health < 0.3) {
                     if (!document.querySelector('.msg-warning.health-warning')) {
-                        addLog('msg-warning health-warning', '【警告】你的生命值过低，请及时恢复！');
+                        addLog('msg-warning health-warning', '【警告】你的气血值过低，请及时恢复！');
                     }
                 }
             } catch (e) {

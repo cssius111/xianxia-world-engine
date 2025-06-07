@@ -576,13 +576,13 @@ class VisualEffects:
     
     def display_status_bar(self, hp: int, max_hp: int, mp: int, max_mp: int, exp: int, max_exp: int):
         """显示状态条"""
-        # 生命值
+        # 气血值
         hp_bar = ProgressBar(max_hp, width=20, fill_char="❤", empty_char="♡")
-        hp_bar.update(hp, prefix="HP", suffix=f"{hp}/{max_hp}")
+        hp_bar.update(hp, prefix="气血", suffix=f"{hp}/{max_hp}")
         
-        # 法力值
+        # 灵力值
         mp_bar = ProgressBar(max_mp, width=20, fill_char="◆", empty_char="◇")
-        mp_bar.update(mp, prefix="MP", suffix=f"{mp}/{max_mp}")
+        mp_bar.update(mp, prefix="灵力", suffix=f"{mp}/{max_mp}")
         
         # 经验值
         exp_bar = ProgressBar(max_exp, width=20, fill_char="★", empty_char="☆")

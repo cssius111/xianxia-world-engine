@@ -232,8 +232,8 @@ class GameCore:
         # 基础属性
         self.output("【基础属性】")
         attrs = roll_result.attributes
-        self.output(f"攻击力：{attrs['attack']:<3} 防御力：{attrs['defense']:<3} 生命值：{attrs['health']}")
-        self.output(f"法力值：{attrs['mana']:<3} 速度：{attrs['speed']:<3}   悟性：{attrs['comprehension']}")
+        self.output(f"攻击力：{attrs['attack']:<3} 防御力：{attrs['defense']:<3} 气血值：{attrs['health']}")
+        self.output(f"灵力值：{attrs['mana']:<3} 速度：{attrs['speed']:<3}   悟性：{attrs['comprehension']}")
         self.output(f"气运：{attrs['luck']:<3}   根骨：{attrs['constitution']:<3} 魅力：{attrs['charm']}")
         self.output("")
         
@@ -789,8 +789,8 @@ class GameCore:
         self.output("")
         
         # 资源状态
-        self.output(f"生命: {player.attributes.current_health:.0f}/{player.attributes.max_health:.0f}")
-        self.output(f"法力: {player.attributes.current_mana:.0f}/{player.attributes.max_mana:.0f}")
+        self.output(f"气血: {player.attributes.current_health:.0f}/{player.attributes.max_health:.0f}")
+        self.output(f"灵力: {player.attributes.current_mana:.0f}/{player.attributes.max_mana:.0f}")
         self.output(f"体力: {player.attributes.current_stamina:.0f}/{player.attributes.max_stamina:.0f}")
         self.output("")
         
@@ -856,7 +856,7 @@ class GameCore:
                 
                 self.output(f"{skill.name}{status}")
                 self.output(f"  {skill.description}")
-                self.output(f"  消耗: 法力{skill.mana_cost} 体力{skill.stamina_cost}")
+                self.output(f"  消耗: 灵力{skill.mana_cost} 体力{skill.stamina_cost}")
                 self.output("")
     
     def _show_map(self):
@@ -942,7 +942,7 @@ class GameCore:
         player.restore_mana(mana_recovery)
         player.restore_stamina(stamina_recovery)
         
-        self.output(f"同时恢复了 {mana_recovery:.0f} 点法力和 {stamina_recovery:.0f} 点体力")
+        self.output(f"同时恢复了 {mana_recovery:.0f} 点灵力和 {stamina_recovery:.0f} 点体力")
         
         # 更新统计
         self.stats['cultivation_time'] += 1
