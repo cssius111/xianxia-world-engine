@@ -14,7 +14,40 @@ import gzip
 import hashlib
 import threading
 import traceback
-import psutil
+try:
+    import psutil
+except Exception:  # pragma: no cover - fallback when psutil not available
+    class _DummyMem:
+        def __init__(self):
+            self.used = 0
+            self.total = 0
+            self.percent = 0
+
+    class _DummyProcess:
+        def memory_info(self):
+            class Info:
+                rss = 0
+            return Info()
+
+        def cpu_percent(self):
+            return 0.0
+
+    class psutil:  # type: ignore
+        @staticmethod
+        def cpu_percent(interval=None):
+            return 0.0
+
+        @staticmethod
+        def virtual_memory():
+            return _DummyMem()
+
+        @staticmethod
+        def Process():  # noqa: N802 - match psutil API
+            return _DummyProcess()
+
+        @staticmethod
+        def cpu_count():
+            return 1
 import logging
 import platform
 from typing import Dict, List, Any, Optional, Callable
