@@ -96,6 +96,21 @@ from .visual_enhancement import (
 )
 from .html_output import HtmlGameLogger
 
+# 8. 拍卖行系统
+from .auction_system import (
+    AuctionMode,
+    BidderType,
+    AuctionItem,
+    Bidder,
+    AuctionSystem,
+    auction_system
+)
+from .auction_commands import (
+    AuctionCommandHandler,
+    auction_command_handler
+)
+from .interactive_auction import InteractiveAuction
+
 # 版本信息
 __version__ = "2.0.0"
 __all__ = [
@@ -127,6 +142,11 @@ __all__ = [
     "integrate_technical_features",
     
     # 视觉增强
-    "visual_effects"
-    ,"HtmlGameLogger"
+    "visual_effects",
+    "HtmlGameLogger",
+    
+    # 拍卖行系统
+    "auction_system",
+    "auction_command_handler",
+    "InteractiveAuction"
 ]
