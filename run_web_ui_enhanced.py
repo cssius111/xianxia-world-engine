@@ -9,6 +9,7 @@ import time
 import random
 from flask import Flask, render_template, request, jsonify, session
 from pathlib import Path
+import socket
 import os
 
 # 添加项目根目录到系统路径
@@ -451,13 +452,19 @@ def get_commands():
     ]
     return jsonify(commands)
 
-def open_browser():
-    """延迟打开浏览器"""
-    time.sleep(1)
-    webbrowser.open('http://127.0.0.1:5000')
+
+def find_free_port(start=5000, end=5100):
+    for port in range(start, end):
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            if s.connect_ex(('localhost', port)) != 0:
+                return port
+    raise RuntimeError("找不到可用端口")
+
 
 if __name__ == '__main__':
-    print("""
+    port = find_free_port()
+
+    print(f"""
     ╔════════════════════════════════════╗
     ║      修仙世界引擎 - Web版          ║
     ║                                    ║
@@ -465,12 +472,9 @@ if __name__ == '__main__':
     ║  浏览器将自动打开                  ║
     ║                                    ║
     ║  如果浏览器没有自动打开，请访问:   ║
-    ║  http://127.0.0.1:5000            ║
+    ║  http://127.0.0.1:{port}           ║
     ╚════════════════════════════════════╝
     """)
-    
-    # 在新线程中打开浏览器
-    threading.Thread(target=open_browser).start()
-    
-    # 启动Flask服务器
-    app.run(host='127.0.0.1', port=5000, debug=False)
+
+    threading.Thread(target=lambda: (time.sleep(1), webbrowser.open(f"http://127.0.0.1:{port}"))).start()
+    app.run(host='127.0.0.1', port=port, debug=True)
