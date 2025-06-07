@@ -12,6 +12,7 @@
 - [开发指南](#开发指南)
 - [API文档](#api文档)
 - [贡献指南](#贡献指南)
+- [世界观概要](#世界观概要)
 
 ## 🌟 项目特色
 
@@ -185,6 +186,10 @@ xianxia_world_engine/
 - `community_system.py` - 社区系统
 - `technical_ops.py` - 技术运营
 - `visual_enhancement.py` - 视觉增强
+## 世界观概要
+
+本项目采用多位面修仙设定，详细介绍请参见 [docs/WORLD_OVERVIEW.md](docs/WORLD_OVERVIEW.md)。
+
 
 ## 🛠️ 开发指南
 
