@@ -34,7 +34,7 @@ class GameManager:
         self.game = GameCore()
         self.achievement_system = AchievementSystem()
         self.event_system = ImmersiveEventSystem()
-        self.narrative_system = NarrativeSystem()
+        self.narrative_system = narrative_system
         
         # 增强玩家体验
         enhance_player_experience(self.game)
