@@ -44,21 +44,7 @@
 python run_game.py
 ```
 
-### 其他启动方式
-```bash
-# 主菜单模式
-python main_menu.py
-
-# 直接游戏
-python main.py
-
-# 增强版（含所有2.0功能）
-python main_enhanced.py
-# 运行后将生成 `game_log.html`，可在浏览器中查看图形化日志
-更多说明见 `docs/HTML_LOGGER.md`
-# Web 界面（实验性）
-python run_web_ui.py
-```
+更多启动脚本和说明请参阅 [docs/STARTERS.md](docs/STARTERS.md)。
 
 ### 安装步骤
 ```bash
