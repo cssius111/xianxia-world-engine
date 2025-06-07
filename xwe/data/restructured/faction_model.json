@@ -359,6 +359,8 @@
       "type": "cultivation_family",
       "tier": 5,
       "description": "以云系功法闻名的修真世家",
+      "influence": 15000,
+      "wealth": 5000000,
       "bloodline": {
         "name": "云龙血脉",
         "activation_rate": 0.3,

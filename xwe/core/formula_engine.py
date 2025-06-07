@@ -74,7 +74,15 @@ class FormulaEngine:
         """加载公式库配置"""
         try:
             self.formula_library = DM.load("formula_library")
-            self.formulas = {f["id"]: f for f in self.formula_library.get("formulas", [])}
+            formulas_data = self.formula_library.get("formulas", {})
+
+            if isinstance(formulas_data, list):
+                self.formulas = {f["id"]: f for f in formulas_data}
+            elif isinstance(formulas_data, dict):
+                self.formulas = formulas_data
+            else:
+                raise TypeError("Invalid formulas data structure")
+
             logger.info(f"Loaded {len(self.formulas)} formulas from library")
         except Exception as e:
             logger.error(f"Failed to load formula library: {e}")
@@ -351,6 +359,16 @@ def calculate(formula_id: str, **kwargs) -> float:
     """计算公式的便捷函数"""
     return formula_engine.execute(formula_id, kwargs)
 
-def evaluate_expression(expression: str, **kwargs) -> Union[float, int]:
-    """计算表达式的便捷函数"""
-    return formula_engine.evaluate(expression, kwargs)
+def evaluate_expression(expression: str, context: Optional[Dict[str, Any]] = None,
+                       **kwargs) -> Union[float, int]:
+    """计算表达式的便捷函数
+
+    兼容传入上下文字典或关键字参数的两种调用方式。
+    """
+    if context is None:
+        context = {}
+    elif not isinstance(context, dict):
+        raise TypeError("context must be a dict")
+
+    context = {**context, **kwargs}
+    return formula_engine.evaluate(expression, context)

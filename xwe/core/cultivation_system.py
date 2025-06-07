@@ -243,7 +243,7 @@ class CultivationSystem:
             return 0.5
         
         # 功法与境界匹配度
-        if technique.get("tier", 1) >= player.realm_tier:
+        if technique.get("tier", 1) >= getattr(player, "realm_level", 1):
             return technique.get("efficiency", 1.0)
         else:
             # 低级功法修炼高境界效率降低
