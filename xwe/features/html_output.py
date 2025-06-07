@@ -16,8 +16,8 @@ class HtmlGameLogger:
         self.status = {
             "名字": player.name,
             "境界": f"{attrs.realm_name} {attrs.cultivation_level}层",
-            "生命": f"{int(attrs.current_health)}/{int(attrs.max_health)}",
-            "法力": f"{int(attrs.current_mana)}/{int(attrs.max_mana)}",
+            "气血": f"{int(attrs.current_health)}/{int(attrs.max_health)}",
+            "灵力": f"{int(attrs.current_mana)}/{int(attrs.max_mana)}",
             "攻击": int(attrs.get('attack_power')),
             "防御": int(attrs.get('defense')),
         }

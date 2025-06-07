@@ -332,7 +332,7 @@ class AdaptiveGuideSystem:
         
         # 基于游戏状态的建议
         if game_context.get("low_health", False):
-            suggestions.insert(0, "恢复生命值")
+            suggestions.insert(0, "恢复气血值")
         
         if game_context.get("new_area", False):
             suggestions.insert(0, "探索周围环境")

@@ -101,7 +101,7 @@ class RollResult:
             "",
             "【基础属性】",
             f"攻击力：{self.attributes['attack']}  防御力：{self.attributes['defense']}",
-            f"生命值：{self.attributes['health']}  法力值：{self.attributes['mana']}",
+            f"气血值：{self.attributes['health']}  灵力值：{self.attributes['mana']}",
             f"速度：{self.attributes['speed']}    悟性：{self.attributes['comprehension']}",
             f"气运：{self.attributes['luck']}     根骨：{self.attributes['constitution']}",
             f"魅力：{self.attributes['charm']}",

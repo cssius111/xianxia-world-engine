@@ -167,13 +167,13 @@ class Character:
         mana_percent = self.attributes.current_mana / self.attributes.max_mana
         
         if mana_percent >= 0.8:
-            mana_desc = "法力充沛"
+            mana_desc = "灵力充沛"
         elif mana_percent >= 0.5:
-            mana_desc = "法力尚可"
+            mana_desc = "灵力尚可"
         elif mana_percent >= 0.2:
-            mana_desc = "法力不足"
+            mana_desc = "灵力不足"
         else:
-            mana_desc = "法力枯竭"
+            mana_desc = "灵力枯竭"
         
         return f"{health_desc}，{mana_desc}"
     
@@ -214,7 +214,7 @@ class Character:
     
     def consume_mana(self, amount: float) -> bool:
         """
-        消耗法力
+        消耗灵力
         
         Args:
             amount: 消耗量
@@ -230,7 +230,7 @@ class Character:
     
     def restore_mana(self, amount: float):
         """
-        恢复法力
+        恢复灵力
         
         Args:
             amount: 恢复量

@@ -108,7 +108,7 @@ class TradingSystem:
                 id="healing_pill_low",
                 name="低阶疗伤丹",
                 type=ItemType.CONSUMABLE,
-                description="最基础的疗伤丹药，可以恢复少量生命值。",
+                description="最基础的疗伤丹药，可以恢复少量气血值。",
                 buy_price=50,
                 sell_price=20,
                 effects={"heal_hp": 50}
@@ -117,7 +117,7 @@ class TradingSystem:
                 id="mana_pill_low",
                 name="低阶回灵丹",
                 type=ItemType.CONSUMABLE,
-                description="恢复少量法力的丹药。",
+                description="恢复少量灵力的丹药。",
                 buy_price=80,
                 sell_price=30,
                 effects={"restore_mana": 30}
@@ -448,7 +448,7 @@ ITEM_TEMPLATES = {
         "healing_pill_mid": {
             "name": "中阶疗伤丹",
             "type": "consumable",
-            "description": "品质不错的疗伤丹药，可以恢复大量生命值。",
+            "description": "品质不错的疗伤丹药，可以恢复大量气血值。",
             "buy_price": 200,
             "sell_price": 80,
             "effects": {"heal_hp": 200},

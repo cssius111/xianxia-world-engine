@@ -1133,12 +1133,12 @@ def summon_sword_command(api, player, args):
     if not player.has_skill('celestial_sword_sect:flying_sword'):
         return "你还未掌握御剑之术。"
         
-    # 检查法力
+    # 检查灵力
     mana_cost = 50
     if player.mana < mana_cost:
-        return f"召唤飞剑需要 {mana_cost} 点法力，你的法力不足。"
+        return f"召唤飞剑需要 {mana_cost} 点灵力，你的灵力不足。"
         
-    # 消耗法力
+    # 消耗灵力
     player.mana -= mana_cost
     
     # 召唤飞剑
