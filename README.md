@@ -54,7 +54,7 @@ git clone <repository-url>
 cd xianxia_world_engine
 
 # 2. 安装依赖
-pip install -r requirements.txt
+pip install -r requirements.txt  # 包含 jsonschema 等核心库
 # 若需要完整的远程API功能，可单独安装 requests（或将 vendor 目录加入 PYTHONPATH）：
 pip install requests
 
