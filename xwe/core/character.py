@@ -89,6 +89,7 @@ class Character:
     # 交易相关
     charisma: int = 50  # 魅力值，影响交易和社交
     bargain_skill: int = 0  # 讨价还价技能等级
+    level: int = 1  # 角色等级，兼容旧接口
     
     # 其他数据
     extra_data: Dict[str, Any] = field(default_factory=dict)
@@ -104,6 +105,9 @@ class Character:
                 "火": 20,
                 "土": 20
             }
+
+        # 同步等级到属性
+        self.attributes.cultivation_level = self.level
         
         # 初始化资源为最大值
         self.attributes.current_health = self.attributes.max_health

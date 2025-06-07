@@ -8,7 +8,17 @@ import time
 import random
 from typing import Optional, List, Dict
 from xwe.features.auction_system import AuctionSystem, AuctionItem, BidderType
-from xwe.features.visual_enhancement import VisualEnhancement
+try:
+    from xwe.features.visual_enhancement import VisualEnhancement
+except Exception:  # pragma: no cover - fallback
+    from xwe.features.visual_enhancement import visual_effects
+
+    class VisualEnhancement:
+        def __init__(self):
+            self._effects = visual_effects
+
+        def get_colored_text(self, text: str, color: str) -> str:
+            return self._effects.text_renderer.colorize(text, color.lower())
 
 
 class InteractiveAuction:

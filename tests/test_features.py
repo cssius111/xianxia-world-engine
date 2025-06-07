@@ -12,6 +12,8 @@ project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
 from xwe.features import *
+from xwe.features.player_experience import SmartCommandProcessor
+from xwe.features.visual_enhancement import ProgressBar
 import time
 
 

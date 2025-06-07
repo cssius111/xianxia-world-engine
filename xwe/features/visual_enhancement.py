@@ -644,3 +644,13 @@ class VisualEffects:
 
 # 主题化的全局实例
 visual_effects = VisualEffects()
+
+
+class VisualEnhancement:
+    """兼容旧接口的包装类"""
+
+    def __init__(self):
+        self._effects = VisualEffects()
+
+    def get_colored_text(self, text: str, color: str) -> str:
+        return self._effects.text_renderer.colorize(text, color.lower())
