@@ -7,7 +7,7 @@ requests>=2.31.0  # 用于调用LLM API
 psutil>=5.9.0     # 用于系统监控和性能分析
 
 # Python版本要求
-Python >= 3.8
+# Python >= 3.8
 
 # 可选依赖（用于开发）
 pytest >= 7.0.0  # 运行单元测试
