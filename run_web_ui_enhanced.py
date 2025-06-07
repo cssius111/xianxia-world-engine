@@ -6,6 +6,7 @@ import threading
 import webbrowser
 import json
 import time
+import random
 from flask import Flask, render_template, request, jsonify, session
 from pathlib import Path
 import os
@@ -65,8 +66,13 @@ class GameManager:
         # 添加事件回调
         self.event_system.register_callback('first_cultivation_event', self._on_first_cultivation)
         
-        # 初始日志
-        self.add_log("【系统】正在唤醒修仙世界，请稍候……")
+        # 初始日志 - 随机欢迎语
+        opening_lines = [
+            "【系统】你凝视着星辰大海，命运悄然苏醒……",
+            "【系统】灵气浮动，天地将变，你的故事开始了。",
+            "【系统】青云山下，凡心未灭；今朝入道，一念永恒。"
+        ]
+        self.add_log(random.choice(opening_lines))
     
     def add_log(self, message, log_type="system"):
         """添加日志"""
