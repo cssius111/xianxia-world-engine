@@ -13,6 +13,14 @@ from .status import StatusEffect, StatusEffectManager
 from .command_parser import CommandParser
 from .game_core import GameCore
 
+# V3版本新增模块
+from .data_manager_v3 import DataManagerV3, DM, load_game_data, get_config
+from .formula_engine import FormulaEngine, formula_engine, calculate, evaluate_expression
+from .cultivation_system import CultivationSystem, cultivation_system, cultivate, attempt_breakthrough
+from .combat_system_v3 import CombatSystemV3, Combat, CombatState, combat_system, create_combat
+from .event_system_v3 import EventSystemV3, event_system, trigger_events, process_event_choice, register_event_handler
+from .npc_system_v3 import NPCSystemV3, NPC, npc_system, create_npc, get_npc, spawn_npcs_for_location
+
 __all__ = [
     'DataLoader',
     'AttributeSystem',
@@ -27,4 +35,35 @@ __all__ = [
     'StatusEffectManager',
     'CommandParser',
     'GameCore',
+    # V3版本新增
+    'DataManagerV3',
+    'DM',
+    'load_game_data',
+    'get_config',
+    'FormulaEngine',
+    'formula_engine',
+    'calculate',
+    'evaluate_expression',
+    'CultivationSystem',
+    'cultivation_system',
+    'cultivate',
+    'attempt_breakthrough',
+    'CombatSystemV3',
+    'Combat',
+    'CombatState',
+    'combat_system',
+    'create_combat',
+    # Event System V3
+    'EventSystemV3',
+    'event_system',
+    'trigger_events',
+    'process_event_choice',
+    'register_event_handler',
+    # NPC System V3
+    'NPCSystemV3',
+    'NPC',
+    'npc_system',
+    'create_npc',
+    'get_npc',
+    'spawn_npcs_for_location',
 ]
