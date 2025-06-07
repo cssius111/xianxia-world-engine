@@ -1,0 +1,392 @@
+{
+  "meta": {
+    "version": "3.0.0",
+    "description": "修仙世界引擎战斗系统定义",
+    "schema_version": "2020-12",
+    "last_modified": "2025-06-07"
+  },
+  "combat_phases": {
+    "initialization": {
+      "order": 1,
+      "name": "战斗初始化",
+      "steps": [
+        "detect_participants",
+        "calculate_initiative",
+        "apply_terrain_effects",
+        "activate_pre_combat_buffs"
+      ]
+    },
+    "initiative": {
+      "order": 2,
+      "name": "先攻判定",
+      "formula": "speed + d20 + initiative_bonus",
+      "modifiers": {
+        "surprise_attack": 10,
+        "ambush": -10,
+        "quick_draw": 5,
+        "heavy_armor": -3
+      }
+    },
+    "action": {
+      "order": 3,
+      "name": "行动阶段",
+      "action_types": {
+        "standard": {
+          "cost": 1,
+          "options": ["attack", "cast_spell", "use_skill", "use_item"]
+        },
+        "move": {
+          "cost": 0,
+          "range": "speed / 10",
+          "options": ["walk", "run", "fly", "teleport"]
+        },
+        "swift": {
+          "cost": 0,
+          "limit": 1,
+          "options": ["quick_spell", "activate_item", "simple_action"]
+        },
+        "full_round": {
+          "cost": "all",
+          "options": ["charge", "full_defense", "complex_spell", "meditation"]
+        }
+      }
+    },
+    "resolution": {
+      "order": 4,
+      "name": "结算阶段",
+      "steps": [
+        "resolve_attacks",
+        "apply_damage",
+        "trigger_effects",
+        "check_status"
+      ]
+    },
+    "end_turn": {
+      "order": 5,
+      "name": "回合结束",
+      "steps": [
+        "duration_countdown",
+        "regeneration",
+        "status_save",
+        "trigger_end_effects"
+      ]
+    }
+  },
+  "attack_resolution": {
+    "hit_calculation": {
+      "formula": "1d20 + accuracy + skill_bonus vs defense + evasion",
+      "critical_hit": {
+        "range": "19-20",
+        "confirmation": "second_roll >= defense",
+        "damage_multiplier": 2.0
+      },
+      "fumble": {
+        "range": "1",
+        "effects": ["lose_next_action", "weapon_damage", "self_injury"]
+      }
+    },
+    "damage_calculation": {
+      "physical": {
+        "formula": "weapon_damage + strength_bonus + skill_bonus",
+        "reduction": "armor + constitution / 10",
+        "minimum": 1
+      },
+      "magical": {
+        "formula": "spell_power * element_multiplier * (1 - magic_resistance)",
+        "reduction": "spell_defense + willpower / 10",
+        "minimum": 0
+      },
+      "true_damage": {
+        "formula": "fixed_amount",
+        "reduction": "none",
+        "special": "ignores_all_defense"
+      }
+    },
+    "damage_types": {
+      "slashing": {"armor_effectiveness": 0.8},
+      "piercing": {"armor_effectiveness": 0.6},
+      "bludgeoning": {"armor_effectiveness": 1.0},
+      "elemental": {"resistance_based": true},
+      "psychic": {"targets": "mental_defense"},
+      "void": {"defense_penetration": 0.5}
+    }
+  },
+  "elemental_system": {
+    "basic_elements": {
+      "metal": {
+        "color": "#C0C0C0",
+        "strong_against": ["wood"],
+        "weak_against": ["fire"],
+        "damage_bonus": 1.5,
+        "resistance_penalty": 0.5
+      },
+      "wood": {
+        "color": "#228B22",
+        "strong_against": ["earth"],
+        "weak_against": ["metal"],
+        "damage_bonus": 1.5,
+        "resistance_penalty": 0.5
+      },
+      "water": {
+        "color": "#4169E1",
+        "strong_against": ["fire"],
+        "weak_against": ["earth"],
+        "damage_bonus": 1.5,
+        "resistance_penalty": 0.5
+      },
+      "fire": {
+        "color": "#FF4500",
+        "strong_against": ["metal"],
+        "weak_against": ["water"],
+        "damage_bonus": 1.5,
+        "resistance_penalty": 0.5
+      },
+      "earth": {
+        "color": "#8B4513",
+        "strong_against": ["water"],
+        "weak_against": ["wood"],
+        "damage_bonus": 1.5,
+        "resistance_penalty": 0.5
+      }
+    },
+    "advanced_elements": {
+      "thunder": {
+        "base": "metal",
+        "special": "chain_damage",
+        "paralysis_chance": 0.2
+      },
+      "ice": {
+        "base": "water",
+        "special": "freeze_effect",
+        "slow_duration": 3
+      },
+      "wind": {
+        "base": "wood",
+        "special": "knockback",
+        "accuracy_bonus": 0.2
+      },
+      "light": {
+        "base": null,
+        "special": "undead_bane",
+        "healing_bonus": 0.5
+      },
+      "dark": {
+        "base": null,
+        "special": "fear_effect",
+        "stealth_bonus": 0.5
+      }
+    },
+    "element_fusion": {
+      "steam": ["water", "fire"],
+      "magma": ["earth", "fire"],
+      "storm": ["wind", "thunder"],
+      "life": ["water", "wood"],
+      "decay": ["earth", "dark"]
+    }
+  },
+  "status_effects": {
+    "buffs": {
+      "haste": {
+        "duration": "5 turns",
+        "effects": {"speed": "+50%", "actions": "+1"},
+        "dispellable": true
+      },
+      "shield": {
+        "duration": "10 turns",
+        "effects": {"damage_reduction": "20%", "magic_shield": 100},
+        "dispellable": true
+      },
+      "berserk": {
+        "duration": "until_combat_ends",
+        "effects": {"damage": "+100%", "defense": "-50%", "immune_to_fear": true},
+        "dispellable": false
+      },
+      "enlightenment": {
+        "duration": "3 turns",
+        "effects": {"all_attributes": "+20", "skill_cooldown": "-2"},
+        "dispellable": false,
+        "rare": true
+      }
+    },
+    "debuffs": {
+      "poison": {
+        "duration": "until_cured",
+        "effects": {"health_per_turn": "-5%", "healing_received": "-50%"},
+        "save": "constitution",
+        "stack_type": "intensity"
+      },
+      "freeze": {
+        "duration": "1-3 turns",
+        "effects": {"actions": 0, "defense": "-30%"},
+        "save": "willpower",
+        "break_on_damage": 0.5
+      },
+      "curse": {
+        "duration": "until_dispelled",
+        "effects": {"all_rolls": "-2", "luck": "-20"},
+        "save": "willpower",
+        "curse_level": "variable"
+      },
+      "seal": {
+        "duration": "5 turns",
+        "effects": {"skills_disabled": true, "spiritual_power": 0},
+        "save": "spiritual_power",
+        "break_condition": "special_item"
+      }
+    },
+    "special_states": {
+      "flying": {
+        "effects": {"melee_evasion": "+30%", "movement_type": "aerial"},
+        "counters": ["ranged_attacks", "anti_air_skills"]
+      },
+      "stealth": {
+        "effects": {"untargetable": true, "first_strike": true},
+        "detection": "perception_check",
+        "break_on": "attack"
+      },
+      "immortal_body": {
+        "effects": {"death_prevention": 1, "regeneration": "10%"},
+        "duration": "3 turns",
+        "cooldown": "once_per_combat"
+      }
+    }
+  },
+  "special_mechanics": {
+    "combo_system": {
+      "chain_bonus": {
+        "2_chain": 1.2,
+        "3_chain": 1.5,
+        "5_chain": 2.0,
+        "10_chain": 3.0
+      },
+      "combo_breakers": ["defend", "stun", "interrupt"],
+      "special_combos": [
+        {
+          "name": "Five Elements Destruction",
+          "sequence": ["metal_skill", "water_skill", "wood_skill", "fire_skill", "earth_skill"],
+          "effect": "area_devastation",
+          "damage_multiplier": 5.0
+        }
+      ]
+    },
+    "counter_system": {
+      "counter_chance": "10% + (agility - attacker_agility) * 2%",
+      "counter_damage": "50% of normal",
+      "perfect_counter": {
+        "requirement": "timing_window < 0.5s",
+        "damage": "100%",
+        "stun": true
+      }
+    },
+    "execution_system": {
+      "threshold": "enemy_health < 20%",
+      "success_rate": "(level_difference * 10) + luck%",
+      "immunity": ["boss", "player", "important_npc"]
+    }
+  },
+  "ai_behavior": {
+    "behavior_trees": {
+      "aggressive": {
+        "priority": ["highest_damage", "lowest_health_enemy", "closest_enemy"],
+        "skill_preference": "offensive",
+        "retreat_threshold": 0.1
+      },
+      "defensive": {
+        "priority": ["survive", "protect_allies", "counter_attack"],
+        "skill_preference": "defensive",
+        "retreat_threshold": 0.3
+      },
+      "support": {
+        "priority": ["heal_allies", "buff_team", "debuff_enemies"],
+        "skill_preference": "utility",
+        "retreat_threshold": 0.5
+      },
+      "berserker": {
+        "priority": ["maximum_carnage", "ignore_defense"],
+        "skill_preference": "reckless",
+        "retreat_threshold": 0.0
+      }
+    },
+    "threat_calculation": {
+      "formula": "damage_dealt * 1.0 + healing_done * 0.5 + taunt_value",
+      "modifiers": {
+        "tank_stance": 2.0,
+        "stealth": 0.1,
+        "provoke": 5.0
+      }
+    },
+    "learning_system": {
+      "pattern_recognition": true,
+      "counter_adaptation": true,
+      "player_profiling": true,
+      "strategy_evolution": "per_battle"
+    }
+  },
+  "combat_rewards": {
+    "experience": {
+      "formula": "enemy_level * 10 * difficulty_multiplier * (1 + overkill_bonus)",
+      "distribution": "damage_contribution",
+      "bonus_conditions": {
+        "no_damage_taken": 1.5,
+        "quick_victory": 1.2,
+        "underdog": 2.0
+      }
+    },
+    "loot_system": {
+      "drop_rates": {
+        "common": 0.8,
+        "uncommon": 0.15,
+        "rare": 0.04,
+        "epic": 0.009,
+        "legendary": 0.001
+      },
+      "loot_bonus": {
+        "luck_scaling": "luck / 100",
+        "treasure_hunter": 0.5,
+        "first_kill": 2.0
+      }
+    },
+    "skill_mastery": {
+      "usage_points": 1,
+      "critical_usage": 3,
+      "perfect_timing": 5,
+      "mastery_threshold": [10, 50, 100, 500, 1000]
+    }
+  },
+  "combat_settings": {
+    "difficulty_modes": {
+      "easy": {
+        "player_damage": 0.5,
+        "enemy_damage": 1.5,
+        "experience": 0.8
+      },
+      "normal": {
+        "player_damage": 1.0,
+        "enemy_damage": 1.0,
+        "experience": 1.0
+      },
+      "hard": {
+        "player_damage": 1.5,
+        "enemy_damage": 0.8,
+        "experience": 1.5
+      },
+      "nightmare": {
+        "player_damage": 2.0,
+        "enemy_damage": 0.5,
+        "experience": 3.0,
+        "permadeath": true
+      }
+    },
+    "auto_battle": {
+      "available": true,
+      "efficiency": 0.8,
+      "skill_usage": "conservative",
+      "item_usage": false
+    }
+  },
+  "_custom_tags": [
+    "martial_arts_styles",
+    "weapon_types",
+    "combat_formations"
+  ]
+}

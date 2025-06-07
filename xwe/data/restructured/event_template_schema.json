@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xianxia-engine.com/schemas/event_template.json",
+  "title": "Event Template Schema",
+  "description": "Schema for event template definitions",
+  "type": "object",
+  "required": ["meta", "event_categories", "event_templates"],
+  "properties": {
+    "meta": {"$ref": "#/$defs/metaInfo"},
+    "event_categories": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["id", "name", "trigger_type", "frequency"],
+        "properties": {
+          "id": {"type": "string"},
+          "name": {"type": "string"},
+          "trigger_type": {"type": "string"},
+          "frequency": {"type": "string"}
+        }
+      }
+    },
+    "event_templates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "category", "rarity"],
+        "properties": {
+          "id": {"type": "string"},
+          "name": {"type": "string"},
+          "category": {"type": "string"},
+          "rarity": {"type": "string"},
+          "requirements": {"type": "object"},
+          "description": {"type": "string"},
+          "choices": {"type": "array"},
+          "chain_events": {"type": "object"},
+          "phases": {"type": "array"},
+          "outcomes": {"type": "object"},
+          "npc": {"type": "string"},
+          "dialogue_tree": {"type": "object"}
+        }
+      }
+    },
+    "event_chains": {"type": "object"},
+    "event_modifiers": {"type": "object"},
+    "event_rewards": {"type": "object"},
+    "_custom_tags": {"$ref": "#/$defs/customTags"}
+  },
+  "$defs": {
+    "metaInfo": {
+      "type": "object",
+      "required": ["version", "description", "schema_version"],
+      "properties": {
+        "version": {"type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$"},
+        "description": {"type": "string"},
+        "schema_version": {"type": "string"},
+        "last_modified": {"type": "string", "format": "date"}
+      }
+    },
+    "customTags": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  }
+}

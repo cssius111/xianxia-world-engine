@@ -1,0 +1,353 @@
+{
+  "meta": {
+    "version": "3.0.0",
+    "description": "修仙世界引擎灵根体系定义",
+    "schema_version": "2020-12",
+    "last_modified": "2025-06-07"
+  },
+  "root_types": {
+    "single": {
+      "id": "single_root",
+      "name": "单灵根",
+      "description": "纯粹的单一属性灵根，修炼速度极快",
+      "elements": ["metal", "wood", "water", "fire", "earth"],
+      "rarity": 0.01,
+      "cultivation_speed": 5.0,
+      "breakthrough_bonus": 0.3,
+      "bottleneck_penalty": -0.2,
+      "special_features": {
+        "element_mastery": "对应属性法术威力+100%",
+        "pure_cultivation": "修炼速度+200%",
+        "heavenly_chosen": "天道眷顾，机缘+50%"
+      }
+    },
+    "dual": {
+      "id": "dual_root",
+      "name": "双灵根",
+      "description": "两种属性的灵根，平衡性较好",
+      "combinations": [
+        {"elements": ["water", "wood"], "name": "水木双灵根", "synergy": 1.2},
+        {"elements": ["fire", "earth"], "name": "火土双灵根", "synergy": 1.2},
+        {"elements": ["earth", "metal"], "name": "土金双灵根", "synergy": 1.2},
+        {"elements": ["metal", "water"], "name": "金水双灵根", "synergy": 1.2},
+        {"elements": ["wood", "fire"], "name": "木火双灵根", "synergy": 1.2}
+      ],
+      "rarity": 0.05,
+      "cultivation_speed": 3.0,
+      "breakthrough_bonus": 0.2,
+      "special_features": {
+        "dual_casting": "可同时施展两系法术",
+        "element_fusion": "可修炼融合技能"
+      }
+    },
+    "triple": {
+      "id": "triple_root",
+      "name": "三灵根",
+      "description": "三种属性的灵根，较为常见",
+      "rarity": 0.15,
+      "cultivation_speed": 2.0,
+      "breakthrough_bonus": 0.1,
+      "special_features": {
+        "versatility": "可学习多系法术",
+        "balance": "属性均衡发展"
+      }
+    },
+    "quad": {
+      "id": "quad_root",
+      "name": "四灵根",
+      "description": "四种属性的灵根，修炼缓慢",
+      "rarity": 0.29,
+      "cultivation_speed": 1.5,
+      "breakthrough_bonus": 0.0,
+      "special_features": {
+        "jack_of_all": "全能型修士",
+        "slow_steady": "稳定但缓慢"
+      }
+    },
+    "penta": {
+      "id": "penta_root",
+      "name": "五灵根",
+      "description": "五行俱全的杂灵根，修炼最慢但潜力独特",
+      "rarity": 0.5,
+      "cultivation_speed": 1.0,
+      "breakthrough_bonus": -0.1,
+      "special_features": {
+        "chaos_potential": "可觉醒混沌体质",
+        "formation_master": "阵法天赋+100%",
+        "late_bloomer": "后期潜力巨大"
+      },
+      "special_paths": [
+        {
+          "name": "五行圆满",
+          "requirement": "five_elements_balance >= 0.9",
+          "bonus": "all_elements_mastery"
+        },
+        {
+          "name": "混沌归一",
+          "requirement": "special_encounter + enlightenment",
+          "bonus": "chaos_spiritual_root"
+        }
+      ]
+    }
+  },
+  "special_roots": {
+    "variant": [
+      {
+        "id": "thunder_root",
+        "name": "雷灵根",
+        "description": "变异的雷属性灵根",
+        "base_type": "single",
+        "element": "thunder",
+        "rarity": 0.001,
+        "cultivation_speed": 6.0,
+        "special_abilities": [
+          "thunder_body",
+          "lightning_speed",
+          "tribulation_resistance"
+        ]
+      },
+      {
+        "id": "ice_root",
+        "name": "冰灵根",
+        "description": "变异的冰属性灵根",
+        "base_type": "single",
+        "element": "ice",
+        "rarity": 0.001,
+        "cultivation_speed": 6.0,
+        "special_abilities": [
+          "frost_domain",
+          "absolute_zero",
+          "ice_soul"
+        ]
+      },
+      {
+        "id": "wind_root",
+        "name": "风灵根",
+        "description": "变异的风属性灵根",
+        "base_type": "single",
+        "element": "wind",
+        "rarity": 0.001,
+        "cultivation_speed": 6.0,
+        "special_abilities": [
+          "wind_escape",
+          "storm_control",
+          "void_step"
+        ]
+      }
+    ],
+    "heavenly": [
+      {
+        "id": "light_root",
+        "name": "光明灵根",
+        "description": "天地正气所化",
+        "rarity": 0.0001,
+        "cultivation_speed": 10.0,
+        "restrictions": {
+          "karma": ">= 80",
+          "evil_deeds": "== 0"
+        },
+        "abilities": [
+          "purification",
+          "holy_light",
+          "demon_bane"
+        ]
+      },
+      {
+        "id": "dark_root",
+        "name": "暗黑灵根",
+        "description": "深渊魔气凝聚",
+        "rarity": 0.0001,
+        "cultivation_speed": 10.0,
+        "restrictions": {
+          "karma": "<= -80",
+          "demon_affinity": ">= 50"
+        },
+        "abilities": [
+          "shadow_realm",
+          "soul_devour",
+          "dark_transformation"
+        ]
+      }
+    ],
+    "legendary": [
+      {
+        "id": "chaos_root",
+        "name": "混沌灵根",
+        "description": "开天辟地之初的原始灵根",
+        "rarity": 0.00001,
+        "cultivation_speed": 20.0,
+        "evolution_from": "penta_root",
+        "requirements": {
+          "special_event": "chaos_baptism",
+          "comprehension": ">= 2.0",
+          "all_elements": "mastered"
+        },
+        "abilities": [
+          "chaos_creation",
+          "reality_manipulation",
+          "primordial_essence"
+        ]
+      },
+      {
+        "id": "void_root",
+        "name": "虚无灵根",
+        "description": "超脱五行之外的空灵根",
+        "rarity": 0.00001,
+        "cultivation_speed": 15.0,
+        "special_features": {
+          "phase_shift": "虚实转换",
+          "space_mastery": "空间掌控",
+          "existence_denial": "存在否定"
+        }
+      }
+    ]
+  },
+  "quality_grades": {
+    "inferior": {
+      "id": "inferior",
+      "name": "劣等",
+      "multiplier": 0.5,
+      "description": "灵根驳杂，修炼困难",
+      "upgrade_potential": 0.1
+    },
+    "common": {
+      "id": "common",
+      "name": "凡品",
+      "multiplier": 0.7,
+      "description": "普通灵根，中规中矩",
+      "upgrade_potential": 0.2
+    },
+    "good": {
+      "id": "good",
+      "name": "良品",
+      "multiplier": 1.0,
+      "description": "品质不错，有一定潜力",
+      "upgrade_potential": 0.3
+    },
+    "excellent": {
+      "id": "excellent",
+      "name": "优品",
+      "multiplier": 1.5,
+      "description": "上等灵根，修炼顺畅",
+      "upgrade_potential": 0.2
+    },
+    "supreme": {
+      "id": "supreme",
+      "name": "极品",
+      "multiplier": 2.0,
+      "description": "天资卓越，万中无一",
+      "upgrade_potential": 0.1
+    },
+    "heavenly": {
+      "id": "heavenly",
+      "name": "天品",
+      "multiplier": 3.0,
+      "description": "天道眷顾，注定不凡",
+      "upgrade_potential": 0.0
+    }
+  },
+  "root_mechanics": {
+    "detection": {
+      "methods": [
+        {
+          "name": "测灵石",
+          "accuracy": 0.8,
+          "cost": 10,
+          "available_at": "any_sect"
+        },
+        {
+          "name": "测灵阵",
+          "accuracy": 0.95,
+          "cost": 100,
+          "available_at": "major_sect"
+        },
+        {
+          "name": "天机推演",
+          "accuracy": 1.0,
+          "cost": 1000,
+          "available_at": "destiny_pavilion"
+        }
+      ]
+    },
+    "improvement": {
+      "methods": [
+        {
+          "name": "洗髓丹",
+          "effect": "quality + 1",
+          "success_rate": 0.5,
+          "side_effect": "pain_and_impurity"
+        },
+        {
+          "name": "造化神泉",
+          "effect": "quality + 2",
+          "success_rate": 0.3,
+          "requirement": "special_location"
+        },
+        {
+          "name": "灵根嫁接",
+          "effect": "change_type",
+          "success_rate": 0.1,
+          "risk": "death_or_cripple"
+        }
+      ]
+    },
+    "element_affinity": {
+      "formula": "base_affinity * quality_multiplier * cultivation_bonus",
+      "conversion_rate": {
+        "same_element": 1.0,
+        "generating_element": 0.8,
+        "neutral_element": 0.5,
+        "destructive_element": 0.2,
+        "opposite_element": 0.1
+      }
+    }
+  },
+  "compatibility_matrix": {
+    "description": "灵根与功法、法宝的相性",
+    "perfect_match": {
+      "multiplier": 2.0,
+      "description": "完美契合"
+    },
+    "good_match": {
+      "multiplier": 1.5,
+      "description": "相性良好"
+    },
+    "neutral_match": {
+      "multiplier": 1.0,
+      "description": "普通相性"
+    },
+    "poor_match": {
+      "multiplier": 0.5,
+      "description": "相性不佳"
+    },
+    "incompatible": {
+      "multiplier": 0.1,
+      "description": "完全不兼容"
+    }
+  },
+  "awakening_events": {
+    "root_awakening": {
+      "trigger": "age >= 6 && age <= 16",
+      "ceremony": "awakening_ritual",
+      "failure_result": "mortal_life"
+    },
+    "late_awakening": {
+      "trigger": "special_encounter || divine_intervention",
+      "age_limit": 100,
+      "bonus": "enhanced_potential"
+    },
+    "root_evolution": {
+      "trigger": "special_materials + breakthrough",
+      "requirements": {
+        "realm": ">= golden_core",
+        "materials": ["chaos_stone", "primordial_essence"],
+        "enlightenment": "dao_comprehension"
+      }
+    }
+  },
+  "_custom_tags": [
+    "root_bloodlines",
+    "root_combinations",
+    "special_constitutions"
+  ]
+}

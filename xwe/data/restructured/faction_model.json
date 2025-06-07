@@ -1,0 +1,523 @@
+{
+  "meta": {
+    "version": "3.0.0",
+    "description": "修仙世界引擎势力体系定义",
+    "schema_version": "2020-12",
+    "last_modified": "2025-06-07"
+  },
+  "faction_tiers": {
+    "tier_9": {
+      "name": "至尊圣地",
+      "description": "统御一方天地的超然势力",
+      "requirements": {
+        "members": ">=10000",
+        "max_realm": ">=mahayana",
+        "influence": ">=100000",
+        "territory": ">=10_regions"
+      },
+      "benefits": {
+        "resource_multiplier": 10.0,
+        "recruitment_bonus": 5.0,
+        "diplomatic_weight": 10
+      }
+    },
+    "tier_8": {
+      "name": "顶级宗门",
+      "description": "称霸一域的强大宗门",
+      "requirements": {
+        "members": ">=5000",
+        "max_realm": ">=body_integration",
+        "influence": ">=50000"
+      }
+    },
+    "tier_7": {
+      "name": "一流宗门",
+      "description": "实力雄厚的大型宗门",
+      "requirements": {
+        "members": ">=1000",
+        "max_realm": ">=void_refinement",
+        "influence": ">=10000"
+      }
+    },
+    "tier_6": {
+      "name": "二流宗门",
+      "description": "地方性的知名宗门",
+      "requirements": {
+        "members": ">=500",
+        "max_realm": ">=deity_transformation",
+        "influence": ">=5000"
+      }
+    },
+    "tier_5": {
+      "name": "三流宗门",
+      "description": "有一定影响力的宗门",
+      "requirements": {
+        "members": ">=100",
+        "max_realm": ">=nascent_soul",
+        "influence": ">=1000"
+      }
+    },
+    "tier_4": {
+      "name": "小型宗门",
+      "description": "初具规模的修炼势力",
+      "requirements": {
+        "members": ">=50",
+        "max_realm": ">=golden_core",
+        "influence": ">=500"
+      }
+    },
+    "tier_3": {
+      "name": "修炼世家",
+      "description": "以家族为核心的势力",
+      "requirements": {
+        "members": ">=20",
+        "max_realm": ">=foundation_building",
+        "influence": ">=100"
+      }
+    },
+    "tier_2": {
+      "name": "散修联盟",
+      "description": "松散的修士组织",
+      "requirements": {
+        "members": ">=10",
+        "influence": ">=50"
+      }
+    },
+    "tier_1": {
+      "name": "初创势力",
+      "description": "刚刚成立的小团体",
+      "requirements": {
+        "members": ">=3",
+        "influence": ">=10"
+      }
+    }
+  },
+  "faction_types": {
+    "orthodox_sect": {
+      "id": "orthodox_sect",
+      "name": "正道宗门",
+      "alignment": "good",
+      "structure": "hierarchical",
+      "recruitment": {
+        "requirements": {
+          "karma": ">=0",
+          "criminal_record": "none"
+        },
+        "benefits": {
+          "reputation": "+100",
+          "access": "sect_techniques"
+        }
+      }
+    },
+    "demonic_sect": {
+      "id": "demonic_sect",
+      "name": "魔道宗门",
+      "alignment": "evil",
+      "structure": "power_based",
+      "recruitment": {
+        "requirements": {
+          "power": "any",
+          "morality": "flexible"
+        },
+        "benefits": {
+          "power_growth": "+50%",
+          "forbidden_techniques": true
+        }
+      }
+    },
+    "neutral_organization": {
+      "id": "neutral_organization",
+      "name": "中立组织",
+      "alignment": "neutral",
+      "structure": "democratic",
+      "focus": ["trade", "information", "services"]
+    },
+    "cultivation_family": {
+      "id": "cultivation_family",
+      "name": "修真世家",
+      "alignment": "varies",
+      "structure": "bloodline",
+      "special": {
+        "inheritance": true,
+        "bloodline_techniques": true
+      }
+    }
+  },
+  "faction_templates": [
+    {
+      "id": "tianjian_sect",
+      "name": "天剑宗",
+      "type": "orthodox_sect",
+      "tier": 8,
+      "description": "以剑入道，正气凛然的顶级剑修宗门",
+      "founding_date": -3000,
+      "headquarters": "tianshan_peak",
+      "influence": 80000,
+      "wealth": 50000000,
+      "members": {
+        "total": 8000,
+        "elders": 50,
+        "core_disciples": 500,
+        "inner_disciples": 2000,
+        "outer_disciples": 5450
+      },
+      "leadership": {
+        "sect_master": {
+          "position": "宗主",
+          "npc_id": "tianjian_master",
+          "realm": "body_integration",
+          "authority": 100
+        },
+        "grand_elders": {
+          "count": 3,
+          "realm": "void_refinement",
+          "authority": 80
+        },
+        "elders": {
+          "count": 50,
+          "realm": "nascent_soul",
+          "authority": 60
+        }
+      },
+      "resources": {
+        "spirit_stones": 50000000,
+        "spirit_veins": 5,
+        "medicine_gardens": 10,
+        "weapon_forges": 3,
+        "libraries": 8
+      },
+      "tech_tree": {
+        "basic_sword_art": {
+          "unlocked": true,
+          "mastery": 100
+        },
+        "heaven_splitting_sword": {
+          "unlocked": true,
+          "mastery": 80,
+          "requirements": {
+            "contribution": 10000,
+            "realm": "golden_core"
+          }
+        },
+        "sword_intent": {
+          "unlocked": true,
+          "mastery": 60,
+          "requirements": {
+            "contribution": 50000,
+            "realm": "nascent_soul"
+          }
+        }
+      },
+      "relationships": {
+        "celestial_dao_sect": {
+          "value": 80,
+          "type": "alliance"
+        },
+        "blood_demon_sect": {
+          "value": -100,
+          "type": "enemy"
+        },
+        "merchant_alliance": {
+          "value": 60,
+          "type": "trade_partner"
+        }
+      },
+      "recruitment_formula": "base_chance * (1 + reputation / 1000) * (1 + charisma * 0.01)",
+      "contribution_system": {
+        "daily_tasks": {
+          "patrol": 10,
+          "cultivation": 5,
+          "resource_gathering": 20
+        },
+        "missions": {
+          "easy": 50,
+          "medium": 200,
+          "hard": 1000,
+          "extreme": 5000
+        },
+        "exchange_rates": {
+          "spirit_stones": "1:1",
+          "techniques": "variable",
+          "pills": "100-10000",
+          "equipment": "500-50000"
+        }
+      },
+      "faction_skills": [
+        {
+          "id": "sword_formation",
+          "name": "天剑大阵",
+          "type": "formation",
+          "power": "participants * 100 * formation_mastery"
+        },
+        {
+          "id": "sword_heart",
+          "name": "剑心通明",
+          "type": "passive",
+          "effect": "sword_techniques +50%"
+        }
+      ],
+      "territory": {
+        "controlled_regions": ["tianshan", "sword_valley", "qingfeng_plains"],
+        "resource_nodes": 15,
+        "defensive_arrays": 10
+      },
+      "events": {
+        "annual_tournament": {
+          "frequency": "yearly",
+          "rewards": "top_techniques",
+          "participation": "all_disciples"
+        },
+        "elder_selection": {
+          "frequency": "decade",
+          "requirements": {
+            "realm": "nascent_soul",
+            "contribution": 100000
+          }
+        }
+      }
+    },
+    {
+      "id": "blood_demon_sect",
+      "name": "血魔宗",
+      "type": "demonic_sect",
+      "tier": 7,
+      "description": "以血炼道，行事狠辣的魔道宗门",
+      "alignment": "evil",
+      "influence": 40000,
+      "wealth": 30000000,
+      "tech_tree": {
+        "blood_refinement": {
+          "unlocked": true,
+          "power_boost": 2.0,
+          "side_effects": "humanity_loss"
+        },
+        "soul_devouring": {
+          "unlocked": true,
+          "instant_power": true,
+          "karma_cost": -100
+        }
+      },
+      "special_mechanics": {
+        "blood_pool": {
+          "capacity": 100000,
+          "conversion_rate": "life_force:power = 1:10"
+        },
+        "demonic_transformation": {
+          "stages": 3,
+          "power_multiplier": [2, 5, 10],
+          "humanity_cost": [30, 60, 100]
+        }
+      }
+    },
+    {
+      "id": "merchant_alliance",
+      "name": "万宝商盟",
+      "type": "neutral_organization",
+      "tier": 6,
+      "description": "遍布天下的商业组织",
+      "focus": "trade",
+      "influence": 25000,
+      "wealth": 100000000,
+      "special_features": {
+        "trade_network": {
+          "coverage": "global",
+          "markup": 1.2,
+          "rare_items_access": true
+        },
+        "information_network": {
+          "accuracy": 0.9,
+          "speed": "instant",
+          "price": "variable"
+        },
+        "auction_house": {
+          "frequency": "monthly",
+          "commission": 0.1,
+          "minimum_bid": 1000
+        }
+      },
+      "services": [
+        {
+          "id": "item_appraisal",
+          "cost": "item_value * 0.01",
+          "accuracy": 0.95
+        },
+        {
+          "id": "transportation",
+          "cost": "distance * weight * 10",
+          "safety": 0.99
+        },
+        {
+          "id": "loans",
+          "interest_rate": 0.1,
+          "max_amount": "reputation * 1000"
+        }
+      ]
+    },
+    {
+      "id": "yun_family",
+      "name": "云家",
+      "type": "cultivation_family",
+      "tier": 5,
+      "description": "以云系功法闻名的修真世家",
+      "bloodline": {
+        "name": "云龙血脉",
+        "activation_rate": 0.3,
+        "benefits": {
+          "wind_affinity": "+100%",
+          "flying_speed": "+50%",
+          "cloud_techniques": "mastery"
+        }
+      },
+      "family_head": {
+        "position": "家主",
+        "succession": "strongest_bloodline",
+        "current": "yun_tianlong"
+      },
+      "branches": {
+        "main_family": {
+          "members": 50,
+          "resource_share": 0.5
+        },
+        "branch_families": {
+          "count": 5,
+          "members_each": 100,
+          "resource_share": 0.1
+        }
+      },
+      "ancestral_techniques": [
+        "cloud_dragon_transformation",
+        "sky_walking_technique",
+        "storm_summoning"
+      ]
+    }
+  ],
+  "faction_mechanics": {
+    "influence_system": {
+      "calculation": "members * average_realm * reputation * 0.001",
+      "decay_rate": "influence * 0.01 per month",
+      "growth_sources": [
+        "member_achievements",
+        "territory_control",
+        "successful_missions",
+        "diplomatic_victories"
+      ]
+    },
+    "war_system": {
+      "declaration_requirements": {
+        "influence": "attacker >= defender * 0.5",
+        "cause": ["territory_dispute", "revenge", "resources", "ideology"],
+        "approval": "leadership_vote"
+      },
+      "war_score": {
+        "calculation": "battles_won * 10 + territories_captured * 50 + enemies_killed",
+        "victory_threshold": 100,
+        "surrender_threshold": -100
+      },
+      "consequences": {
+        "victory": {
+          "territory": "capture_chance",
+          "resources": "plunder_percentage",
+          "reputation": "+500"
+        },
+        "defeat": {
+          "territory": "loss_chance",
+          "resources": "tribute_payment",
+          "reputation": "-500"
+        }
+      }
+    },
+    "diplomacy_system": {
+      "relationship_types": [
+        {
+          "type": "alliance",
+          "benefits": "mutual_defense",
+          "requirements": "relationship >= 80"
+        },
+        {
+          "type": "trade_agreement",
+          "benefits": "resource_exchange",
+          "requirements": "relationship >= 40"
+        },
+        {
+          "type": "non_aggression",
+          "benefits": "peace",
+          "requirements": "relationship >= -20"
+        },
+        {
+          "type": "vendetta",
+          "effects": "automatic_hostility",
+          "trigger": "relationship <= -80"
+        }
+      ],
+      "relationship_modifiers": {
+        "same_alignment": "+20",
+        "opposite_alignment": "-20",
+        "trade": "+1 per 1000 stones",
+        "conflict": "-10 per battle",
+        "gifts": "+value / 1000"
+      }
+    },
+    "contribution_tracking": {
+      "member_actions": {
+        "complete_mission": "mission_contribution",
+        "donate_resources": "resource_value",
+        "recruit_member": 1000,
+        "breakthrough": "realm_value * 100"
+      },
+      "benefits": {
+        "access_level": "contribution / 1000",
+        "resource_allocation": "contribution_percentage",
+        "position_eligibility": "contribution_threshold"
+      }
+    }
+  },
+  "faction_positions": {
+    "leadership": {
+      "sect_master": {
+        "authority": 100,
+        "requirements": {
+          "realm": "highest_in_faction",
+          "contribution": ">=1000000",
+          "leadership": ">=80"
+        },
+        "benefits": {
+          "resource_access": "unlimited",
+          "decision_power": "absolute"
+        }
+      },
+      "elder": {
+        "authority": 60,
+        "requirements": {
+          "realm": ">=nascent_soul",
+          "contribution": ">=100000"
+        },
+        "responsibilities": ["teach_disciples", "manage_resources", "lead_missions"]
+      }
+    },
+    "special_roles": {
+      "formation_master": {
+        "requirements": {
+          "formation_mastery": ">=8"
+        },
+        "benefits": {
+          "salary": 10000,
+          "access": "formation_library"
+        }
+      },
+      "pill_master": {
+        "requirements": {
+          "alchemy": ">=8"
+        },
+        "benefits": {
+          "workshop": "private",
+          "materials": "priority_access"
+        }
+      }
+    }
+  },
+  "_custom_tags": [
+    "faction_alliances",
+    "faction_wars",
+    "faction_missions"
+  ]
+}
