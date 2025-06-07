@@ -18,7 +18,17 @@ from enum import Enum
 from dataclasses import dataclass
 
 from xwe.core.data_loader import DataLoader
-from xwe.features.visual_enhancement import VisualEnhancement
+try:
+    from xwe.features.visual_enhancement import VisualEnhancement
+except Exception:  # pragma: no cover - fallback
+    from xwe.features.visual_enhancement import visual_effects
+
+    class VisualEnhancement:
+        def __init__(self):
+            self._effects = visual_effects
+
+        def get_colored_text(self, text: str, color: str) -> str:
+            return self._effects.text_renderer.colorize(text, color.lower())
 
 
 class AuctionMode(Enum):
@@ -379,7 +389,9 @@ class AuctionSystem:
             if item.current_bidder == player.name:
                 # 玩家获得物品
                 player.spend_lingshi(item.current_bid)
-                # TODO: 将物品加入玩家背包
+                # 将拍卖品加入玩家背包
+                if hasattr(player, "inventory"):
+                    player.inventory.add(item.id, 1)
                 output.append(self.visual.get_colored_text(
                     f"恭喜您以{item.current_bid}灵石拍得{item.name}！",
                     'GREEN'
@@ -553,8 +565,7 @@ class AuctionSystem:
                     'RED'
                 ))
                 output.append("几个蒙面人突然出现：「把拍卖品交出来！」")
-                output.append("（触发战斗事件）")
-                # TODO: 触发战斗
+                output.extend(self._trigger_combat_event(player))
         
         # 检查是否有人想要结交
         if player.get_total_lingshi() > 10000:
@@ -567,7 +578,7 @@ class AuctionSystem:
                     'GREEN'
                 ))
                 output.append("神秘修士：「道友财力不凡，可否交个朋友？」")
-                # TODO: 触发社交事件
+                output.extend(self._trigger_social_event(player))
         
         return output
     
@@ -589,8 +600,16 @@ class AuctionSystem:
         self.current_item.current_bid = amount
         self.current_item.current_bidder = player.name
         self.current_item.bid_history.append((player.name, amount))
-        
+
         return f"您成功出价{amount}灵石！"
+
+    def _trigger_combat_event(self, player) -> List[str]:
+        """简单的战斗事件占位实现"""
+        return [self.visual.get_colored_text("（战斗系统尚未接入，默认玩家成功击退敌人）", 'RED')]
+
+    def _trigger_social_event(self, player) -> List[str]:
+        """简单的社交事件占位实现"""
+        return [self.visual.get_colored_text("（社交事件待实现，默认结交成功）", 'GREEN')]
 
 
 # 创建全局拍卖系统实例

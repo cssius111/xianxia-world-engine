@@ -88,6 +88,8 @@ import hashlib
 import zipfile
 import shutil
 import logging
+import threading
+from xwe.core.event_system import GameEvent
 
 logger = logging.getLogger(__name__)
 
@@ -491,8 +493,12 @@ class ModLoader:
             )
         elif trigger_type == 'time':
             # 时间触发
-            # TODO: 实现时间触发逻辑
-            pass
+            interval = trigger_data.get('interval', 3600)  # 默认每小时触发
+            def schedule_event():
+                self._trigger_event(event_id, GameEvent(type='time', data={'interval': interval}))
+                threading.Timer(interval, schedule_event).start()
+
+            schedule_event()
             
     def _trigger_event(self, event_id: str, game_event) -> None:
         """触发MOD事件"""
@@ -1512,8 +1518,16 @@ ID: {mod_info.id}
             
     def configure_mod(self):
         """配置MOD"""
-        # TODO: 实现MOD配置界面
-        messagebox.showinfo("提示", "MOD配置功能开发中...")
+        config_file = filedialog.askopenfilename(
+            title="选择MOD配置文件", filetypes=[('JSON', '*.json')]
+        )
+        if not config_file:
+            return
+        with open(config_file, 'r', encoding='utf-8') as f:
+            config = json.load(f)
+
+        editor = ModConfigEditor(self.window, config)
+        editor.run()
         
     def create_mod(self):
         """创建MOD"""
@@ -1616,8 +1630,26 @@ class ModCreatorWizard:
         
     def setup_deps_page(self, parent):
         """设置依赖页"""
-        # TODO: 实现依赖设置界面
-        ttk.Label(parent, text="依赖设置功能开发中...").pack(padx=20, pady=20)
+        ttk.Label(parent, text="依赖MOD列表:").pack(anchor=tk.W, padx=5, pady=5)
+        self.deps_list = tk.Listbox(parent, height=6)
+        self.deps_list.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+
+        control = ttk.Frame(parent)
+        control.pack(fill=tk.X, padx=5, pady=5)
+        self.new_dep = tk.StringVar()
+        ttk.Entry(control, textvariable=self.new_dep, width=20).pack(side=tk.LEFT)
+        ttk.Button(control, text="添加", command=self.add_dependency).pack(side=tk.LEFT, padx=5)
+        ttk.Button(control, text="移除选中", command=self.remove_dependency).pack(side=tk.LEFT)
+
+    def add_dependency(self):
+        dep = self.new_dep.get().strip()
+        if dep:
+            self.deps_list.insert(tk.END, dep)
+            self.new_dep.set('')
+
+    def remove_dependency(self):
+        for i in reversed(self.deps_list.curselection()):
+            self.deps_list.delete(i)
         
     def setup_perms_page(self, parent):
         """设置权限页"""
