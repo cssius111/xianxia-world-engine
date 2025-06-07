@@ -8,22 +8,7 @@ python run_game.py
 
 这个命令会自动修复所有问题并启动游戏。
 
-## 🎮 其他运行方式
-
-### 方法1：快速启动器
-```bash
-python quick_start.py
-```
-
-### 方法2：运行演示版本（带使用提示）
-```bash
-python play_demo.py
-```
-
-### 方法3：直接运行主程序
-```bash
-python main.py
-```
+更多启动脚本请参阅 [docs/STARTERS.md](STARTERS.md)。
 
 ## 🔧 如果遇到问题
 
@@ -99,7 +84,7 @@ xianxia_world_engine/
 │   └── data/              # 游戏数据
 ├── main.py                # 主程序入口
 ├── play_demo.py           # 演示版本
-├── start_game.py          # 快速启动脚本
+├── scripts/start.py       # 快速启动脚本
 └── fix_and_verify.py      # 修复验证脚本
 ```
 

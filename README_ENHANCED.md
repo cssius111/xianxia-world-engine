@@ -58,10 +58,7 @@
 python start_enhanced_ui.py
 ```
 
-### 方法2：直接运行
-```bash
-python run_web_ui_enhanced.py
-```
+更多启动方式请查阅 [docs/STARTERS.md](docs/STARTERS.md)。
 
 ## 📝 使用说明
 
