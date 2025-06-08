@@ -61,7 +61,7 @@ class CultivationSystem:
         context = {
             "base_speed": 1.0,
             "spiritual_root_quality": spiritual_root_quality,
-            "comprehension": player.attributes.get("comprehension", 50) / 100,
+            "comprehension": getattr(player.attributes, "comprehension", 50) / 100,
             "environment_bonus": self._get_environment_bonus(player),
             "technique_efficiency": self._get_technique_efficiency(player)
         }
@@ -243,7 +243,7 @@ class CultivationSystem:
             return 0.5
         
         # 功法与境界匹配度
-        if technique.get("tier", 1) >= player.realm_tier:
+        if technique.get("tier", 1) >= getattr(player, "realm_level", 1):
             return technique.get("efficiency", 1.0)
         else:
             # 低级功法修炼高境界效率降低
