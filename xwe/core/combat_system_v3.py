@@ -39,6 +39,9 @@ class CombatSystemV3:
     从JSON配置加载所有战斗规则和计算公式
     """
     
+    # 提供枚举别名，便于外部访问
+    ActionType = ActionType
+
     def __init__(self):
         self.combat_data = None
         self.element_data = None
