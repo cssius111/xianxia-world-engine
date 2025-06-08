@@ -61,7 +61,7 @@ class CultivationSystem:
         context = {
             "base_speed": 1.0,
             "spiritual_root_quality": spiritual_root_quality,
-            "comprehension": player.attributes.get("comprehension", 50) / 100,
+            "comprehension": getattr(player.attributes, "comprehension", 50) / 100,
             "environment_bonus": self._get_environment_bonus(player),
             "technique_efficiency": self._get_technique_efficiency(player)
         }

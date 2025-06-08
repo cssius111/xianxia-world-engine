@@ -291,6 +291,17 @@ class DataDrivenGameCore(GameCoreEnhanced):
         ]
         
         return "\n".join(output)
+
+    def handle_command(self, command: str, args: list) -> str:
+        """通过基础引擎处理命令并返回结果"""
+        try:
+            full_input = " ".join([command, *args])
+            self.running = True  # 确保底层处理逻辑生效
+            self.process_command(full_input)
+            return "\n".join(self.get_output())
+        except Exception as e:
+            logger.error(f"Command handling error: {e}")
+            return "命令处理出错"
     
     def run(self):
         """运行游戏主循环"""
