@@ -370,6 +370,11 @@ class EnhancedGameCore(GameCore):
         logger.info("Enhanced game core shutdown complete")
 
 
+# 向后兼容的别名，旧代码可能仍使用 GameCoreEnhanced
+class GameCoreEnhanced(EnhancedGameCore):
+    pass
+
+
 def create_enhanced_game():
     """创建增强版游戏实例"""
     game = EnhancedGameCore()

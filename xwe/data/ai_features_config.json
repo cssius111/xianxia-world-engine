@@ -1,5 +1,3 @@
-# xwe/data/ai_features_config.json
-
 {
   "ai_features": {
     "enabled": true,

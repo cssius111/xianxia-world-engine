@@ -39,6 +39,9 @@ class CombatSystemV3:
     从JSON配置加载所有战斗规则和计算公式
     """
     
+    # 提供枚举别名，便于外部访问
+    ActionType = ActionType
+
     def __init__(self):
         self.combat_data = None
         self.element_data = None
@@ -882,6 +885,17 @@ class CombatState:
             self.damage_dealt[attacker_id][target_id] = 0
         
         self.damage_dealt[attacker_id][target_id] += damage
+
+    def record_healing(self, healer_id: str, target_id: str, amount: int):
+        """记录治疗量"""
+        if healer_id not in self.healing_done:
+            self.healing_done[healer_id] = 0
+
+        self.healing_done[healer_id] += amount
+
+    def get_healing_done_by(self, participant_id: str) -> int:
+        """获取某人完成的治疗总量"""
+        return self.healing_done.get(participant_id, 0)
     
     def get_damage_dealt_by(self, participant_id: str) -> int:
         """获取某人造成的总伤害"""
