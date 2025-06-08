@@ -91,10 +91,23 @@ def get_dragon_for_scene(scene_type):
     """根据场景返回合适的龙图案"""
     scene_dragons = {
         "welcome": "welcome",
-        "battle": "battle", 
+        "battle": "battle",
         "achievement": "achievement",
         "dialogue": "simple",
         "status": "mini",
         "help": "simple"
     }
     return get_dragon_art(scene_dragons.get(scene_type, "classic"))
+
+
+def print_chinese_dragon(style: str = "classic") -> None:
+    """直接打印指定风格的龙图案"""
+    print(get_dragon_art(style))
+
+
+__all__ = [
+    "get_dragon_art",
+    "display_dragon_with_animation",
+    "get_dragon_for_scene",
+    "print_chinese_dragon",
+]
