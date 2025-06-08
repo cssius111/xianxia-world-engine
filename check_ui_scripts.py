@@ -14,12 +14,7 @@ def calculate_file_hash(filepath):
     return sha256_hash.hexdigest()
 
 # 检查 UI 启动脚本
-ui_scripts = [
-    "run_web_ui.py",
-    "run_web_ui_enhanced.py", 
-    "run_web_ui_v3.py",
-    "start_enhanced_ui.py"
-]
+ui_scripts = ["run_web_ui.py", "run_web_ui_enhanced.py"]
 
 print("UI 启动脚本哈希值比较:")
 print("=" * 60)

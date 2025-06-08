@@ -24,7 +24,7 @@ python dedupe.py --apply
 # 4. 重命名保留的文件为统一名称
 echo -e "\n重命名文件..."
 # 查找所有 run_web_ui_*.py 文件并重命名为 run_web_ui.py
-for file in run_web_ui_enhanced.py run_web_ui_v3.py start_enhanced_ui.py; do
+for file in run_web_ui_v3.py start_enhanced_ui.py; do
     if [ -f "$file" ]; then
         echo "重命名 $file -> run_web_ui.py"
         git mv "$file" run_web_ui.py 2>/dev/null || mv "$file" run_web_ui.py
@@ -65,7 +65,7 @@ echo -e "\n执行 Git 操作..."
 git add -A
 git commit -m "refactor: 清理重复的 UI 启动脚本，统一为 run_web_ui.py
 
-- 移除重复文件 run_web_ui_enhanced.py 和 run_web_ui_v3.py
+- 移除 run_web_ui_v3.py 等旧脚本
 - 统一所有引用为 run_web_ui.py
 - 通过所有测试"
 
