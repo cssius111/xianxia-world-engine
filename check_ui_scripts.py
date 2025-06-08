@@ -13,8 +13,13 @@ def calculate_file_hash(filepath):
             sha256_hash.update(byte_block)
     return sha256_hash.hexdigest()
 
+ 
+# 检查 UI 启动脚本，仅保留一个脚本
+ui_scripts = ["run_web_ui.py"]
+
 # 检查 UI 启动脚本
 ui_scripts = ["run_web_ui.py", "run_web_ui_enhanced.py"]
+
 
 print("UI 启动脚本哈希值比较:")
 print("=" * 60)

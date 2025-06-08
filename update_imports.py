@@ -22,6 +22,8 @@ REPLACEMENTS = [
     (r'run_web_ui_v3', 'run_web_ui'),
     (r'start_enhanced_ui\.py', 'run_web_ui.py'),
     (r'start_enhanced_ui', 'run_web_ui'),
+    (r'run_web_ui_enhanced\.py', 'run_web_ui.py'),
+    (r'run_web_ui_enhanced', 'run_web_ui'),
 ]
 
 
