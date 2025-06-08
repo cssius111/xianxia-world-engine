@@ -1,5 +1,5 @@
 from run_web_ui import app as simple_app
-from run_web_ui_enhanced import app as enhanced_app
+from run_web_ui import app as enhanced_app
 
 
 def test_simple_web_ui():

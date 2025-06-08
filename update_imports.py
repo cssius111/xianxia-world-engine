@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 批量更新文件引用工具
-将所有对 run_web_ui_enhanced.py 和 run_web_ui_v3.py 的引用替换为 run_web_ui.py
+将所有对 run_web_ui_v3.py 的引用替换为 run_web_ui.py
 """
 
 import re
@@ -18,12 +18,12 @@ IGNORE_DIRS = {'.git', 'venv', '__pycache__', 'delete', '.pytest_cache', 'node_m
 
 # 替换规则
 REPLACEMENTS = [
-    (r'run_web_ui_enhanced\.py', 'run_web_ui.py'),
     (r'run_web_ui_v3\.py', 'run_web_ui.py'),
-    (r'run_web_ui_enhanced', 'run_web_ui'),
     (r'run_web_ui_v3', 'run_web_ui'),
     (r'start_enhanced_ui\.py', 'run_web_ui.py'),
     (r'start_enhanced_ui', 'run_web_ui'),
+    (r'run_web_ui_enhanced\.py', 'run_web_ui.py'),
+    (r'run_web_ui_enhanced', 'run_web_ui'),
 ]
 
 

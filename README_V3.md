@@ -9,7 +9,7 @@ python run_v3.py
 
 ### 以 Web UI 启动
 ```bash
-python run_web_ui_v3.py
+python run_web_ui.py
 ```
 
 ### 其他选项
