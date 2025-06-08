@@ -56,6 +56,9 @@
 ### 方法1：一键启动（推荐）
 ```bash
 python run_web_ui.py
+
+python run_web_ui_enhanced.py
+
 ```
 
 更多启动方式请查阅 [docs/STARTERS.md](docs/STARTERS.md)。
@@ -111,7 +114,11 @@ python run_web_ui.py
 xianxia_world_engine/
 ├── templates_enhanced/          # 增强版模板
 │   └── game_enhanced.html      # 主界面模板
+
 ├── run_web_ui.py      # 增强版服务器
+
+├── run_web_ui_enhanced.py      # 增强版服务器
+
 └── README_ENHANCED.md          # 本文档
 ```
 
