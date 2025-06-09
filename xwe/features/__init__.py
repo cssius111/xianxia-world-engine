@@ -51,6 +51,7 @@ from .ai_personalization import (
     AdaptiveGuideSystem,
     DynamicNPCBehavior,
     PersonalizationEngine,
+    AIPersonalization,
     personalization_engine,
     enhance_with_ai_features
 )
@@ -80,6 +81,7 @@ from .technical_ops import (
     PerformanceMonitor,
     AutoBackupManager,
     TechnicalOpsSystem,
+    TechnicalOps,
     tech_ops_system,
     integrate_technical_features
 )
@@ -128,9 +130,10 @@ __all__ = [
     
     # 内容生态
     "content_ecosystem",
-    
+
     # AI个性化
     "personalization_engine",
+    "AIPersonalization",
     "enhance_with_ai_features",
     
     # 社区系统
@@ -141,6 +144,7 @@ __all__ = [
     
     # 技术运营
     "tech_ops_system",
+    "TechnicalOps",
     "integrate_technical_features",
     
     # 视觉增强
