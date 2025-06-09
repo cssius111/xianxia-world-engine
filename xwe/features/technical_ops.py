@@ -763,13 +763,22 @@ class TechnicalOpsSystem:
         self._setup_crash_protection()
     
     def _setup_crash_protection(self):
-        """设置崩溃保护"""
+        """设置崩溃保护
+
+        在非主线程环境（例如 WSGI 服务器中）注册信号处理会抛出 ``ValueError``，
+        因此在此情况下仅注册 ``atexit`` 钩子并跳过信号处理。
+        """
         import atexit
         import signal
-        
+        import threading
+
         # 注册退出处理
         atexit.register(self._on_exit)
-        
+
+        if threading.current_thread() is not threading.main_thread():
+            logger.warning("Crash protection signal handlers skipped (not main thread)")
+            return
+
         # 注册信号处理
         if hasattr(signal, 'SIGTERM'):
             signal.signal(signal.SIGTERM, self._signal_handler)
@@ -923,3 +932,9 @@ def integrate_technical_features(game_core):
     game_core.get_system_status = tech_ops_system.get_system_status
     
     logger.info("技术功能已集成")
+
+# 向后兼容的别名
+class TechnicalOps(TechnicalOpsSystem):
+    """`TechnicalOpsSystem` 的别名, 兼容旧代码"""
+    pass
+

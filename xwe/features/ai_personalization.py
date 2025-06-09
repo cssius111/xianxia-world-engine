@@ -626,6 +626,11 @@ class PersonalizationEngine:
 # 全局实例
 personalization_engine = PersonalizationEngine()
 
+# 向后兼容的别名
+class AIPersonalization(PersonalizationEngine):
+    """`PersonalizationEngine` 的别名, 兼容旧代码"""
+    pass
+
 def enhance_with_ai_features(game_core):
     """为游戏核心添加AI功能"""
     original_process_command = game_core.process_command
@@ -669,3 +674,4 @@ def enhance_with_ai_features(game_core):
     game_core.get_ai_recommendation = lambda: personalization_engine.get_personalized_content("player_1")
     
     logger.info("AI个性化功能已启用")
+
