@@ -62,18 +62,18 @@ def test_nlp_basic():
         
         if success_count == len(test_cases):
             print("\n✅ NLP系统工作正常！")
-            return True
         else:
             print("\n⚠️ 部分测试失败，请检查NLP实现")
-            return False
-            
+        assert success_count == len(test_cases), (
+            f"NLP解析成功{success_count}/{len(test_cases)}")
+
     except Exception as e:
         print(f"\n❌ NLP系统错误: {e}")
         print("\n请检查:")
         print("1. NLPProcessor是否正确实现")
         print("2. 依赖是否安装完整")
         print("3. 导入路径是否正确")
-        return False
+        assert False, f"NLP系统错误: {e}"
 
 def test_compatibility():
     """测试兼容性"""
