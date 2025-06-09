@@ -61,6 +61,12 @@ def status():
         # 避免灵力值超过上限
         mana_current = min(player.attributes.current_mana, player.attributes.max_mana)
         state['player']['attributes']['current_mana'] = mana_current
+ 
+        health_current = min(player.attributes.current_health, player.attributes.max_health)
+        state['player']['attributes']['current_health'] = health_current
+        if hasattr(player, 'status_effects'):
+            state['player']['buffs'] = player.status_effects.get_status_summary()
+ 
     return jsonify(state)
 
 
