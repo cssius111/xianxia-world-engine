@@ -37,7 +37,7 @@
 ### 环境要求
 - Python 3.8+
 - pip（Python包管理器）
-- requests 库（可选，若无网络可使用项目内 `vendor/requests`，脚本会通过 `xwe.utils.requests_helper` 尝试安装并在失败时退回 `requestsNotDeepSeek` 存根）
+- requests 库（已包含在 `requirements.txt` 中）
 
 ### 一键启动
 ```bash
@@ -55,8 +55,6 @@ cd xianxia_world_engine
 
 # 2. 安装依赖
 pip install -r requirements.txt  # 包含 jsonschema 等核心库
-# 若需要完整的远程API功能，可单独安装 requests（或将 vendor 目录加入 PYTHONPATH）：
-pip install requests
 
 # 3. 配置API（可选，用于AI功能）
 export DEEPSEEK_API_KEY="your-api-key"

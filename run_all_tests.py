@@ -49,8 +49,6 @@ class TestRunner:
         try:
             # 运行pytest
             env = os.environ.copy()
-            vendor_path = str(PROJECT_ROOT / "vendor")
-            env["PYTHONPATH"] = vendor_path + os.pathsep + env.get("PYTHONPATH", "")
             result = subprocess.run(
                 [sys.executable, "-m", "pytest", test_path, "-v", "--tb=short"],
                 capture_output=True,
