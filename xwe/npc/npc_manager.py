@@ -16,6 +16,8 @@ from .dialogue_system import DialogueSystem, DialogueNode, DEFAULT_DIALOGUES
 from .emotion_system import EmotionSystem
 from .memory_system import MemorySystem, MemoryType
 from .enhanced_dialogue import EnhancedDialogueSystem
+from ..world import WorldMap, Area, Region
+from ..world.world_map import DEFAULT_MAP_DATA
 
 logger = logging.getLogger(__name__)
 
@@ -88,7 +90,7 @@ class NPCManager:
         
         # 行为计时器
         self.behavior_timers: Dict[str, int] = {}
-        
+
         # 初始化增强系统
         self.emotion_system = EmotionSystem()
         self.memory_system = MemorySystem()
@@ -98,7 +100,14 @@ class NPCManager:
             memory_system=self.memory_system,
             nlp_processor=nlp_processor
         )
-        
+
+        # 默认世界地图（用于移动逻辑）
+        self.world_map = WorldMap()
+        for region_data in DEFAULT_MAP_DATA["regions"]:
+            self.world_map.add_region(Region.from_dict(region_data))
+        for area_data in DEFAULT_MAP_DATA["areas"]:
+            self.world_map.add_area(Area.from_dict(area_data))
+
         # 初始化默认NPC
         self._init_default_npcs()
         
@@ -269,13 +278,68 @@ class NPCManager:
     
     def _update_wander_behavior(self, npc_id: str, profile: NPCProfile, game_time: int):
         """更新漫游行为"""
-        # TODO: 实现漫游逻辑
-        pass
+        last_move = self.behavior_timers.get(npc_id, -100)
+        if game_time - last_move < 10:
+            return
+
+        current_location = self.npc_locations.get(npc_id, profile.home_location)
+        connected = self.world_map.get_connected_areas(current_location)
+        if not connected:
+            return
+
+        next_area = random.choice(connected).id
+        self.npc_locations[npc_id] = next_area
+        self.behavior_timers[npc_id] = game_time
+        logger.debug(f"NPC {profile.name} 漫游到 {next_area}")
     
     def _update_schedule_behavior(self, npc_id: str, profile: NPCProfile, game_time: int):
         """更新日程行为"""
-        # TODO: 实现日程逻辑（根据时间决定位置）
-        pass
+        schedule: Dict[str, str] = profile.extra_data.get("schedule", {})
+        if not schedule:
+            return
+
+        hour = int(game_time % 24)
+        target_location = None
+        for time_slot, location in schedule.items():
+            try:
+                if "-" in time_slot:
+                    start, end = map(int, time_slot.split("-"))
+                    if start <= hour < end:
+                        target_location = location
+                        break
+                elif ":" in time_slot:
+                    slot_hour = int(time_slot.split(":")[0])
+                    if slot_hour == hour:
+                        target_location = location
+                        break
+                else:
+                    if int(time_slot) == hour:
+                        target_location = location
+                        break
+            except ValueError:
+                continue
+
+        if not target_location:
+            return
+
+        current_location = self.npc_locations.get(npc_id, profile.home_location)
+        if current_location == target_location:
+            return
+
+        last_hour = self.behavior_timers.get(npc_id)
+        if last_hour == hour:
+            return
+
+        # 尝试根据地图路径移动一步
+        path = self.world_map.find_path(current_location, target_location)
+        if path and len(path) > 1:
+            next_location = path[1]
+        else:
+            next_location = target_location
+
+        self.npc_locations[npc_id] = next_location
+        self.behavior_timers[npc_id] = hour
+        logger.debug(f"NPC {profile.name} 按日程移动到 {next_location}")
     
     def get_npc_location(self, npc_id: str) -> Optional[str]:
         """获取NPC位置"""
