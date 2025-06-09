@@ -13,7 +13,6 @@ import os
 from datetime import datetime
 
 from ..engine.expression import ExpressionParser
-from .item_system import item_system
 from .data_loader import DataLoader
 from .attributes import AttributeSystem
 from .character import Character, CharacterType
@@ -1155,7 +1154,7 @@ class GameCore:
             'player_faction': player.extra_data.get('faction', ''),
             'npc_relationship': npc_found.get('relationship', 0),
             'flags': self.game_state.flags,
-            'spirit_stones': item_system.get_spirit_stones(player.id)
+            'spirit_stones': 1000  # TODO: 实现物品系统后从背包获取
         }
         
         # 开始对话
@@ -1250,7 +1249,7 @@ class GameCore:
             'player_level': player.attributes.cultivation_level,
             'npc_relationship': self.npc_manager.get_relationship(player.id, dialogue.npc_id),
             'flags': self.game_state.flags,
-            'spirit_stones': item_system.get_spirit_stones(player.id)
+            'spirit_stones': 1000  # TODO: 从背包获取
         }
         
         # 处理选择

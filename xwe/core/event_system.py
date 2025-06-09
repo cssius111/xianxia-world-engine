@@ -1,317 +1,438 @@
 """
-沉浸式分步事件系统
-支持分支选择、打字机效果、逐步展示
+事件系统优化实现
+使用数据驱动的方式处理游戏事件
 """
-import time
+
 import random
-from typing import Dict, List, Optional, Callable, Any
-from enum import Enum
+import logging
+from typing import Dict, Any, List, Optional, Callable
+from datetime import datetime
+from .data_manager import DM
+from .formula_engine import formula_engine, evaluate_expression
 
-class EventType(Enum):
-    """事件类型"""
-    STORY = "story"          # 剧情事件
-    COMBAT = "combat"        # 战斗事件
-    CHOICE = "choice"        # 选择事件
-    REWARD = "reward"        # 奖励事件
-    SPECIAL = "special"      # 特殊事件
-    ROLL = "roll"           # Roll事件
+logger = logging.getLogger(__name__)
 
-class EventChoice:
-    """事件选择项"""
-    def __init__(self, text: str, next_event_id: Optional[str] = None, 
-                 condition: Optional[Callable] = None, effect: Optional[Callable] = None):
-        self.text = text
-        self.next_event_id = next_event_id
-        self.condition = condition  # 显示条件
-        self.effect = effect        # 选择效果
 
-class GameEvent:
-    """游戏事件"""
-    def __init__(self, event_id: str, event_type: EventType, title: str, 
-                 description: str, choices: Optional[List[EventChoice]] = None):
-        self.event_id = event_id
-        self.event_type = event_type
-        self.title = title
-        self.description = description
-        self.choices = choices or []
-        self.is_completed = False
-
-class ImmersiveEventSystem:
-    """沉浸式事件系统"""
+class EventSystemV3:
+    """
+    数据驱动的事件系统V3
+    从JSON配置加载所有事件定义和触发条件
+    """
     
-    def __init__(self, output_func: Callable):
-        self.output = output_func
-        self.events: Dict[str, GameEvent] = {}
-        self.current_event: Optional[GameEvent] = None
-        self.event_history: List[str] = []
-        self.typing_speed = 0.03  # 打字机效果速度
-        self._load_events()
+    def __init__(self):
+        self.event_data = None
+        self.active_events = {}
+        self.event_history = []
+        self.event_handlers = {}
+        self._load_event_data()
     
-    def _load_events(self):
-        """加载预定义事件"""
-        # 开局事件
-        self.add_event(GameEvent(
-            "start_journey",
-            EventType.STORY,
-            "踏入修仙之路",
-            "你站在青云山脚下，仰望着云雾缭绕的山峰。传说中，这里是修仙者的圣地...",
-            [
-                EventChoice("直接上山", "climb_mountain"),
-                EventChoice("先到山脚村庄打听消息", "visit_village"),
-                EventChoice("在山脚调息准备", "prepare_first")
-            ]
-        ))
-        
-        # 山脚村庄事件
-        self.add_event(GameEvent(
-            "visit_village",
-            EventType.CHOICE,
-            "山脚村庄",
-            "村庄里炊烟袅袅，一位老者坐在村口的大树下...",
-            [
-                EventChoice("向老者请教", "talk_elder"),
-                EventChoice("到茶馆打听消息", "visit_teahouse"),
-                EventChoice("直接离开上山", "climb_mountain")
-            ]
-        ))
-        
-        # 特殊遭遇事件
-        self.add_event(GameEvent(
-            "mysterious_encounter",
-            EventType.SPECIAL,
-            "神秘遭遇",
-            "一道身影从你面前飘过，留下一阵清香...",
-            [
-                EventChoice("追上去查看", "follow_figure", 
-                           condition=lambda p: p.speed > 50),
-                EventChoice("原地观察", "observe_spot"),
-                EventChoice("不予理会", "ignore_it")
-            ]
-        ))
-        
-        # Roll事件示例
-        self.add_event(GameEvent(
-            "talent_awakening",
-            EventType.ROLL,
-            "天赋觉醒",
-            "一股神秘的力量在你体内涌动，你感觉到某种天赋正在觉醒...",
-            [
-                EventChoice("专注感受这股力量", "roll_talent"),
-                EventChoice("压制这股力量", "suppress_power"),
-                EventChoice("顺其自然", "natural_flow")
-            ]
-        ))
+    def _load_event_data(self):
+        """加载事件系统数据"""
+        try:
+            self.event_data = DM.load("event_template")
+            logger.info("Event system data loaded successfully")
+        except Exception as e:
+            logger.error(f"Failed to load event data: {e}")
+            raise
     
-    def add_event(self, event: GameEvent):
-        """添加事件"""
-        self.events[event.event_id] = event
+    def register_handler(self, event_type: str, handler: Callable):
+        """注册事件处理器"""
+        if event_type not in self.event_handlers:
+            self.event_handlers[event_type] = []
+        self.event_handlers[event_type].append(handler)
+        logger.debug(f"Registered handler for event type: {event_type}")
     
-    def start_event(self, event_id: str, context: Optional[Dict[str, Any]] = None) -> bool:
-        """开始事件"""
-        if event_id not in self.events:
-            return False
+    def check_and_trigger_events(self, context: Dict[str, Any]) -> List[Dict[str, Any]]:
+        """
+        检查并触发符合条件的事件
         
-        event = self.events[event_id]
-        if event.is_completed and event.event_type != EventType.COMBAT:
-            # 非战斗事件只能触发一次
-            return False
+        Args:
+            context: 游戏上下文，包含player, location, time等信息
+            
+        Returns:
+            触发的事件列表
+        """
+        triggered_events = []
         
-        self.current_event = event
-        self.event_history.append(event_id)
+        # 遍历所有事件
+        for event in self.event_data.get("events", []):
+            if self._check_event_conditions(event, context):
+                # 检查概率
+                trigger_chance = event.get("trigger", {}).get("probability", 1.0)
+                if random.random() < trigger_chance:
+                    # 触发事件
+                    event_instance = self._create_event_instance(event, context)
+                    triggered_events.append(event_instance)
+                    
+                    # 记录历史
+                    self._record_event(event_instance)
+                    
+                    # 调用处理器
+                    self._call_handlers(event_instance)
         
-        # 显示事件
-        self._display_event(event, context)
+        return triggered_events
+    
+    def _check_event_conditions(self, event: Dict[str, Any], context: Dict[str, Any]) -> bool:
+        """检查事件触发条件"""
+        trigger = event.get("trigger", {})
+        trigger_type = trigger.get("type")
+        
+        # 根据触发类型检查
+        if trigger_type == "exploration":
+            # 探索触发
+            if context.get("action") != "explore":
+                return False
+            
+            # 检查地点类型
+            location_types = trigger.get("conditions", {}).get("location_type", [])
+            if location_types:
+                current_location_type = context.get("location", {}).get("type")
+                if current_location_type not in location_types:
+                    return False
+            
+            # 检查境界要求
+            min_realm = trigger.get("conditions", {}).get("min_realm")
+            if min_realm and not self._check_realm_requirement(context.get("player"), min_realm):
+                return False
+        
+        elif trigger_type == "combat":
+            # 战斗触发
+            if context.get("action") != "combat":
+                return False
+            
+            combat_result = trigger.get("conditions", {}).get("result")
+            if combat_result and context.get("combat_result") != combat_result:
+                return False
+        
+        elif trigger_type == "time":
+            # 时间触发
+            time_condition = trigger.get("conditions", {}).get("time")
+            if time_condition and not self._check_time_condition(time_condition, context.get("game_time")):
+                return False
+        
+        elif trigger_type == "custom":
+            # 自定义条件
+            custom_formula = trigger.get("custom_formula")
+            if custom_formula:
+                try:
+                    result = evaluate_expression(custom_formula, context)
+                    if not result:
+                        return False
+                except Exception as e:
+                    logger.error(f"Error evaluating custom formula: {e}")
+                    return False
+        
+        # 检查前置事件
+        prerequisites = event.get("prerequisites", [])
+        for prereq in prerequisites:
+            if not self._has_completed_event(prereq):
+                return False
+        
+        # 检查冷却时间
+        cooldown = event.get("cooldown", 0)
+        if cooldown > 0:
+            last_trigger = self._get_last_trigger_time(event["id"])
+            if last_trigger:
+                time_passed = (datetime.now() - last_trigger).total_seconds()
+                if time_passed < cooldown:
+                    return False
+        
         return True
     
-    def _display_event(self, event: GameEvent, context: Optional[Dict[str, Any]] = None):
-        """显示事件内容"""
-        # 清屏效果
-        self.output("\n" * 2)
+    def _check_realm_requirement(self, player, min_realm: str) -> bool:
+        """检查境界要求"""
+        realm_order = [
+            "qi_gathering", "foundation_building", "golden_core",
+            "nascent_soul", "deity_transformation", "void_refinement",
+            "body_integration", "mahayana", "tribulation_transcendence"
+        ]
         
-        # 显示事件标题
-        self._type_text(f"【{event.title}】", delay=0.05)
-        self.output("")
+        if not player or not hasattr(player, "realm"):
+            return False
         
-        # 打字机效果显示描述
-        self._type_text(event.description)
-        self.output("")
-        
-        # 显示选择项
-        if event.choices:
-            self._display_choices(event, context)
+        try:
+            player_realm_index = realm_order.index(player.realm)
+            required_realm_index = realm_order.index(min_realm)
+            return player_realm_index >= required_realm_index
+        except ValueError:
+            return False
     
-    def _display_choices(self, event: GameEvent, context: Optional[Dict[str, Any]] = None):
-        """显示选择项"""
-        time.sleep(0.5)  # 短暂停顿增强节奏感
+    def _check_time_condition(self, time_condition: str, game_time: Optional[float]) -> bool:
+        """检查时间条件"""
+        if not game_time:
+            return False
         
-        self.output("你的选择：")
-        valid_choices = []
-        
-        for i, choice in enumerate(event.choices):
-            # 检查显示条件
-            if choice.condition is None or (context and choice.condition(context)):
-                valid_choices.append((i, choice))
-                self.output(f"  {len(valid_choices)}. {choice.text}")
-        
-        if not valid_choices:
-            self.output("  [没有可用选择，按回车继续]")
-        
-        return valid_choices
+        # TODO: 实现更复杂的时间条件判断
+        # 例如: "day", "night", "full_moon", "new_year" 等
+        return True
     
-    def handle_choice(self, choice_index: int, context: Optional[Dict[str, Any]] = None) -> Optional[str]:
-        """处理玩家选择"""
-        if not self.current_event:
-            return None
-        
-        if 0 <= choice_index < len(self.current_event.choices):
-            choice = self.current_event.choices[choice_index]
-            
-            # 执行选择效果
-            if choice.effect and context:
-                self._type_text("\n效果：", delay=0.05)
-                result = choice.effect(context)
-                if result:
-                    self._type_text(str(result))
-            
-            # 标记事件完成
-            self.current_event.is_completed = True
-            
-            # 返回下一个事件ID
-            return choice.next_event_id
-        
+    def _has_completed_event(self, event_id: str) -> bool:
+        """检查是否已完成某个事件"""
+        return any(e.get("id") == event_id and e.get("completed", False) 
+                  for e in self.event_history)
+    
+    def _get_last_trigger_time(self, event_id: str) -> Optional[datetime]:
+        """获取事件上次触发时间"""
+        for event in reversed(self.event_history):
+            if event.get("id") == event_id:
+                timestamp = event.get("timestamp")
+                if timestamp:
+                    return datetime.fromisoformat(timestamp)
         return None
     
-    def _type_text(self, text: str, delay: Optional[float] = None):
-        """打字机效果输出文本"""
-        delay = delay or self.typing_speed
+    def _create_event_instance(self, event_template: Dict[str, Any], 
+                              context: Dict[str, Any]) -> Dict[str, Any]:
+        """创建事件实例"""
+        instance = {
+            "id": event_template["id"],
+            "name": event_template["name"],
+            "description": self._process_description(event_template["description"], context),
+            "type": event_template.get("type", "generic"),
+            "timestamp": datetime.now().isoformat(),
+            "choices": [],
+            "context": context.copy()
+        }
         
-        for char in text:
-            print(char, end='', flush=True)
-            time.sleep(delay)
-        print()  # 换行
+        # 处理选项
+        for choice in event_template.get("choices", []):
+            if self._check_choice_requirements(choice, context):
+                processed_choice = {
+                    "id": choice.get("id", choice["text"]),
+                    "text": choice["text"],
+                    "outcomes": choice.get("outcomes", [])
+                }
+                instance["choices"].append(processed_choice)
+        
+        # 如果没有可用选项，添加默认选项
+        if not instance["choices"]:
+            instance["choices"].append({
+                "id": "continue",
+                "text": "继续",
+                "outcomes": []
+            })
+        
+        return instance
     
-    def process_event_chain(self, start_event_id: str, context: Optional[Dict[str, Any]] = None):
-        """处理事件链"""
-        current_id = start_event_id
+    def _process_description(self, description: str, context: Dict[str, Any]) -> str:
+        """处理描述文本，替换变量"""
+        # 简单的变量替换
+        if context.get("player"):
+            description = description.replace("{player_name}", context["player"].name)
+            description = description.replace("{player_realm}", context["player"].realm)
         
-        while current_id:
-            if not self.start_event(current_id, context):
+        if context.get("location"):
+            description = description.replace("{location_name}", context["location"].get("name", "未知地点"))
+        
+        return description
+    
+    def _check_choice_requirements(self, choice: Dict[str, Any], context: Dict[str, Any]) -> bool:
+        """检查选项要求"""
+        requirements = choice.get("requirements", {})
+        
+        if not requirements:
+            return True
+        
+        player = context.get("player")
+        if not player:
+            return False
+        
+        # 检查属性要求
+        for attr, required_value in requirements.items():
+            if attr in ["strength", "agility", "intelligence", "constitution"]:
+                if getattr(player.attributes, attr, 0) < required_value:
+                    return False
+            elif attr == "realm":
+                if not self._check_realm_requirement(player, required_value):
+                    return False
+            elif attr == "item":
+                if not player.has_item(required_value):
+                    return False
+        
+        return True
+    
+    def process_choice(self, event_instance: Dict[str, Any], choice_id: str) -> Dict[str, Any]:
+        """
+        处理玩家选择
+        
+        Returns:
+            选择的结果
+        """
+        # 找到选择
+        choice = None
+        for c in event_instance["choices"]:
+            if c["id"] == choice_id:
+                choice = c
                 break
-            
-            # 等待玩家输入
-            if self.current_event and self.current_event.choices:
-                valid_choices = self._display_choices(self.current_event, context)
-                
-                if valid_choices:
-                    while True:
-                        try:
-                            choice_str = input("\n请选择 (输入数字): ").strip()
-                            choice_num = int(choice_str) - 1
-                            
-                            if 0 <= choice_num < len(valid_choices):
-                                actual_index = valid_choices[choice_num][0]
-                                current_id = self.handle_choice(actual_index, context)
-                                break
-                            else:
-                                self.output("无效选择，请重新输入")
-                        except ValueError:
-                            self.output("请输入有效数字")
-                else:
-                    input("\n按回车继续...")
-                    current_id = None
-            else:
-                current_id = None
-            
-            # 事件间隔
-            time.sleep(0.5)
+        
+        if not choice:
+            return {"success": False, "message": "无效的选择"}
+        
+        # 处理结果
+        outcomes = choice.get("outcomes", [])
+        if not outcomes:
+            return {"success": True, "message": "你做出了选择"}
+        
+        # 根据权重选择结果
+        total_weight = sum(o.get("weight", 1.0) for o in outcomes)
+        rand = random.random() * total_weight
+        
+        current_weight = 0
+        selected_outcome = None
+        for outcome in outcomes:
+            current_weight += outcome.get("weight", 1.0)
+            if rand <= current_weight:
+                selected_outcome = outcome
+                break
+        
+        if not selected_outcome:
+            selected_outcome = outcomes[0]
+        
+        # 应用结果
+        result = self._apply_outcome(selected_outcome, event_instance["context"])
+        
+        # 标记事件完成
+        event_instance["completed"] = True
+        event_instance["choice_made"] = choice_id
+        event_instance["outcome"] = selected_outcome
+        
+        return result
     
-    def trigger_random_event(self, event_type: Optional[EventType] = None, 
-                           context: Optional[Dict[str, Any]] = None) -> bool:
-        """触发随机事件"""
-        # 筛选可用事件
-        available_events = [
-            event for event in self.events.values()
-            if not event.is_completed and 
-               (event_type is None or event.event_type == event_type)
-        ]
+    def _apply_outcome(self, outcome: Dict[str, Any], context: Dict[str, Any]) -> Dict[str, Any]:
+        """应用事件结果"""
+        result = {
+            "success": True,
+            "type": outcome["type"],
+            "message": outcome.get("text", ""),
+            "effects": []
+        }
         
-        if available_events:
-            event = random.choice(available_events)
-            return self.start_event(event.event_id, context)
+        player = context.get("player")
+        if not player:
+            return result
         
-        return False
+        outcome_type = outcome["type"]
+        
+        if outcome_type == "reward":
+            # 奖励
+            rewards = outcome.get("rewards", {})
+            
+            # 经验奖励
+            if "experience" in rewards:
+                exp = rewards["experience"]
+                if isinstance(exp, str) and exp.endswith("%"):
+                    # 百分比经验
+                    percentage = float(exp[:-1]) / 100
+                    exp = int(player.exp_needed * percentage)
+                player.gain_experience(exp)
+                result["effects"].append(f"获得 {exp} 点经验")
+            
+            # 物品奖励
+            if "items" in rewards:
+                for item_id in rewards["items"]:
+                    player.add_item(item_id)
+                    result["effects"].append(f"获得物品: {item_id}")
+            
+            # 属性奖励
+            if "attributes" in rewards:
+                for attr, value in rewards["attributes"].items():
+                    setattr(player.attributes, attr, 
+                           getattr(player.attributes, attr, 0) + value)
+                    result["effects"].append(f"{attr} +{value}")
+        
+        elif outcome_type == "combat":
+            # 触发战斗
+            enemy_id = outcome.get("enemy")
+            result["message"] = f"你遭遇了 {enemy_id}！"
+            result["combat_trigger"] = enemy_id
+        
+        elif outcome_type == "status":
+            # 添加状态
+            status = outcome.get("status", {})
+            status_name = status.get("name")
+            duration = status.get("duration", 3600)
+            player.add_status_effect(status_name, duration)
+            result["effects"].append(f"获得状态: {status_name}")
+        
+        elif outcome_type == "teleport":
+            # 传送
+            destination = outcome.get("destination")
+            result["teleport_to"] = destination
+            result["message"] = f"你被传送到了 {destination}"
+        
+        elif outcome_type == "information":
+            # 信息/剧情
+            result["message"] = outcome.get("text", "你获得了一些信息")
+        
+        return result
     
-    def create_dynamic_event(self, title: str, description: str, 
-                           choices: List[tuple]) -> GameEvent:
-        """创建动态事件"""
-        event_id = f"dynamic_{int(time.time() * 1000)}"
-        event_choices = [
-            EventChoice(text, next_id) for text, next_id in choices
-        ]
+    def _record_event(self, event_instance: Dict[str, Any]):
+        """记录事件到历史"""
+        self.event_history.append(event_instance)
         
-        event = GameEvent(
-            event_id,
-            EventType.SPECIAL,
-            title,
-            description,
-            event_choices
-        )
+        # 限制历史记录数量
+        if len(self.event_history) > 1000:
+            self.event_history = self.event_history[-500:]
+    
+    def _call_handlers(self, event_instance: Dict[str, Any]):
+        """调用事件处理器"""
+        event_type = event_instance.get("type", "generic")
         
-        self.add_event(event)
-        return event
+        # 调用特定类型的处理器
+        if event_type in self.event_handlers:
+            for handler in self.event_handlers[event_type]:
+                try:
+                    handler(event_instance)
+                except Exception as e:
+                    logger.error(f"Error in event handler: {e}")
+        
+        # 调用通用处理器
+        if "all" in self.event_handlers:
+            for handler in self.event_handlers["all"]:
+                try:
+                    handler(event_instance)
+                except Exception as e:
+                    logger.error(f"Error in generic event handler: {e}")
+    
+    def get_active_events(self) -> List[Dict[str, Any]]:
+        """获取当前激活的事件"""
+        return [e for e in self.event_history 
+                if not e.get("completed", False) 
+                and (datetime.now() - datetime.fromisoformat(e["timestamp"])).total_seconds() < 3600]
+    
+    def get_event_history(self, limit: int = 10) -> List[Dict[str, Any]]:
+        """获取事件历史"""
+        return self.event_history[-limit:]
+    
+    def create_custom_event(self, event_data: Dict[str, Any]) -> Dict[str, Any]:
+        """创建自定义事件"""
+        event_instance = {
+            "id": event_data.get("id", f"custom_{len(self.event_history)}"),
+            "name": event_data.get("name", "自定义事件"),
+            "description": event_data.get("description", ""),
+            "type": "custom",
+            "timestamp": datetime.now().isoformat(),
+            "choices": event_data.get("choices", []),
+            "custom_data": event_data
+        }
+        
+        self._record_event(event_instance)
+        self._call_handlers(event_instance)
+        
+        return event_instance
 
-# 特殊事件处理器
-class SpecialEventHandler:
-    """处理特殊事件逻辑"""
-    
-    @staticmethod
-    def handle_roll_event(event_system: ImmersiveEventSystem, player_data: Dict[str, Any]):
-        """处理Roll事件"""
-        event_system._type_text("\n开始觉醒天赋...", delay=0.1)
-        time.sleep(1)
-        
-        # 模拟Roll过程
-        talents = ["剑心通明", "丹田异变", "神识过人", "五行亲和", "气运加身"]
-        
-        for _ in range(5):  # 滚动效果
-            talent = random.choice(talents)
-            print(f"\r正在觉醒: {talent}", end='', flush=True)
-            time.sleep(0.2)
-        
-        final_talent = random.choice(talents)
-        event_system.output(f"\n\n恭喜！你觉醒了天赋【{final_talent}】！")
-        
-        # 更新玩家数据
-        if 'talents' not in player_data:
-            player_data['talents'] = []
-        player_data['talents'].append(final_talent)
-        
-        return f"获得天赋：{final_talent}"
-    
-    @staticmethod
-    def handle_cultivation_event(event_system: ImmersiveEventSystem, 
-                               player_data: Dict[str, Any], duration: int):
-        """处理修炼事件"""
-        event_system._type_text(f"\n你开始闭关修炼，计划修炼{duration}天...", delay=0.05)
-        
-        # 分段显示修炼过程
-        segments = min(5, duration // 10 + 1)
-        for i in range(segments):
-            time.sleep(0.5)
-            days = duration * (i + 1) // segments
-            
-            # 随机修炼事件
-            events = [
-                f"第{days}天：你感觉丹田微热，真气运转加快。",
-                f"第{days}天：一缕明悟涌上心头，你对功法的理解更深了。",
-                f"第{days}天：突然心魔来袭，你咬牙坚持，终于度过难关。",
-                f"第{days}天：真气如潮水般涌动，你感觉快要突破了！"
-            ]
-            
-            event_system._type_text(random.choice(events), delay=0.02)
-        
-        # 计算收获
-        exp_gained = duration * random.randint(10, 30)
-        event_system.output(f"\n修炼结束！获得经验值：{exp_gained}")
-        
-        return exp_gained
+
+# 全局实例
+event_system = EventSystemV3()
+
+# 导出便捷函数
+def trigger_events(context: Dict[str, Any]) -> List[Dict[str, Any]]:
+    """触发事件的便捷函数"""
+    return event_system.check_and_trigger_events(context)
+
+def process_event_choice(event: Dict[str, Any], choice_id: str) -> Dict[str, Any]:
+    """处理事件选择的便捷函数"""
+    return event_system.process_choice(event, choice_id)
+
+def register_event_handler(event_type: str, handler: Callable):
+    """注册事件处理器的便捷函数"""
+    event_system.register_handler(event_type, handler)

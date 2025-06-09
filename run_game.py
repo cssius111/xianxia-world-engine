@@ -73,9 +73,9 @@ def main():
     print("\n正在启动游戏...")
     print("=" * 50)
     
-    # 运行增强版游戏
+    # 运行主游戏
     try:
-        subprocess.run([sys.executable, "main_enhanced.py"])
+        subprocess.run([sys.executable, "main.py"])
     except KeyboardInterrupt:
         print("\n\n游戏已退出")
     except Exception as e:

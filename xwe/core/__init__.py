@@ -12,17 +12,41 @@ from .ai import AIController
 from .status import StatusEffect, StatusEffectManager
 from .command_parser import CommandParser
 from .game_core import GameCore
+from .event_system import EventSystem
 
-# V3版本新增模块
-from .data_manager import DataManager, DM, load_game_data, get_config
-from .player_data_manager import PlayerDataManager
-from .formula_engine import FormulaEngine, formula_engine, calculate, evaluate_expression
-from .cultivation_system import CultivationSystem, cultivation_system, cultivate, attempt_breakthrough
-from .combat_system_v3 import CombatSystemV3, Combat, CombatState, combat_system, create_combat
-from .event_system_v3 import EventSystemV3, event_system, trigger_events, process_event_choice, register_event_handler
-from .npc_system_v3 import NPCSystemV3, NPC, npc_system, create_npc, get_npc, spawn_npcs_for_location
+# 其他可选模块（安全导入）
+_optional_modules = {}
+
+try:
+    from .data_manager import DataManager
+    _optional_modules['DataManager'] = DataManager
+except ImportError:
+    pass
+
+try:
+    from .player_data_manager import PlayerDataManager
+    _optional_modules['PlayerDataManager'] = PlayerDataManager
+except ImportError:
+    pass
+
+try:
+    from .formula_engine import FormulaEngine
+    _optional_modules['FormulaEngine'] = FormulaEngine
+except ImportError:
+    pass
+
+try:
+    from .cultivation_system import CultivationSystem
+    _optional_modules['CultivationSystem'] = CultivationSystem
+except ImportError:
+    pass
+
+# 将可选模块添加到当前命名空间
+for name, module in _optional_modules.items():
+    globals()[name] = module
 
 __all__ = [
+    # 核心模块
     'DataLoader',
     'AttributeSystem',
     'CharacterAttributes',
@@ -36,36 +60,5 @@ __all__ = [
     'StatusEffectManager',
     'CommandParser',
     'GameCore',
-    # V3版本新增
-    'DataManager',
-    'PlayerDataManager',
-    'DM',
-    'load_game_data',
-    'get_config',
-    'FormulaEngine',
-    'formula_engine',
-    'calculate',
-    'evaluate_expression',
-    'CultivationSystem',
-    'cultivation_system',
-    'cultivate',
-    'attempt_breakthrough',
-    'CombatSystemV3',
-    'Combat',
-    'CombatState',
-    'combat_system',
-    'create_combat',
-    # Event System V3
-    'EventSystemV3',
-    'event_system',
-    'trigger_events',
-    'process_event_choice',
-    'register_event_handler',
-    # NPC System V3
-    'NPCSystemV3',
-    'NPC',
-    'npc_system',
-    'create_npc',
-    'get_npc',
-    'spawn_npcs_for_location',
-]
+    'EventSystem',
+] + list(_optional_modules.keys())  # 动态添加可选模块
