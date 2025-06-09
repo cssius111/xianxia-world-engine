@@ -11,6 +11,29 @@ from dataclasses import dataclass, field
 from enum import Enum
 import random
 import json
+from pathlib import Path
+
+# 为避免循环依赖，这里不直接导入 Inventory 类型，而是按需检查
+
+# 缓存的物品ID列表，用于随机奖励
+_ITEM_IDS: List[str] = []
+
+
+def _load_item_ids() -> List[str]:
+    """加载物品模板并返回物品ID列表"""
+    global _ITEM_IDS
+    if _ITEM_IDS:
+        return _ITEM_IDS
+
+    try:
+        data_path = Path(__file__).resolve().parents[1] / "data" / "restructured" / "item_template.json"
+        with open(data_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        _ITEM_IDS = [item.get("id") for item in data.get("item_templates", []) if item.get("id")]
+    except Exception as e:
+        logger.error(f"读取物品模板失败: {e}")
+        _ITEM_IDS = []
+    return _ITEM_IDS
 
 logger = logging.getLogger(__name__)
 
@@ -91,8 +114,21 @@ class EventChoice:
         
         # 检查物品要求
         if 'required_items' in self.requirements:
-            # TODO: 实现物品检查
-            pass
+            inventory = context.get('inventory')
+            if inventory is None:
+                inventory = context.get('player_inventory')
+            if inventory is None:
+                return False
+            required = self.requirements['required_items']
+            for item_id in required:
+                if hasattr(inventory, 'has'):
+                    if not inventory.has(item_id):
+                        return False
+                elif isinstance(inventory, dict):
+                    if inventory.get(item_id, 0) <= 0:
+                        return False
+                else:
+                    return False
         
         # 检查属性要求
         if 'min_attributes' in self.requirements:
@@ -317,13 +353,46 @@ class EventSystem:
         try:
             with open(filepath, 'r', encoding='utf-8') as f:
                 data = json.load(f)
-            
+
             for event_data in data.get('events', []):
-                # TODO: 实现从JSON创建事件的逻辑
-                pass
-            
+                try:
+                    conditions = [
+                        EventCondition(
+                            EventTrigger(cond.get('type')),
+                            cond.get('params', {})
+                        )
+                        for cond in event_data.get('conditions', [])
+                    ]
+                    choices = [
+                        EventChoice(
+                            id=c.get('id'),
+                            text=c.get('text', ''),
+                            requirements=c.get('requirements', {}),
+                            consequences=c.get('consequences', {})
+                        )
+                        for c in event_data.get('choices', [])
+                    ]
+
+                    event = WorldEvent(
+                        id=event_data.get('id'),
+                        name=event_data.get('name', ''),
+                        type=EventType(event_data.get('type', 'world')),
+                        description=event_data.get('description', ''),
+                        conditions=conditions,
+                        intro_text=event_data.get('intro_text', ''),
+                        choices=choices,
+                        priority=event_data.get('priority', 0),
+                        repeatable=event_data.get('repeatable', False),
+                        max_occurrences=event_data.get('max_occurrences', 1),
+                        effects=event_data.get('effects', {}),
+                        extra_data=event_data.get('extra_data', {})
+                    )
+                    self.register_event(event)
+                except Exception as e:
+                    logger.error(f"解析事件失败: {e}")
+
             logger.info(f"从文件加载了 {len(data.get('events', []))} 个事件")
-            
+
         except Exception as e:
             logger.error(f"加载事件文件失败: {e}")
     
@@ -444,8 +513,19 @@ class EventSystem:
                 result['message'] = f'消耗了{value}点体力'
                 
             elif consequence == 'add_random_item':
-                # TODO: 实现物品系统后添加随机物品
-                result['message'] = '你获得了一些物品！'
+                item_ids = _load_item_ids()
+                if item_ids:
+                    item_id = random.choice(item_ids)
+                    quantity = 1 if isinstance(value, bool) else int(value)
+                    inventory = context.get('inventory')
+                    if inventory is None:
+                        inventory = context.get('player_inventory')
+                    if inventory is not None and hasattr(inventory, 'add'):
+                        inventory.add(item_id, quantity)
+                    result['obtained_item'] = item_id
+                    result['message'] = f'你获得了{item_id}x{quantity}！'
+                else:
+                    result['message'] = '你获得了一些物品！'
                 
             elif consequence == 'reputation':
                 result['reputation_change'] = value
