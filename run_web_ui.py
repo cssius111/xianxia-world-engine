@@ -33,11 +33,16 @@ def index():
     state = game.game_state.to_dict()
     player = game.game_state.player
     buffs = []
-    if player and hasattr(player, 'status_effects'):
-        buffs = player.status_effects.get_status_summary()
+    realm_percent = 0
+    if player:
+        # 估算境界进度，缺乏明确数据时以修为等级对9取模
+        realm_percent = int((player.attributes.cultivation_level % 9) / 9 * 100)
+        if hasattr(player, 'status_effects'):
+            buffs = player.status_effects.get_status_summary()
     return render_template(
         'game.html',
         player=state.get('player'),
+        realm_percent=realm_percent,
         logs=logs[-200:],
         buffs=buffs,
         special_status=[],
@@ -48,7 +53,15 @@ def index():
 def status():
     """返回当前游戏状态"""
     flush_output()
-    return jsonify(game.game_state.to_dict())
+    state = game.game_state.to_dict()
+    player = game.game_state.player
+    if player:
+        realm_percent = int((player.attributes.cultivation_level % 9) / 9 * 100)
+        state['player']['realm_percent'] = realm_percent
+        # 避免灵力值超过上限
+        mana_current = min(player.attributes.current_mana, player.attributes.max_mana)
+        state['player']['attributes']['current_mana'] = mana_current
+    return jsonify(state)
 
 
 @app.route('/log')
