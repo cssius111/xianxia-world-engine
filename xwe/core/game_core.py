@@ -1158,7 +1158,9 @@ class GameCore:
         }
         
         # 开始对话
-        first_node = self.npc_manager.start_dialogue(player.id, npc_id)
+        first_node = self.npc_manager.start_dialogue(
+            player.id, npc_id, game_time=self.game_state.game_time
+        )
         if first_node:
             self._display_dialogue_node(first_node, npc_found['name'])
         else:

@@ -57,6 +57,9 @@ class DialogueContext:
     variables: Dict[str, Any] = field(default_factory=dict)
     rewards: List[Dict[str, Any]] = field(default_factory=list)
 
+    # 游戏时间
+    game_time: int = 0
+
 
 class DialogueGenerator:
     """对话生成器"""
@@ -282,7 +285,7 @@ class EnhancedDialogueSystem:
         logger.info("增强版对话系统初始化")
     
     def start_dialogue(self, player_id: str, npc_id: str, npc_info: Dict[str, Any],
-                      player_info: Dict[str, Any]) -> Tuple[Optional[DialogueNode], DialogueContext]:
+                      player_info: Dict[str, Any], game_time: int = 0) -> Tuple[Optional[DialogueNode], DialogueContext]:
         """
         开始对话
         
@@ -290,7 +293,7 @@ class EnhancedDialogueSystem:
             (对话节点, 对话上下文)
         """
         # 创建对话上下文
-        context = self._create_dialogue_context(player_id, npc_id, npc_info, player_info)
+        context = self._create_dialogue_context(player_id, npc_id, npc_info, player_info, game_time)
         self.active_contexts[player_id] = context
         
         # 触发情绪反应
@@ -307,7 +310,7 @@ class EnhancedDialogueSystem:
         if context.first_meeting:
             self.memory_system.create_memory(
                 npc_id, player_id, "first_meeting",
-                game_time=0,  # TODO: 使用实际游戏时间
+                game_time=game_time,
                 player_name=player_id,
                 impression="有些陌生" if context.relationship < 20 else "还不错"
             )
@@ -398,8 +401,9 @@ class EnhancedDialogueSystem:
         return node, context
     
     def _create_dialogue_context(self, player_id: str, npc_id: str,
-                               npc_info: Dict[str, Any], 
-                               player_info: Dict[str, Any]) -> DialogueContext:
+                               npc_info: Dict[str, Any],
+                               player_info: Dict[str, Any],
+                               game_time: int = 0) -> DialogueContext:
         """创建对话上下文"""
         # 获取记忆
         memory_profile = self.memory_system.get_memory_profile(npc_id, player_id)
@@ -424,7 +428,8 @@ class EnhancedDialogueSystem:
             first_meeting=first_meeting,
             current_emotion=emotion_state.current_emotion.value if emotion_state else "neutral",
             emotion_intensity=emotion_state.emotion_intensity if emotion_state else 0.5,
-            emotion_modifiers=emotion_modifiers
+            emotion_modifiers=emotion_modifiers,
+            game_time=game_time
         )
         
         # 添加记忆上下文
@@ -577,7 +582,7 @@ class EnhancedDialogueSystem:
             if len(context.dialogue_history) > 2:
                 self.memory_system.create_memory(
                     context.npc_id, player_id, "dialogue",
-                    game_time=0,  # TODO: 使用实际游戏时间
+                    game_time=context.game_time,
                     player_name=player_id,
                     topic="general"
                 )
