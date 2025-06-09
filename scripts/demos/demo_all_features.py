@@ -112,46 +112,16 @@ def demo_cultivation_system():
     print_section("🧘 修炼系统演示")
     
     try:
-        from xwe.core.data_manager import DynamicDataManager
-        
-        dm = DynamicDataManager()
-        
-        print("\n当前角色状态：")
-        print(f"  境界: {dm.player_data['realm']}")
-        print(f"  等级: Lv.{dm.player_data['level']}")
-        print(f"  经验: {dm.player_data['exp']}")
-        
-        # 短期修炼
-        print("\n进行短期修炼（7天）...")
-        result1 = dm.cultivate_dynamic(7)
-        
-        print(f"\n修炼7天的结果：")
-        print(f"  获得经验: {result1['total_exp']:.0f}")
-        print(f"  消耗体力: {-result1['resource_changes'].get('stamina', 0)}")
-        
-        if result1['events']:
-            print(f"  发生事件:")
-            for event in result1['events']:
-                print(f"    - {event['name']}: {event['description']}")
-        
-        # 长期修炼
-        print("\n\n进行长期闭关（1年）...")
-        result2 = dm.cultivate_dynamic(365)
-        
-        print(f"\n修炼1年的结果：")
-        print(f"  获得经验: {result2['total_exp']:.0f}")
-        print(f"  属性提升: {result2.get('attribute_gains', {})}")
-        
-        if result2['breakthroughs']:
-            print(f"  🎉 突破成功!")
-            for bt in result2['breakthroughs']:
-                print(f"    从 {bt['old_realm']} → {bt['new_realm']}")
-        
-        print(f"\n修炼后状态：")
-        print(f"  境界: {dm.player_data['realm']}")
-        print(f"  等级: Lv.{dm.player_data['level']}")
-        print(f"  总修炼天数: {dm.player_data['cultivation']['total_days']}")
-        
+        from xwe.core.data_manager_v3 import DM
+
+        DM.load_all()
+        strength_name = DM.get("attribute_model.primary_attributes.strength.name")
+        realms = DM.get("cultivation_realm.realms", [])
+        first_realm = realms[0]["name"] if realms else "N/A"
+
+        print(f"已加载属性: 力量 → {strength_name}")
+        print(f"首个境界: {first_realm}")
+
     except Exception as e:
         print(f"\n❌ 修炼系统演示失败: {e}")
 

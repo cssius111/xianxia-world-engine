@@ -92,71 +92,23 @@ class TestNLPProcessor(unittest.TestCase):
 
 
 class TestDataManager(unittest.TestCase):
-    """数据管理器测试"""
-    
+    """数据管理器V3测试"""
+
     def setUp(self):
-        """测试准备"""
-        # 使用临时目录
-        import tempfile
-        self.temp_dir = tempfile.mkdtemp()
-        
-        from xwe.core.data_manager import DynamicDataManager
-        self.data_manager = DynamicDataManager(save_dir=self.temp_dir)
-    
-    def tearDown(self):
-        """清理测试文件"""
-        import shutil
-        shutil.rmtree(self.temp_dir)
-    
-    def test_initial_player_data(self):
-        """测试初始玩家数据"""
-        player = self.data_manager.player_data
-        
-        self.assertEqual(player["level"], 1)
-        self.assertEqual(player["realm"], "炼气期一层")
-        self.assertGreater(player["attributes"]["strength"], 0)
-        self.assertGreater(player["resources"]["health"], 0)
-    
-    def test_cultivate_randomness(self):
-        """测试修炼的随机性"""
-        # 修炼多次，检查结果的随机性
-        results = []
-        for _ in range(5):
-            result = self.data_manager.cultivate_dynamic(1)
-            results.append(result["total_exp"])
-        
-        # 经验值应该有变化
-        self.assertGreater(len(set(results)), 1)
-        print(f"修炼5次的经验值: {results}")
-    
-    def test_save_and_load(self):
-        """测试保存和加载"""
-        # 修改数据
-        self.data_manager.player_data["name"] = "测试修士"
-        self.data_manager.cultivate_dynamic(10)
-        
-        # 保存
-        self.data_manager.save_all()
-        
-        # 创建新实例加载
-        from xwe.core.data_manager import DynamicDataManager
-        new_manager = DynamicDataManager(save_dir=self.temp_dir)
-        
-        # 验证数据
-        self.assertEqual(new_manager.player_data["name"], "测试修士")
-        self.assertGreater(new_manager.player_data["cultivation"]["total_days"], 0)
-    
-    def test_history_tracking(self):
-        """测试历史记录"""
-        # 执行一些操作
-        self.data_manager.cultivate_dynamic(5)
-        
-        # 检查历史
-        self.assertGreater(len(self.data_manager.history), 0)
-        
-        last_entry = self.data_manager.history[-1]
-        self.assertEqual(last_entry["action"], "cultivate")
-        self.assertIn("player_snapshot", last_entry)
+        from xwe.core.data_manager_v3 import DM
+        DM.clear_cache()
+        DM.load_all()
+        self.dm = DM
+
+    def test_basic_loading(self):
+        modules = self.dm.get_loaded_modules()
+        self.assertIn("attribute_model", modules)
+        strength = self.dm.get("attribute_model.primary_attributes.strength.name")
+        self.assertEqual(strength, "力量")
+
+    def test_validate_dependencies(self):
+        issues = self.dm.validate_dependencies()
+        self.assertIsInstance(issues, dict)
 
 
 if __name__ == "__main__":

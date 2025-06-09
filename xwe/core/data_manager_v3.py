@@ -226,6 +226,9 @@ class DataManagerV3:
 # 导出便捷接口
 DM = DataManagerV3()
 
+# 与旧版接口兼容的别名
+DataManager = DataManagerV3
+
 def load_game_data():
     """加载所有游戏数据的便捷函数"""
     DM.load_all()

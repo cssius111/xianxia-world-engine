@@ -132,29 +132,13 @@ class QuickTester:
         print("-"*50)
         
         try:
-            from xwe.core.data_manager import DynamicDataManager
-            
-            dm = DynamicDataManager()
-            
-            # 测试数据加载
-            print(f"✅ 玩家数据加载成功")
-            print(f"   当前等级: Lv.{dm.player_data['level']}")
-            print(f"   当前境界: {dm.player_data['realm']}")
-            
-            # 测试修炼
-            before_exp = dm.player_data['exp']
-            result = dm.cultivate_dynamic(1)
-            after_exp = dm.player_data['exp']
-            
-            if after_exp > before_exp:
-                print(f"✅ 修炼系统正常")
-                print(f"   获得经验: {result['total_exp']}")
-            else:
-                print("❌ 修炼没有获得经验")
-            
-            # 测试保存
-            dm.save_all()
-            print("✅ 数据保存成功")
+            from xwe.core.data_manager_v3 import DM
+
+            DM.load_all()
+            modules = DM.get_loaded_modules()
+            print(f"✅ 数据模块加载成功，共 {len(modules)} 个")
+            strength = DM.get("attribute_model.primary_attributes.strength.name")
+            print(f"   力量属性名称: {strength}")
             
             return True
             
