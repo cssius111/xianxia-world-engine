@@ -39,7 +39,7 @@ class XianXiaGameDemo:
         
     def update_status(self):
         """更新状态显示"""
-        self.html_logger.update_status(type('Player', (), self.player))
+        self.html_logger.update_status(self.player)
         
     def start_game(self):
         """游戏开始"""

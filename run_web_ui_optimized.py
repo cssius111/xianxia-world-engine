@@ -17,7 +17,7 @@ import time
 from datetime import datetime
 
 # 导入游戏核心
-from xwe.core.game_core_enhanced import EnhancedGameCore
+from xwe.core.game_core_enhanced import create_enhanced_game
 from xwe.core.cultivation_system import CultivationSystem
 from xwe.features.narrative_system import NarrativeSystem
 from xwe.features.ai_personalization import AIPersonalization
@@ -34,17 +34,16 @@ def get_game_instance(session_id):
     """获取或创建游戏实例"""
     if session_id not in game_instances:
         # 创建新游戏实例
-        game = EnhancedGameCore()
+        game = create_enhanced_game()
         
         # 初始化各系统
-        game.cultivation_system = CultivationSystem(game)
+        # CultivationSystem 构造函数不接受游戏实例参数
+        game.cultivation_system = CultivationSystem()
         game.narrative_system = NarrativeSystem()
         game.ai_personalization = AIPersonalization()
         game.community_system = CommunitySystem()
         game.technical_ops = TechnicalOps()
         
-        # 初始化游戏
-        game.initialize()
         
         # 创建玩家
         if not game.game_state.player:
