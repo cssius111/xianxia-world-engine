@@ -37,7 +37,8 @@ def get_game_instance(session_id):
         game = EnhancedGameCore()
         
         # 初始化各系统
-        game.cultivation_system = CultivationSystem(game)
+        # CultivationSystem 构造函数不接受游戏实例参数
+        game.cultivation_system = CultivationSystem()
         game.narrative_system = NarrativeSystem()
         game.ai_personalization = AIPersonalization()
         game.community_system = CommunitySystem()
