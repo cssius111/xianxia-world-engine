@@ -176,6 +176,22 @@
             animation: fadeIn 0.8s ease forwards;
         }
 
+        /* 卡片式日志 */
+        .log-card {
+            background: #2c2c2c;
+            padding: 10px 15px;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            margin-bottom: 12px;
+        }
+
+        .title-card {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 500;
+            margin: 16px 0;
+        }
+
         @keyframes fadeIn {
             to {
                 opacity: 1;
@@ -286,6 +302,63 @@
             background: rgba(200, 200, 200, 0.3);
         }
 
+        /* 弹窗样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #2a2a2a;
+            padding: 20px;
+            border-radius: 8px;
+            width: 70%;
+            max-height: 80%;
+            overflow-y: auto;
+            color: #d8d8d8;
+        }
+
+        .modal-close {
+            background: #3a3a3a;
+            color: #ccc;
+            border: none;
+            border-radius: 6px;
+            padding: 4px 12px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: #555;
+        }
+
+        .modal-content table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .grid-table th,
+        .grid-table td {
+            width: 25%;
+        }
+
+        .modal-content th,
+        .modal-content td {
+            text-align: left;
+            padding: 6px 8px;
+        }
+        .grid-table {
+            width: 100%;
+        }
+
         /* 响应式适配 */
         @media (max-width: 768px) {
             .sidebar {
@@ -303,6 +376,7 @@
             }
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
     <!-- 顶部区域 -->
@@ -321,13 +395,7 @@
             <div class="status-block">
                 <div class="status-line">
                     <span class="status-label">境界</span>
-                    <span class="status-value" id="realm">{{ player.attributes.realm_name if player }}</span>
-                </div>
-                <div class="status-line">
-                    <span class="status-label">修为</span>
-                    <span class="status-value">
-                        <span id="cultivation">{{ player.attributes.cultivation_level if player }}</span>
-                    </span>
+                    <span class="status-value" id="realm">{{ player.attributes.realm_name if player }} ({{ realm_percent }}%)</span>
                 </div>
                 <div class="status-line">
                     <span class="status-label">气血值</span>
@@ -338,10 +406,12 @@
                     <span class="status-value" id="mana">{{ player.attributes.current_mana if player }} / {{ player.attributes.max_mana if player }}</span>
                 </div>
                 <div class="status-line">
-                    <span class="status-label">攻击 / 防御</span>
-                    <span class="status-value">
-                        <span id="attack">{{ player.attributes.attack_power if player }}</span> / <span id="defense">{{ player.attributes.defense if player }}</span>
-                    </span>
+                    <span class="status-label">攻击</span>
+                    <span class="status-value" id="attack">{{ player.attributes.attack_power if player }}</span>
+                </div>
+                <div class="status-line">
+                    <span class="status-label">防御</span>
+                    <span class="status-value" id="defense">{{ player.attributes.defense if player }}</span>
                 </div>
             </div>
 
@@ -365,31 +435,56 @@
 
             <!-- 功能导航 -->
             <div class="nav-section">
-                <a class="nav-link" onclick="sendCommand('状态')">查看状态</a>
-                <a class="nav-link" onclick="sendCommand('背包')">查看背包</a>
-                <a class="nav-link" onclick="sendCommand('功法')">查看功法</a>
-                <a class="nav-link" onclick="sendCommand('修炼')">开始修炼</a>
-                <a class="nav-link" onclick="sendCommand('帮助')">帮助文档</a>
+                <a class="nav-link" onclick="showStatusModal()">查看状态</a>
+                <a class="nav-link" onclick="showInventoryModal()">查看背包</a>
+                <a class="nav-link" onclick="showHelpModal()">帮助文档</a>
             </div>
         </div>
 
         <!-- 中央叙事区域 -->
         <div class="narrative-log" id="narrative-log">
             {% for line in logs %}
-            <div class="log-entry">{{ line }}</div>
+            <div class="log-entry log-card">{{ line|safe }}</div>
             {% endfor %}
         </div>
     </div>
 
     <!-- 底部指令区 -->
     <div class="command-section">
-        <input type="text" 
-               class="command-input" 
-               id="command-input" 
-               placeholder="输入命令，如：探索、攻击妖兽、使用回元丹……" 
+        <input type="text"
+               class="command-input"
+               id="command-input"
+               placeholder="输入命令，如：探索、攻击妖兽、使用回元丹……"
                onkeypress="handleKeyPress(event)"
                autocomplete="off">
         <button class="command-submit" onclick="executeCommand()" title="发送指令并刷新界面">执行</button>
+    </div>
+
+    <!-- 状态弹窗 -->
+    <div class="modal" id="status-modal">
+        <div class="modal-content" onclick="event.stopPropagation();">
+            <button class="modal-close" style="float:right" onclick="hideModal('status-modal')">×</button>
+            <h3 id="status-title" style="margin-bottom:10px"></h3>
+            <table id="status-table" class="grid-table"></table>
+        </div>
+    </div>
+
+    <!-- 背包弹窗 -->
+    <div class="modal" id="inventory-modal">
+        <div class="modal-content" onclick="event.stopPropagation();">
+            <button class="modal-close" style="float:right" onclick="hideModal('inventory-modal')">×</button>
+            <h3 id="inventory-title" style="margin-bottom:10px"></h3>
+            <table id="inventory-table"></table>
+        </div>
+    </div>
+
+    <!-- 帮助弹窗 -->
+    <div class="modal" id="help-modal">
+        <div class="modal-content" onclick="event.stopPropagation();">
+            <button class="modal-close" style="float:right" onclick="hideModal('help-modal')">×</button>
+            <h3 id="help-title" style="margin-bottom:10px"></h3>
+            <div id="help-content"></div>
+        </div>
     </div>
 
 </body>
@@ -400,10 +495,11 @@
             const p = data.player;
             if (!p) return;
             const attrs = p.attributes;
-            document.getElementById('realm').textContent = attrs.realm_name;
-            document.getElementById('cultivation').textContent = `${attrs.cultivation_level}`;
-            document.getElementById('health').textContent = `${attrs.current_health} / ${attrs.max_health}`;
-            document.getElementById('mana').textContent = `${attrs.current_mana} / ${attrs.max_mana}`;
+            document.getElementById('realm').textContent = `${attrs.realm_name}（${p.realm_percent || 0}%）`;
+            const healthCurrent = Math.min(attrs.current_health, attrs.max_health);
+            document.getElementById('health').textContent = `${healthCurrent} / ${attrs.max_health}`;
+            const manaCurrent = Math.min(attrs.current_mana, attrs.max_mana);
+            document.getElementById('mana').textContent = `${manaCurrent} / ${attrs.max_mana}`;
             document.getElementById('attack').textContent = attrs.attack_power.toFixed(0);
             document.getElementById('defense').textContent = attrs.defense.toFixed(0);
         }
@@ -415,8 +511,9 @@
             log.innerHTML = '';
             data.logs.forEach(text => {
                 const entry = document.createElement('div');
-                entry.className = 'log-entry';
-                entry.textContent = text;
+                const isTitle = /^===.+===$/.test(text.trim());
+                entry.className = 'log-entry log-card' + (isTitle ? ' title-card' : '');
+                entry.innerHTML = marked.parse(text);
                 log.appendChild(entry);
             });
             log.scrollTop = log.scrollHeight;
@@ -451,6 +548,80 @@
             executeCommand();
         }
 
+        async function showStatusModal() {
+            const res = await fetch('/status');
+            const data = await res.json();
+            const p = data.player;
+            if (!p) return;
+            const table = document.getElementById('status-table');
+            table.innerHTML = '';
+            const attrs = p.attributes;
+            const base = [
+                ['姓名', p.name],
+                ['境界', `${attrs.realm_name}（${p.realm_percent || 0}%）`],
+                ['气血值', `${Math.min(attrs.current_health, attrs.max_health)} / ${attrs.max_health}`],
+                ['灵力值', `${Math.min(attrs.current_mana, attrs.max_mana)} / ${attrs.max_mana}`],
+                ['攻击', attrs.attack_power.toFixed(0)],
+                ['防御', attrs.defense.toFixed(0)]
+            ];
+            if (Array.isArray(data.player.buffs)) {
+                base.push(['Buff', data.player.buffs.join('，')]);
+            }
+            for (let i = 0; i < base.length; i += 2) {
+                const tr = document.createElement('tr');
+                const [k1, v1] = base[i];
+                const [k2, v2] = base[i + 1] || [' ', ' '];
+                tr.innerHTML = `<th>${k1}</th><td>${v1}</td><th>${k2}</th><td>${v2}</td>`;
+                table.appendChild(tr);
+            }
+            document.getElementById('status-title').textContent = '角色状态';
+            showModal('status-modal');
+        }
+
+        async function showInventoryModal() {
+            await executeCommandWithModal('背包', 'inventory-modal', '背包');
+        }
+
+
+        async function executeCommandWithModal(cmd, modalId, title) {
+            await fetch('/command', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({command: cmd})
+            });
+            const res = await fetch('/log');
+            const data = await res.json();
+            const table = document.getElementById(modalId.replace('-modal','-table'));
+            table.innerHTML = '';
+            const startIndex = data.logs.findIndex(t => t.includes(`=== ${title} ===`));
+            const slice = startIndex >= 0 ? data.logs.slice(startIndex + 1) : data.logs.slice(-20);
+            slice.forEach(text => {
+                const tr = document.createElement('tr');
+                const td = document.createElement('td');
+                td.colSpan = 4;
+                td.innerHTML = marked.parse(text);
+                tr.appendChild(td);
+                table.appendChild(tr);
+            });
+            document.getElementById(`${modalId.replace('-modal','-title')}`).textContent = title;
+            showModal(modalId);
+        }
+
+        function showHelpModal() {
+            executeCommandWithModal('帮助', 'help-modal', '帮助');
+        }
+
+        function showModal(id) {
+            const modal = document.getElementById(id);
+            modal.style.display = 'flex';
+            modal.onclick = (e) => { if (e.target === modal) hideModal(id); };
+        }
+
+        function hideModal(id) {
+            const modal = document.getElementById(id);
+            modal.style.display = 'none';
+        }
+
         function handleKeyPress(event) {
             if (event.key === 'Enter') {
                 executeCommand();
@@ -461,6 +632,8 @@
             document.getElementById('command-input').focus();
             fetchLog();
             fetchStatus();
+            document.getElementById('realm').title = '表示修炼境界及突破进度';
+            document.getElementById('mana').title = '当前灵力值/上限';
             setInterval(checkUpdates, 2000);
         }
         window.onload = init;
