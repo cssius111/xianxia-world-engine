@@ -23,6 +23,7 @@ from .narrative_system import (
     AchievementSystem,
     StoryBranchManager,
     NarrativeEventSystem,
+    NarrativeSystem,
     narrative_system,
     create_immersive_opening,
     check_and_display_achievements
@@ -121,6 +122,7 @@ __all__ = [
     
     # 叙事系统
     "narrative_system",
+    "NarrativeSystem",
     "create_immersive_opening",
     "check_and_display_achievements",
     

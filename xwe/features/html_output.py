@@ -12,15 +12,26 @@ class HtmlGameLogger:
         """更新角色状态"""
         if not player:
             return
-        attrs = player.attributes
-        self.status = {
-            "名字": player.name,
-            "境界": f"{attrs.realm_name} {attrs.cultivation_level}层",
-            "气血": f"{int(attrs.current_health)}/{int(attrs.max_health)}",
-            "灵力": f"{int(attrs.current_mana)}/{int(attrs.max_mana)}",
-            "攻击": int(attrs.get('attack_power')),
-            "防御": int(attrs.get('defense')),
-        }
+        # 支持传入字典或拥有 attributes 属性的对象
+        if isinstance(player, dict):
+            self.status = {
+                "名字": player.get("name", ""),
+                "境界": f"{player.get('realm', '')}第{player.get('level', 1)}层",
+                "气血": f"{player.get('health', 0)}/{player.get('max_health', 0)}",
+                "法力": f"{player.get('mana', 0)}/{player.get('max_mana', 0)}",
+                "攻击": player.get('attack', 0),
+                "防御": player.get('defense', 0),
+            }
+        else:
+            attrs = player.attributes
+            self.status = {
+                "名字": player.name,
+                "境界": f"{attrs.realm_name} {attrs.cultivation_level}层",
+                "气血": f"{int(attrs.current_health)}/{int(attrs.max_health)}",
+                "灵力": f"{int(attrs.current_mana)}/{int(attrs.max_mana)}",
+                "攻击": int(attrs.get('attack_power')),
+                "防御": int(attrs.get('defense')),
+            }
         self._write_html()
 
     def add_log(self, text: str, category: str = "system", is_continuation: bool = False):
