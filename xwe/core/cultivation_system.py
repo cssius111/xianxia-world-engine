@@ -7,7 +7,7 @@ import random
 import logging
 from typing import Dict, Any, Optional, Tuple, List
 from datetime import datetime
-from .data_manager_v3 import DM
+from .data_manager import DM
 from .formula_engine import formula_engine, calculate
 
 logger = logging.getLogger(__name__)

@@ -48,7 +48,7 @@ python run_v3.py --skip-tests
 xianxia_world_engine/
 ├── xwe/
 │   ├── core/                    # 核心系统
-│   │   ├── data_manager_v3.py  # 数据管理器
+│   │   ├── data_manager.py     # 数据管理器
 │   │   ├── formula_engine.py   # 公式引擎
 │   │   ├── cultivation_system.py # 修炼系统
 │   │   ├── combat_system_v3.py # 战斗系统

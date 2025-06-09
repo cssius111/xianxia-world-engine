@@ -67,7 +67,7 @@ class DataDrivenGameCore(GameCoreEnhanced):
         print("="*50)
         
         # 显示加载的模块
-        from xwe.core.data_manager_v3 import DM
+        from xwe.core.data_manager import DM
         loaded_modules = DM.get_loaded_modules()
         print(f"\n已加载 {len(loaded_modules)} 个数据模块:")
         for module in loaded_modules:

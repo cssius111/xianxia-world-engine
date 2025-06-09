@@ -13,7 +13,7 @@ def check_files():
     # 定义需要检查的文件
     required_files = {
         "核心模块": [
-            "xwe/core/data_manager_v3.py",
+            "xwe/core/data_manager.py",
             "xwe/core/formula_engine.py",
             "xwe/core/cultivation_system.py",
             "xwe/core/combat_system_v3.py",
