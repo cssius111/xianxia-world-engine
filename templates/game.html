@@ -176,6 +176,15 @@
             animation: fadeIn 0.8s ease forwards;
         }
 
+        /* 卡片式日志 */
+        .log-card {
+            background: #2c2c2c;
+            padding: 10px 15px;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            margin-bottom: 12px;
+        }
+
         @keyframes fadeIn {
             to {
                 opacity: 1;
@@ -286,6 +295,41 @@
             background: rgba(200, 200, 200, 0.3);
         }
 
+        /* 弹窗样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #2a2a2a;
+            padding: 20px;
+            border-radius: 8px;
+            width: 70%;
+            max-height: 80%;
+            overflow-y: auto;
+            color: #d8d8d8;
+        }
+
+        .modal-content table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .modal-content th,
+        .modal-content td {
+            text-align: left;
+            padding: 6px 8px;
+        }
+
         /* 响应式适配 */
         @media (max-width: 768px) {
             .sidebar {
@@ -303,6 +347,7 @@
             }
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
     <!-- 顶部区域 -->
@@ -338,10 +383,12 @@
                     <span class="status-value" id="mana">{{ player.attributes.current_mana if player }} / {{ player.attributes.max_mana if player }}</span>
                 </div>
                 <div class="status-line">
-                    <span class="status-label">攻击 / 防御</span>
-                    <span class="status-value">
-                        <span id="attack">{{ player.attributes.attack_power if player }}</span> / <span id="defense">{{ player.attributes.defense if player }}</span>
-                    </span>
+                    <span class="status-label">攻击</span>
+                    <span class="status-value" id="attack">{{ player.attributes.attack_power if player }}</span>
+                </div>
+                <div class="status-line">
+                    <span class="status-label">防御</span>
+                    <span class="status-value" id="defense">{{ player.attributes.defense if player }}</span>
                 </div>
             </div>
 
@@ -365,9 +412,9 @@
 
             <!-- 功能导航 -->
             <div class="nav-section">
-                <a class="nav-link" onclick="sendCommand('状态')">查看状态</a>
-                <a class="nav-link" onclick="sendCommand('背包')">查看背包</a>
-                <a class="nav-link" onclick="sendCommand('功法')">查看功法</a>
+                <a class="nav-link" onclick="showStatusModal()">查看状态</a>
+                <a class="nav-link" onclick="showInventoryModal()">查看背包</a>
+                <a class="nav-link" onclick="showSkillsModal()">查看功法</a>
                 <a class="nav-link" onclick="sendCommand('修炼')">开始修炼</a>
                 <a class="nav-link" onclick="sendCommand('帮助')">帮助文档</a>
             </div>
@@ -376,20 +423,29 @@
         <!-- 中央叙事区域 -->
         <div class="narrative-log" id="narrative-log">
             {% for line in logs %}
-            <div class="log-entry">{{ line }}</div>
+            <div class="log-entry log-card">{{ line|safe }}</div>
             {% endfor %}
         </div>
     </div>
 
     <!-- 底部指令区 -->
     <div class="command-section">
-        <input type="text" 
-               class="command-input" 
-               id="command-input" 
-               placeholder="输入命令，如：探索、攻击妖兽、使用回元丹……" 
+        <input type="text"
+               class="command-input"
+               id="command-input"
+               placeholder="输入命令，如：探索、攻击妖兽、使用回元丹……"
                onkeypress="handleKeyPress(event)"
                autocomplete="off">
         <button class="command-submit" onclick="executeCommand()" title="发送指令并刷新界面">执行</button>
+    </div>
+
+    <!-- 信息弹窗 -->
+    <div class="modal" id="info-modal">
+        <div class="modal-content">
+            <button style="float:right" onclick="hideModal()">关闭</button>
+            <h3 id="modal-title" style="margin-bottom:10px"></h3>
+            <table id="modal-table"></table>
+        </div>
     </div>
 
 </body>
@@ -400,10 +456,11 @@
             const p = data.player;
             if (!p) return;
             const attrs = p.attributes;
-            document.getElementById('realm').textContent = attrs.realm_name;
+            document.getElementById('realm').textContent = `${attrs.realm_name}（${p.realm_percent || 0}%）`;
             document.getElementById('cultivation').textContent = `${attrs.cultivation_level}`;
             document.getElementById('health').textContent = `${attrs.current_health} / ${attrs.max_health}`;
-            document.getElementById('mana').textContent = `${attrs.current_mana} / ${attrs.max_mana}`;
+            const manaCurrent = Math.min(attrs.current_mana, attrs.max_mana);
+            document.getElementById('mana').textContent = `${manaCurrent} / ${attrs.max_mana}`;
             document.getElementById('attack').textContent = attrs.attack_power.toFixed(0);
             document.getElementById('defense').textContent = attrs.defense.toFixed(0);
         }
@@ -415,8 +472,8 @@
             log.innerHTML = '';
             data.logs.forEach(text => {
                 const entry = document.createElement('div');
-                entry.className = 'log-entry';
-                entry.textContent = text;
+                entry.className = 'log-entry log-card';
+                entry.innerHTML = marked.parse(text);
                 log.appendChild(entry);
             });
             log.scrollTop = log.scrollHeight;
@@ -451,6 +508,71 @@
             executeCommand();
         }
 
+        async function showStatusModal() {
+            const res = await fetch('/status');
+            const data = await res.json();
+            const p = data.player;
+            if (!p) return;
+            const table = document.getElementById('modal-table');
+            table.innerHTML = '';
+            const attrs = p.attributes;
+            const rows = [
+                ['姓名', p.name],
+                ['境界', `${attrs.realm_name}（${p.realm_percent || 0}%）`],
+                ['修为', attrs.cultivation_level],
+                ['气血值', `${attrs.current_health} / ${attrs.max_health}`],
+                ['灵力值', `${Math.min(attrs.current_mana, attrs.max_mana)} / ${attrs.max_mana}`],
+                ['攻击', attrs.attack_power.toFixed(0)],
+                ['防御', attrs.defense.toFixed(0)]
+            ];
+            rows.forEach(r => {
+                const tr = document.createElement('tr');
+                const th = document.createElement('th');
+                th.textContent = r[0];
+                const td = document.createElement('td');
+                td.textContent = r[1];
+                tr.appendChild(th);
+                tr.appendChild(td);
+                table.appendChild(tr);
+            });
+            document.getElementById('modal-title').textContent = '角色状态';
+            document.getElementById('info-modal').style.display = 'flex';
+        }
+
+        async function showInventoryModal() {
+            await executeCommandWithModal('背包', '背包');
+        }
+
+        async function showSkillsModal() {
+            await executeCommandWithModal('功法', '功法');
+        }
+
+        async function executeCommandWithModal(cmd, title) {
+            await fetch('/command', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({command: cmd})
+            });
+            const res = await fetch('/log');
+            const data = await res.json();
+            const table = document.getElementById('modal-table');
+            table.innerHTML = '';
+            data.logs.slice(-20).forEach(text => {
+                const tr = document.createElement('tr');
+                const td = document.createElement('td');
+                td.colSpan = 2;
+                td.innerHTML = marked.parse(text);
+                tr.appendChild(td);
+                table.appendChild(tr);
+            });
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('info-modal').style.display = 'flex';
+        }
+
+        function hideModal() {
+            document.getElementById('info-modal').style.display = 'none';
+        }
+
         function handleKeyPress(event) {
             if (event.key === 'Enter') {
                 executeCommand();
@@ -461,6 +583,8 @@
             document.getElementById('command-input').focus();
             fetchLog();
             fetchStatus();
+            document.getElementById('realm').title = '表示修炼境界及突破进度';
+            document.getElementById('mana').title = '当前灵力值/上限';
             setInterval(checkUpdates, 2000);
         }
         window.onload = init;
