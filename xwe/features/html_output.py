@@ -18,7 +18,7 @@ class HtmlGameLogger:
                 "名字": player.get("name", ""),
                 "境界": f"{player.get('realm', '')}第{player.get('level', 1)}层",
                 "气血": f"{player.get('health', 0)}/{player.get('max_health', 0)}",
-                "灵力": f"{player.get('mana', 0)}/{player.get('max_mana', 0)}",
+                "法力": f"{player.get('mana', 0)}/{player.get('max_mana', 0)}",
                 "攻击": player.get('attack', 0),
                 "防御": player.get('defense', 0),
             }

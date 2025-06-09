@@ -39,7 +39,6 @@ class XianXiaGameDemo:
         
     def update_status(self):
         """更新状态显示"""
-        # 直接传入字典以统一字段名称
         self.html_logger.update_status(self.player)
         
     def start_game(self):
