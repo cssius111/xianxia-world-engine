@@ -923,3 +923,9 @@ def integrate_technical_features(game_core):
     game_core.get_system_status = tech_ops_system.get_system_status
     
     logger.info("技术功能已集成")
+
+# 向后兼容的别名
+class TechnicalOps(TechnicalOpsSystem):
+    """`TechnicalOpsSystem` 的别名, 兼容旧代码"""
+    pass
+
