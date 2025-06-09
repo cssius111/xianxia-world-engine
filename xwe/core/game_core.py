@@ -32,7 +32,7 @@ from .chinese_dragon_art import get_dragon_art, get_dragon_for_scene
 from .status_manager import StatusDisplayManager
 from .achievement_system import AchievementSystem
 from .command_router import CommandRouter, CommandPriority
-from .event_system import ImmersiveEventSystem, EventType, SpecialEventHandler
+from .immersive_event_system import ImmersiveEventSystem, EventType, SpecialEventHandler
 
 logger = logging.getLogger(__name__)
 

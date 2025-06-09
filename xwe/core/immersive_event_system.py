@@ -10,6 +10,17 @@ from typing import Dict, List, Any, Optional, Callable, Tuple
 from dataclasses import dataclass, field
 from enum import Enum
 
+
+class SpecialEventHandler:
+    """处理特殊事件的简单助手"""
+
+    @staticmethod
+    def handle_cultivation_event(event_system: 'ImmersiveEventSystem', context: Dict[str, Any], duration: int) -> int:
+        """简化的修炼事件处理"""
+        exp = duration * 50
+        event_system.current_context = {'event_effects': {'exp': exp}}
+        return exp
+
 class EventType(Enum):
     """事件类型"""
     STORY = "story"          # 剧情事件
@@ -44,7 +55,8 @@ class EventStep:
     next_step: Optional[str] = None  # 下一步ID
 
 class ImmersiveEventSystem:
-    def __init__(self):
+    def __init__(self, output_handler=None):
+        self.output_handler = output_handler
         self.events = self._init_events()
         self.current_event = None
         self.current_step = None

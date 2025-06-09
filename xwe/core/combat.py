@@ -5,6 +5,7 @@
 
 import random
 import logging
+from dataclasses import dataclass, field
 from typing import Dict, Any, List, Optional, Tuple
 from enum import Enum
 from .data_manager import DM
@@ -31,6 +32,27 @@ class ActionType(Enum):
     DEFEND = "defend"
     MOVE = "move"
     FLEE = "flee"
+
+
+# 兼容旧接口
+CombatActionType = ActionType
+
+
+@dataclass
+class CombatAction:
+    """简单的战斗行动数据类"""
+
+    action_type: ActionType
+    actor_id: str
+    target_ids: List[str] = field(default_factory=list)
+    skill: Optional[str] = None
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "action": self.action_type,
+            "target": self.target_ids[0] if self.target_ids else None,
+            "skill": self.skill,
+        }
 
 
 class CombatSystemV3:
@@ -71,6 +93,19 @@ class CombatSystemV3:
         combat = Combat(self, combat_id, participants)
         self.active_combats[combat_id] = combat
         return combat
+
+    def execute_action(self, combat_id: str, action: CombatAction) -> Dict[str, Any]:
+        """对外暴露的执行行动接口"""
+        combat = self.active_combats.get(combat_id)
+        if not combat:
+            return {"success": False, "message": "invalid combat"}
+
+        if isinstance(action, CombatAction):
+            action_dict = action.to_dict()
+        else:
+            action_dict = action
+
+        return combat.execute_turn(action_dict)
     
     def calculate_damage(self, attacker, defender, action_type: str, 
                         skill_data: Optional[Dict] = None) -> Dict[str, Any]:
@@ -938,7 +973,15 @@ class CombatState:
 
 
 # 全局系统实例
-combat_system = CombatSystemV3()
+
+class CombatSystem(CombatSystemV3):
+    """向后兼容的 CombatSystem 包装类"""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__()
+
+
+combat_system = CombatSystem()
 
 # 导出便捷函数
 def create_combat(participants: List[Any]) -> Combat:

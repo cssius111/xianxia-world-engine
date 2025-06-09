@@ -7,19 +7,21 @@ from .data_loader import DataLoader
 from .attributes import AttributeSystem, CharacterAttributes
 from .character import Character
 from .skills import SkillSystem, Skill
-from .combat import CombatSystem, CombatResult
+from .combat import CombatSystem, combat_system
 from .ai import AIController
 from .status import StatusEffect, StatusEffectManager
 from .command_parser import CommandParser
 from .game_core import GameCore
-from .event_system import EventSystem
+from .event_system import EventSystemV3 as EventSystem
 
 # 其他可选模块（安全导入）
 _optional_modules = {}
 
 try:
-    from .data_manager import DataManager
+    from .data_manager import DataManager, load_game_data, get_config
     _optional_modules['DataManager'] = DataManager
+    _optional_modules['load_game_data'] = load_game_data
+    _optional_modules['get_config'] = get_config
 except ImportError:
     pass
 
@@ -30,8 +32,10 @@ except ImportError:
     pass
 
 try:
-    from .formula_engine import FormulaEngine
+    from .formula_engine import FormulaEngine, calculate, evaluate_expression
     _optional_modules['FormulaEngine'] = FormulaEngine
+    _optional_modules['calculate'] = calculate
+    _optional_modules['evaluate_expression'] = evaluate_expression
 except ImportError:
     pass
 
@@ -54,11 +58,15 @@ __all__ = [
     'SkillSystem',
     'Skill',
     'CombatSystem',
-    'CombatResult',
     'AIController',
     'StatusEffect',
     'StatusEffectManager',
     'CommandParser',
     'GameCore',
     'EventSystem',
+    'load_game_data',
+    'get_config',
+    'calculate',
+    'evaluate_expression',
+    'combat_system',
 ] + list(_optional_modules.keys())  # 动态添加可选模块
