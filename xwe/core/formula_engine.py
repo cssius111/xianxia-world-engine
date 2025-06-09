@@ -9,7 +9,7 @@ import math
 import random
 from typing import Dict, Any, Union, Optional, Callable
 import logging
-from .data_manager_v3 import DM
+from .data_manager import DM
 
 logger = logging.getLogger(__name__)
 

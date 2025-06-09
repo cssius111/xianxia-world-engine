@@ -14,7 +14,8 @@ from .command_parser import CommandParser
 from .game_core import GameCore
 
 # V3版本新增模块
-from .data_manager_v3 import DataManagerV3, DM, load_game_data, get_config
+from .data_manager import DataManager, DM, load_game_data, get_config
+from .player_data_manager import PlayerDataManager
 from .formula_engine import FormulaEngine, formula_engine, calculate, evaluate_expression
 from .cultivation_system import CultivationSystem, cultivation_system, cultivate, attempt_breakthrough
 from .combat_system_v3 import CombatSystemV3, Combat, CombatState, combat_system, create_combat
@@ -36,7 +37,8 @@ __all__ = [
     'CommandParser',
     'GameCore',
     # V3版本新增
-    'DataManagerV3',
+    'DataManager',
+    'PlayerDataManager',
     'DM',
     'load_game_data',
     'get_config',

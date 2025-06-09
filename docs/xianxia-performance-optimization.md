@@ -300,7 +300,7 @@ class BenchmarkRunner:
 
 from xwe.core.expression import ExpressionEngine
 from xwe.core.event import EventSystem, GameEvent
-from xwe.core.data import DataManager
+from xwe.core import DataManager
 from xwe.features.combat import CombatModule
 import random
 

@@ -112,9 +112,9 @@ def demo_cultivation_system():
     print_section("🧘 修炼系统演示")
     
     try:
-        from xwe.core.data_manager import DynamicDataManager
-        
-        dm = DynamicDataManager()
+        from xwe.core.player_data_manager import PlayerDataManager
+
+        dm = PlayerDataManager()
         
         print("\n当前角色状态：")
         print(f"  境界: {dm.player_data['realm']}")

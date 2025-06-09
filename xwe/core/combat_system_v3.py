@@ -7,7 +7,7 @@ import random
 import logging
 from typing import Dict, Any, List, Optional, Tuple
 from enum import Enum
-from .data_manager_v3 import DM
+from .data_manager import DM
 from .formula_engine import formula_engine, calculate, evaluate_expression
 
 logger = logging.getLogger(__name__)

@@ -100,8 +100,8 @@ class TestDataManager(unittest.TestCase):
         import tempfile
         self.temp_dir = tempfile.mkdtemp()
         
-        from xwe.core.data_manager import DynamicDataManager
-        self.data_manager = DynamicDataManager(save_dir=self.temp_dir)
+        from xwe.core.player_data_manager import PlayerDataManager
+        self.data_manager = PlayerDataManager(save_dir=self.temp_dir)
     
     def tearDown(self):
         """清理测试文件"""
@@ -139,8 +139,8 @@ class TestDataManager(unittest.TestCase):
         self.data_manager.save_all()
         
         # 创建新实例加载
-        from xwe.core.data_manager import DynamicDataManager
-        new_manager = DynamicDataManager(save_dir=self.temp_dir)
+        from xwe.core.player_data_manager import PlayerDataManager
+        new_manager = PlayerDataManager(save_dir=self.temp_dir)
         
         # 验证数据
         self.assertEqual(new_manager.player_data["name"], "测试修士")

@@ -132,9 +132,9 @@ class QuickTester:
         print("-"*50)
         
         try:
-            from xwe.core.data_manager import DynamicDataManager
-            
-            dm = DynamicDataManager()
+            from xwe.core.player_data_manager import PlayerDataManager
+
+            dm = PlayerDataManager()
             
             # 测试数据加载
             print(f"✅ 玩家数据加载成功")
