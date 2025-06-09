@@ -1,9 +1,9 @@
 {
   "meta": {
-    "version": "3.0.0",
-    "description": "修仙世界引擎境界体系定义",
+    "version": "3.1.0",
+    "description": "修仙世界引擎境界体系定义（平衡版）",
     "schema_version": "2020-12",
-    "last_modified": "2025-06-07"
+    "last_modified": "2025-06-09"
   },
   "realms": [
     {
@@ -95,7 +95,7 @@
       "description": "凝液成丹，金丹大道",
       "levels": 9,
       "min_age": 20,
-      "power_multiplier": 5.0,
+      "power_multiplier": 4.0,
       "requirements": {
         "previous_realm": "foundation_building",
         "realm_level": 9,
@@ -145,7 +145,7 @@
       "description": "金丹碎而元婴生，神魂初显",
       "levels": 9,
       "min_age": 50,
-      "power_multiplier": 15.0,
+      "power_multiplier": 8.0,
       "requirements": {
         "previous_realm": "golden_core",
         "realm_level": 9,
@@ -196,7 +196,7 @@
       "description": "元婴化神，掌控法则",
       "levels": 9,
       "min_age": 200,
-      "power_multiplier": 40.0,
+      "power_multiplier": 15.0,
       "requirements": {
         "previous_realm": "nascent_soul",
         "realm_level": 9,
@@ -241,7 +241,7 @@
       "description": "返虚合道，天人合一",
       "levels": 9,
       "min_age": 1000,
-      "power_multiplier": 100.0,
+      "power_multiplier": 30.0,
       "special_features": {
         "void_body": "虚实转换，不死不灭",
         "dao_integration": "与天地法则共鸣",
@@ -257,7 +257,7 @@
       "description": "炼虚合道，大道之躯",
       "levels": 9,
       "min_age": 5000,
-      "power_multiplier": 250.0,
+      "power_multiplier": 60.0,
       "special_features": {
         "dao_body": "法则化身，言出法随",
         "world_lord": "掌控一方世界",
@@ -273,7 +273,7 @@
       "description": "超脱生死，直指大道",
       "levels": 9,
       "min_age": 10000,
-      "power_multiplier": 600.0,
+      "power_multiplier": 120.0,
       "ascension_ready": true,
       "special_features": {
         "transcendent": "超脱因果，不沾业力",
@@ -290,7 +290,7 @@
       "description": "历九重天劫，证道成仙",
       "levels": 9,
       "min_age": 50000,
-      "power_multiplier": 1500.0,
+      "power_multiplier": 250.0,
       "final_realm": true,
       "tribulation_stages": [
         "心魔劫",
@@ -315,12 +315,12 @@
   ],
   "breakthrough_mechanics": {
     "base_success_rates": {
-      "qi_to_foundation": 0.5,
-      "foundation_to_golden": 0.3,
-      "golden_to_nascent": 0.1,
-      "nascent_to_deity": 0.05,
-      "deity_to_void": 0.01,
-      "higher_realms": 0.001
+      "qi_to_foundation": 0.6,
+      "foundation_to_golden": 0.4,
+      "golden_to_nascent": 0.25,
+      "nascent_to_deity": 0.15,
+      "deity_to_void": 0.08,
+      "higher_realms": 0.05
     },
     "failure_consequences": {
       "minor": "cultivation_backlash",
@@ -329,26 +329,49 @@
       "catastrophic": "death"
     },
     "success_modifiers": {
-      "perfect_foundation": 1.5,
-      "heavenly_spiritual_root": 2.0,
+      "perfect_foundation": 1.3,
+      "heavenly_spiritual_root": 1.5,
       "dao_comprehension": "variable",
-      "fortune_treasure": 1.3,
-      "master_guidance": 1.2
+      "fortune_treasure": 1.2,
+      "master_guidance": 1.15
     }
   },
   "realm_suppression": {
-    "description": "高境界对低境界的压制",
-    "formula": "suppression = min(0.5, tier_difference * 0.15)",
+    "description": "高境界对低境界的压制（平衡版）",
+    "formula": "log(1 + tier_difference) * 0.15 * (1 - target_willpower / 200)",
+    "max_suppression": 0.5,
     "effects": [
       "attribute_reduction",
       "skill_seal",
       "movement_restriction",
       "spiritual_pressure"
-    ]
+    ],
+    "counter_measures": {
+      "special_techniques": {"reduction": 0.3, "description": "特殊功法可减轻压制"},
+      "formations": {"reduction": 0.2, "description": "阵法加持"},
+      "treasures": {"reduction": 0.2, "description": "法宝护体"},
+      "environment": {"reduction": 0.1, "description": "地利优势"}
+    }
+  },
+  "cross_realm_combat": {
+    "description": "跨境界战斗平衡机制",
+    "underdog_bonus": {
+      "description": "弱者补偿机制",
+      "experience_multiplier": "1 + tier_difference * 0.5",
+      "skill_mastery_bonus": "2x",
+      "breakthrough_insight": "5% per tier difference"
+    },
+    "technique_importance": {
+      "description": "技巧重于蛮力",
+      "skill_scaling": "exponential",
+      "combo_damage": "ignores 30% realm suppression",
+      "perfect_timing": "ignores 50% realm suppression"
+    }
   },
   "_custom_tags": [
     "realm_variations",
     "special_cultivation_paths",
-    "realm_titles"
+    "realm_titles",
+    "balanced_progression"
   ]
 }

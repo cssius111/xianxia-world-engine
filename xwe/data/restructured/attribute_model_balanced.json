@@ -1,9 +1,9 @@
 {
   "meta": {
-    "version": "3.0.0",
-    "description": "修仙世界引擎属性模型定义",
+    "version": "3.1.0",
+    "description": "修仙世界引擎属性模型定义（优化版）",
     "schema_version": "2020-12",
-    "last_modified": "2025-06-07"
+    "last_modified": "2025-06-09"
   },
   "primary_attributes": {
     "strength": {
@@ -11,7 +11,7 @@
       "name": "力量",
       "description": "影响物理攻击力和负重能力",
       "min": 1,
-      "max": 999,
+      "max": 9999,
       "default": 10,
       "racial_modifiers": {
         "human": 1.0,
@@ -19,7 +19,8 @@
         "spirit": 0.8,
         "beast": 1.5
       },
-      "growth_formula": "base + level * (0.5 + level / 200) + realm_bonus * 2",
+      "growth_formula": "base + level * (0.5 + realm_tier * 0.1) + sqrt(realm_bonus) * 5",
+      "soft_cap_formula": "100 * (1 + realm_tier)",
       "display_color": "#FF6B6B"
     },
     "agility": {
@@ -27,7 +28,7 @@
       "name": "敏捷",
       "description": "影响速度、闪避和行动顺序",
       "min": 1,
-      "max": 999,
+      "max": 9999,
       "default": 10,
       "racial_modifiers": {
         "human": 1.0,
@@ -35,7 +36,8 @@
         "spirit": 1.3,
         "beast": 1.1
       },
-      "growth_formula": "base + level * (0.3 + level / 300) + movement_skill * 0.5",
+      "growth_formula": "base + level * (0.3 + realm_tier * 0.08) + sqrt(movement_skill * 2)",
+      "soft_cap_formula": "80 * (1 + realm_tier)",
       "display_color": "#4ECDC4"
     },
     "constitution": {
@@ -43,7 +45,7 @@
       "name": "体质",
       "description": "影响生命值和抗性",
       "min": 1,
-      "max": 999,
+      "max": 9999,
       "default": 10,
       "racial_modifiers": {
         "human": 1.0,
@@ -51,7 +53,8 @@
         "spirit": 0.6,
         "beast": 1.4
       },
-      "growth_formula": "base + level * (0.8 + level / 150) + body_cultivation * 1.5",
+      "growth_formula": "base + level * (0.8 + realm_tier * 0.15) + log(body_cultivation + 1) * 10",
+      "soft_cap_formula": "120 * (1 + realm_tier)",
       "display_color": "#95E1D3"
     },
     "intelligence": {
@@ -59,7 +62,7 @@
       "name": "智力",
       "description": "影响学习能力和法术理解",
       "min": 1,
-      "max": 999,
+      "max": 9999,
       "default": 10,
       "racial_modifiers": {
         "human": 1.0,
@@ -67,7 +70,8 @@
         "spirit": 1.5,
         "beast": 0.8
       },
-      "growth_formula": "base + knowledge * 0.1 + realm_bonus",
+      "growth_formula": "base + log(knowledge + 1) * 5 + realm_tier * 3",
+      "soft_cap_formula": "90 * (1 + realm_tier)",
       "display_color": "#A8E6CF"
     },
     "willpower": {
@@ -75,7 +79,7 @@
       "name": "意志力",
       "description": "影响法术抗性和心境稳定",
       "min": 1,
-      "max": 999,
+      "max": 9999,
       "default": 10,
       "racial_modifiers": {
         "human": 1.0,
@@ -83,7 +87,8 @@
         "spirit": 1.3,
         "beast": 0.9
       },
-      "growth_formula": "base + mental_cultivation * 0.4 + hardship_exp * 0.2",
+      "growth_formula": "base + sqrt(mental_cultivation) * 4 + hardship_exp * 0.1",
+      "soft_cap_formula": "85 * (1 + realm_tier)",
       "display_color": "#C7CEEA"
     },
     "charisma": {
@@ -91,7 +96,7 @@
       "name": "魅力",
       "description": "影响社交和领导能力",
       "min": 1,
-      "max": 999,
+      "max": 9999,
       "default": 10,
       "racial_modifiers": {
         "human": 1.0,
@@ -99,7 +104,8 @@
         "spirit": 0.7,
         "beast": 1.2
       },
-      "growth_formula": "base + social_exp * 0.05 + appearance_bonus",
+      "growth_formula": "base + log(social_exp + 1) * 3 + appearance_bonus",
+      "soft_cap_formula": "70 * (1 + realm_tier)",
       "display_color": "#FFDAB9"
     }
   },
@@ -111,8 +117,8 @@
       "min": 0,
       "max": 999999,
       "default": 100,
-      "growth_formula": "realm_level * 50 + spiritual_root_quality * 100 + technique_bonus",
-      "regeneration_formula": "max_spiritual_power * 0.1 * meditation_skill",
+      "growth_formula": "pow(realm_level, 1.5) * 50 + spiritual_root_quality * 100 + technique_bonus",
+      "regeneration_formula": "max_spiritual_power * 0.05 * (1 + meditation_skill * 0.1)",
       "display_color": "#B19CD9"
     },
     "comprehension": {
@@ -122,7 +128,7 @@
       "min": 0.1,
       "max": 10.0,
       "default": 1.0,
-      "calculation_formula": "destiny_grade * 0.4 + intelligence * 0.01 + spiritual_root_harmony * 0.2",
+      "calculation_formula": "destiny_grade * 0.3 + log(intelligence + 1) * 0.2 + spiritual_root_harmony * 0.3",
       "display_color": "#FFE4B5"
     },
     "spiritual_sense": {
@@ -130,9 +136,10 @@
       "name": "神识",
       "description": "精神感知和探测能力",
       "min": 1,
-      "max": 9999,
+      "max": 99999,
       "default": 10,
-      "growth_formula": "realm_level * 5 + willpower * 2 + soul_cultivation_bonus",
+      "growth_formula": "pow(realm_level, 1.2) * 10 + willpower * 2 + soul_cultivation_bonus",
+      "range_formula": "sqrt(spiritual_sense) * 10",
       "display_color": "#E6E6FA"
     },
     "luck": {
@@ -151,45 +158,46 @@
     "max_health": {
       "id": "max_health",
       "name": "气血上限",
-      "formula": "constitution * 15 + realm_level * 100 + body_cultivation_bonus",
+      "formula": "constitution * (10 + realm_tier * 5) + pow(realm_level, 1.3) * 20 + body_cultivation_bonus",
       "display_format": "{value} / {max}"
     },
     "max_mana": {
       "id": "max_mana",
       "name": "法力上限",
-      "formula": "spiritual_power * 3 + intelligence * 10 + spiritual_root_bonus",
+      "formula": "spiritual_power * 2 + intelligence * (5 + realm_tier * 2) + spiritual_root_bonus",
       "display_format": "{value} / {max}"
     },
     "attack_power": {
       "id": "attack_power",
       "name": "攻击力",
-      "formula": "strength * 2 + weapon_bonus + skill_bonus + realm_bonus",
+      "formula": "strength * (1.5 + realm_tier * 0.3) + weapon_bonus + skill_bonus + sqrt(realm_bonus)",
       "display_format": "{value}"
     },
     "defense": {
       "id": "defense",
       "name": "防御力",
-      "formula": "constitution * 1 + armor_bonus + defensive_skill_bonus",
+      "formula": "constitution * (1 + realm_tier * 0.2) + armor_bonus + defensive_skill_bonus",
       "display_format": "{value}"
     },
     "speed": {
       "id": "speed",
       "name": "速度",
-      "formula": "agility * 3 + movement_technique_bonus - encumbrance",
+      "formula": "agility * (2.5 + realm_tier * 0.2) + movement_technique_bonus - encumbrance",
       "display_format": "{value}"
     },
     "critical_rate": {
       "id": "critical_rate",
       "name": "暴击率",
-      "formula": "base_critical + weapon_critical + skill_critical + luck * 0.001",
+      "formula": "base_critical + weapon_critical + skill_critical + sqrt(luck + 50) * 0.5",
       "display_format": "{value}%",
-      "max": 75
+      "max": 50
     },
     "critical_damage": {
       "id": "critical_damage",
       "name": "暴击伤害",
-      "formula": "150 + critical_damage_bonus",
-      "display_format": "{value}%"
+      "formula": "130 + critical_damage_bonus + realm_tier * 2",
+      "display_format": "{value}%",
+      "max": 200
     }
   },
   "attribute_categories": {
@@ -202,15 +210,18 @@
   "growth_modifiers": {
     "soft_cap": {
       "description": "属性软上限，超过后成长减缓",
-      "primary_attributes": 100,
-      "derived_attributes": 1000,
-      "formula": "growth * (1 - (current - soft_cap) / (hard_cap - soft_cap) * 0.8)"
+      "formula": "if(current > soft_cap, growth * pow(0.5, (current - soft_cap) / soft_cap), growth)"
     },
     "hard_cap": {
       "description": "属性硬上限，无法超越",
-      "primary_attributes": 999,
-      "derived_attributes": 9999,
+      "primary_attributes": "soft_cap * 10",
+      "derived_attributes": "soft_cap * 20",
       "exceptions": ["realm_breakthrough", "special_bloodline", "divine_blessing"]
+    },
+    "realm_scaling": {
+      "description": "境界对属性成长的影响",
+      "tier_multipliers": [1, 1.5, 2.5, 4, 6.5, 10, 16, 25, 40],
+      "breakthrough_bonus": 0.2
     }
   },
   "temporary_modifiers": {
@@ -234,8 +245,27 @@
     "duration_types": ["instant", "short", "medium", "long", "permanent"],
     "sources": ["skill", "item", "environment", "event", "cultivation"]
   },
+  "attribute_milestones": {
+    "description": "属性达到特定数值时的额外效果",
+    "strength": {
+      "50": {"effect": "破坏力+10%", "description": "力达千钧"},
+      "100": {"effect": "无视5%防御", "description": "力破万法"},
+      "200": {"effect": "攻击附带震荡", "description": "山崩地裂"}
+    },
+    "agility": {
+      "50": {"effect": "闪避+5%", "description": "身轻如燕"},
+      "100": {"effect": "残影效果", "description": "形如鬼魅"},
+      "200": {"effect": "瞬间移动", "description": "缩地成寸"}
+    },
+    "constitution": {
+      "50": {"effect": "生命恢复+20%", "description": "体健如牛"},
+      "100": {"effect": "免疫轻微异常", "description": "金刚不坏"},
+      "200": {"effect": "濒死复活", "description": "不死之躯"}
+    }
+  },
   "_custom_tags": [
     "extendable_attributes",
-    "moddable_formulas"
+    "moddable_formulas",
+    "milestone_system"
   ]
 }
