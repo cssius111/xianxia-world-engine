@@ -704,5 +704,10 @@ def check_and_display_achievements(player_stats: Dict[str, Any]) -> List[str]:
                 msg += f"\n   • {reward_type}: {reward_value}"
         
         messages.append(msg)
-    
+
     return messages
+
+# 兼容旧代码的别名
+class NarrativeSystem(NarrativeEventSystem):
+    """`NarrativeEventSystem` 的别名，保持向后兼容"""
+    pass
