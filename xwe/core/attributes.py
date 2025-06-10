@@ -71,6 +71,7 @@ class CharacterAttributes:
     # 修炼属性
     spiritual_root_purity: float = 50  # 灵根纯度 0-100
     cultivation_level: int = 1         # 修为等级
+    max_cultivation: int = 100         # 升级所需修炼值
     realm_level: int = 1               # 境界等级
     realm_name: str = "聚气期"         # 境界名称
     
@@ -191,6 +192,7 @@ class CharacterAttributes:
             # 修炼属性
             'spiritual_root_purity': self.spiritual_root_purity,
             'cultivation_level': self.cultivation_level,
+            'max_cultivation': self.max_cultivation,
             'realm_level': self.realm_level,
             'realm_name': self.realm_name,
             
@@ -222,6 +224,7 @@ class CharacterAttributes:
             'luck': data.get('luck', 10),
             'spiritual_root_purity': data.get('spiritual_root_purity', 50),
             'cultivation_level': data.get('cultivation_level', 1),
+            'max_cultivation': data.get('max_cultivation', 100),
             'realm_level': data.get('realm_level', 1),
             'realm_name': data.get('realm_name', '聚气期'),
             'current_health': data.get('current_health', 100),
