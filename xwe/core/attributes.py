@@ -71,6 +71,7 @@ class CharacterAttributes:
     # 修炼属性
     spiritual_root_purity: float = 50  # 灵根纯度 0-100
     cultivation_level: int = 1         # 修为等级
+    max_cultivation: int = 100         # 升级所需修炼值
     realm_level: int = 1               # 境界等级
     realm_name: str = "聚气期"         # 境界名称
     
@@ -84,6 +85,21 @@ class CharacterAttributes:
     
     # 额外属性字典（用于存储临时加成等）
     extra_attributes: Dict[str, float] = field(default_factory=dict)
+
+    def __getattr__(self, name: str) -> Any:
+        """Fallback to extra_attributes for undefined fields."""
+        extra = self.__dict__.get('extra_attributes', {})
+        if name in extra:
+            return extra[name]
+        raise AttributeError(f"{self.__class__.__name__} object has no attribute '{name}'")
+
+    def __setattr__(self, name: str, value: Any):
+        annotations = self.__class__.__dict__.get('__annotations__', {})
+        if name in annotations or name == 'extra_attributes':
+            super().__setattr__(name, value)
+        else:
+            extra = self.__dict__.setdefault('extra_attributes', {})
+            extra[name] = value
     
     def __post_init__(self):
         """初始化后计算衍生属性"""
@@ -191,6 +207,7 @@ class CharacterAttributes:
             # 修炼属性
             'spiritual_root_purity': self.spiritual_root_purity,
             'cultivation_level': self.cultivation_level,
+            'max_cultivation': self.max_cultivation,
             'realm_level': self.realm_level,
             'realm_name': self.realm_name,
             
@@ -222,6 +239,7 @@ class CharacterAttributes:
             'luck': data.get('luck', 10),
             'spiritual_root_purity': data.get('spiritual_root_purity', 50),
             'cultivation_level': data.get('cultivation_level', 1),
+            'max_cultivation': data.get('max_cultivation', 100),
             'realm_level': data.get('realm_level', 1),
             'realm_name': data.get('realm_name', '聚气期'),
             'current_health': data.get('current_health', 100),
