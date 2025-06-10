@@ -57,7 +57,8 @@ cd xianxia_world_engine
 pip install -r requirements.txt  # 包含 jsonschema 等核心库
 
 # 3. 配置API（可选，用于AI功能）
-export DEEPSEEK_API_KEY="your-api-key"
+cp .env.example .env  # 复制示例配置文件
+# 然后编辑 `.env` 填入相应的 API 密钥
 ```
 
 ## 🎮 游戏特性
