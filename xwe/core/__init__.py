@@ -45,6 +45,12 @@ try:
 except ImportError:
     pass
 
+try:
+    from .game_core_enhanced import create_enhanced_game
+    _optional_modules['create_enhanced_game'] = create_enhanced_game
+except ImportError:
+    pass
+
 # 将可选模块添加到当前命名空间
 for name, module in _optional_modules.items():
     globals()[name] = module
