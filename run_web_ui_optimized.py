@@ -262,7 +262,7 @@ def load_game():
 
 if __name__ == '__main__':
     print("=== 修仙世界引擎 Web UI (优化版) ===")
-    print("访问 http://localhost:5000 开始游戏")
+    print("访问 http://localhost:5001 开始游戏")
     print("使用 Ctrl+C 停止服务器")
     print("=====================================")
     
@@ -270,4 +270,4 @@ if __name__ == '__main__':
     os.makedirs('saves', exist_ok=True)
     
     # 启动服务器
-    app.run(debug=False, host='0.0.0.0', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=5001)
