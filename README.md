@@ -208,8 +208,9 @@ python scripts/init_features.py
 
 ### 运行测试
 ```bash
-# 运行所有测试
-python run_all_tests.py
+# 运行所有测试（默认使用 mock 模式）
+export LLM_PROVIDER=mock
+python tests/run_all_tests.py
 
 # 测试特定功能
 python test_features.py
@@ -218,6 +219,9 @@ python test_optimizations.py
 # 运行单元测试
 python -m pytest tests/unit/
 ```
+
+如需使用真实 LLM 进行测试，可在 `.env` 中填入 API 密钥，并将
+`LLM_PROVIDER` 设置为实际提供商。
 
 ## 📚 API文档
 

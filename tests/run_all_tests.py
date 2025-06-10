@@ -1,7 +1,16 @@
 #!/usr/bin/env python3
 """
 XianXia World Engine - 自动化测试脚本
-运行所有单元测试和集成测试，并生成报告
+运行所有单元测试和集成测试，并生成报告。
+
+在运行此脚本前，请设置環境变量 `LLM_PROVIDER=mock`，例如：
+
+```bash
+export LLM_PROVIDER=mock
+python tests/run_all_tests.py
+```
+
+如需真实 LLM 测试，可在 `.env` 中配置 API 密钥。
 """
 
 import sys
@@ -9,6 +18,11 @@ import os
 import subprocess
 import json
 import time
+
+# 默认使用 mock 提供商，除非外部已设置
+if not os.getenv("LLM_PROVIDER"):
+    os.environ["LLM_PROVIDER"] = "mock"
+    print("⚠️ LLM_PROVIDER 未设置，已使用 'mock' 进行测试")
 from pathlib import Path
 from datetime import datetime
 from xwe.utils.requests_helper import ensure_requests
