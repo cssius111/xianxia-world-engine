@@ -85,6 +85,21 @@ class CharacterAttributes:
     
     # 额外属性字典（用于存储临时加成等）
     extra_attributes: Dict[str, float] = field(default_factory=dict)
+
+    def __getattr__(self, name: str) -> Any:
+        """Fallback to extra_attributes for undefined fields."""
+        extra = self.__dict__.get('extra_attributes', {})
+        if name in extra:
+            return extra[name]
+        raise AttributeError(f"{self.__class__.__name__} object has no attribute '{name}'")
+
+    def __setattr__(self, name: str, value: Any):
+        annotations = self.__class__.__dict__.get('__annotations__', {})
+        if name in annotations or name == 'extra_attributes':
+            super().__setattr__(name, value)
+        else:
+            extra = self.__dict__.setdefault('extra_attributes', {})
+            extra[name] = value
     
     def __post_init__(self):
         """初始化后计算衍生属性"""
