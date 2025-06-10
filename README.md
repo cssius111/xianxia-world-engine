@@ -296,7 +296,7 @@ A: 检查MOD目录结构和mod.json格式
 
 ## 📄 许可证
 
-MIT License - 详见LICENSE文件
+MIT License - 详见 [LICENSE](LICENSE) 文件
 
 ## 🙏 致谢
 
