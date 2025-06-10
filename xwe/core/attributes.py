@@ -105,7 +105,7 @@ class CharacterAttributes:
         """初始化后计算衍生属性"""
         self.calculate_derived_attributes()
     
-    def get(self, attr_name: str) -> float:
+    def get(self, attr_name: str, default: float = 0.0) -> float:
         """
         获取属性值
         
@@ -124,7 +124,7 @@ class CharacterAttributes:
             return self.extra_attributes[attr_name]
         
         # 返回默认值
-        return 0
+        return default
     
     def set(self, attr_name: str, value: float):
         """
