@@ -62,16 +62,17 @@ class GameState:
     def from_dict(cls, data: Dict[str, Any]) -> 'GameState':
         """从字典创建游戏状态"""
         state = cls()
-        
+
         if data.get('player'):
-            # TODO: 实现Character.from_dict
-            pass
-        
+            state.player = Character.from_dict(data['player'])
+
         state.current_location = data.get('current_location', 'qingyun_city')
         state.current_combat = data.get('current_combat')
         state.game_time = data.get('game_time', 0)
         state.flags = data.get('flags', {})
-        
+        if 'npcs' in data:
+            state.npcs = {nid: Character.from_dict(nc) for nid, nc in data['npcs'].items()}
+
         return state
 
 
@@ -1262,7 +1263,10 @@ class GameCore:
                 if reward['type'] == 'exp':
                     self.output(f"\n获得了{reward['amount']}点修为！")
                 elif reward['type'] == 'item':
-                    self.output(f"\n获得了物品！")  # TODO: 显示物品名称
+                    item_id = reward.get('id')
+                    qty = reward.get('quantity', 1)
+                    item_system.add_item(player.id, item_id, qty)
+                    self.output(f"\n获得了{item_id} x{qty}！")
         
         # 如果关系变化
         if 'npc_relationship' in context:
@@ -1486,8 +1490,9 @@ class GameCore:
                     self.achievement_system.check_achievement('no_damage_win', 1)
                 
                 # 获得奖励
-                # TODO: 实现战利品系统
-                self.output("获得了一些修为和物品！")
+                item_system.add_item(player.id, 'spirit_stones', 10)
+                item_system.add_item(player.id, 'monster_loot', 1)
+                self.output("获得了10枚灵石和战利品！")
             else:
                 self.output("")
                 self.output("=== 战斗失败 ===")
