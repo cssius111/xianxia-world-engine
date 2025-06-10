@@ -1,4 +1,4 @@
-# 修仙世界引擎 (XianXia World Engine) v2.0
+# 修仙世界引擎 (XianXia World Engine) v3.0
 
 > 一个基于Python的AI驱动修仙游戏引擎，支持自然语言交互、动态剧情生成和丰富的游戏系统。
 
@@ -23,7 +23,7 @@
 - **完整游戏系统**: 战斗、技能、探索、NPC交互、对话系统
 - **模块化架构**: 清晰的代码结构，易于扩展和维护
 
-### 2.0版本新增
+### 3.0版本新增
 - 🐉 中国龙ASCII艺术和彩色输出
 - 📊 智能状态显示与渐进式成就系统
 - ⚙️ 命令优先级和智能命令处理
@@ -92,7 +92,7 @@ export DEEPSEEK_API_KEY="your-api-key"
 - "和王老板聊聊天"
 - "我要修炼一会儿"
 
-#### 2.0新增命令
+#### 3.0新增命令
 - `反馈：[内容]` - 提交游戏反馈
 - `社区` - 查看社区链接
 - `系统状态` - 查看系统信息
@@ -143,7 +143,7 @@ xianxia_world_engine/
 │   ├── core/          # 核心系统
 │   ├── world/         # 世界系统
 │   ├── npc/           # NPC系统
-│   ├── features/      # 2.0功能模块
+│   ├── features/      # 3.0功能模块
 │   ├── engine/        # 表达式引擎
 │   └── data/          # 游戏数据
 ├── scripts/           # 运行脚本
@@ -176,7 +176,7 @@ xianxia_world_engine/
 - `npc_manager.py` - NPC档案和行为
 - `trading_system.py` - 交易系统
 
-#### features/ - 2.0功能模块
+#### features/ - 3.0功能模块
 - `player_experience.py` - 玩家体验增强
 - `narrative_system.py` - 叙事系统
 - `content_ecosystem.py` - 内容生态
@@ -306,7 +306,7 @@ MIT License - 详见 [LICENSE](LICENSE) 文件
 
 ---
 
-**项目状态**: 活跃开发中 | **版本**: 2.0.0 | **最后更新**: 2025-06-04
+**项目状态**: 活跃开发中 | **版本**: 3.0.0 | **最后更新**: 2025-06-04
 
 如有问题或建议，欢迎提交Issue或联系开发者。
 
