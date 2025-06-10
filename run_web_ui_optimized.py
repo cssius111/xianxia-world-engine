@@ -48,10 +48,13 @@ def get_game_instance(session_id):
         # 创建玩家
         if not game.game_state.player:
             from xwe.core.character import Character
-            from xwe.core.attributes import Attributes
+            # xwe.core.attributes 模块中并未定义 Attributes 类，实际类名为
+            # CharacterAttributes。这里直接导入并使用该类。
+            from xwe.core.attributes import CharacterAttributes
             
             # 使用平衡后的配置
-            attrs = Attributes()
+            # 创建角色属性实例
+            attrs = CharacterAttributes()
             attrs.realm_name = "聚气期"
             attrs.realm_level = 1
             attrs.level = 1
