@@ -14,8 +14,8 @@
 | `python run_web_ui.py` | 启动增强版 Web UI（推荐） |
 | `python run_web_ui.py` | 直接运行增强版 Web UI，跳过修复步骤 |
  
-| `python run_web_ui_enhanced.py` | 启动增强版 Web UI（推荐） |
-| `python run_web_ui_enhanced.py` | 直接运行增强版 Web UI，跳过修复步骤 |
+| `python archive/deprecated/run_web_ui_enhanced.py` | 启动旧版增强 Web UI（归档） |
+| `python archive/deprecated/run_web_ui_enhanced.py` | 直接运行旧版增强 Web UI，跳过修复步骤 |
  
 | `python scripts/play_demo.py` | 带使用提示的演示版本 |
 | `python scripts/start.py` | 最简单的启动脚本，直接进入游戏 |
