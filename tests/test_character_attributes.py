@@ -18,6 +18,7 @@ def test_missing_attribute_error():
         _ = attrs.nonexistent_attr
 
 
+
 def test_max_cultivation_default():
     """Ensure newly created attributes include max_cultivation."""
     attrs = CharacterAttributes()
