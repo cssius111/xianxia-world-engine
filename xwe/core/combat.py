@@ -55,6 +55,15 @@ class CombatAction:
         }
 
 
+@dataclass
+class CombatResult:
+    """Simplified result object for backward compatibility."""
+
+    success: bool
+    message: str = ""
+    damage_dealt: Optional[Dict[str, Any]] = None
+
+
 class CombatSystemV3:
     """
     数据驱动的战斗系统V3
@@ -79,7 +88,7 @@ class CombatSystemV3:
             logger.error(f"Failed to load combat data: {e}")
             raise
     
-    def create_combat(self, combat_id: str, participants: List[Any]) -> 'Combat':
+    def create_combat(self, combat_id: str, participants: Optional[List[Any]] = None) -> 'Combat':
         """
         创建新的战斗实例
         
@@ -90,22 +99,24 @@ class CombatSystemV3:
         Returns:
             Combat实例
         """
+        participants = participants or []
         combat = Combat(self, combat_id, participants)
         self.active_combats[combat_id] = combat
         return combat
 
-    def execute_action(self, combat_id: str, action: CombatAction) -> Dict[str, Any]:
+    def execute_action(self, combat_id: str, action: CombatAction) -> CombatResult:
         """对外暴露的执行行动接口"""
         combat = self.active_combats.get(combat_id)
         if not combat:
-            return {"success": False, "message": "invalid combat"}
+            return CombatResult(False, "invalid combat")
 
         if isinstance(action, CombatAction):
             action_dict = action.to_dict()
         else:
             action_dict = action
 
-        return combat.execute_turn(action_dict)
+        result_dict = combat.execute_turn(action_dict)
+        return CombatResult(result_dict.get("success", False), result_dict.get("message", ""), result_dict.get("damage_dealt"))
     
     def calculate_damage(self, attacker, defender, action_type: str, 
                         skill_data: Optional[Dict] = None) -> Dict[str, Any]:
@@ -492,6 +503,17 @@ class Combat:
         
         # 初始化战斗
         self._initialize_combat()
+
+    def add_participant(self, participant, team: str = "team"):
+        """Add a participant after combat creation."""
+        self.participants[participant.id] = participant
+        setattr(participant, "team", team)
+        self.state.participants[participant.id] = participant
+        self.turn_order.append(participant)
+        self._calculate_initiative()
+
+    def is_combat_over(self) -> bool:
+        return self.phase == CombatPhase.END_TURN or self._check_combat_end()
     
     def _initialize_combat(self):
         """初始化战斗"""
