@@ -450,8 +450,18 @@ class Character:
             'spiritual_root': self.spiritual_root,
             'skills': self.skills,
             'equipment': self.equipment,
+            'inventory': self.inventory.to_dict(),
+            'lingshi': self.lingshi,
             'faction': self.faction,
+            'relationships': self.relationships,
+            'team_id': self.team_id,
+            'combat_position': self.combat_position,
+            'action_points': self.action_points,
             'ai_profile': self.ai_profile,
+            'dialogue_state': self.dialogue_state,
+            'charisma': self.charisma,
+            'bargain_skill': self.bargain_skill,
+            'level': self.level,
             'extra_data': self.extra_data,
         }
     
@@ -503,56 +513,49 @@ class Character:
             faction=template.get('faction', ''),
             ai_profile=template.get('ai_profile', 'default'),
         )
-        
+
         return character
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> 'Character':
-        """从字典创建角色对象"""
-        character = cls()
-        
-        # 基础信息
-        character.name = data.get('name', '')
-        if 'character_type' in data:
-            character.character_type = CharacterType(data['character_type'])
-        
-        # 属性系统 - 简化版本
-        if 'attributes' in data:
-            attr_data = data['attributes']
-            character.attributes.strength = attr_data.get('strength', 10)
-            character.attributes.constitution = attr_data.get('constitution', 10)
-            character.attributes.agility = attr_data.get('agility', 10)
-            character.attributes.intelligence = attr_data.get('intelligence', 10)
-            character.attributes.willpower = attr_data.get('willpower', 10)
-            character.attributes.comprehension = attr_data.get('comprehension', 10)
-            character.attributes.luck = attr_data.get('luck', 10)
-            character.attributes.calculate_derived_attributes()
-        
-        # 技能
-        character.learned_skills = set(data.get('learned_skills', []))
-        
-        # 其他数据
-        character.extra_data = data.get('extra_data', {})
-        
+        """从字典反序列化角色"""
+        attrs = CharacterAttributes.from_dict(data.get('attributes', {}))
+
+        inventory = Inventory.from_dict(data.get('inventory', {}))
+
+        char_type = CharacterType(data.get('character_type', 'npc'))
+        state = CharacterState(data.get('state', 'normal'))
+
+        character = cls(
+            id=data.get('id', str(uuid.uuid4())),
+            name=data.get('name', '未命名'),
+            character_type=char_type,
+            attributes=attrs,
+            state=state,
+            cultivation_path=data.get('cultivation_path', ''),
+            spiritual_root=data.get('spiritual_root', {}),
+            skills=data.get('skills', []),
+            equipment=data.get('equipment', {}),
+            inventory=inventory,
+            lingshi=data.get('lingshi', {'low': 0, 'mid': 0, 'high': 0, 'supreme': 0}),
+            faction=data.get('faction', ''),
+            relationships=data.get('relationships', {}),
+            team_id=data.get('team_id'),
+            combat_position=data.get('combat_position'),
+            action_points=data.get('action_points', 0),
+            ai_profile=data.get('ai_profile', 'default'),
+            dialogue_state=data.get('dialogue_state', {}),
+            charisma=data.get('charisma', 50),
+            bargain_skill=data.get('bargain_skill', 0),
+            level=data.get('level', attrs.cultivation_level),
+            extra_data=data.get('extra_data', {})
+        )
+
+        # 恢复资源数值
+        attr_data = data.get('attributes', {})
+        character.attributes.current_health = attr_data.get('current_health', character.attributes.current_health)
+        character.attributes.current_mana = attr_data.get('current_mana', character.attributes.current_mana)
+        character.attributes.current_stamina = attr_data.get('current_stamina', character.attributes.current_stamina)
+
         return character
-    
-    def to_dict(self) -> Dict[str, Any]:
-        """转换为字典（用于序列化）"""
-        return {
-            'name': self.name,
-            'character_type': self.character_type.value if hasattr(self.character_type, 'value') else str(self.character_type),
-            'attributes': {
-                'strength': self.attributes.strength,
-                'constitution': self.attributes.constitution,
-                'agility': self.attributes.agility,
-                'intelligence': self.attributes.intelligence,
-                'willpower': self.attributes.willpower,
-                'comprehension': self.attributes.comprehension,
-                'luck': self.attributes.luck,
-                'current_health': self.attributes.current_health,
-                'current_mana': self.attributes.current_mana,
-                'current_stamina': self.attributes.current_stamina,
-            },
-            'learned_skills': list(self.learned_skills),
-            'extra_data': self.extra_data
-        }
+

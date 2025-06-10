@@ -61,3 +61,14 @@ class Inventory:
 
     def __len__(self) -> int:
         return sum(self.items.values())
+
+    def to_dict(self) -> Dict[str, int]:
+        """序列化背包内容"""
+        return dict(self.items)
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, int]) -> 'Inventory':
+        """从字典反序列化背包"""
+        inv = cls()
+        inv.items = dict(data)
+        return inv
