@@ -242,6 +242,63 @@ class Inventory:
    - 保持测试覆盖率
    - 自动化测试流程
 
+## 代码质量与重构工具
+
+以下脚本可协助生成报告和自动修复部分问题：
+
+1. **生成完整质量报告**
+   ```bash
+   python quality_optimizer.py --full-report
+   ```
+   预期输出：
+   ```text
+   🔍 开始分析项目...
+   📊 发现 167 个Python文件，共 43099 行代码
+   📝 发现 35 个TODO项
+   ⚠️  发现 2 个潜在循环导入
+   📏 发现 119 个超长函数
+   🔀 发现 61 个高复杂度函数
+   ⚡ 发现 170 个潜在性能热点
+   📄 完整报告已保存: code_quality_report.md
+   ```
+
+2. **运行函数分析器获取重构计划**
+   ```bash
+   python function_analyzer.py
+   ```
+   预期输出（节选）：
+   ```text
+   🔍 分析项目中的所有函数...
+   📊 发现 119 个超长函数
+   🔀 发现 68 个高复杂度函数
+   ...
+   🔴 最需要重构的函数 (TOP 10):
+     1. _fuzzy_parse (nlp_processor.py)
+         📏 160行 | 🔀 复杂度29
+         💡 ⚠️ 高优先级 - 既长又复杂
+   ```
+
+3. **自动修复关键 TODO**
+   ```bash
+   python quick_todo_fixer.py
+   ```
+   预期输出：
+   ```text
+   🔧 开始修复关键TODO项...
+   ✅ Character.from_dict 已存在
+   ✅ SystemManager 已存在
+   ✅ 修复完成！共应用了 0 个修复
+   ```
+
+4. **提交前建议运行完整测试**
+   ```bash
+   LLM_PROVIDER=mock python tests/run_all_tests.py
+   ```
+   预期输出（节选）：
+   ```text
+   ✅ 所有测试通过！
+   ```
+
 ## 如何继续开发
 
 1. **运行现有测试**确保一切正常：
