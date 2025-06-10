@@ -32,3 +32,4 @@
 2. 保持新的目录结构
 3. 新功能按照规范添加
 4. 维护文档及时更新
+5. 2025-06-10：进一步清理 `delete/backups`，并将 `run_web_ui_enhanced.py` 移至 `archive/deprecated/`
