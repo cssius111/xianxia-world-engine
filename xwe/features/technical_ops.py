@@ -698,6 +698,9 @@ class AutoBackupManager:
             
             # 创建备份目录
             backup_path = self.save_manager.backup_dir / backup_name
+            if backup_path.exists():
+                logger.warning(f"备份目录已存在，跳过本次备份: {backup_path}")
+                return
             backup_path.mkdir()
             
             # 复制所有存档文件
