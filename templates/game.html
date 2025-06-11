@@ -186,6 +186,8 @@
         }
 
  
+        /* .title-card, .msg-system, .msg-event, .msg-combat, .msg-player are
+           legacy styles kept for compatibility but currently unused */
         .title-card {
             text-align: center;
             font-size: 18px;
@@ -497,14 +499,15 @@
             <button class="modal-close" style="float:right" onclick="hideModal('help-modal')">×</button>
             <h3 id="help-title" style="margin-bottom:10px"></h3>
             <div id="help-content"></div>
- 
+        </div>
+
     <!-- 信息弹窗 -->
     <div class="modal" id="info-modal">
         <div class="modal-content">
-            <button style="float:right" onclick="hideModal()">关闭</button>
+            <button style="float:right" onclick="hideInfoModal()">关闭</button>
             <h3 id="modal-title" style="margin-bottom:10px"></h3>
             <table id="modal-table"></table>
- 
+
         </div>
     </div>
 
@@ -583,39 +586,27 @@
             const data = await res.json();
             const p = data.player;
             if (!p) return;
- 
+
             const table = document.getElementById('status-table');
-            table.innerHTML = '';
-            const attrs = p.attributes;
-            const base = [
-                ['姓名', p.name],
-                ['境界', `${attrs.realm_name}（${p.realm_percent || 0}%）`],
-                ['气血值', `${Math.min(attrs.current_health, attrs.max_health)} / ${attrs.max_health}`],
- 
-            const table = document.getElementById('modal-table');
             table.innerHTML = '';
             const attrs = p.attributes;
             const rows = [
                 ['姓名', p.name],
                 ['境界', `${attrs.realm_name}（${p.realm_percent || 0}%）`],
                 ['修为', attrs.cultivation_level],
-                ['气血值', `${attrs.current_health} / ${attrs.max_health}`],
- 
+                ['气血值', `${Math.min(attrs.current_health, attrs.max_health)} / ${attrs.max_health}`],
                 ['灵力值', `${Math.min(attrs.current_mana, attrs.max_mana)} / ${attrs.max_mana}`],
                 ['攻击', attrs.attack_power.toFixed(0)],
                 ['防御', attrs.defense.toFixed(0)]
             ];
- 
-            if (Array.isArray(data.player.buffs)) {
-                base.push(['Buff', data.player.buffs.join('，')]);
+            if (Array.isArray(p.buffs)) {
+                rows.push(['Buff', p.buffs.join('，')]);
             }
-            for (let i = 0; i < base.length; i += 2) {
+            rows.forEach(([k, v]) => {
                 const tr = document.createElement('tr');
-                const [k1, v1] = base[i];
-                const [k2, v2] = base[i + 1] || [' ', ' '];
-                tr.innerHTML = `<th>${k1}</th><td>${v1}</td><th>${k2}</th><td>${v2}</td>`;
+                tr.innerHTML = `<th>${k}</th><td colspan="3">${v}</td>`;
                 table.appendChild(tr);
-            }
+            });
             document.getElementById('status-title').textContent = '角色状态';
             showModal('status-modal');
         }
@@ -624,33 +615,11 @@
             await executeCommandWithModal('背包', 'inventory-modal', '背包');
         }
 
+        async function showSkillsModal() {
+            await executeCommandWithModal('功法', 'info-modal', '功法');
+        }
 
         async function executeCommandWithModal(cmd, modalId, title) {
-
-            rows.forEach(r => {
-                const tr = document.createElement('tr');
-                const th = document.createElement('th');
-                th.textContent = r[0];
-                const td = document.createElement('td');
-                td.textContent = r[1];
-                tr.appendChild(th);
-                tr.appendChild(td);
-                table.appendChild(tr);
-            });
-            document.getElementById('modal-title').textContent = '角色状态';
-            document.getElementById('info-modal').style.display = 'flex';
-        }
-
-        async function showInventoryModal() {
-            await executeCommandWithModal('背包', '背包');
-        }
-
-        async function showSkillsModal() {
-            await executeCommandWithModal('功法', '功法');
-        }
-
-        async function executeCommandWithModal(cmd, title) {
-
             await fetch('/command', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -666,20 +635,11 @@
             slice.forEach(text => {
                 const tr = document.createElement('tr');
                 const td = document.createElement('td');
-                td.colSpan = 4;
-
-            const table = document.getElementById('modal-table');
-            table.innerHTML = '';
-            data.logs.slice(-20).forEach(text => {
-                const tr = document.createElement('tr');
-                const td = document.createElement('td');
                 td.colSpan = 2;
-
                 td.innerHTML = marked.parse(text);
                 tr.appendChild(td);
                 table.appendChild(tr);
             });
-
             document.getElementById(`${modalId.replace('-modal','-title')}`).textContent = title;
             showModal(modalId);
         }
@@ -697,13 +657,10 @@
         function hideModal(id) {
             const modal = document.getElementById(id);
             modal.style.display = 'none';
-            document.getElementById('modal-title').textContent = title;
-            document.getElementById('info-modal').style.display = 'flex';
         }
 
-        function hideModal() {
+        function hideInfoModal() {
             document.getElementById('info-modal').style.display = 'none';
-
         }
 
         function handleKeyPress(event) {
