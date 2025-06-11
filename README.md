@@ -206,6 +206,7 @@ python scripts/init_features.py
 - 新玩家风格：编辑`ai_personalization.py`
 - 新成就：编辑`narrative_system.py`
 - 新视觉效果：编辑`visual_enhancement.py`
+- 服务层接口统一由 `xwe.services` 导出，可直接 `from xwe.services import IGameService`
 
 ### 运行测试
 ```bash
