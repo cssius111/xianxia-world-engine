@@ -71,7 +71,13 @@ def get_game_instance(session_id):
             attrs.attack_power = 10
             attrs.defense = 5
             
-            player = Character("player", "无名侠客", attrs)
+            from xwe.core.character import CharacterType
+            player = Character(
+                id="player",
+                name="无名侠客",
+                character_type=CharacterType.PLAYER,
+                attributes=attrs
+            )
             game.game_state.player = player
             game.game_state.current_location = "青云城"
             

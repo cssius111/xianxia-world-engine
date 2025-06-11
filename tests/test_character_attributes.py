@@ -17,3 +17,10 @@ def test_missing_attribute_error():
     with pytest.raises(AttributeError):
         _ = attrs.nonexistent_attr
 
+
+
+def test_max_cultivation_default():
+    """Ensure newly created attributes include max_cultivation."""
+    attrs = CharacterAttributes()
+    assert attrs.max_cultivation == 100
+
