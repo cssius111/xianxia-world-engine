@@ -76,6 +76,11 @@ class CharacterAttributes:
     realm_level: int = 1  # 境界等级
     realm_name: str = "聚气期"  # 境界名称
 
+    cultivation_level: int = 1         # 修为等级
+    max_cultivation: int = 100         # 升级所需修炼值
+    realm_level: int = 1               # 境界等级
+    realm_name: str = "聚气期"         # 境界名称
+    
     # 资源属性（当前值/最大值）
     current_health: float = 100
     max_health: float = 100
@@ -101,11 +106,16 @@ class CharacterAttributes:
     def __getattr__(self, name: str) -> Any:
         """Fallback to ``extra_attributes`` when attribute is missing."""
         extra = self.__dict__.get("extra_attributes", {})
+
+        """Fallback to ``extra_attributes`` when attribute is missing."""
+        extra = self.__dict__.get('extra_attributes', {})
+
         if name in extra:
             return extra[name]
         try:
             return super().__getattribute__(name)
         except AttributeError:
+
             raise AttributeError(
                 f"{self.__class__.__name__} object has no attribute '{name}'"
             )
@@ -122,6 +132,26 @@ class CharacterAttributes:
         """初始化后计算衍生属性"""
         self.calculate_derived_attributes()
 
+            raise AttributeError(f"{self.__class__.__name__} object has no attribute '{name}'")
+
+        """Fallback to extra_attributes for undefined fields."""
+        extra = self.__dict__.get('extra_attributes', {})
+        if name in extra:
+            return extra[name]
+        raise AttributeError(f"{self.__class__.__name__} object has no attribute '{name}'")
+
+    def __setattr__(self, name: str, value: Any):
+        annotations = self.__class__.__dict__.get('__annotations__', {})
+        if name in annotations or name == 'extra_attributes':
+            super().__setattr__(name, value)
+        else:
+            extra = self.__dict__.setdefault('extra_attributes', {})
+            extra[name] = value
+    
+    def __post_init__(self):
+        """初始化后计算衍生属性"""
+        self.calculate_derived_attributes()
+    
     def get(self, attr_name: str, default: float = 0.0) -> float:
         """
         获取属性值
@@ -226,6 +256,13 @@ class CharacterAttributes:
             "max_cultivation": self.max_cultivation,
             "realm_level": self.realm_level,
             "realm_name": self.realm_name,
+
+            'spiritual_root_purity': self.spiritual_root_purity,
+            'cultivation_level': self.cultivation_level,
+            'max_cultivation': self.max_cultivation,
+            'realm_level': self.realm_level,
+            'realm_name': self.realm_name,
+            
             # 资源属性
             "current_health": self.current_health,
             "max_health": self.max_health,
@@ -281,6 +318,24 @@ class CharacterAttributes:
             "evasion": data.get("evasion", 0),
             "critical_rate": data.get("critical_rate", 0),
             "critical_damage": data.get("critical_damage", 0),
+            'strength': data.get('strength', 10),
+            'constitution': data.get('constitution', 10),
+            'agility': data.get('agility', 10),
+            'intelligence': data.get('intelligence', 10),
+            'willpower': data.get('willpower', 10),
+            'comprehension': data.get('comprehension', 10),
+            'luck': data.get('luck', 10),
+            'spiritual_root_purity': data.get('spiritual_root_purity', 50),
+            'cultivation_level': data.get('cultivation_level', 1),
+            'max_cultivation': data.get('max_cultivation', 100),
+            'realm_level': data.get('realm_level', 1),
+            'realm_name': data.get('realm_name', '聚气期'),
+            'current_health': data.get('current_health', 100),
+            'max_health': data.get('max_health', 100),
+            'current_mana': data.get('current_mana', 100),
+            'max_mana': data.get('max_mana', 100),
+            'current_stamina': data.get('current_stamina', 100),
+            'max_stamina': data.get('max_stamina', 100),
         }
 
         # 创建对象
