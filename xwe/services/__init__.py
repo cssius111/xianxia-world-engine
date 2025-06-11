@@ -327,3 +327,36 @@ def register_services(container: ServiceContainer) -> None:
     container.register(ILogService, LogService, ServiceLifetime.SINGLETON)
     
     logger.info("All services registered")
+
+
+# 对外暴露的接口类型，方便统一导入
+from .game_service import IGameService
+from .player_service import IPlayerService
+from .combat_service import ICombatService
+from .save_service import ISaveService
+from .world_service import IWorldService
+from .cultivation_service import ICultivationService
+from .command_engine import ICommandEngine
+from .event_dispatcher import IEventDispatcher
+from .log_service import ILogService
+
+__all__ = [
+    "ServiceLifetime",
+    "IService",
+    "ServiceBase",
+    "ServiceDescriptor",
+    "ServiceNotFoundError",
+    "ServiceContainer",
+    "ServiceScope",
+    "get_service_container",
+    "register_services",
+    "IGameService",
+    "IPlayerService",
+    "ICombatService",
+    "ISaveService",
+    "IWorldService",
+    "ICultivationService",
+    "ICommandEngine",
+    "IEventDispatcher",
+    "ILogService",
+]
