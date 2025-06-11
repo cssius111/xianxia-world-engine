@@ -87,6 +87,7 @@ class CharacterAttributes:
     extra_attributes: Dict[str, float] = field(default_factory=dict)
 
     def __getattr__(self, name: str) -> Any:
+
         """Fallback to ``extra_attributes`` when attribute is missing."""
         extra = self.__dict__.get('extra_attributes', {})
         if name in extra:
@@ -95,6 +96,12 @@ class CharacterAttributes:
             return super().__getattribute__(name)
         except AttributeError:
             raise AttributeError(f"{self.__class__.__name__} object has no attribute '{name}'")
+
+        """Fallback to extra_attributes for undefined fields."""
+        extra = self.__dict__.get('extra_attributes', {})
+        if name in extra:
+            return extra[name]
+        raise AttributeError(f"{self.__class__.__name__} object has no attribute '{name}'")
 
     def __setattr__(self, name: str, value: Any):
         annotations = self.__class__.__dict__.get('__annotations__', {})
