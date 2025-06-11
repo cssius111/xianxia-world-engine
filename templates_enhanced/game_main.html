@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>修仙世界引擎</title>
+    <!-- 外部CSS文件 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/game.css') }}">
+</head>
+<body>
+    <!-- 顶部区域 -->
+    {% include 'components/header.html' %}
+
+    <!-- 主体容器 -->
+    <div class="main-container">
+        <!-- 左侧状态栏 -->
+        {% include 'components/sidebar.html' %}
+
+        <!-- 中央叙事区域 -->
+        {% include 'components/narrative_log.html' %}
+    </div>
+
+    <!-- 底部指令区 -->
+    {% include 'components/command_input.html' %}
+
+    <!-- 浮动提示 -->
+    <div class="tooltip" id="tooltip"></div>
+
+    <!-- 外部JS文件 -->
+    <script src="{{ url_for('static', filename='js/game.js') }}"></script>
+    <!-- 命令处理函数绑定 -->
+    <script>
+        // 全局函数绑定（为了兼容onclick）
+        const sendCommand = GameUI.sendCommand;
+        const executeCommand = GameUI.executeCommand;
+        const handleKeyDown = event => GameUI.handleKeyDown(event);
+        const handleKeyUp = event => GameUI.handleKeyUp(event);
+    </script>
+</body>
+</html>

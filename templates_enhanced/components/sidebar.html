@@ -1,0 +1,106 @@
+<!-- 状态栏组件 -->
+<div class="sidebar">
+    <h2>角色状态</h2>
+
+    <div class="status-block">
+        <div class="status-line">
+            <span class="status-label">姓名</span>
+            <span class="status-value" id="player-name">{{ player.name if player else '无名侠客' }}</span>
+        </div>
+        <div class="status-line">
+            <span class="status-label">境界</span>
+            <span class="status-value" id="realm">{{ player.attributes.realm_name if player else '炼气一层' }}
+                <span class="sub-value" id="cultivation">({{ player.attributes.cultivation_level if player else 0 }} / {{ player.attributes.max_cultivation if player else 100 }})</span>
+            </span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill exp" id="cultivation-progress" style="width: {{ (player.attributes.cultivation_level / player.attributes.max_cultivation * 100) if player else 0 }}%"></div>
+        </div>
+        
+        <div class="status-line" style="margin-top: 10px;">
+            <span class="status-label">气血值</span>
+            <span class="status-value" id="health">{{ player.attributes.current_health if player else 100 }} / {{ player.attributes.max_health if player else 100 }}</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill health" id="health-progress" style="width: {{ (player.attributes.current_health / player.attributes.max_health * 100) if player else 100 }}%"></div>
+        </div>
+        
+        <div class="status-line" style="margin-top: 10px;">
+            <span class="status-label">灵力值</span>
+            <span class="status-value" id="mana">{{ player.attributes.current_mana if player else 50 }} / {{ player.attributes.max_mana if player else 50 }}</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill mana" id="mana-progress" style="width: {{ (player.attributes.current_mana / player.attributes.max_mana * 100) if player else 100 }}%"></div>
+        </div>
+
+        <div class="status-line" style="margin-top: 10px;">
+            <span class="status-label">灵气</span>
+            <span class="status-value" id="qi">{{ player.attributes.current_stamina if player else 100 }} / {{ player.attributes.max_stamina if player else 100 }}</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill mana" id="qi-progress" style="width: {{ (player.attributes.current_stamina / player.attributes.max_stamina * 100) if player else 100 }}%"></div>
+        </div>
+
+        <div class="status-line" style="margin-top: 10px;">
+            <span class="status-label">攻击 / 防御</span>
+            <span class="status-value">
+                <span id="attack">{{ player.attributes.attack_power if player else 10 }}</span><span id="attack-bonus"></span> / <span id="defense">{{ player.attributes.defense if player else 5 }}</span><span id="defense-bonus"></span>
+            </span>
+        </div>
+    </div>
+
+    <div class="status-block">
+        <h2>位置信息</h2>
+        <div class="status-line">
+            <span class="status-label">当前位置</span>
+            <span class="status-value" id="location">青云城</span>
+        </div>
+        <div class="status-line">
+            <span class="status-label">灵石</span>
+            <span class="status-value" id="gold">0</span>
+        </div>
+    </div>
+
+    <div class="status-block">
+        <h2>Buff状态</h2>
+        <div class="status-list" id="buff-list">
+            {% for buff in buffs %}
+            <div class="status-list-item">{{ buff }}</div>
+            {% else %}
+            <div class="status-list-item">（无）</div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="status-block">
+        <h2>特殊状态</h2>
+        <div class="status-list" id="special-status">
+            {% for status in special_status %}
+            <div class="status-list-item">{{ status }}</div>
+            {% else %}
+            <div class="status-list-item">（正常）</div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- 功能导航 -->
+    <div class="nav-section">
+        <a class="nav-link" onclick="sendCommand('状态')">查看状态<span class="shortcut">S</span></a>
+        <a class="nav-link" onclick="sendCommand('背包')">查看背包<span class="shortcut">B</span></a>
+        <a class="nav-link" onclick="sendCommand('功法')">查看功法<span class="shortcut">K</span></a>
+        <a class="nav-link" onclick="sendCommand('修炼')">开始修炼<span class="shortcut">C</span></a>
+        <a class="nav-link" onclick="sendCommand('成就')">成就系统<span class="shortcut">A</span></a>
+        <a class="nav-link" onclick="sendCommand('探索')">探索<span class="shortcut">E</span></a>
+        <a class="nav-link" onclick="sendCommand('地图')">地图<span class="shortcut">M</span></a>
+        <a class="nav-link" onclick="sendCommand('任务')">任务<span class="shortcut">Q</span></a>
+        <a class="nav-link" onclick="sendCommand('商店')">商店<span class="shortcut">T</span></a>
+        <a class="nav-link" onclick="sendCommand('保存')">保存<span class="shortcut">V</span></a>
+        <a class="nav-link" onclick="sendCommand('帮助')">帮助文档<span class="shortcut">H</span></a>
+    </div>
+
+    <!-- 成就进度 -->
+    <div class="achievement-progress">
+        <div>成就：<span id="achievement-count">0/0</span></div>
+        <div>成就点：<span id="achievement-points">0</span></div>
+    </div>
+</div>

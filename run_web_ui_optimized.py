@@ -24,7 +24,7 @@ from xwe.features.ai_personalization import AIPersonalization
 from xwe.features.community_system import CommunitySystem
 from xwe.features.technical_ops import TechnicalOps
 
-app = Flask(__name__, template_folder='templates_enhanced')
+app = Flask(__name__, static_folder='static', template_folder='templates_enhanced')
 app.secret_key = 'xianxia_world_secret_key_2025'
 
 # 全局游戏实例管理
@@ -130,7 +130,7 @@ def index():
     # 准备渲染数据
     player = game.game_state.player
     
-    return render_template('game_enhanced_optimized.html', 
+    return render_template('game_main.html', 
                          player=player,
                          location=game.game_state.current_location,
                          buffs=[],
