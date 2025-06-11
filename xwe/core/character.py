@@ -133,9 +133,38 @@ class Character:
     def can_act(self) -> bool:
         """是否可以行动"""
         return self.is_alive and self.state not in [
-            CharacterState.STUNNED, 
+            CharacterState.STUNNED,
             CharacterState.FROZEN
         ]
+
+    # Convenience properties for combat compatibility
+    @property
+    def health(self) -> float:
+        return self.attributes.current_health
+
+    @property
+    def max_health(self) -> float:
+        return self.attributes.max_health
+
+    @property
+    def mana(self) -> float:
+        return self.attributes.current_mana
+
+    @property
+    def max_mana(self) -> float:
+        return self.attributes.max_mana
+
+    def has_status(self, name: str) -> bool:
+        """Convenience wrapper to check status effects."""
+        return self.status_effects.has_effect(name)
+
+    def update_status_durations(self):
+        """Update durations of all status effects."""
+        self.status_effects.update()
+
+    def process_dot_effects(self):
+        """Process damage over time effects (placeholder)."""
+        pass
     
     def get_display_name(self) -> str:
         """获取显示名称"""
