@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>修仙世界引擎</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700&display=swap');
@@ -21,9 +21,13 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            position: relative;
+            position: fixed;
+            width: 100%;
             font-size: 14px;
             line-height: 1.6;
+            /* 防止滑动时页面消失 */
+            -webkit-overflow-scrolling: touch;
+            touch-action: manipulation;
         }
 
         /* 背景纹理 - 仿古宣纸效果 */
@@ -51,6 +55,7 @@
             justify-content: center;
             position: relative;
             border-bottom: 1px solid rgba(200, 200, 200, 0.1);
+            flex-shrink: 0;
         }
 
         .header h1 {
@@ -78,6 +83,7 @@
             display: flex;
             overflow: hidden;
             position: relative;
+            min-height: 0;
         }
 
         /* 左侧状态栏 - 极简文字风格 */
@@ -89,6 +95,9 @@
             background: rgba(15, 15, 15, 0.3);
             display: flex;
             flex-direction: column;
+            flex-shrink: 0;
+            /* 修复滑动问题 */
+            -webkit-overflow-scrolling: touch;
         }
 
         .sidebar h2 {
@@ -204,7 +213,6 @@
             color: #666;
         }
 
-
         /* 成就进度 */
         .achievement-progress {
             margin-top: auto;
@@ -222,6 +230,9 @@
             background: rgba(20, 20, 20, 0.2);
             line-height: 2.2;
             position: relative;
+            /* 修复滑动问题 */
+            -webkit-overflow-scrolling: touch;
+            min-width: 0;
         }
 
         /* 新的日志组容器 - 将多条相关日志组合在一个框内 */
@@ -418,6 +429,7 @@
             border-top: 1px solid rgba(200, 200, 200, 0.1);
             background: rgba(15, 15, 15, 0.5);
             position: relative;
+            flex-shrink: 0;
         }
 
         /* 输入提示区 */
@@ -608,6 +620,10 @@
 
         /* 响应式适配 */
         @media (max-width: 768px) {
+            body {
+                font-size: 13px;
+            }
+            
             .sidebar {
                 width: 240px;
                 padding: 20px 15px;
@@ -624,6 +640,10 @@
 
             .quick-commands {
                 display: none;
+            }
+            
+            .command-section {
+                padding: 12px 20px 15px;
             }
         }
     </style>
@@ -766,8 +786,6 @@
                    onkeyup="handleKeyUp(event)"
                    autocomplete="off">
             <button class="command-submit" onclick="executeCommand()" title="发送指令并刷新界面">执行</button>
-
-
         </div>
         <!-- 自动完成提示 -->
         <div class="autocomplete" id="autocomplete"></div>
@@ -789,7 +807,10 @@
             achievementUnlocked: 0,
             achievementTotal: 20,
             currentLogGroup: null,
-            logGroupTimer: null
+            logGroupTimer: null,
+            needsRefresh: false,
+            isUserInteracting: false,
+            lastUpdateTime: 0
         };
 
         // 可用命令列表（与服务器同步）
@@ -892,7 +913,7 @@
         }
 
         // 事件选择
-        function makeEventChoice(choiceIndex) {
+        async function makeEventChoice(choiceIndex) {
             const choices = ['剑修之路', '体修之路', '法修之路'];
             startLogGroup('命运选择');
             addLog('msg-player', `➤ 选择：${choices[choiceIndex]}`);
@@ -902,14 +923,19 @@
             eventContainers.forEach(container => container.style.display = 'none');
             
             // 发送选择到服务器
-            fetch('/command', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({command: `选择 ${choiceIndex + 1}`})
-            }).then(() => {
-                fetchLog();
-                fetchStatus();
-            });
+            try {
+                await fetch('/command', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({command: `选择 ${choiceIndex + 1}`})
+                });
+                
+                // 刷新状态和日志
+                await fetchLog();
+                await fetchStatus();
+            } catch (error) {
+                console.error('发送选择失败:', error);
+            }
             
             if (gameState.tutorialStep === 1) {
                 setTimeout(() => {
@@ -924,13 +950,19 @@
 
         // 隐藏加载动画
         function hideLoading() {
-            document.getElementById('loading').style.display = 'none';
+            const loadingElement = document.getElementById('loading');
+            if (loadingElement) {
+                loadingElement.style.display = 'none';
+            }
         }
 
         // 发送命令
         function sendCommand(command) {
-            document.getElementById('command-input').value = command;
-            executeCommand();
+            const input = document.getElementById('command-input');
+            if (input) {
+                input.value = command;
+                executeCommand();
+            }
         }
 
         // 执行命令
@@ -940,8 +972,14 @@
             
             if (!command) return;
 
+            // 标记用户正在交互
+            gameState.isUserInteracting = true;
+
             // 隐藏自动完成
-            document.getElementById('autocomplete').style.display = 'none';
+            const autocomplete = document.getElementById('autocomplete');
+            if (autocomplete) {
+                autocomplete.style.display = 'none';
+            }
 
             // 添加到历史记录
             if (gameState.commandHistory[gameState.commandHistory.length - 1] !== command) {
@@ -959,28 +997,41 @@
             // 增加命令计数
             gameState.commandCount++;
             
-            // 发送到服务器
-            await fetch('/command', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({command})
-            });
-            
-            // 清空输入
-            input.value = '';
-            input.focus();
-            
-            // 延迟一下再完成日志组，让响应有时间加入
-            setTimeout(() => {
+            try {
+                // 发送到服务器
+                await fetch('/command', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({command})
+                });
+                
+                // 清空输入
+                input.value = '';
+                input.focus();
+                
+                // 延迟一下再完成日志组，让响应有时间加入
+                setTimeout(() => {
+                    finishLogGroup();
+                }, 100);
+                
+                // 更新状态和日志
+                await fetchLog();
+                await fetchStatus();
+                
+                // 检查教程进度
+                checkTutorialProgress(command);
+                
+            } catch (error) {
+                console.error('执行命令失败:', error);
+                startLogGroup('系统错误');
+                addLog('msg-warning', '【系统】命令执行失败，请稍后重试。');
                 finishLogGroup();
-            }, 100);
-            
-            // 更新状态和日志
-            fetchLog();
-            fetchStatus();
-            
-            // 检查教程进度
-            checkTutorialProgress(command);
+            } finally {
+                // 重置用户交互状态
+                setTimeout(() => {
+                    gameState.isUserInteracting = false;
+                }, 1000);
+            }
         }
 
         // 检查教程进度
@@ -1034,13 +1085,17 @@
             // 延迟滚动，等待动画开始
             setTimeout(() => {
                 const log = document.getElementById('narrative-log');
-                log.scrollTop = log.scrollHeight;
+                if (log) {
+                    log.scrollTop = log.scrollHeight;
+                }
             }, 100);
         }
 
         // 添加HTML日志
         function addHtmlLog(html) {
             const log = document.getElementById('narrative-log');
+            if (!log) return;
+            
             const entry = document.createElement('div');
             entry.innerHTML = html;
             
@@ -1061,6 +1116,8 @@
             `;
             
             const log = document.getElementById('narrative-log');
+            if (!log) return;
+            
             const achievement = document.createElement('div');
             achievement.innerHTML = achievementHtml;
             log.appendChild(achievement.firstElementChild);
@@ -1075,38 +1132,56 @@
 
         // 更新成就显示
         function updateAchievementDisplay() {
-            document.getElementById('achievement-count').textContent = `${gameState.achievementUnlocked}/${gameState.achievementTotal}`;
-            document.getElementById('achievement-points').textContent = gameState.achievementUnlocked * 10;
+            const countElement = document.getElementById('achievement-count');
+            const pointsElement = document.getElementById('achievement-points');
+            
+            if (countElement) {
+                countElement.textContent = `${gameState.achievementUnlocked}/${gameState.achievementTotal}`;
+            }
+            if (pointsElement) {
+                pointsElement.textContent = gameState.achievementUnlocked * 10;
+            }
         }
 
         // 获取状态
         async function fetchStatus() {
             try {
                 const res = await fetch('/status');
+                if (!res.ok) throw new Error('获取状态失败');
+                
                 const data = await res.json();
                 const p = data.player;
                 if (!p) return;
 
                 const attrs = p.attributes;
-                document.getElementById('player-name').textContent = p.name || '无名侠客';
-                document.getElementById('realm').textContent = attrs.realm_name || '炼气一层';
-                document.getElementById('cultivation').textContent = `(${attrs.cultivation_level || 0} / ${attrs.max_cultivation || 100})`;
+                
+                // 安全地更新元素内容
+                const updateElement = (id, value) => {
+                    const element = document.getElementById(id);
+                    if (element) element.textContent = value;
+                };
 
-                const curHealth = Math.min(attrs.current_health || 0, attrs.max_health || 0);
-                const curMana = Math.min(attrs.current_mana || 0, attrs.max_mana || 0);
-                const curQi = Math.min(attrs.current_stamina || 0, attrs.max_stamina || 0);
-                document.getElementById('health').textContent = `${curHealth} / ${attrs.max_health || 0}`;
-                document.getElementById('mana').textContent = `${curMana} / ${attrs.max_mana || 0}`;
-                document.getElementById('qi').textContent = `${curQi} / ${attrs.max_stamina || 0}`;
+                updateElement('player-name', p.name || '无名侠客');
+                updateElement('realm', attrs.realm_name || '炼气一层');
+                updateElement('cultivation', `(${attrs.cultivation_level || 0} / ${attrs.max_cultivation || 100})`);
 
-                document.getElementById('attack').textContent = Math.floor(attrs.attack_power || 10);
-                document.getElementById('defense').textContent = Math.floor(attrs.defense || 5);
+                const curHealth = Math.max(0, Math.min(attrs.current_health || 0, attrs.max_health || 0));
+                const curMana = Math.max(0, Math.min(attrs.current_mana || 0, attrs.max_mana || 0));
+                const curQi = Math.max(0, Math.min(attrs.current_stamina || 0, attrs.max_stamina || 0));
+                
+                updateElement('health', `${curHealth} / ${attrs.max_health || 0}`);
+                updateElement('mana', `${curMana} / ${attrs.max_mana || 0}`);
+                updateElement('qi', `${curQi} / ${attrs.max_stamina || 0}`);
+                updateElement('attack', Math.floor(attrs.attack_power || 10));
+                updateElement('defense', Math.floor(attrs.defense || 5));
 
+                // 处理加成显示
                 const deffects = p.extra_data && p.extra_data.destiny ? p.extra_data.destiny.effects || {} : {};
                 const atkBonus = deffects.attack || 0;
                 const defBonus = deffects.defense || 0;
-                document.getElementById('attack-bonus').textContent = atkBonus ? `(${atkBonus>=0?'+':''}${atkBonus})` : '';
-                document.getElementById('defense-bonus').textContent = defBonus ? `(${defBonus>=0?'+':''}${defBonus})` : '';
+                
+                updateElement('attack-bonus', atkBonus ? `(${atkBonus>=0?'+':''}${atkBonus})` : '');
+                updateElement('defense-bonus', defBonus ? `(${defBonus>=0?'+':''}${defBonus})` : '');
 
                 // 更新进度条
                 updateProgressBar('cultivation-progress', attrs.cultivation_level, attrs.max_cultivation);
@@ -1115,28 +1190,29 @@
                 updateProgressBar('qi-progress', curQi, attrs.max_stamina);
 
                 // 更新位置和金币
-                document.getElementById('location').textContent = data.location_name || data.location || '青云城';
-                document.getElementById('gold').textContent = data.gold || 0;
+                updateElement('location', data.location_name || data.location || '青云城');
+                updateElement('gold', data.gold || 0);
 
                 // 检查低血量警告
-                if (curHealth / attrs.max_health < 0.3) {
+                if (attrs.max_health > 0 && curHealth / attrs.max_health < 0.3) {
                     if (!document.querySelector('.health-warning-active')) {
                         startLogGroup('系统警告');
                         addLog('msg-warning health-warning-active', '【警告】你的气血值过低，请及时恢复！');
                         finishLogGroup();
                     }
                 }
-            } catch (e) {
-                console.error('获取状态失败:', e);
+                
+            } catch (error) {
+                console.error('获取状态失败:', error);
             }
         }
 
         // 更新进度条
         function updateProgressBar(id, current, max) {
             const bar = document.getElementById(id);
-            if (bar) {
-                const percent = max > 0 ? (current / max * 100) : 0;
-                bar.style.width = `${Math.min(100, Math.max(0, percent))}%`;
+            if (bar && max > 0) {
+                const percent = Math.min(100, Math.max(0, (current / max * 100)));
+                bar.style.width = `${percent}%`;
             }
         }
 
@@ -1144,8 +1220,11 @@
         async function fetchLog() {
             try {
                 const res = await fetch('/log');
+                if (!res.ok) throw new Error('获取日志失败');
+                
                 const data = await res.json();
                 const log = document.getElementById('narrative-log');
+                if (!log) return;
 
                 // 完成当前日志组
                 finishLogGroup();
@@ -1154,7 +1233,6 @@
                 log.innerHTML = '';
                 
                 // 将日志按类型分组
-                let currentGroup = null;
                 let groupType = null;
                 let groupLogs = [];
                 
@@ -1187,14 +1265,17 @@
                 }
 
                 log.scrollTop = log.scrollHeight;
-            } catch (e) {
-                console.error('获取日志失败:', e);
+                
+            } catch (error) {
+                console.error('获取日志失败:', error);
             }
         }
 
         // 从日志数组创建日志组
         function createLogGroupFromLogs(type, logs) {
             const log = document.getElementById('narrative-log');
+            if (!log) return;
+            
             const group = document.createElement('div');
             group.className = 'log-group';
             
@@ -1236,17 +1317,23 @@
             log.appendChild(group);
         }
 
-        // 检查更新
+        // 智能刷新系统 - 只在必要时刷新
         async function checkUpdates() {
+            // 如果用户正在交互，跳过自动刷新
+            if (gameState.isUserInteracting) return;
+            
             try {
                 const res = await fetch('/need_refresh');
+                if (!res.ok) return;
+                
                 const data = await res.json();
-                if (data.refresh) {
-                    fetchLog();
-                    fetchStatus();
+                if (data.refresh && data.last_update > gameState.lastUpdateTime) {
+                    gameState.lastUpdateTime = data.last_update;
+                    await fetchLog();
+                    await fetchStatus();
                 }
-            } catch (e) {
-                console.error('检查更新失败:', e);
+            } catch (error) {
+                console.error('检查更新失败:', error);
             }
         }
 
@@ -1258,11 +1345,13 @@
             // Tab键 - 显示/选择自动完成
             if (event.key === 'Tab') {
                 event.preventDefault();
-                if (autocomplete.style.display === 'block' && autocomplete.children.length > 0) {
+                if (autocomplete && autocomplete.style.display === 'block' && autocomplete.children.length > 0) {
                     // 选择第一个建议
                     const firstItem = autocomplete.children[0];
-                    input.value = firstItem.dataset.command;
-                    autocomplete.style.display = 'none';
+                    if (firstItem && firstItem.dataset.command) {
+                        input.value = firstItem.dataset.command;
+                        autocomplete.style.display = 'none';
+                    }
                 } else {
                     showAutoComplete();
                 }
@@ -1286,7 +1375,9 @@
             }
             // ESC - 关闭自动完成
             else if (event.key === 'Escape') {
-                autocomplete.style.display = 'none';
+                if (autocomplete) {
+                    autocomplete.style.display = 'none';
+                }
             }
             // Enter - 执行命令
             else if (event.key === 'Enter') {
@@ -1316,8 +1407,10 @@
         function showAutoComplete() {
             const input = document.getElementById('command-input');
             const autocomplete = document.getElementById('autocomplete');
-            const value = input.value.toLowerCase().trim();
             
+            if (!input || !autocomplete) return;
+            
+            const value = input.value.toLowerCase().trim();
             autocomplete.innerHTML = '';
             
             if (value.length === 0) {
@@ -1325,7 +1418,9 @@
                 const commonCmds = ['状态', '修炼', '探索', '背包', '帮助'];
                 commonCmds.forEach(cmd => {
                     const cmdInfo = availableCommands.find(c => c.cmd === cmd);
-                    addAutoCompleteItem(cmd, cmdInfo.desc);
+                    if (cmdInfo) {
+                        addAutoCompleteItem(cmd, cmdInfo.desc);
+                    }
                 });
             } else {
                 // 匹配命令
@@ -1349,14 +1444,19 @@
         // 添加自动完成项
         function addAutoCompleteItem(command, desc) {
             const autocomplete = document.getElementById('autocomplete');
+            if (!autocomplete) return;
+            
             const item = document.createElement('div');
             item.className = 'autocomplete-item';
             item.dataset.command = command;
             item.innerHTML = `${command}<span class="autocomplete-desc">${desc}</span>`;
             item.onclick = () => {
-                document.getElementById('command-input').value = command;
-                autocomplete.style.display = 'none';
-                document.getElementById('command-input').focus();
+                const input = document.getElementById('command-input');
+                if (input) {
+                    input.value = command;
+                    autocomplete.style.display = 'none';
+                    input.focus();
+                }
             };
             autocomplete.appendChild(item);
         }
@@ -1364,6 +1464,8 @@
         // 显示提示
         function showTooltip(element, text) {
             const tooltip = document.getElementById('tooltip');
+            if (!tooltip || !element) return;
+            
             const rect = element.getBoundingClientRect();
             tooltip.textContent = text;
             tooltip.style.left = rect.left + 'px';
@@ -1373,13 +1475,19 @@
 
         // 隐藏提示
         function hideTooltip() {
-            document.getElementById('tooltip').classList.remove('show');
+            const tooltip = document.getElementById('tooltip');
+            if (tooltip) {
+                tooltip.classList.remove('show');
+            }
         }
 
         // 初始化
         function init() {
             // 聚焦输入框
-            document.getElementById('command-input').focus();
+            const input = document.getElementById('command-input');
+            if (input) {
+                input.focus();
+            }
             
             // 初始化教程
             initTutorial();
@@ -1388,12 +1496,12 @@
             fetchStatus();
             updateAchievementDisplay();
             
-            // 定期检查更新
-            setInterval(checkUpdates, 3000);
+            // 智能刷新 - 只在需要时检查更新，频率降低
+            setInterval(checkUpdates, 5000);
             
-            // 定期随机事件
+            // 定期随机事件 - 降低频率
             setInterval(() => {
-                if (Math.random() < 0.1 && !gameState.isNewPlayer) {
+                if (Math.random() < 0.05 && !gameState.isNewPlayer && !gameState.isUserInteracting) {
                     const ambientEvents = [
                         '【剧情】山风徐来，带着淡淡的草药香。',
                         '【剧情】远处传来仙鹤的清鸣声。',
@@ -1406,12 +1514,15 @@
                     addLog('msg-event', ambientEvents[Math.floor(Math.random() * ambientEvents.length)]);
                     finishLogGroup();
                 }
-            }, 45000);
+            }, 60000);
             
             // 点击空白处隐藏自动完成
             document.addEventListener('click', (e) => {
                 if (!e.target.matches('.command-input')) {
-                    document.getElementById('autocomplete').style.display = 'none';
+                    const autocomplete = document.getElementById('autocomplete');
+                    if (autocomplete) {
+                        autocomplete.style.display = 'none';
+                    }
                 }
             });
             
@@ -1425,10 +1536,26 @@
                 });
                 link.addEventListener('mouseleave', hideTooltip);
             });
+            
+            // 防止页面滑动时消失
+            document.addEventListener('touchmove', function(e) {
+                // 只允许在可滚动区域内滑动
+                if (!e.target.closest('.narrative-log') && !e.target.closest('.sidebar')) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
         }
 
         // 页面加载完成
-        window.onload = init;
+        window.addEventListener('load', init);
+        
+        // 页面可见性变化时的处理
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState === 'visible') {
+                // 页面重新显示时检查更新
+                setTimeout(checkUpdates, 500);
+            }
+        });
     </script>
 </body>
 </html>
