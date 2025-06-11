@@ -96,11 +96,26 @@ class CharacterAttributes:
         raise AttributeError(f"{self.__class__.__name__} object has no attribute '{name}'")
 
     def __setattr__(self, name: str, value: Any):
+        """Set attribute and mirror the value to ``extra_attributes``.
+
+        During dataclass initialization ``extra_attributes`` may not yet
+        exist, so updates are skipped until it is created. Once available,
+        all assignments are also stored in the dictionary for unified
+        access by tests and other systems.
+        """
         annotations = self.__class__.__dict__.get("__annotations__", {})
+        has_extra = "extra_attributes" in self.__dict__
+
         if name in annotations or name == "extra_attributes":
             super().__setattr__(name, value)
+            if name != "extra_attributes" and has_extra:
+                self.extra_attributes[name] = value
         else:
-            self.extra_attributes[name] = value
+            if has_extra:
+                self.extra_attributes[name] = value
+            else:
+                # Fallback during early __init__ before ``extra_attributes``
+                super().__setattr__(name, value)
 
     def __post_init__(self):
         self.calculate_derived_attributes()

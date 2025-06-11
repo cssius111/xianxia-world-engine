@@ -1,10 +1,9 @@
 import threading
 import webbrowser
-from flask import Flask
+from flask import Flask, render_template, request, jsonify
 
 # 导入服务层
 from xwe.services import ServiceContainer, register_services
-, render_template, request, jsonify
 from xwe.core.game_core import GameCore
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
