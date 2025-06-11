@@ -15,6 +15,7 @@ def test_extra_attribute_access():
     assert attrs.extra_attributes["attack_power"] == 123
 
 
+
 def test_missing_attribute_error():
     attrs = CharacterAttributes()
     with pytest.raises(AttributeError):

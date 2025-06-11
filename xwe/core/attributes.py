@@ -107,6 +107,16 @@ class CharacterAttributes:
         """Fallback to ``extra_attributes`` when attribute is missing."""
         extra = self.__dict__.get("extra_attributes", {})
 
+        if name in extra:
+            return extra[name]
+
+        try:
+            return super().__getattribute__(name)
+        except AttributeError as e:
+            raise AttributeError(
+                f"{self.__class__.__name__} object has no attribute '{name}'"
+            ) from e
+
         """Fallback to ``extra_attributes`` when attribute is missing."""
         extra = self.__dict__.get('extra_attributes', {})
 
@@ -132,6 +142,10 @@ class CharacterAttributes:
         """初始化后计算衍生属性"""
         self.calculate_derived_attributes()
 
+    def __post_init__(self):
+        """初始化后计算衍生属性"""
+        self.calculate_derived_attributes()
+
             raise AttributeError(f"{self.__class__.__name__} object has no attribute '{name}'")
 
         """Fallback to extra_attributes for undefined fields."""
@@ -151,7 +165,7 @@ class CharacterAttributes:
     def __post_init__(self):
         """初始化后计算衍生属性"""
         self.calculate_derived_attributes()
-    
+   
     def get(self, attr_name: str, default: float = 0.0) -> float:
         """
         获取属性值
@@ -256,7 +270,6 @@ class CharacterAttributes:
             "max_cultivation": self.max_cultivation,
             "realm_level": self.realm_level,
             "realm_name": self.realm_name,
-
             'spiritual_root_purity': self.spiritual_root_purity,
             'cultivation_level': self.cultivation_level,
             'max_cultivation': self.max_cultivation,
