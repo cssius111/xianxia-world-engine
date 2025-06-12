@@ -4,7 +4,7 @@
 """
 
 from xwe.core.command_parser import ParsedCommand, CommandType
-from typing import Any
+from typing import Any, Optional
 
 class SimpleNLPProcessor:
     """最简单的NLP处理器实现"""
@@ -98,7 +98,7 @@ class SimpleNLPProcessor:
                 confidence=0.0
             )
     
-    def _extract_skill_name(self, text: str) -> str:
+    def _extract_skill_name(self, text: str) -> Optional[str]:
         """简单的技能名提取"""
         # 这里可以添加更复杂的提取逻辑
         words = ['使用', '施放', '释放']
@@ -109,7 +109,7 @@ class SimpleNLPProcessor:
                     return parts[1].strip().split()[0]
         return None
     
-    def _extract_location(self, text: str) -> str:
+    def _extract_location(self, text: str) -> Optional[str]:
         """简单的地点提取"""
         words = ['去', '前往', '走到']
         for word in words:
