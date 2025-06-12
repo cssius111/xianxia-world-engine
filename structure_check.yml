@@ -1,0 +1,39 @@
+name: Structure & Test Check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run restructure dry-check
+      run: |
+        python restructure_project.py
+
+    - name: Run tests
+      run: |
+        pytest tests/
+
+    - name: Check for illegal root files
+      run: |
+        if ls | grep -E '^(main|run_).*\.py'; then
+          echo "❌ Root contains deprecated entry files."
+          exit 1
+        fi

@@ -2,6 +2,41 @@
 
 > 一个基于Python的AI驱动修仙游戏引擎，支持自然语言交互、动态剧情生成和丰富的游戏系统。
 
+
+## 项目结构说明（重构于 2025-06-12）
+
+### 主入口
+- `run_web_ui_optimized.py` - **主入口文件**，运行 Flask Web UI
+
+### 目录结构
+- `xwe/` - 核心游戏引擎模块
+- `templates/` - Flask 模板文件
+- `static/` - 静态资源文件
+- `scripts/` - 辅助脚本和示例代码
+  - `tools/` - 项目工具脚本
+- `tests/` - 测试文件
+  - `unit/` - 单元测试
+  - `web_ui/` - Web UI 相关测试
+- `docs/` - 项目文档
+  - `guides/` - 使用指南
+  - `progress/` - 开发进度记录
+- `archive/` - 归档文件
+  - `deprecated/entrypoints/` - 废弃的入口文件
+  - `backups/` - 备份文件
+- `output/` - 输出文件（HTML报告等）
+- `plugins/` - 插件系统
+- `mods/` - 游戏模组
+
+### 废弃入口说明
+以下入口文件已归档至 `archive/deprecated/entrypoints/`：
+- `main.py` - 原命令行入口
+- `run_game.py` - 原游戏运行脚本
+- `run_web_ui.py` - 原Web UI入口
+- 其他旧版入口文件
+
+---
+
+
 ## 📑 目录
 
 - [项目特色](#项目特色)

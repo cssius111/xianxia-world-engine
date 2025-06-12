@@ -1,16 +1,16 @@
 {
   "performance": {
     "current": {
-      "cpu_usage": 0.0,
-      "memory_usage": 4799.125
+      "cpu_usage": 62.8,
+      "memory_usage": 6003.75
     },
     "average": {
-      "memory_usage": 4799.125,
-      "cpu_usage": 0.0
+      "memory_usage": 6003.75,
+      "cpu_usage": 62.8
     },
     "peak": {
-      "memory_usage": 4799.125,
-      "cpu_usage": 0.0
+      "memory_usage": 6003.75,
+      "cpu_usage": 62.8
     }
   },
   "errors": {
@@ -18,5 +18,5 @@
     "error_types": {},
     "recent_errors": []
   },
-  "timestamp": 1749692516.8777559
+  "timestamp": 1749694513.87187
 }
