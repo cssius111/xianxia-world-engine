@@ -1,9 +1,6 @@
 """
 Metrics module for monitoring and observability
 """
-from .prometheus import PrometheusMetrics, metrics_registry
-
-
 from .prometheus import (
     PrometheusMetrics,
     metrics_registry,
