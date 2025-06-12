@@ -5,7 +5,7 @@
 
 from abc import ABC, abstractmethod
 from typing import Optional, Dict, Any, List
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 
 @dataclass
@@ -16,12 +16,8 @@ class GameState:
     current_location: str
     game_time: float
     player_id: Optional[str] = None
-    active_events: List[str] = None
+    active_events: List[str] = field(default_factory=list)
     paused: bool = False
-    
-    def __post_init__(self):
-        if self.active_events is None:
-            self.active_events = []
 
 
 @dataclass
@@ -30,16 +26,10 @@ class CommandResult:
     success: bool
     output: str
     state_changed: bool = False
-    events: List[Dict[str, Any]] = None
-    suggestions: List[str] = None
+    events: List[Dict[str, Any]] = field(default_factory=list)
+    suggestions: List[str] = field(default_factory=list)
     require_confirmation: bool = False
-    confirmation_data: Dict[str, Any] = None
-    
-    def __post_init__(self):
-        if self.events is None:
-            self.events = []
-        if self.suggestions is None:
-            self.suggestions = []
+    confirmation_data: Dict[str, Any] = field(default_factory=dict)
 
 
 class IGameService(ABC):

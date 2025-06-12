@@ -6,7 +6,7 @@
 
 import re
 from typing import Dict, Callable, Any, Optional, Tuple, List
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
 
 
@@ -26,7 +26,7 @@ class CommandDefinition:
     priority: CommandPriority  # 优先级
     description: str        # 命令描述
     context_required: Optional[str] = None  # 所需上下文
-    aliases: List[str] = None  # 别名列表
+    aliases: List[str] = field(default_factory=list)  # 别名列表
 
 class CommandRouter:
     def __init__(self):
