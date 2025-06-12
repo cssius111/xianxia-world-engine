@@ -293,7 +293,7 @@ class WorldMap:
                 'available_actions': area.available_actions,
                 'connected_areas': [
                     {
-                        'id': cid,
+                        'id': str(cid),
                         'name': self.areas[cid].name if cid in self.areas else "未知",
                         'discovered': self.areas[cid].is_discovered if cid in self.areas else False
                     }
