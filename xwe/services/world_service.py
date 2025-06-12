@@ -56,10 +56,7 @@ class WorldService(ServiceBase[IWorldService], IWorldService):
         super().__init__(container)
         self._locations: Dict[str, Dict[str, Any]] = {}
         self._connections: Dict[str, List[str]] = {}
- 
         self._discovered_locations: Set[str] = set()
- 
-        self._discovered_locations: set[str] = set()
  
         
     def _do_initialize(self) -> None:
