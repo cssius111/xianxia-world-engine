@@ -210,12 +210,16 @@ def test_error_handling():
     tester.test_endpoint('GET', '/invalid/endpoint', expected_status=404)
     
     # 测试无效的请求数据
+
     tester.test_endpoint(
         'POST',
         '/game/command',
         data={},  # 缺少required字段
         expected_status=400,
     )
+
+    tester.test_endpoint('POST', '/game/command', data={}, expected_status=400)
+
     
     # 测试无效的命令
     tester.test_endpoint('POST', '/game/command',

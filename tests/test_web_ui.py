@@ -1,6 +1,11 @@
+
 """Web UI 测试"""
 
 from run_web_ui_optimized import app
+
+from run_web_ui_optimized import app as simple_app
+from run_web_ui_optimized import app as enhanced_app
+
 
 
 def test_simple_web_ui():

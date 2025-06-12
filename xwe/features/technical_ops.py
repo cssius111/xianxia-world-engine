@@ -396,17 +396,18 @@ class ErrorHandler:
         
         # 错误统计
         self.error_counts: Dict[str, int] = {}
+<<<<<<< mojxn6-codex/remove-duplicates-and-enforce-correct-typing
 
-        self.last_errors: List[str] = []
-
+=======
+>>>>>>> main
         self.last_errors: List[ErrorLog] = []
-
         self.max_recent_errors = 100
 
         # 错误处理回调
+<<<<<<< mojxn6-codex/remove-duplicates-and-enforce-correct-typing
 
-        self.error_callbacks: List[Callable[[Exception], None]] = []
-
+=======
+>>>>>>> main
         self.error_callbacks: List[Callable[[ErrorLog], Any]] = []
 
     

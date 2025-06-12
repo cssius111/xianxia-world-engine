@@ -133,11 +133,11 @@ class FunctionAnalyzer:
             if isinstance(child, ast.Call):
                 if hasattr(child.func, 'attr'):
                     attr = child.func.attr
-                    if Any(keyword in attr for keyword in ['save', 'load', 'write', 'read']):
+                    if any(keyword in attr for keyword in ['save', 'load', 'write', 'read']):
                         operation_types.add('io')
-                    elif Any(keyword in attr for keyword in ['process', 'parse', 'analyze']):
+                    elif any(keyword in attr for keyword in ['process', 'parse', 'analyze']):
                         operation_types.add('processing')
-                    elif Any(keyword in attr for keyword in ['render', 'display', 'show']):
+                    elif any(keyword in attr for keyword in ['render', 'display', 'show']):
                         operation_types.add('ui')
         
         return len(operation_types) > 2

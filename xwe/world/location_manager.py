@@ -214,7 +214,7 @@ class LocationManager:
             area = self.world_map.get_area(area_id)
             if area:
                 info = {
-                    'id': area.id,
+                    'id': str(area.id),
                     'name': area.name,
                     'type': area.type.value,
                     'danger_level': area.danger_level,

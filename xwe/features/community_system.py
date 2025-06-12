@@ -213,11 +213,11 @@ class FeedbackCollector:
                         tags: List[str]) -> FeedbackPriority:
         """自动设置优先级"""
         # 关键词优先级
-        if Any(tag in ["crash", "critical", "freeze"] for tag in tags):
+        if any(tag in ["crash", "critical", "freeze"] for tag in tags):
             return FeedbackPriority.CRITICAL
         
         if feedback_type == FeedbackType.BUG:
-            if Any(tag in ["error", "bug"] for tag in tags):
+            if any(tag in ["error", "bug"] for tag in tags):
                 return FeedbackPriority.HIGH
             return FeedbackPriority.MEDIUM
         
@@ -624,15 +624,15 @@ class CommunitySystem:
         # 解析反馈类型
         feedback_type = FeedbackType.SUGGESTION  # 默认为建议
         
-        if Any(word in feedback_text.lower() for word in ["bug", "错误", "崩溃"]):
+        if any(word in feedback_text.lower() for word in ["bug", "错误", "崩溃"]):
             feedback_type = FeedbackType.BUG
-        elif Any(word in feedback_text.lower() for word in ["建议", "希望"]):
+        elif any(word in feedback_text.lower() for word in ["建议", "希望"]):
             feedback_type = FeedbackType.SUGGESTION
-        elif Any(word in feedback_text.lower() for word in ["问题", "怎么"]):
+        elif any(word in feedback_text.lower() for word in ["问题", "怎么"]):
             feedback_type = FeedbackType.QUESTION
-        elif Any(word in feedback_text.lower() for word in ["投诉", "太差"]):
+        elif any(word in feedback_text.lower() for word in ["投诉", "太差"]):
             feedback_type = FeedbackType.COMPLAINT
-        elif Any(word in feedback_text.lower() for word in ["赞", "好", "棒"]):
+        elif any(word in feedback_text.lower() for word in ["赞", "好", "棒"]):
             feedback_type = FeedbackType.PRAISE
         
         # 收集游戏上下文

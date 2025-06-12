@@ -176,7 +176,7 @@ class DynamicNarrativeGenerator:
                 narrative = narrative[:last_period + 1]
                 
         # 添加战斗结果总结（如果原文没有）
-        if events and not Any(word in narrative[-50:] for word in ['胜利', '败北', '结束', '完']):
+        if events and not any(word in narrative[-50:] for word in ['胜利', '败北', '结束', '完']):
             winner = self._determine_winner(events)
             if winner:
                 narrative += f"\n\n最终，{winner}取得了胜利。"
