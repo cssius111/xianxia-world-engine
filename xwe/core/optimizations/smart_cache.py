@@ -13,7 +13,7 @@ class SmartCache:
         self.max_size = max_size
         self.ttl = ttl
         self.max_memory_mb = max_memory_mb
-        self._cache = OrderedDict()
+        self._cache: OrderedDict[str, Dict[str, Any]] = OrderedDict()
         self._lock = threading.RLock()
         self.hit_count = 0
         self.miss_count = 0
