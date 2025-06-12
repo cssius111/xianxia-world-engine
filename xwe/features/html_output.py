@@ -1,4 +1,4 @@
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Tuple
 
 
 class HtmlGameLogger:
@@ -7,7 +7,7 @@ class HtmlGameLogger:
     def __init__(self, filepath: str = "game_log.html", refresh_interval: int = 2):
         self.filepath = filepath
         self.refresh_interval = refresh_interval
-        self.logs: List[str] = []
+        self.logs: List[Tuple[str, str]] = []
         self.status: Dict[str, Any] = {}
         self._write_html()
 
@@ -22,8 +22,8 @@ class HtmlGameLogger:
                 "境界": f"{player.get('realm', '')}第{player.get('level', 1)}层",
                 "气血": f"{player.get('health', 0)}/{player.get('max_health', 0)}",
                 "法力": f"{player.get('mana', 0)}/{player.get('max_mana', 0)}",
-                "攻击": player.get('attack', 0),
-                "防御": player.get('defense', 0),
+                "攻击": player.get("attack", 0),
+                "防御": player.get("defense", 0),
             }
         else:
             attrs = player.attributes
@@ -32,12 +32,14 @@ class HtmlGameLogger:
                 "境界": f"{attrs.realm_name} {attrs.cultivation_level}层",
                 "气血": f"{int(attrs.current_health)}/{int(attrs.max_health)}",
                 "灵力": f"{int(attrs.current_mana)}/{int(attrs.max_mana)}",
-                "攻击": int(attrs.get('attack_power')),
-                "防御": int(attrs.get('defense')),
+                "攻击": int(attrs.get("attack_power")),
+                "防御": int(attrs.get("defense")),
             }
         self._write_html()
 
-    def add_log(self, text: str, category: str = "system", is_continuation: bool = False):
+    def add_log(
+        self, text: str, category: str = "system", is_continuation: bool = False
+    ):
         """添加日志，支持续行"""
         if is_continuation and self.logs:
             # 如果是续行，将文本添加到上一条日志
@@ -45,7 +47,7 @@ class HtmlGameLogger:
             self.logs[-1] = (last_text + "\n" + text, last_category)
         else:
             self.logs.append((text, category))
-        
+
         if len(self.logs) > 200:
             self.logs = self.logs[-200:]
         self._write_html()
@@ -56,20 +58,26 @@ class HtmlGameLogger:
             f.write(html)
 
     def _generate_html(self) -> str:
-        status_lines = [f"<li><strong>{k}</strong>: {v}</li>" for k, v in self.status.items()]
+        status_lines = [
+            f"<li><strong>{k}</strong>: {v}</li>" for k, v in self.status.items()
+        ]
         status_html = "\n".join(status_lines)
         # 将连续的多行输出组合在一起
         log_blocks = []
         for text, category in self.logs:
             # 如果文本包含换行，保留换行显示
-            if '\n' in text:
+            if "\n" in text:
                 # 多行文本放在一个块内
-                escaped_text = self._escape(text).replace('\n', '<br>')
-                log_blocks.append(f"<div class='log-block {category}'>{escaped_text}</div>")
+                escaped_text = self._escape(text).replace("\n", "<br>")
+                log_blocks.append(
+                    f"<div class='log-block {category}'>{escaped_text}</div>"
+                )
             else:
                 # 单行文本
-                log_blocks.append(f"<p class='log-line {category}'>{self._escape(text)}</p>")
-        
+                log_blocks.append(
+                    f"<p class='log-line {category}'>{self._escape(text)}</p>"
+                )
+
         log_html = "\n".join(log_blocks)
         return f"""<!DOCTYPE html>
 <html lang='zh'>
@@ -112,7 +120,4 @@ body{{font-family:monospace;background:#f5f5f5;}}
 
     @staticmethod
     def _escape(text: str) -> str:
-        return (text.replace("&", "&amp;")
-                    .replace("<", "&lt;")
-                    .replace(">", "&gt;"))
-
+        return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")

@@ -16,4 +16,5 @@ black >= 22.0.0  # 代码格式化
 mypy >= 1.0.0    # 类型检查
 pyyaml >= 6.0    # 用于YAML格式MOD支持
 python-dotenv>=1.0.0
+flask-swagger-ui>=4.12.0
 
