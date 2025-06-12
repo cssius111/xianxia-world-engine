@@ -5,7 +5,7 @@
 
 from abc import ABC, abstractmethod
 from typing import Dict, Any, Optional, List, Callable, Tuple
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import re
 import logging
 
@@ -22,11 +22,7 @@ class CommandContext:
     player_id: Optional[str] = None
     location: Optional[str] = None
     in_combat: bool = False
-    metadata: Dict[str, Any] = None
-    
-    def __post_init__(self):
-        if self.metadata is None:
-            self.metadata = {}
+    metadata: Dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass 
@@ -35,16 +31,10 @@ class CommandResult:
     success: bool
     output: str
     state_changed: bool = False
-    events: List[Dict[str, Any]] = None
-    suggestions: List[str] = None
+    events: List[Dict[str, Any]] = field(default_factory=list)
+    suggestions: List[str] = field(default_factory=list)
     require_confirmation: bool = False
-    confirmation_data: Dict[str, Any] = None
-    
-    def __post_init__(self):
-        if self.events is None:
-            self.events = []
-        if self.suggestions is None:
-            self.suggestions = []
+    confirmation_data: Dict[str, Any] = field(default_factory=dict)
 
 
 class ICommandHandler(ABC):

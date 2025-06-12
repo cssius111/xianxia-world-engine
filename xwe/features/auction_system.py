@@ -15,7 +15,7 @@ import time
 from typing import Dict, List, Optional, Tuple, Any
 from pathlib import Path
 from enum import Enum
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from xwe.core.data_loader import DataLoader
 try:
@@ -57,11 +57,7 @@ class AuctionItem:
     max_price: int
     current_bid: int = 0
     current_bidder: Optional[str] = None
-    bid_history: List[Tuple[str, int]] = None
-    
-    def __post_init__(self):
-        if self.bid_history is None:
-            self.bid_history = []
+    bid_history: List[Tuple[str, int]] = field(default_factory=list)
 
 
 @dataclass
@@ -75,11 +71,7 @@ class Bidder:
     personality: Dict[str, float]
     grudge_target: Optional[str] = None
     bid_count: int = 0
-    items_won: List[str] = None
-    
-    def __post_init__(self):
-        if self.items_won is None:
-            self.items_won = []
+    items_won: List[str] = field(default_factory=list)
 
 
 class AuctionSystem:
