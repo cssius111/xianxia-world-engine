@@ -4,7 +4,12 @@ OpenAPI 文档生成器
 """
 
 from flask_swagger_ui import get_swaggerui_blueprint
-from flask import jsonify
+from flask import Flask, jsonify
+
+from .v1 import game_bp, player_bp, save_bp, system_bp
+from .v1.dev import dev_bp
+from .middleware import register_middleware
+from .specs.openapi_generator import setup_swagger_ui as setup_openapi_ui
 
 # OpenAPI 规范主体结构
 openapi_spec = {
@@ -29,3 +34,38 @@ def setup_swagger_ui(app):
     )
     app.register_blueprint(swagger_ui, url_prefix='/api/docs')
     app.add_url_rule("/api/openapi.json", "openapi_json", openapi_json)
+
+
+def register_api(app: Flask, url_prefix: str = '/api'):
+    """注册所有API蓝图并配置文档"""
+    # 注册通用中间件
+    register_middleware(app)
+
+    v1_prefix = f"{url_prefix}/v1"
+
+    # 注册各模块蓝图
+    app.register_blueprint(game_bp, url_prefix=f"{v1_prefix}/game")
+    app.register_blueprint(player_bp, url_prefix=f"{v1_prefix}/player")
+    app.register_blueprint(save_bp, url_prefix=f"{v1_prefix}/save")
+    app.register_blueprint(system_bp, url_prefix=f"{v1_prefix}/system")
+
+    # 可选：开发调试API
+    try:
+        from xwe.config import config
+        if config.ENABLE_DEV_API:
+            app.register_blueprint(dev_bp, url_prefix=f"{v1_prefix}/dev")
+    except Exception:
+        pass
+
+    # 设置Swagger文档
+    try:
+        setup_openapi_ui(app)
+    except Exception:
+        setup_swagger_ui(app)
+
+    print(f"✅ API v1 已注册到: {v1_prefix}")
+
+    return app
+
+
+__all__ = ['register_api']
