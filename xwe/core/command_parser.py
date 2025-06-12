@@ -400,9 +400,9 @@ class CommandParser:
             "地图", "帮助"
         ]
         
-        for cmd in basic_commands:
-            if cmd.startswith(partial_text):
-                suggestions.append(cmd)
+        for cmd_str in basic_commands:
+            if cmd_str.startswith(partial_text):
+                suggestions.append(cmd_str)
         
         # 从历史中学习
         for cmd in self.command_history[-10:]:  # 最近10条
