@@ -86,21 +86,21 @@ class Area:
         """从字典创建"""
         area_type = AreaType(data.get('type', 'wilderness'))
         return cls(
-            id=data['id'],
+            id=str(data['id']),
             name=data['name'],
             type=area_type,
             description=data.get('description', ''),
-            parent_region=data.get('parent_region', ''),
+            parent_region=str(data.get('parent_region', '')),
             danger_level=data.get('danger_level', 1),
             min_level_requirement=data.get('min_level_requirement', 0),
             features=data.get('features', []),
             resources=data.get('resources', {}),
-            connected_areas=data.get('connected_areas', []),
+            connected_areas=[str(a) for a in data.get('connected_areas', [])],
             available_actions=data.get('available_actions', []),
             is_discovered=data.get('is_discovered', False),
             is_accessible=data.get('is_accessible', True),
-            npcs=data.get('npcs', []),
-            events=data.get('events', []),
+            npcs=[str(n) for n in data.get('npcs', [])],
+            events=[str(e) for e in data.get('events', [])],
             extra_data=data.get('extra_data', {})
         )
 
@@ -128,11 +128,11 @@ class Region:
     def from_dict(cls, data: Dict[str, Any]) -> 'Region':
         """从字典创建"""
         return cls(
-            id=data['id'],
+            id=str(data['id']),
             name=data['name'],
             description=data.get('description', ''),
             controlling_force=data.get('controlling_force', ''),
-            sub_areas=data.get('sub_areas', [])
+            sub_areas=[str(a) for a in data.get('sub_areas', [])]
         )
 
 
@@ -276,7 +276,7 @@ class WorldMap:
             return {}
         
         info: Dict[str, Any] = {
-            'id': area.id,
+            'id': str(area.id),
             'name': area.name,
             'type': area.type.value,
             'description': area.description if area.is_discovered else "未知区域",
@@ -307,7 +307,7 @@ class WorldMap:
         """获取所有大区域信息"""
         return [
             {
-                'id': region.id,
+                'id': str(region.id),
                 'name': region.name,
                 'description': region.description,
                 'controlling_force': region.controlling_force,
