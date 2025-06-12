@@ -6,7 +6,7 @@
 import json
 import hashlib
 from pathlib import Path
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 from jsonschema import validate, ValidationError
 import logging
 
