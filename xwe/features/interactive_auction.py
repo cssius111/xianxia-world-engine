@@ -6,19 +6,25 @@
 
 import time
 import random
-from typing import Optional, List, Dict, Any
+from typing import Optional, List, Dict, Any, Type, Any as AnyType
 from xwe.features.auction_system import AuctionSystem, AuctionItem, BidderType
+
+VEClass: Type[AnyType]
 try:
     from xwe.features.visual_enhancement import VisualEnhancement
 except Exception:  # pragma: no cover - fallback
     from xwe.features.visual_enhancement import visual_effects
 
-    class VisualEnhancement:
-        def __init__(self):
+    class _FallbackVisualEnhancement:
+        def __init__(self) -> None:
             self._effects = visual_effects
 
         def get_colored_text(self, text: str, color: str) -> str:
             return self._effects.text_renderer.colorize(text, color.lower())
+
+    VEClass = _FallbackVisualEnhancement
+else:
+    VEClass = VisualEnhancement
 
 
 class InteractiveAuction:
@@ -26,7 +32,7 @@ class InteractiveAuction:
     
     def __init__(self, auction_system: AuctionSystem):
         self.auction_system = auction_system
-        self.visual = VisualEnhancement()
+        self.visual = VEClass()
         self.current_item = None
         self.bidding_active = False
         self.countdown_active = False

@@ -12,23 +12,29 @@
 import json
 import random
 import time
-from typing import Dict, List, Optional, Tuple, Any
+from typing import Dict, List, Optional, Tuple, Any, Type, Any as AnyType
 from pathlib import Path
 from enum import Enum
 from dataclasses import dataclass, field
 
 from xwe.core.data_loader import DataLoader
+
+VEClass: Type[AnyType]
 try:
     from xwe.features.visual_enhancement import VisualEnhancement
 except Exception:  # pragma: no cover - fallback
     from xwe.features.visual_enhancement import visual_effects
 
-    class VisualEnhancement:
-        def __init__(self):
+    class _FallbackVisualEnhancement:
+        def __init__(self) -> None:
             self._effects = visual_effects
 
         def get_colored_text(self, text: str, color: str) -> str:
             return self._effects.text_renderer.colorize(text, color.lower())
+
+    VEClass = _FallbackVisualEnhancement
+else:
+    VEClass = VisualEnhancement
 
 
 class AuctionMode(Enum):
@@ -80,7 +86,7 @@ class AuctionSystem:
     def __init__(self):
         """初始化拍卖系统"""
         self.data_loader = DataLoader()
-        self.visual = VisualEnhancement()
+        self.visual = VEClass()
         
         # 加载配置数据
         self._load_auction_data()
