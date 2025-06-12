@@ -1002,7 +1002,7 @@ class GameCore:
                     self._start_combat("低阶妖兽")
                     return
         
-        if not Any([result['discovered_features'], result['found_items'], 
+        if not any([result['discovered_features'], result['found_items'], 
                    result['found_npcs'], result['triggered_events']]):
             self.output("你没有发现什么特别的东西。")
     

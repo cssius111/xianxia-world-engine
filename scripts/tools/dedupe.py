@@ -41,7 +41,7 @@ def find_duplicate_files(root_dir: Path) -> Dict[str, List[Path]]:
         root_path = Path(root)
         for file in files:
             # 检查是否匹配任何模式
-            if Any(Path(file).match(pattern) for pattern in CHECK_PATTERNS):
+            if any(Path(file).match(pattern) for pattern in CHECK_PATTERNS):
                 filepath = root_path / file
                 try:
                     file_hash = calculate_file_hash(filepath)

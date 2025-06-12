@@ -642,13 +642,13 @@ def enhance_with_ai_features(game_core):
         # 记录玩家行为
         # 简单解析命令类型
         action_type = "unknown"
-        if Any(word in input_text for word in ["攻击", "打", "杀"]):
+        if any(word in input_text for word in ["攻击", "打", "杀"]):
             action_type = "attack"
-        elif Any(word in input_text for word in ["探索", "查看", "搜索"]):
+        elif any(word in input_text for word in ["探索", "查看", "搜索"]):
             action_type = "explore"
-        elif Any(word in input_text for word in ["说话", "对话", "交谈"]):
+        elif any(word in input_text for word in ["说话", "对话", "交谈"]):
             action_type = "talk"
-        elif Any(word in input_text for word in ["修炼", "打坐", "冥想"]):
+        elif any(word in input_text for word in ["修炼", "打坐", "冥想"]):
             action_type = "cultivate"
         
         personalization_engine.record_player_action(
