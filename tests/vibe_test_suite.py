@@ -99,7 +99,7 @@ class VibeTester:
                     all_pass = False
             
             results['command_parsing'] = all_pass
-            results['duration_extraction'] = any(
+            results['duration_extraction'] = Any(
                 'duration' in nlp.parse(text).parameters 
                 for text in ["修炼一年", "修炼3个月"]
             )
@@ -173,7 +173,7 @@ class VibeTester:
                 with open(env_example, 'r') as f:
                     content = f.read()
                     results['deepseek_configured'] = 'DEEPSEEK_API_KEY' in content
-                    results['api_key_present'] = not any(
+                    results['api_key_present'] = not Any(
                         placeholder in content 
                         for placeholder in ['your_key_here', 'your_deepseek_api_key_here']
                     )

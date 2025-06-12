@@ -34,15 +34,15 @@ class SafeNLPWrapper:
         text_lower = text.lower()
         
         # 基础规则匹配
-        if any(word in text_lower for word in ['攻击', '打', '杀']):
+        if Any(word in text_lower for word in ['攻击', '打', '杀']):
             return {"action": "attack", "target": "敌人", "confidence": 0.5}
-        elif any(word in text_lower for word in ['修炼', '打坐', '冥想']):
+        elif Any(word in text_lower for word in ['修炼', '打坐', '冥想']):
             return {"action": "cultivate", "confidence": 0.6}
-        elif any(word in text_lower for word in ['状态', '属性', '面板']):
+        elif Any(word in text_lower for word in ['状态', '属性', '面板']):
             return {"action": "status", "confidence": 0.7}
-        elif any(word in text_lower for word in ['逃', '跑', '撤退']):
+        elif Any(word in text_lower for word in ['逃', '跑', '撤退']):
             return {"action": "flee", "confidence": 0.6}
-        elif any(word in text_lower for word in ['地图', '位置', '哪里']):
+        elif Any(word in text_lower for word in ['地图', '位置', '哪里']):
             return {"action": "map", "confidence": 0.6}
         else:
             return {"action": "unknown", "detail": f"无法理解: {text}", "confidence": 0.0}

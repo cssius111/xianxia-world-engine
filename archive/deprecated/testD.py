@@ -1,5 +1,5 @@
 import os
-import requestsNotDeepSeek
+import requests  # type: ignore[import-untyped]NotDeepSeek
 import json
 
 api_key = os.getenv("DEEPSEEK_API_KEY")

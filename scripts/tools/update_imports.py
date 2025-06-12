@@ -8,7 +8,7 @@ import re
 import sys
 import os
 from pathlib import Path
-from typing import List, Tuple
+from typing import List, Tuple, Any
 
 # 需要替换的文件扩展名
 TEXT_EXTENSIONS = {'.py', '.md', '.sh', '.txt', '.json', '.yml', '.yaml', '.rst', '.cfg', '.ini'}

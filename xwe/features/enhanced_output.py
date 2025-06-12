@@ -1,7 +1,7 @@
 """
 增强的游戏输出处理器，支持将多行相关内容组合显示
 """
-from typing import List, Tuple, Optional
+from typing import List, Tuple, Optional, Any
 import re
 
 

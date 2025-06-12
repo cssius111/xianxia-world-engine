@@ -219,7 +219,7 @@ class AuctionSystem:
     
     def _generate_auction_items(self, auction_type: str) -> List[AuctionItem]:
         """生成拍卖物品列表"""
-        items = []
+        items: List[Any] = []
         auction_config = self.config['auction_types'].get(auction_type, self.config['auction_types']['regular'])
         item_count = auction_config['item_count']
         tier_dist = auction_config['tier_distribution']

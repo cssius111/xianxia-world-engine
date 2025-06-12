@@ -19,7 +19,7 @@ class NPCSystemV3:
     """
     
     def __init__(self):
-        self.npc_data = None
+        self.npc_data = {}
         self.npcs = {}  # {npc_id: NPC instance}
         self.dialogue_states = {}  # {player_id: {npc_id: dialogue_state}}
         self.relationships = {}  # {player_id: {npc_id: relationship_value}}

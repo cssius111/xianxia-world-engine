@@ -2,6 +2,7 @@
 """完整的修复和验证脚本 - 一键修复所有问题"""
 
 import os
+from typing import Any
 import sys
 import json
 
@@ -119,7 +120,7 @@ try:
     for cmd, expected_text in test_commands:
         game.process_command(cmd)
         output = game.get_output()
-        if any(expected_text in line for line in output):
+        if Any(expected_text in line for line in output):
             print(f"  ✓ {cmd} 命令正常")
         else:
             print(f"  ❌ {cmd} 命令异常")
@@ -136,7 +137,7 @@ try:
     for test_input in nlp_tests:
         game.process_command(test_input)
         output = game.get_output()
-        if output and not any("不太明白" in line for line in output):
+        if output and not Any("不太明白" in line for line in output):
             print(f"  ✓ \"{test_input}\" 理解正确")
         else:
             print(f"  ⚠️  \"{test_input}\" 可能未正确理解")

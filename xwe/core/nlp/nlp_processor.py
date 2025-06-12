@@ -5,7 +5,7 @@ NLP处理器 - 修复JSON解析问题
 import os
 import json
 import re
-import requests
+import requests  # type: ignore[import-untyped]
 import logging
 from typing import Dict, Any, Optional
 from dataclasses import dataclass
@@ -234,7 +234,7 @@ Don't hold back. Give it your all. Be confident and concise."""
         }
         
         for keywords, (cmd_type, confidence) in keyword_map.items():
-            if any(kw in response_lower for kw in keywords):
+            if Any(kw in response_lower for kw in keywords):
                 params = {}
                 
                 # 尝试提取参数
@@ -287,7 +287,7 @@ Don't hold back. Give it your all. Be confident and concise."""
         text_lower = text.lower()
         
         # 修炼相关
-        if any(w in text_lower for w in ["修炼", "修行", "打坐", "练功", "闭关"]):
+        if Any(w in text_lower for w in ["修炼", "修行", "打坐", "练功", "闭关"]):
             # 提取时长
             params = {}
             duration = self._extract_duration(text)
@@ -302,7 +302,7 @@ Don't hold back. Give it your all. Be confident and concise."""
             )
         
         # 攻击相关
-        elif any(w in text_lower for w in ["攻击", "打", "杀", "揍", "轰", "砍", "斩"]):
+        elif Any(w in text_lower for w in ["攻击", "打", "杀", "揍", "轰", "砍", "斩"]):
             # 提取目标
             target = None
             if "妖兽" in text:
@@ -320,8 +320,8 @@ Don't hold back. Give it your all. Be confident and concise."""
             )
         
         # 使用技能
-        elif any(w in text_lower for w in ["剑气斩", "火球术", "技能"]) or \
-             ("用" in text_lower and any(w in text_lower for w in ["斩", "术", "技"])):
+        elif Any(w in text_lower for w in ["剑气斩", "火球术", "技能"]) or \
+             ("用" in text_lower and Any(w in text_lower for w in ["斩", "术", "技"])):
             # 识别技能名
             skill = None
             if "剑气斩" in text_lower:
@@ -338,7 +338,7 @@ Don't hold back. Give it your all. Be confident and concise."""
             )
         
         # 状态查看
-        elif any(w in text_lower for w in ["状态", "属性", "面板", "查看", "我的", "角色"]):
+        elif Any(w in text_lower for w in ["状态", "属性", "面板", "查看", "我的", "角色"]):
             return ParsedCommand(
                 command_type=CommandType.STATUS,
                 raw_text=text,
@@ -346,7 +346,7 @@ Don't hold back. Give it your all. Be confident and concise."""
             )
         
         # 移动
-        elif any(w in text_lower for w in ["去", "走", "前往", "移动", "回"]):
+        elif Any(w in text_lower for w in ["去", "走", "前往", "移动", "回"]):
             # 提取地点
             location = None
             if "坊市" in text:
@@ -364,7 +364,7 @@ Don't hold back. Give it your all. Be confident and concise."""
             )
         
         # 对话
-        elif any(w in text_lower for w in ["聊", "说话", "对话", "交谈", "找"]):
+        elif Any(w in text_lower for w in ["聊", "说话", "对话", "交谈", "找"]):
             # 提取NPC
             npc = None
             if "王老板" in text:
@@ -381,7 +381,7 @@ Don't hold back. Give it your all. Be confident and concise."""
             )
         
         # 探索
-        elif any(w in text_lower for w in ["探索", "搜索", "查看周围", "看看", "逛逛"]):
+        elif Any(w in text_lower for w in ["探索", "搜索", "查看周围", "看看", "逛逛"]):
             return ParsedCommand(
                 command_type=getattr(CommandType, 'EXPLORE', CommandType.UNKNOWN),
                 raw_text=text,
@@ -389,7 +389,7 @@ Don't hold back. Give it your all. Be confident and concise."""
             )
         
         # 背包物品
-        elif any(w in text_lower for w in ["背包", "物品", "装备", "道具"]):
+        elif Any(w in text_lower for w in ["背包", "物品", "装备", "道具"]):
             return ParsedCommand(
                 command_type=CommandType.INVENTORY,
                 raw_text=text,
@@ -397,7 +397,7 @@ Don't hold back. Give it your all. Be confident and concise."""
             )
         
         # 地图
-        elif any(w in text_lower for w in ["地图", "位置", "在哪", "哪里"]):
+        elif Any(w in text_lower for w in ["地图", "位置", "在哪", "哪里"]):
             return ParsedCommand(
                 command_type=CommandType.MAP,
                 raw_text=text,
@@ -405,7 +405,7 @@ Don't hold back. Give it your all. Be confident and concise."""
             )
         
         # 生活类动作（吃饭、睡觉等）
-        elif any(w in text_lower for w in ["吃", "喝", "睡", "休息"]):
+        elif Any(w in text_lower for w in ["吃", "喝", "睡", "休息"]):
             # 转换为修炼命令（游戏中休息等同于修炼恢复）
             return ParsedCommand(
                 command_type=getattr(CommandType, 'CULTIVATE', CommandType.UNKNOWN),
@@ -415,7 +415,7 @@ Don't hold back. Give it your all. Be confident and concise."""
             )
         
         # 帮助
-        elif any(w in text_lower for w in ["帮助", "命令", "怎么", "help", "?"]):
+        elif Any(w in text_lower for w in ["帮助", "命令", "怎么", "help", "?"]):
             return ParsedCommand(
                 command_type=CommandType.HELP,
                 raw_text=text,
@@ -423,7 +423,7 @@ Don't hold back. Give it your all. Be confident and concise."""
             )
         
         # 退出
-        elif any(w in text_lower for w in ["退出", "离开", "再见", "拜拜", "quit", "exit"]):
+        elif Any(w in text_lower for w in ["退出", "离开", "再见", "拜拜", "quit", "exit"]):
             return ParsedCommand(
                 command_type=CommandType.QUIT,
                 raw_text=text,
@@ -431,7 +431,7 @@ Don't hold back. Give it your all. Be confident and concise."""
             )
         
         # 突破（如果存在）
-        elif any(w in text_lower for w in ["突破", "进阶", "升级"]):
+        elif Any(w in text_lower for w in ["突破", "进阶", "升级"]):
             return ParsedCommand(
                 command_type=getattr(CommandType, 'BREAKTHROUGH', CommandType.UNKNOWN),
                 raw_text=text,
@@ -450,17 +450,17 @@ Don't hold back. Give it your all. Be confident and concise."""
         text_lower = text.lower()
         
         # 基于输入给出相关建议
-        if any(w in text_lower for w in ["修", "炼", "练"]):
+        if Any(w in text_lower for w in ["修", "炼", "练"]):
             suggestions.extend(["修炼1天", "修炼1年", "闭关修炼"])
-        elif any(w in text_lower for w in ["攻", "打", "战", "斗"]):
+        elif Any(w in text_lower for w in ["攻", "打", "战", "斗"]):
             suggestions.extend(["攻击敌人", "使用剑气斩", "防御"])
-        elif any(w in text_lower for w in ["去", "走", "移"]):
+        elif Any(w in text_lower for w in ["去", "走", "移"]):
             suggestions.extend(["去天南坊市", "去野外", "探索周围"])
-        elif any(w in text_lower for w in ["聊", "说", "话"]):
+        elif Any(w in text_lower for w in ["聊", "说", "话"]):
             suggestions.extend(["和王老板聊天", "和李太虚对话"])
-        elif any(w in text_lower for w in ["看", "查"]):
+        elif Any(w in text_lower for w in ["看", "查"]):
             suggestions.extend(["查看状态", "查看地图", "查看背包", "查看技能"])
-        elif any(w in text_lower for w in ["吃", "喝", "休"]):
+        elif Any(w in text_lower for w in ["吃", "喝", "休"]):
             suggestions.extend(["休息恢复", "修炼恢复体力", "使用丹药"])
         
         # 默认建议

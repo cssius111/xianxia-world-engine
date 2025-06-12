@@ -192,7 +192,7 @@ class DialogueGenerator:
         
         text_lower = text.lower()
         for topic, keywords in topic_keywords.items():
-            if any(keyword in text_lower for keyword in keywords):
+            if Any(keyword in text_lower for keyword in keywords):
                 return topic
         
         return intent
@@ -470,7 +470,7 @@ class EnhancedDialogueSystem:
         }
         
         for intent, keywords in intent_keywords.items():
-            if any(keyword in text_lower for keyword in keywords):
+            if Any(keyword in text_lower for keyword in keywords):
                 return intent
         
         return None
@@ -496,7 +496,7 @@ class EnhancedDialogueSystem:
             intent_keywords = self.intent_to_dialogue[intent]
             for choice in choices:
                 choice_lower = choice.id.lower()
-                if any(keyword in choice_lower for keyword in intent_keywords):
+                if Any(keyword in choice_lower for keyword in intent_keywords):
                     return choice.id
         
         # 基于文本相似度匹配
@@ -558,7 +558,7 @@ class EnhancedDialogueSystem:
         triggered = None
         
         for trigger, keywords in triggers.items():
-            if any(keyword in input_lower for keyword in keywords):
+            if Any(keyword in input_lower for keyword in keywords):
                 triggered = trigger
                 break
         

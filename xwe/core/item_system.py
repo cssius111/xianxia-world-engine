@@ -2,7 +2,7 @@
 物品系统 - 管理游戏中的物品、背包、交易等
 """
 
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Any
 from dataclasses import dataclass, field
 
 

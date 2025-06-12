@@ -5,6 +5,7 @@ NLP系统自检脚本
 """
 
 import sys
+from typing import Any
 from pathlib import Path
 
 # 添加项目路径
@@ -93,7 +94,7 @@ def test_compatibility():
             warnings.simplefilter("always")
             result = nlp.parse("测试兼容性")
             
-            if w and any("process" in str(warning.message) for warning in w):
+            if w and Any("process" in str(warning.message) for warning in w):
                 print("✅ process()方法显示废弃警告（正常）")
             else:
                 print("⚠️ process()方法没有显示废弃警告")

@@ -5,6 +5,7 @@ Fixes the duration extraction for cultivate commands
 """
 
 import os
+from typing import Any
 import re
 import sys
 from pathlib import Path
@@ -30,7 +31,7 @@ def apply_nlp_duration_fix():
         content = f.read()
     
     # Find the cultivate section in _fuzzy_parse
-    pattern = r'(# 修炼相关\s*if any\(w in text_lower for w in \["修炼", "修行", "打坐", "练功", "闭关"\]\):)(.*?)(return ParsedCommand\(.*?\))'
+    pattern = r'(# 修炼相关\s*if Any\(w in text_lower for w in \["修炼", "修行", "打坐", "练功", "闭关"\]\):)(.*?)(return ParsedCommand\(.*?\))'
     
     def create_fixed_cultivate_section(match):
         prefix = match.group(1)

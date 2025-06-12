@@ -6,7 +6,7 @@
 """
 
 import logging
-from typing import Dict, List, Optional, Tuple, Set
+from typing import Dict, List, Optional, Tuple, Set, Any
 from dataclasses import dataclass
 import random
 
@@ -198,7 +198,7 @@ class LocationManager:
         self.set_location(entity_id, target_area_id)
         return True
     
-    def get_nearby_areas(self, entity_id: str) -> List[Dict[str, any]]:
+    def get_nearby_areas(self, entity_id: str) -> List[Dict[str, Any]]:
         """
         获取实体附近的区域信息
         
@@ -236,7 +236,7 @@ class LocationManager:
         
         return nearby
     
-    def explore_area(self, entity_id: str) -> Dict[str, any]:
+    def explore_area(self, entity_id: str) -> Dict[str, Any]:
         """
         探索当前区域
         

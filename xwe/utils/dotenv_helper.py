@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Any
 
 def load_dotenv(dotenv_path: Optional[str] = None) -> None:
     """Load environment variables from a .env file.

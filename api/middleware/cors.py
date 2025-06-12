@@ -1,5 +1,5 @@
 from flask import make_response, request
-from typing import Optional
+from typing import Optional, Any
 
 def setup_cors(app,
                origins: Optional[str] = None,

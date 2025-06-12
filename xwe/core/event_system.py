@@ -20,7 +20,7 @@ class EventSystemV3:
     """
     
     def __init__(self):
-        self.event_data = None
+        self.event_data = {}
         self.active_events = {}
         self.event_history = []
         self.event_handlers = {}
@@ -168,7 +168,7 @@ class EventSystemV3:
     
     def _has_completed_event(self, event_id: str) -> bool:
         """检查是否已完成某个事件"""
-        return any(e.get("id") == event_id and e.get("completed", False) 
+        return Any(e.get("id") == event_id and e.get("completed", False) 
                   for e in self.event_history)
     
     def _get_last_trigger_time(self, event_id: str) -> Optional[datetime]:

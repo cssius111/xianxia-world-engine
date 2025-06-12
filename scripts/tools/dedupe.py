@@ -11,7 +11,7 @@ import shutil
 import sys
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Any
 
 # 忽略的目录
 IGNORE_DIRS = {'.git', 'venv', '__pycache__', 'delete', '.pytest_cache', 'node_modules'}
@@ -41,7 +41,7 @@ def find_duplicate_files(root_dir: Path) -> Dict[str, List[Path]]:
         root_path = Path(root)
         for file in files:
             # 检查是否匹配任何模式
-            if any(Path(file).match(pattern) for pattern in CHECK_PATTERNS):
+            if Any(Path(file).match(pattern) for pattern in CHECK_PATTERNS):
                 filepath = root_path / file
                 try:
                     file_hash = calculate_file_hash(filepath)
@@ -62,7 +62,7 @@ def get_file_info(filepath: Path) -> Tuple[float, str]:
     return stat.st_mtime, f"{stat.st_size:,} bytes"
 
 
-def process_duplicates(duplicates: Dict[str, List[Path]], apply: bool = False) -> Dict[str, any]:
+def process_duplicates(duplicates: Dict[str, List[Path]], apply: bool = False) -> Dict[str, Any]:
     """处理重复文件，返回操作统计"""
     stats = {
         'groups': 0,

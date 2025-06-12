@@ -5,7 +5,7 @@
 处理商店、交易、讨价还价等相关命令。
 """
 
-from typing import Dict, Optional, List, Tuple
+from typing import Dict, Optional, List, Tuple, Any
 import logging
 from .trade_system import TradeSystem, Shopkeeper, MarketStall, BlackMarket
 from .character import Character

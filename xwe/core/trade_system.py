@@ -6,7 +6,7 @@
 支持灵石货币系统（下品、中品、上品、极品）。
 """
 
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple, Any
 from random import uniform, random
 from dataclasses import dataclass
 import json

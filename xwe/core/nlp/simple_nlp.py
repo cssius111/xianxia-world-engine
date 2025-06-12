@@ -4,6 +4,7 @@
 """
 
 from xwe.core.command_parser import ParsedCommand, CommandType
+from typing import Any
 
 class SimpleNLPProcessor:
     """最简单的NLP处理器实现"""
@@ -13,7 +14,7 @@ class SimpleNLPProcessor:
         text_lower = text.lower()
         
         # 攻击相关
-        if any(word in text_lower for word in ['攻击', '打', '揍', '杀']):
+        if Any(word in text_lower for word in ['攻击', '打', '揍', '杀']):
             return ParsedCommand(
                 command_type=CommandType.ATTACK,
                 target="敌人",
@@ -22,7 +23,7 @@ class SimpleNLPProcessor:
             )
         
         # 修炼相关
-        elif any(word in text_lower for word in ['修炼', '打坐', '冥想']):
+        elif Any(word in text_lower for word in ['修炼', '打坐', '冥想']):
             return ParsedCommand(
                 command_type=CommandType.CULTIVATE,
                 raw_text=text,
@@ -30,7 +31,7 @@ class SimpleNLPProcessor:
             )
         
         # 状态查看
-        elif any(word in text_lower for word in ['状态', '属性', '面板']):
+        elif Any(word in text_lower for word in ['状态', '属性', '面板']):
             return ParsedCommand(
                 command_type=CommandType.STATUS,
                 raw_text=text,
@@ -39,7 +40,7 @@ class SimpleNLPProcessor:
         
         # 技能相关
         elif '技能' in text_lower:
-            if any(word in text_lower for word in ['使用', '施放', '释放']):
+            if Any(word in text_lower for word in ['使用', '施放', '释放']):
                 # 提取技能名
                 skill_name = self._extract_skill_name(text)
                 return ParsedCommand(
@@ -56,7 +57,7 @@ class SimpleNLPProcessor:
                 )
         
         # 逃跑
-        elif any(word in text_lower for word in ['逃', '跑', '撤退']):
+        elif Any(word in text_lower for word in ['逃', '跑', '撤退']):
             return ParsedCommand(
                 command_type=CommandType.FLEE,
                 raw_text=text,
@@ -64,7 +65,7 @@ class SimpleNLPProcessor:
             )
         
         # 地图
-        elif any(word in text_lower for word in ['地图', '位置', '哪里']):
+        elif Any(word in text_lower for word in ['地图', '位置', '哪里']):
             return ParsedCommand(
                 command_type=CommandType.MAP,
                 raw_text=text,
@@ -72,7 +73,7 @@ class SimpleNLPProcessor:
             )
         
         # 移动
-        elif any(word in text_lower for word in ['去', '前往', '走到']):
+        elif Any(word in text_lower for word in ['去', '前往', '走到']):
             location = self._extract_location(text)
             return ParsedCommand(
                 command_type=CommandType.MOVE,

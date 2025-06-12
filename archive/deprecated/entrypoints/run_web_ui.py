@@ -1,4 +1,5 @@
 import threading
+from typing import List, Dict, Any, Optional
 import webbrowser
 from flask import Flask, render_template, request, jsonify
 
@@ -13,7 +14,7 @@ game = GameCore()
 game.start_new_game()
 
 # 存储日志
-logs = []
+logs: List[Any] = []
 # 是否需要刷新前端
 state_changed = True
 

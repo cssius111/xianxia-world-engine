@@ -612,7 +612,7 @@ def main():
     
     optimizer = CodeQualityOptimizer(args.project_path)
     
-    if args.check or not any([args.fix_basic, args.todo_analysis, args.full_report]):
+    if args.check or not Any([args.fix_basic, args.todo_analysis, args.full_report]):
         # 默认执行检查
         print("🚀 执行代码质量检查...\n")
         analysis = optimizer.analyze_project()

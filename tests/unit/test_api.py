@@ -3,7 +3,7 @@ API测试脚本
 用于测试新实现的RESTful API
 """
 
-import requests
+import requests  # type: ignore[import-untyped]
 import json
 import time
 from typing import Dict, Any
@@ -211,7 +211,7 @@ def test_error_handling():
     
     # 测试无效的请求数据
     tester.test_endpoint('POST', '/game/command', 
-                        data={},  # 缺少required字段
+                        data: Dict[str, Any] = {},  # 缺少required字段
                         expected_status=400)
     
     # 测试无效的命令

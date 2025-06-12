@@ -234,7 +234,7 @@ class StatusEffectManager:
     
     def has_control_effect(self) -> bool:
         """是否有控制效果"""
-        return any(e.is_control_effect() for e in self.effects)
+        return Any(e.is_control_effect() for e in self.effects)
     
     def update(self):
         """更新所有效果（每回合调用）"""

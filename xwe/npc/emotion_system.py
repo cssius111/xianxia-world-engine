@@ -6,7 +6,7 @@ NPC情感系统
 """
 
 import logging
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple, Any
 from dataclasses import dataclass, field
 from enum import Enum
 import random
@@ -319,7 +319,7 @@ class EmotionSystem:
                     f"(强度: {intensity}, 原因: {reason})")
     
     def react_to_event(self, npc_id: str, event_type: str, 
-                      event_data: Dict[str, any]) -> Optional[EmotionType]:
+                      event_data: Dict[str, Any]) -> Optional[EmotionType]:
         """
         对事件做出情绪反应
         

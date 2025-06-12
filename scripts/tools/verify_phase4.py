@@ -6,7 +6,7 @@
 
 import sys
 import importlib
-import requests
+import requests  # type: ignore[import-untyped]
 import json
 from pathlib import Path
 

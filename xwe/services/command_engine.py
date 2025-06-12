@@ -325,7 +325,7 @@ class CommandEngine(ServiceBase[ICommandEngine], ICommandEngine):
         
     def get_all_commands(self) -> List[str]:
         """获取所有命令"""
-        commands = []
+        commands: List[Any] = []
         
         for handler in self._handlers:
             commands.extend(handler.commands)

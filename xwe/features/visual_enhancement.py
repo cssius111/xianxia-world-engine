@@ -8,7 +8,7 @@
 import time
 import sys
 import random
-from typing import List, Dict, Optional, Callable
+from typing import List, Dict, Optional, Callable, Any
 from enum import Enum
 
 class Color:

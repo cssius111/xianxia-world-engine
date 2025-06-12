@@ -8,7 +8,7 @@
 import re
 from enum import Enum, auto
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import List, Optional, Any
 
 from .exceptions import TokenizationError
 
@@ -36,7 +36,7 @@ class Token:
         position: 在原始表达式中的位置
     """
     type: TokenType
-    value: any
+    value: Any
     position: int
 
     def __repr__(self) -> str:

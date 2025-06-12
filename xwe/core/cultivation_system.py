@@ -20,7 +20,7 @@ class CultivationSystem:
     """
     
     def __init__(self):
-        self.realm_data = None
+        self.realm_data = {}
         self.formula_engine = formula_engine
         self._load_cultivation_data()
     

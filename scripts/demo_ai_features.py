@@ -6,7 +6,7 @@ AI功能演示脚本
 
 import asyncio
 import os
-from typing import Dict
+from typing import Dict, Any
 import sys
 from pathlib import Path
 

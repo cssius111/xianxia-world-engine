@@ -6,7 +6,7 @@
 
 import time
 import random
-from typing import Optional, List, Dict
+from typing import Optional, List, Dict, Any
 from xwe.features.auction_system import AuctionSystem, AuctionItem, BidderType
 try:
     from xwe.features.visual_enhancement import VisualEnhancement

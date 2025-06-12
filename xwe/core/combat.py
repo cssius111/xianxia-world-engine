@@ -74,8 +74,8 @@ class CombatSystemV3:
     ActionType = ActionType
 
     def __init__(self):
-        self.combat_data = None
-        self.element_data = None
+        self.combat_data = {}
+        self.element_data = {}
         self.active_combats = {}
         self._load_combat_data()
     
