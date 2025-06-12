@@ -339,7 +339,7 @@ class AIController:
             
             # 基于技能的威胁
             enemy_skills = self.skill_system.get_available_skills(enemy)
-            if Any(s.skill_type.value in ['control', 'debuff'] for s in enemy_skills):
+            if any(s.skill_type.value in ['control', 'debuff'] for s in enemy_skills):
                 threat_value *= 1.5
                 reasons.append("拥有控制技能")
             
@@ -406,7 +406,7 @@ class AIController:
             
         elif strategy == "support_first":
             # 优先攻击治疗/辅助职业
-            healers = [e for e in enemies if Any(
+            healers = [e for e in enemies if any(
                 s.skill_type.value in ['heal', 'buff'] 
                 for s in self.skill_system.get_character_skills(e)
             )]
@@ -699,7 +699,7 @@ class AIController:
         """检查是否有大招可用"""
         # 简单地检查是否有高消耗技能可用
         skills = context['available_skills']
-        return Any(s.mana_cost >= 50 for s in skills)
+        return any(s.mana_cost >= 50 for s in skills)
     
     def _need_healing(self, context: Dict[str, Any]) -> bool:
         """检查是否需要治疗"""

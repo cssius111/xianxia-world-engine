@@ -55,6 +55,9 @@ class CombatService(ServiceBase[ICombatService], ICombatService):
 
         self._combat_log: List[str] = []
 
+        self._combat_log: List[Dict[str, Any]] = []
+
+
         
     def start_combat(self, enemy_data: Dict[str, Any]) -> bool:
         """开始战斗"""

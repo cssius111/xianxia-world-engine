@@ -234,14 +234,14 @@ class ProjectVerifier:
         
         # 建议
         print("\n【建议】")
-        if Any("Roll系统" in error for error in self.errors):
+        if any("Roll系统" in error for error in self.errors):
             print("- Roll系统有问题，请检查 xwe/core/roll_system/ 目录")
         
-        if Any("mock" in warning for warning in self.warnings):
+        if any("mock" in warning for warning in self.warnings):
             print("- NLP系统使用mock模式，建议集成真实的LLM API")
             print("  可以设置环境变量或修改配置文件来启用")
         
-        if Any("测试文件缺失" in warning for warning in self.warnings):
+        if any("测试文件缺失" in warning for warning in self.warnings):
             print("- 部分测试文件缺失，建议补充单元测试")
         
         # 运行建议
