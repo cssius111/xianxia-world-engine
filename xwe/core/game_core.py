@@ -7,6 +7,7 @@
 
 import logging
 from typing import Dict, Any, Optional, List
+from pathlib import Path
 from dataclasses import dataclass, field
 import json
 import os
@@ -83,7 +84,7 @@ class GameCore:
     管理所有游戏系统和主循环。
     """
     
-    def __init__(self, data_path: Optional[str] = None):
+    def __init__(self, data_path: str | Path | None = None):
         """
         初始化游戏核心
         

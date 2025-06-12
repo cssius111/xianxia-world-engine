@@ -4,6 +4,7 @@
 
 import os
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Optional, Any
 
 
@@ -31,7 +32,7 @@ class GameConfig:
     auto_save_interval: int = 300  # 秒
     
     # 路径设置
-    data_path: str = "xwe/data"
+    data_path: str | Path | None = "xwe/data"
     save_path: str = "saves"
     log_path: str = "logs"
     
@@ -41,6 +42,12 @@ class GameConfig:
         if not self.deepseek_api_key:
             self.deepseek_api_key = os.getenv('DEEPSEEK_API_KEY', '')
         
+        # 将数据路径转换为 Path
+        if self.data_path is not None:
+            self.data_path = Path(self.data_path)
+            if not self.data_path.exists():
+                os.makedirs(self.data_path, exist_ok=True)
+
         # 确保路径存在
         for path_attr in ['save_path', 'log_path']:
             path = getattr(self, path_attr)

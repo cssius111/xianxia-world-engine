@@ -7,7 +7,7 @@
 
 import json
 import os
-from typing import Dict, Any, Optional
+from typing import Dict, Any
 from pathlib import Path
 import logging
 
@@ -21,7 +21,7 @@ class DataLoader:
     负责加载所有JSON配置文件并提供访问接口。
     """
     
-    def __init__(self, data_path: str = None):
+    def __init__(self, data_path: str | Path | None = None):
         """
         初始化数据加载器
         
@@ -32,7 +32,7 @@ class DataLoader:
             # 默认使用相对路径
             current_dir = Path(__file__).parent.parent
             data_path = current_dir / "data"
-        
+
         self.data_path = Path(data_path)
         self.cache: Dict[str, Any] = {}
         
