@@ -4,7 +4,7 @@
 """
 
 from abc import ABC, abstractmethod
-from typing import Optional, Dict, Any, List
+from typing import Optional, Dict, Any, List, Set
 import random
 
 from . import ServiceBase, ServiceContainer
@@ -54,9 +54,9 @@ class WorldService(ServiceBase[IWorldService], IWorldService):
     
     def __init__(self, container: ServiceContainer):
         super().__init__(container)
-        self._locations = {}
-        self._connections = {}
-        self._discovered_locations = set()
+        self._locations: Dict[str, Dict[str, Any]] = {}
+        self._connections: Dict[str, List[str]] = {}
+        self._discovered_locations: Set[str] = set()
         
     def _do_initialize(self) -> None:
         """初始化服务"""

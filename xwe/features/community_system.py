@@ -484,7 +484,7 @@ class PlayerDataAnalytics:
         self.data_dir = data_dir
         os.makedirs(data_dir, exist_ok=True)
         
-        self.session_data = {}
+        self.session_data: Dict[str, Dict[str, Any]] = {}
         self.aggregate_data = {
             "daily_active_users": set(),
             "total_play_time": 0,

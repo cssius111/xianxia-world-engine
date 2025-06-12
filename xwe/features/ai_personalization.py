@@ -459,7 +459,7 @@ class DynamicNPCBehavior:
                           player_nearby: bool,
                           player_profile: Optional[PlayerProfile] = None) -> Dict[str, Any]:
         """生成NPC行动"""
-        actions = []
+        actions: List[Dict[str, Any]] = []
         
         if player_nearby and player_profile:
             # 检查是否应该接近玩家

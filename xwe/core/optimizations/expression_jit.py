@@ -220,7 +220,7 @@ class ExpressionBenchmark:
     
     def __init__(self, jit_compiler: ExpressionJITCompiler):
         self.jit = jit_compiler
-        self.results = {}
+        self.results: Dict[str, Dict[str, Any]] = {}
         
     def benchmark_expression(self, expr_id: str, expression: Dict, 
                            test_contexts: List[Dict], iterations: int = 10000) -> Dict:

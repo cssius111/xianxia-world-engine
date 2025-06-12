@@ -1,11 +1,14 @@
+from typing import List, Dict, Any
+
+
 class HtmlGameLogger:
     """简单的HTML日志和状态显示器"""
 
     def __init__(self, filepath: str = "game_log.html", refresh_interval: int = 2):
         self.filepath = filepath
         self.refresh_interval = refresh_interval
-        self.logs = []
-        self.status = {}
+        self.logs: List[str] = []
+        self.status: Dict[str, Any] = {}
         self._write_html()
 
     def update_status(self, player):

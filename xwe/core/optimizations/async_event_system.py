@@ -13,9 +13,9 @@ class AsyncEventHandler:
     def __init__(self, max_workers: int = 4):
         self.max_workers = max_workers
         self.event_queue = deque()
-        self.handlers = {}
+        self.handlers: Dict[str, Callable[[Dict[str, Any]], None]] = {}
         self.running = False
-        self.workers = []
+        self.workers: List[threading.Thread] = []
         self._lock = threading.Lock()
     
     def start(self):

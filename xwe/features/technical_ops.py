@@ -395,12 +395,12 @@ class ErrorHandler:
         self.crash_dir.mkdir(exist_ok=True)
         
         # 错误统计
-        self.error_counts = {}
-        self.last_errors = []
+        self.error_counts: Dict[str, int] = {}
+        self.last_errors: List[str] = []
         self.max_recent_errors = 100
         
         # 错误处理回调
-        self.error_callbacks = []
+        self.error_callbacks: List[Callable[[Exception], None]] = []
     
     def handle_error(self, 
                     error: Exception,
