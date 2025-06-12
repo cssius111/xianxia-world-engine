@@ -89,7 +89,7 @@ git clone <repository-url>
 cd xianxia_world_engine
 
 # 2. 安装依赖
-pip install -r requirements.txt  # 包含 jsonschema 等核心库
+pip install -r requirements.txt  # 包含 jsonschema 等核心库及 Web UI 依赖
 
 # 3. 配置API（可选，用于AI功能）
 cp .env.example .env  # 复制示例配置文件
