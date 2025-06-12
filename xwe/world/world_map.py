@@ -275,7 +275,7 @@ class WorldMap:
         if not area:
             return {}
         
-        info = {
+        info: Dict[str, Any] = {
             'id': area.id,
             'name': area.name,
             'type': area.type.value,

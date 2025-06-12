@@ -468,7 +468,7 @@ class ExpressionParser:
         """解析函数调用"""
         self._consume(TokenType.LPAREN, f"函数 '{func_name}' 后需要左括号 '('")
 
-        args = []
+        args: List[ASTNode] = []
 
         # 处理空参数列表
         if self._peek().type == TokenType.RPAREN:

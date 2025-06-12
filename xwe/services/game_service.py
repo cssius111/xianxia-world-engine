@@ -88,7 +88,11 @@ class GameService(ServiceBase[IGameService], IGameService):
         self._game_time = 0
         self._in_combat = False
         self._current_location = "天南镇"
+
+        self._logs: List[str] = []
+
         self._logs: List[Dict[str, Any]] = []
+
         self._events: List[Dict[str, Any]] = []
         self._event_bus = None
         self._player_service = None

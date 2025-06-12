@@ -494,11 +494,11 @@ class Combat:
         self.system = system
         self.combat_id = combat_id
         self.participants = {p.id: p for p in participants}
-        self.turn_order = []
+        self.turn_order: List[Any] = []
         self.current_turn = 0
         self.round = 1
         self.phase = CombatPhase.INITIALIZATION
-        self.combat_log = []
+        self.combat_log: List[Dict[str, Any]] = []
         self.state = CombatState(participants)
         
         # 初始化战斗
@@ -859,7 +859,7 @@ class Combat:
     def _check_combat_end(self) -> bool:
         """检查战斗是否结束"""
         # 统计各队存活人数
-        team_alive = {}
+        team_alive: Dict[int, int] = {}
         for participant in self.participants.values():
             if participant.health > 0:
                 team = getattr(participant, "team", 0)
@@ -929,9 +929,9 @@ class CombatState:
     
     def __init__(self, participants: List[Any]):
         self.participants = {p.id: p for p in participants}
-        self.damage_dealt = {}  # {attacker_id: {target_id: damage}}
-        self.healing_done = {}  # {healer_id: total_healing}
-        self.distances = {}  # {(id1, id2): distance}
+        self.damage_dealt: Dict[str, Dict[str, int]] = {}  # {attacker_id: {target_id: damage}}
+        self.healing_done: Dict[str, int] = {}  # {healer_id: total_healing}
+        self.distances: Dict[Tuple[str, str], float] = {}  # {(id1, id2): distance}
     
     def record_damage(self, attacker_id: str, target_id: str, damage: int):
         """记录伤害"""

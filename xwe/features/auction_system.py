@@ -164,7 +164,7 @@ class AuctionSystem:
         self.bidders = self._generate_bidders(player, len(items))
         
         # 开始拍卖流程
-        output = []
+        output: List[str] = []
         output.append(self.visual.get_colored_text(
             f"\n{'='*60}\n欢迎来到{self.config['name']}！\n{'='*60}\n",
             'YELLOW'
@@ -279,7 +279,7 @@ class AuctionSystem:
     
     def _auction_item(self, player, item: AuctionItem, item_num: int, total_items: int) -> List[str]:
         """拍卖单个物品"""
-        output = []
+        output: List[str] = []
         self.current_item = item
         item.current_bid = item.base_price
         
@@ -494,7 +494,7 @@ class AuctionSystem:
     
     def _handle_grudge_bidding(self, player, item: AuctionItem, player_bid: int) -> List[str]:
         """处理仇敌竞价"""
-        output = []
+        output: List[str] = []
         
         grudge_bidders = [b for b in self.bidders if b.type == BidderType.GRUDGE]
         if not grudge_bidders:

@@ -201,7 +201,7 @@ class DataManager:
         Returns:
             依赖检查结果，包含任何缺失的依赖
         """
-        issues = {}
+        issues: Dict[str, List[str]] = {}
         
         # 检查公式库中引用的属性
         if "formula_library" in cls._cache and "attribute_model" in cls._cache:
