@@ -335,7 +335,7 @@ class EventSystem:
                 EventChoice(
                     id="leave",
                     text="礼貌拒绝",
-                    consequences: Dict[str, Any] = {}
+                    consequences={}
                 )
             ],
             repeatable=True,

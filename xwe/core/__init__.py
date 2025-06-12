@@ -3,6 +3,8 @@
 XWE核心游戏系统模块
 """
 
+from typing import Any, Dict
+
 from .data_loader import DataLoader
 from .attributes import AttributeSystem, CharacterAttributes
 from .character import Character
