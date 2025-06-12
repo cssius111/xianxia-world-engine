@@ -395,12 +395,12 @@ class ErrorHandler:
         self.crash_dir.mkdir(exist_ok=True)
         
         # 错误统计
-        self.error_counts = {}
-        self.last_errors = []
+        self.error_counts: Dict[str, int] = {}
+        self.last_errors: List[ErrorLog] = []
         self.max_recent_errors = 100
-        
+
         # 错误处理回调
-        self.error_callbacks = []
+        self.error_callbacks: List[Callable[[ErrorLog], Any]] = []
     
     def handle_error(self, 
                     error: Exception,
@@ -513,7 +513,7 @@ class PerformanceMonitor:
     """性能监控器"""
     
     def __init__(self):
-        self.metrics = {
+        self.metrics: Dict[str, List[float]] = {
             "fps": [],
             "frame_time": [],
             "memory_usage": [],
@@ -525,14 +525,14 @@ class PerformanceMonitor:
         self.sample_interval = 1.0  # 采样间隔（秒）
         
         # 性能阈值
-        self.thresholds = {
+        self.thresholds: Dict[str, float] = {
             "fps_min": 30,
             "memory_max_mb": 500,
             "cpu_max_percent": 80
         }
         
         # 性能报警回调
-        self.alert_callbacks = []
+        self.alert_callbacks: List[Callable[[Dict[str, Any]], Any]] = []
     
     def start_monitoring(self):
         """开始监控"""
