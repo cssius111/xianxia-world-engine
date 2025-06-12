@@ -3,7 +3,7 @@
 """
 
 from typing import Dict, Callable, Any, Optional
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import uuid
 
 
@@ -14,7 +14,7 @@ class PendingConfirmation:
     action: str
     description: str
     callback: Callable
-    data: Dict[str, Any]
+    data: Dict[str, Any] = field(default_factory=dict)
 
 
 class ConfirmationManager:

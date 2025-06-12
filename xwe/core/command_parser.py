@@ -7,7 +7,7 @@
 
 import re
 from typing import Dict, Any, List, Optional, Tuple, Callable
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
 import logging
 
@@ -62,13 +62,10 @@ class ParsedCommand:
     """解析后的命令"""
     command_type: CommandType
     target: Optional[str] = None
-    parameters: Dict[str, Any] = None
+    parameters: Dict[str, Any] = field(default_factory=dict)
     raw_text: str = ""
     confidence: float = 1.0
     
-    def __post_init__(self):
-        if self.parameters is None:
-            self.parameters = {}
 
 
 class CommandPattern:

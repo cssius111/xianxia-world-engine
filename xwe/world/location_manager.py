@@ -7,7 +7,7 @@
 
 import logging
 from typing import Dict, List, Optional, Tuple, Set, Any
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import random
 
 from .world_map import WorldMap, Area, AreaType
@@ -24,11 +24,7 @@ class TravelInfo:
     distance: int
     travel_time: int  # 回合数
     stamina_cost: int
-    encounters: List[str] = None
-    
-    def __post_init__(self):
-        if self.encounters is None:
-            self.encounters = []
+    encounters: List[str] = field(default_factory=list)
 
 
 class LocationManager:
