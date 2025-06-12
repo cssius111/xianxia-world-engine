@@ -7,7 +7,7 @@
 import json
 import time
 from datetime import datetime
-from typing import Dict, List, Callable, Any
+from typing import Dict, List, Callable, Any, Optional
 
 class Achievement:
     def __init__(self, id: str, name: str, description: str, 
@@ -173,7 +173,7 @@ class AchievementSystem:
         for achievement_id, value in checks.items():
             self.check_achievement(achievement_id, value)
             
-    def get_next_unlock_display(self) -> str:
+    def get_next_unlock_display(self) -> Optional[str]:
         """获取下一个待显示的成就解锁信息"""
         if not self.unlock_queue:
             return None
