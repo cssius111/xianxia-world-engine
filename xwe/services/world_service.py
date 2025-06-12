@@ -59,8 +59,6 @@ class WorldService(ServiceBase[IWorldService], IWorldService):
  
         self._discovered_locations: Set[str] = set()
  
-        self._discovered_locations: set[str] = set()
- 
         
     def _do_initialize(self) -> None:
         """初始化服务"""

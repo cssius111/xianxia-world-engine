@@ -397,15 +397,11 @@ class ErrorHandler:
         # 错误统计
         self.error_counts: Dict[str, int] = {}
 
-        self.last_errors: List[str] = []
-
         self.last_errors: List[ErrorLog] = []
 
         self.max_recent_errors = 100
 
         # 错误处理回调
-
-        self.error_callbacks: List[Callable[[Exception], None]] = []
 
         self.error_callbacks: List[Callable[[ErrorLog], Any]] = []
 
