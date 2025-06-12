@@ -1,6 +1,6 @@
 # xwe/features/narrative_generator.py
 
-from typing import List, Dict, Optional, Any
+from typing import Any, Dict, List, Optional
 import asyncio
 from collections import defaultdict
 
@@ -214,7 +214,7 @@ class DynamicNarrativeGenerator:
         
     async def generate_cultivation_narrative(self, 
                                            duration: str,
-                                           results: Dict,
+                                           results: Dict[str, Any],
                                            context: dict) -> str:
         """生成修炼叙事"""
         prompt = f"""

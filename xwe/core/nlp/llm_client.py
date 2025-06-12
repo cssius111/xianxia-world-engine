@@ -8,7 +8,7 @@
 import json
 import logging
 import os
-from typing import Dict, Any, Optional, List
+from typing import Any, Dict, List, Optional
 from abc import ABC, abstractmethod
 import requests  # type: ignore[import-untyped]
 from dataclasses import dataclass

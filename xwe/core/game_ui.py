@@ -11,7 +11,7 @@ class GameUI:
     def __init__(self):
         self.last_status = None
     
-    def display_cultivation_result(self, duration: str, gained_exp: int, player_status=None):
+    def display_cultivation_result(self, duration: str, gained_exp: int, player_status=None) -> None:
         """显示修炼结果"""
         print(f"\n{'='*50}")
         print(f"🧘 修炼完成！")
@@ -33,7 +33,7 @@ class GameUI:
         # 显示进度条动画
         self.show_progress_bar(duration_seconds=2, label="消化修为中")
     
-    def show_progress_bar(self, duration_seconds=3, label="处理中"):
+    def show_progress_bar(self, duration_seconds=3, label="处理中") -> None:
         """显示进度条动画"""
         total_width = 40
         for i in range(duration_seconds * 10):
@@ -45,7 +45,7 @@ class GameUI:
             time.sleep(0.1)
         print("\r" + " " * 60 + "\r", end="", flush=True)  # 清除进度条
     
-    def display_status_change(self, old_status, new_status):
+    def display_status_change(self, old_status, new_status) -> None:
         """显示状态变化"""
         changes = []
         
@@ -63,7 +63,7 @@ class GameUI:
             for change in changes:
                 print(f"  • {change}")
     
-    def display_cultivation_preview(self, duration: str):
+    def display_cultivation_preview(self, duration: str) -> None:
         """显示修炼预览"""
         print(f"\n🧘 开始修炼 {duration}...")
         self.show_progress_bar(duration_seconds=1, label="准备中")

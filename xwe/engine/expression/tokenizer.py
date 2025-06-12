@@ -8,7 +8,7 @@
 import re
 from enum import Enum, auto
 from dataclasses import dataclass
-from typing import List, Optional, Any
+from typing import Any, List, Optional
 
 from .exceptions import TokenizationError
 

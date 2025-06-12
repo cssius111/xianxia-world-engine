@@ -7,7 +7,7 @@ import ast
 import operator
 import math
 import random
-from typing import Dict, Any, Union, Optional, Callable
+from typing import Any, Callable, Dict, Optional, Union
 import logging
 from .data_manager import DM
 
@@ -70,7 +70,7 @@ class FormulaEngine:
         # 加载公式库
         self._load_formula_library()
     
-    def _load_formula_library(self):
+    def _load_formula_library(self) -> None:
         """加载公式库配置"""
         try:
             self.formula_library = DM.load("formula_library")
@@ -166,7 +166,7 @@ class FormulaEngine:
             logger.error(f"Error evaluating expression '{expression}': {e}")
             raise
     
-    def _validate_ast(self, tree: ast.AST):
+    def _validate_ast(self, tree: ast.AST) -> None:
         """验证AST树的安全性"""
         for node in ast.walk(tree):
             # 只允许特定的节点类型
@@ -309,7 +309,7 @@ class FormulaEngine:
         
         return value
     
-    def register_custom_function(self, name: str, func: Callable):
+    def register_custom_function(self, name: str, func: Callable) -> None:
         """
         注册自定义函数
         

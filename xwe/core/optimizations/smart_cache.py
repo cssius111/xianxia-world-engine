@@ -4,7 +4,7 @@
 import time
 import threading
 import psutil
-from typing import Any, Optional, Dict, Callable
+from typing import Any, Callable, Dict, Optional
 from collections import OrderedDict
 from functools import wraps
 
@@ -38,7 +38,7 @@ class SmartCache:
             self.hit_count += 1
             return value
     
-    def set(self, key: str, value: Any):
+    def set(self, key: str, value: Any) -> None:
         with self._lock:
             # 如果达到最大大小，删除最旧的
             if len(self._cache) >= self.max_size and key not in self._cache:
@@ -63,7 +63,7 @@ class SmartCache:
         total = self.hit_count + self.miss_count
         return self.hit_count / total if total > 0 else 0.0
     
-    def get_stats(self):
+    def get_stats(self) -> Any:
         return {
             'hit_count': self.hit_count,
             'miss_count': self.miss_count,
@@ -78,23 +78,23 @@ class SmartCache:
         process = psutil.Process()
         return process.memory_info().rss / (1024 * 1024)
     
-    def clear(self):
+    def clear(self) -> None:
         with self._lock:
             self._cache.clear()
 
 # 全局缓存实例
 _global_cache = SmartCache()
 
-def get_global_cache():
+def get_global_cache() -> Any:
     return _global_cache
 
 
-def CacheableFunction(cache: SmartCache):
+def CacheableFunction(cache: SmartCache) -> None:
     """函数结果缓存装饰器"""
 
-    def decorator(func: Callable):
+    def decorator(func: Callable) -> None:
         @wraps(func)
-        def wrapper(*args, **kwargs):
+        def wrapper(*args, **kwargs) -> Any:
             key = f"{func.__name__}:{args}:{sorted(kwargs.items())}"
             return cache.get_or_compute(key, func, *args, **kwargs)
 

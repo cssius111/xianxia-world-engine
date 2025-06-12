@@ -6,7 +6,7 @@
 """
 
 import logging
-from typing import Dict, List, Optional, Any, Callable
+from typing import Any, Callable, Dict, List, Optional
 from dataclasses import dataclass, field
 from enum import Enum
 import random
@@ -180,7 +180,7 @@ class WorldEvent:
         
         return True
     
-    def trigger(self):
+    def trigger(self) -> None:
         """触发事件"""
         self.occurrences += 1
         logger.info(f"触发事件: {self.name}")
@@ -222,7 +222,7 @@ class EventSystem:
         
         logger.info("事件系统初始化")
     
-    def _init_default_events(self):
+    def _init_default_events(self) -> None:
         """初始化默认事件"""
         # 妖兽袭击事件
         beast_attack = WorldEvent(
@@ -343,12 +343,12 @@ class EventSystem:
         )
         self.register_event(mysterious_merchant)
     
-    def register_event(self, event: WorldEvent):
+    def register_event(self, event: WorldEvent) -> None:
         """注册事件"""
         self.events[event.id] = event
         logger.debug(f"注册事件: {event.name}")
     
-    def load_events_from_file(self, filepath: str):
+    def load_events_from_file(self, filepath: str) -> None:
         """从文件加载事件"""
         try:
             with open(filepath, 'r', encoding='utf-8') as f:
@@ -533,7 +533,7 @@ class EventSystem:
         
         return result
     
-    def register_handler(self, event_id: str, handler: Callable):
+    def register_handler(self, event_id: str, handler: Callable) -> None:
         """
         注册事件处理器
         
@@ -547,7 +547,7 @@ class EventSystem:
         """获取事件历史"""
         return self.event_history[-limit:]
     
-    def clear_event(self, event_id: str):
+    def clear_event(self, event_id: str) -> None:
         """清除事件触发次数"""
         event = self.events.get(event_id)
         if event:

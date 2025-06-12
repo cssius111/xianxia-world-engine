@@ -4,7 +4,7 @@
 """
 
 from abc import ABC, abstractmethod
-from typing import Optional, Dict, Any, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 from dataclasses import dataclass, field
 from enum import Enum
 
@@ -556,7 +556,7 @@ class IPlayerService(ABC):
     # ========== 社交系统 ==========
     
     @abstractmethod
-    def change_reputation(self, amount: int, faction: str = None) -> int:
+    def change_reputation(self, amount: int, faction: Optional[str] = None) -> int:
         """
         改变声望
         
@@ -663,7 +663,7 @@ class IPlayerService(ABC):
     # ========== 数据持久化 ==========
     
     @abstractmethod
-    def get_player_data(self, player_id: str = None) -> Dict[str, Any]:
+    def get_player_data(self, player_id: Optional[str] = None) -> Dict[str, Any]:
         """
         获取玩家数据（用于存档）
         

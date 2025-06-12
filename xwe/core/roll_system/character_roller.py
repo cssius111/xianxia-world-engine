@@ -7,7 +7,7 @@
 import json
 import random
 from dataclasses import dataclass, field
-from typing import Dict, Any, List, Optional
+from typing import Any, Dict, List, Optional
 
 from .roll_data import ROLL_DATA
 from .roll_utils import (
@@ -354,7 +354,7 @@ def quick_roll() -> RollResult:
     return roller.roll()
 
 
-def roll_until_satisfied(condition_func=None, max_attempts=1000):
+def roll_until_satisfied(condition_func=None, max_attempts=1000) -> Any:
     """
     持续roll直到满足条件
     

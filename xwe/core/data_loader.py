@@ -7,7 +7,7 @@
 
 import json
 import os
-from typing import Dict, Any
+from typing import Any, Dict, Union
 from pathlib import Path
 import logging
 
@@ -21,7 +21,7 @@ class DataLoader:
     负责加载所有JSON配置文件并提供访问接口。
     """
     
-    def __init__(self, data_path: str | Path | None = None):
+    def __init__(self, data_path: Union[str, Path] | None = None):
         """
         初始化数据加载器
         
@@ -156,7 +156,7 @@ class DataLoader:
         """获取门派系统配置"""
         return self.load_file('character', 'faction_system')
     
-    def clear_cache(self):
+    def clear_cache(self) -> None:
         """清空缓存"""
         self.cache.clear()
         logger.info("数据缓存已清空")

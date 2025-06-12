@@ -5,7 +5,7 @@
 import logging
 import sys
 
-def setup_logging(debug=True):
+def setup_logging(debug=True) -> None:
     """配置日志系统"""
     level = logging.DEBUG if debug else logging.INFO
     

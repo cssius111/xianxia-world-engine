@@ -6,7 +6,7 @@
 """
 
 import logging
-from typing import Dict, List, Optional, Tuple, Set, Any
+from typing import Any, Dict, List, Optional, Set, Tuple
 from dataclasses import dataclass, field
 import random
 
@@ -47,7 +47,7 @@ class LocationManager:
         
         logger.info("位置管理器初始化")
     
-    def set_location(self, entity_id: str, area_id: str):
+    def set_location(self, entity_id: str, area_id: str) -> None:
         """
         设置实体位置
         

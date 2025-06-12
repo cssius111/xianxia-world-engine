@@ -5,7 +5,7 @@
 
 from abc import ABC, abstractmethod
 from enum import Enum
-from typing import Any, Dict, Type, Optional, TypeVar, Generic
+from typing import Any, Dict, Generic, Optional, Type, TypeVar
 import logging
 
 logger = logging.getLogger(__name__)
@@ -87,7 +87,7 @@ class ServiceDescriptor:
         self.lifetime = lifetime
         self.factory = factory
         
-    def __repr__(self):
+    def __repr__(self) -> Any:
         return (f"ServiceDescriptor("
                 f"type={self.service_type.__name__}, "
                 f"impl={self.implementation.__name__}, "
@@ -110,9 +110,9 @@ class ServiceContainer:
         
     def register(self,
                  service_type: Type,
-                 implementation: Type = None,
+                 implementation: Optional[Type] = None,
                  lifetime: ServiceLifetime = ServiceLifetime.TRANSIENT,
-                 factory: callable = None) -> 'ServiceContainer':
+                 factory: Optional[callable] = None) -> 'ServiceContainer':
         """
         注册服务
         
@@ -283,10 +283,10 @@ class ServiceScope:
         self.container = container
         self._original_scoped = dict(container._scoped_instances)
         
-    def __enter__(self):
+    def __enter__(self) -> Any:
         return self
         
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
         # 恢复原始作用域实例
         self.container._scoped_instances = self._original_scoped
 

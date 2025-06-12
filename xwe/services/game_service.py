@@ -4,7 +4,7 @@
 """
 
 from abc import ABC, abstractmethod
-from typing import Optional, Dict, Any, List
+from typing import Any, Dict, List, Optional
 from dataclasses import dataclass, field
 import time
 
@@ -38,7 +38,7 @@ class IGameService(ABC):
     """游戏服务接口"""
     
     @abstractmethod
-    def initialize_game(self, player_name: str = None) -> bool:
+    def initialize_game(self, player_name: Optional[str] = None) -> bool:
         """初始化游戏"""
         pass
         
@@ -122,7 +122,7 @@ class GameService(ServiceBase[IGameService], IGameService):
         self._event_bus.subscribe('combat_end', self._on_combat_end)
         self._event_bus.subscribe('location_changed', self._on_location_changed)
         
-    def initialize_game(self, player_name: str = None) -> bool:
+    def initialize_game(self, player_name: Optional[str] = None) -> bool:
         """初始化游戏"""
         try:
             self.logger.info("Initializing new game")

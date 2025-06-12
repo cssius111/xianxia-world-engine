@@ -1,3 +1,4 @@
+from typing import Any
 # examples/expression_examples.py
 """
 表达式解析器使用示例
@@ -8,7 +9,7 @@
 from engine.expression import ExpressionParser, ExpressionError
 
 
-def basic_examples():
+def basic_examples() -> None:
     """基础使用示例"""
     print("=== 基础算术运算 ===")
     parser = ExpressionParser()
@@ -25,7 +26,7 @@ def basic_examples():
     print(f"(2 + 3) * 4 = {parser.evaluate('(2 + 3) * 4')}")
 
 
-def variable_examples():
+def variable_examples() -> None:
     """变量使用示例"""
     print("\n=== 变量使用 ===")
     parser = ExpressionParser()
@@ -51,7 +52,7 @@ def variable_examples():
     print(f"闪避率: {evasion:.2%}")
 
 
-def function_examples():
+def function_examples() -> None:
     """内置函数使用示例"""
     print("\n=== 内置函数 ===")
     parser = ExpressionParser()
@@ -79,7 +80,7 @@ def function_examples():
     print(f"\n低血量状态: {'是' if is_low_health else '否'}")
 
 
-def game_formula_examples():
+def game_formula_examples() -> None:
     """游戏公式示例"""
     print("\n=== 游戏公式计算 ===")
     parser = ExpressionParser()
@@ -131,7 +132,7 @@ def game_formula_examples():
     print(f"暴击伤害: {crit_damage}")
 
 
-def custom_function_examples():
+def custom_function_examples() -> None:
     """自定义函数示例"""
     print("\n=== 自定义函数 ===")
     parser = ExpressionParser()
@@ -139,7 +140,7 @@ def custom_function_examples():
     # 注册游戏专用函数
 
     # 1. 属性加成函数
-    def attribute_bonus(base, bonus_percent):
+    def attribute_bonus(base, bonus_percent) -> Any:
         """计算属性加成后的值"""
         return base * (1 + bonus_percent / 100)
 
@@ -147,7 +148,7 @@ def custom_function_examples():
                              "计算百分比加成后的属性值")
 
     # 2. 伤害减免函数
-    def damage_mitigation(damage, defense, reduction_percent):
+    def damage_mitigation(damage, defense, reduction_percent) -> Any:
         """计算减免后的伤害"""
         mitigated = damage - defense
         mitigated = max(1, mitigated)  # 最小伤害为1
@@ -166,7 +167,7 @@ def custom_function_examples():
     print(f"  最终伤害: {final_damage}")
 
 
-def error_handling_examples():
+def error_handling_examples() -> None:
     """错误处理示例"""
     print("\n=== 错误处理 ===")
     parser = ExpressionParser()
@@ -188,7 +189,7 @@ def error_handling_examples():
             print(f"{description}: {type(e).__name__} - {e}")
 
 
-def validation_examples():
+def validation_examples() -> None:
     """表达式验证示例"""
     print("\n=== 表达式验证 ===")
     parser = ExpressionParser()
@@ -215,7 +216,7 @@ def validation_examples():
                 print(f"       错误: {e}")
 
 
-def debug_mode_example():
+def debug_mode_example() -> None:
     """调试模式示例"""
     print("\n=== 调试模式 ===")
 
@@ -233,7 +234,7 @@ def debug_mode_example():
     print(f"结果: {result}")
 
 
-def main():
+def main() -> None:
     """运行所有示例"""
     print("XWE 表达式解析器示例")
     print("=" * 50)

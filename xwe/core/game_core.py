@@ -6,7 +6,7 @@
 """
 
 import logging
-from typing import Dict, Any, Optional, List
+from typing import Any, Dict, List, Optional, Union
 from pathlib import Path
 from dataclasses import dataclass, field
 import json
@@ -84,7 +84,7 @@ class GameCore:
     管理所有游戏系统和主循环。
     """
     
-    def __init__(self, data_path: str | Path | None = None):
+    def __init__(self, data_path: Union[str, Path] | None = None):
         """
         初始化游戏核心
         
@@ -155,7 +155,7 @@ class GameCore:
         
         logger.info("游戏核心初始化完成")
     
-    def start_new_game(self, player_name: str = "无名侠客"):
+    def start_new_game(self, player_name: str = "无名侠客") -> None:
         """
         开始新游戏 - 集成Roll系统
         
@@ -178,7 +178,7 @@ class GameCore:
         
         # 进入Roll流程
         self._character_creation_flow(player_name)
-    def _character_creation_flow(self, player_name: str):
+    def _character_creation_flow(self, player_name: str) -> None:
         """角色创建流程 - 使用Roll系统"""
         self.output("=== 开局Roll ===")
         self.output("你可以无限次重置角色面板，直到获得满意的属性。")
@@ -225,7 +225,7 @@ class GameCore:
             
             return  # 返回主循环等待输入
     
-    def _display_roll_result(self, roll_result):
+    def _display_roll_result(self, roll_result) -> None:
         """显示Roll结果"""
         # 基础信息
         self.output(f"姓名：{roll_result.name} ({roll_result.gender})")
@@ -336,7 +336,7 @@ class GameCore:
         logger.info(f"根据Roll结果创建玩家角色: {name}")
         return character
     
-    def _handle_roll_choice(self, choice: str):
+    def _handle_roll_choice(self, choice: str) -> None:
         """处理Roll选择"""
         if not self.game_state.flags.get('waiting_for_roll_choice'):
             return
@@ -368,7 +368,7 @@ class GameCore:
         else:
             self.output("无效的选择，请输入对应的数字。")
     
-    def _finalize_character_creation(self):
+    def _finalize_character_creation(self) -> None:
         """完成角色创建"""
         # 清理标志
         self.game_state.flags.pop('waiting_for_roll_choice', None)
@@ -414,7 +414,7 @@ class GameCore:
         logger.info(f"创建玩家角色: {name}")
         return character
     
-    def _init_world(self):
+    def _init_world(self) -> None:
         """初始化游戏世界"""
         # 加载世界配置
         world_config = self.data_loader.get_world_config()
@@ -441,7 +441,7 @@ class GameCore:
         
         logger.info("游戏世界初始化完成")
     
-    def _create_initial_npcs(self):
+    def _create_initial_npcs(self) -> None:
         """创建初始NPC"""
         npc_templates = self.data_loader.get_npc_templates()
         
@@ -486,7 +486,7 @@ class GameCore:
                     
                     logger.info(f"创建NPC: {npc.name} 于 {npc_location}")
     
-    def process_command(self, input_text: str):
+    def process_command(self, input_text: str) -> None:
         """
         处理玩家命令
         
@@ -519,7 +519,7 @@ class GameCore:
         
         # 使用命令路由器（优先级系统）
         # 设置NLP处理器
-        def nlp_handler(text, context):
+        def nlp_handler(text, context) -> Any:
             parsed = self.nlp_processor.parse(text, context)
             return {
                 'command_type': parsed.command_type.value if parsed.command_type != CommandType.UNKNOWN else 'unknown',
@@ -596,7 +596,7 @@ class GameCore:
         
         return context
     
-    def _process_normal_command(self, command: ParsedCommand):
+    def _process_normal_command(self, command: ParsedCommand) -> None:
         """处理非战斗状态的命令"""
         if command.command_type == CommandType.STATUS:
             self._show_status()
@@ -646,7 +646,7 @@ class GameCore:
         else:
             self.output("无法理解的命令。输入 '帮助' 查看可用命令。")
     
-    def _process_combat_command(self, command: ParsedCommand):
+    def _process_combat_command(self, command: ParsedCommand) -> None:
         """处理战斗状态的命令"""
         combat_state = self.combat_system.get_combat(self.game_state.current_combat)
         if not combat_state:
@@ -755,14 +755,14 @@ class GameCore:
                 return char
         return None
     
-    def _find_skill_by_name(self, skill_name: str):
+    def _find_skill_by_name(self, skill_name: str) -> Any:
         """通过名称查找技能"""
         for skill_id, skill in self.skill_system.skills.items():
             if skill_name in skill.name:
                 return skill
         return None
     
-    def _show_status(self):
+    def _show_status(self) -> None:
         """显示角色状态"""
         player = self.game_state.player
         
@@ -830,7 +830,7 @@ class GameCore:
             for status in player.status_effects.get_status_summary():
                 self.output(f"- {status}")
     
-    def _show_inventory(self):
+    def _show_inventory(self) -> None:
         """显示背包"""
         player = self.game_state.player
         
@@ -842,7 +842,7 @@ class GameCore:
             for name, qty in player.inventory.list_items():
                 self.output(f"- {name} x{qty}")
     
-    def _show_skills(self):
+    def _show_skills(self) -> None:
         """显示技能列表"""
         player = self.game_state.player
         skills = self.skill_system.get_character_skills(player)
@@ -862,7 +862,7 @@ class GameCore:
                 self.output(f"  消耗: 灵力{skill.mana_cost} 体力{skill.stamina_cost}")
                 self.output("")
     
-    def _show_map(self):
+    def _show_map(self) -> None:
         """显示地图"""
         player = self.game_state.player
         if not player:
@@ -902,7 +902,7 @@ class GameCore:
                 self.output(f"- {area_info['name']} ({area_info['type']}) "
                           f"[危险: {danger}] [{status}]")
     
-    def _show_location(self):
+    def _show_location(self) -> None:
         """显示当前位置"""
         player = self.game_state.player
         if not player:
@@ -923,7 +923,7 @@ class GameCore:
                     merchant = " [商人]" if npc_info.get('is_merchant') else ""
                     self.output(f"- {npc_info['name']}{title}{merchant}")
     
-    def _do_cultivate(self):
+    def _do_cultivate(self) -> None:
         """修炼"""
         player = self.game_state.player
         
@@ -958,7 +958,7 @@ class GameCore:
         # 退出修炼场景
         self.status_manager.exit_context()
     
-    def _do_explore(self):
+    def _do_explore(self) -> None:
         """探索"""
         player = self.game_state.player
         if not player:
@@ -1008,7 +1008,7 @@ class GameCore:
                    result['found_npcs'], result['triggered_events']]):
             self.output("你没有发现什么特别的东西。")
     
-    def _do_move(self, location_name: str):
+    def _do_move(self, location_name: str) -> None:
         """移动到新位置"""
         player = self.game_state.player
         if not player:
@@ -1078,7 +1078,7 @@ class GameCore:
             else:
                 self.output(f"无法到达{target_area.name}，可能需要特殊条件。")
     
-    def _check_area_events(self):
+    def _check_area_events(self) -> None:
         """检查区域事件"""
         player = self.game_state.player
         if not player:
@@ -1113,7 +1113,7 @@ class GameCore:
                 self.output(result['intro_text'])
                 # TODO: 处理事件选项
     
-    def _do_talk(self, target_name: str):
+    def _do_talk(self, target_name: str) -> None:
         """与NPC对话"""
         player = self.game_state.player
         if not player:
@@ -1169,7 +1169,7 @@ class GameCore:
         else:
             self.output(f"{npc_found['name']}似乎不想说话。")
     
-    def _display_dialogue_node(self, node, npc_name: str):
+    def _display_dialogue_node(self, node, npc_name: str) -> None:
         """显示对话节点"""
         if not node:
             return
@@ -1220,7 +1220,7 @@ class GameCore:
                 else:
                     self._end_dialogue()
     
-    def _end_dialogue(self):
+    def _end_dialogue(self) -> None:
         """结束对话"""
         player = self.game_state.player
         if player:
@@ -1234,7 +1234,7 @@ class GameCore:
         
         self.output("\n[对话结束]")
     
-    def _process_dialogue_choice(self, choice_id: str):
+    def _process_dialogue_choice(self, choice_id: str) -> None:
         """处理对话选择"""
         player = self.game_state.player
         if not player:
@@ -1290,7 +1290,7 @@ class GameCore:
         else:
             self._end_dialogue()
     
-    def _start_combat(self, target_name: str):
+    def _start_combat(self, target_name: str) -> None:
         """开始战斗"""
         # 创建战斗
         combat_id = f"combat_{self.game_state.game_time}"
@@ -1369,7 +1369,7 @@ class GameCore:
         
         return monster
     
-    def _process_npc_turns(self, combat_state: CombatState):
+    def _process_npc_turns(self, combat_state: CombatState) -> None:
         """处理NPC回合"""
         player = self.game_state.player
         
@@ -1396,7 +1396,7 @@ class GameCore:
                 self._game_over()
                 break
     
-    def _show_combat_result(self, result, is_player: bool = True):
+    def _show_combat_result(self, result, is_player: bool = True) -> None:
         """显示战斗结果"""
         if not result.success:
             self.output(f"行动失败: {result.message}")
@@ -1465,7 +1465,7 @@ class GameCore:
         
         return False
     
-    def _end_combat(self, combat_state: CombatState, fled: bool = False):
+    def _end_combat(self, combat_state: CombatState, fled: bool = False) -> None:
         """结束战斗"""
         if not fled:
             # 战斗胜利
@@ -1511,7 +1511,7 @@ class GameCore:
         self.output("")
         self._show_location()
     
-    def _save_game(self):
+    def _save_game(self) -> None:
         """保存游戏"""
         try:
             # 创建存档目录
@@ -1539,7 +1539,7 @@ class GameCore:
             self.output(f"保存失败: {e}")
             logger.error(f"保存游戏失败: {e}")
     
-    def _quit_game(self):
+    def _quit_game(self) -> None:
         """退出游戏"""
         self.output("是否保存游戏？(y/n)")
         # TODO: 实现确认机制
@@ -1547,14 +1547,14 @@ class GameCore:
         self.running = False
         self.output("感谢游戏，再见！")
     
-    def _game_over(self):
+    def _game_over(self) -> None:
         """游戏结束"""
         self.running = False
         self.output("")
         self.output("=== 游戏结束 ===")
         self.output("你的修仙之路到此为止...")
     
-    def output(self, text: str):
+    def output(self, text: str) -> None:
         """
         输出文本
         
@@ -1578,11 +1578,11 @@ class GameCore:
         """游戏是否在运行"""
         return self.running
 
-    def run(self):
+    def run(self) -> Any:
         """运行游戏"""
         return self.main_loop()
     
-    def _process_normal_command_v2(self, cmd_type: str, params: Dict[str, Any]):
+    def _process_normal_command_v2(self, cmd_type: str, params: Dict[str, Any]) -> None:
         """处理非战斗状态的命令（新版）"""
         if cmd_type == 'status':
             self._show_status()
@@ -1632,7 +1632,7 @@ class GameCore:
         else:
             self.output("无法理解的命令。输入 '帮助' 查看可用命令。")
     
-    def _process_combat_command_v2(self, cmd_type: str, params: Dict[str, Any]):
+    def _process_combat_command_v2(self, cmd_type: str, params: Dict[str, Any]) -> None:
         """处理战斗状态的命令（新版）"""
         combat_state = self.combat_system.get_combat(self.game_state.current_combat)
         if not combat_state:
@@ -1732,7 +1732,7 @@ class GameCore:
             if combat_state.is_combat_over():
                 self._end_combat(combat_state)
     
-    def _show_help(self):
+    def _show_help(self) -> None:
         """显示帮助（使用中国龙和优先级系统）"""
         self.output(get_dragon_for_scene('help'))
         self.output("")

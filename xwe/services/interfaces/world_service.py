@@ -4,7 +4,7 @@
 """
 
 from abc import ABC, abstractmethod
-from typing import Optional, Dict, Any, List, Tuple, Set
+from typing import Any, Dict, List, Optional, Set, Tuple
 from dataclasses import dataclass, field
 from enum import Enum
 from datetime import datetime
@@ -163,8 +163,8 @@ class IWorldService(ABC):
         pass
         
     @abstractmethod
-    def list_locations(self, region: str = None, 
-                      location_type: LocationType = None) -> List[Location]:
+    def list_locations(self, region: Optional[str] = None, 
+                      location_type: Optional[LocationType] = None) -> List[Location]:
         """
         列出位置
         
@@ -236,7 +236,7 @@ class IWorldService(ABC):
         pass
         
     @abstractmethod
-    def get_connected_locations(self, location_id: str = None) -> List[Location]:
+    def get_connected_locations(self, location_id: Optional[str] = None) -> List[Location]:
         """
         获取连接的位置
         
@@ -302,7 +302,7 @@ class IWorldService(ABC):
         pass
         
     @abstractmethod
-    def search_for_resources(self, resource_type: str = None) -> Dict[str, int]:
+    def search_for_resources(self, resource_type: Optional[str] = None) -> Dict[str, int]:
         """
         搜索资源
         
@@ -386,7 +386,7 @@ class IWorldService(ABC):
     # ========== 天气系统 ==========
     
     @abstractmethod
-    def get_weather(self, location_id: str = None) -> Weather:
+    def get_weather(self, location_id: Optional[str] = None) -> Weather:
         """
         获取天气
         
@@ -412,7 +412,7 @@ class IWorldService(ABC):
         pass
         
     @abstractmethod
-    def change_weather(self, weather: Weather, location_id: str = None) -> bool:
+    def change_weather(self, weather: Weather, location_id: Optional[str] = None) -> bool:
         """
         改变天气（GM功能）
         
@@ -428,7 +428,7 @@ class IWorldService(ABC):
     # ========== 世界事件 ==========
     
     @abstractmethod
-    def get_active_events(self, location_id: str = None) -> List[WorldEvent]:
+    def get_active_events(self, location_id: Optional[str] = None) -> List[WorldEvent]:
         """
         获取活跃的世界事件
         
@@ -441,7 +441,7 @@ class IWorldService(ABC):
         pass
         
     @abstractmethod
-    def trigger_event(self, event_id: str, location_id: str = None) -> bool:
+    def trigger_event(self, event_id: str, location_id: Optional[str] = None) -> bool:
         """
         触发世界事件
         
@@ -469,7 +469,7 @@ class IWorldService(ABC):
         
     @abstractmethod
     def schedule_event(self, event_id: str, start_time: float, 
-                      location_id: str = None) -> bool:
+                      location_id: Optional[str] = None) -> bool:
         """
         预定世界事件
         

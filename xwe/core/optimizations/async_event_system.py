@@ -3,7 +3,7 @@
 """
 import threading
 import time
-from typing import Dict, Any, List, Callable, Optional
+from typing import Any, Callable, Dict, List, Optional
 from collections import deque
 import logging
 
@@ -18,7 +18,7 @@ class AsyncEventHandler:
         self.workers: List[threading.Thread] = []
         self._lock = threading.Lock()
     
-    def start(self):
+    def start(self) -> None:
         if self.running:
             return
         
@@ -28,13 +28,13 @@ class AsyncEventHandler:
             worker.start()
             self.workers.append(worker)
     
-    def stop(self):
+    def stop(self) -> None:
         self.running = False
         for worker in self.workers:
             worker.join(timeout=1.0)
         self.workers.clear()
     
-    def register_handler(self, event_type: str, handler: Callable):
+    def register_handler(self, event_type: str, handler: Callable) -> None:
         self.handlers[event_type] = handler
     
     def trigger_event_sync(self, event_type: str, data: Dict[str, Any]) -> str:
@@ -51,7 +51,7 @@ class AsyncEventHandler:
         
         return event_id
     
-    def _worker_loop(self):
+    def _worker_loop(self) -> None:
         while self.running:
             try:
                 event = None
@@ -67,7 +67,7 @@ class AsyncEventHandler:
             except Exception as e:
                 logger.error(f"Worker error: {e}")
     
-    def _process_event(self, event):
+    def _process_event(self, event) -> None:
         try:
             handler = self.handlers.get(event['type'])
             if handler:
@@ -75,7 +75,7 @@ class AsyncEventHandler:
         except Exception as e:
             logger.error(f"Event processing error: {e}")
     
-    def process_pending_events(self):
+    def process_pending_events(self) -> None:
         """同步处理挂起的事件"""
         processed = 0
         while processed < 10:  # 限制单次处理数量
@@ -93,7 +93,7 @@ class AsyncEventHandler:
 # 全局事件处理器
 _global_handler = None
 
-def get_global_event_handler():
+def get_global_event_handler() -> Any:
     global _global_handler
     if _global_handler is None:
         _global_handler = AsyncEventHandler()

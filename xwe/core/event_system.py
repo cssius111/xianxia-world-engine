@@ -5,7 +5,7 @@
 
 import random
 import logging
-from typing import Dict, Any, List, Optional, Callable
+from typing import Any, Callable, Dict, List, Optional
 from datetime import datetime
 from .data_manager import DM
 from .formula_engine import formula_engine, evaluate_expression
@@ -26,7 +26,7 @@ class EventSystemV3:
         self.event_handlers = {}
         self._load_event_data()
     
-    def _load_event_data(self):
+    def _load_event_data(self) -> None:
         """加载事件系统数据"""
         try:
             self.event_data = DM.load("event_template")
@@ -35,7 +35,7 @@ class EventSystemV3:
             logger.error(f"Failed to load event data: {e}")
             raise
     
-    def register_handler(self, event_type: str, handler: Callable):
+    def register_handler(self, event_type: str, handler: Callable) -> None:
         """注册事件处理器"""
         if event_type not in self.event_handlers:
             self.event_handlers[event_type] = []
@@ -365,7 +365,7 @@ class EventSystemV3:
         
         return result
     
-    def _record_event(self, event_instance: Dict[str, Any]):
+    def _record_event(self, event_instance: Dict[str, Any]) -> None:
         """记录事件到历史"""
         self.event_history.append(event_instance)
         
@@ -373,7 +373,7 @@ class EventSystemV3:
         if len(self.event_history) > 1000:
             self.event_history = self.event_history[-500:]
     
-    def _call_handlers(self, event_instance: Dict[str, Any]):
+    def _call_handlers(self, event_instance: Dict[str, Any]) -> None:
         """调用事件处理器"""
         event_type = event_instance.get("type", "generic")
         
@@ -433,6 +433,6 @@ def process_event_choice(event: Dict[str, Any], choice_id: str) -> Dict[str, Any
     """处理事件选择的便捷函数"""
     return event_system.process_choice(event, choice_id)
 
-def register_event_handler(event_type: str, handler: Callable):
+def register_event_handler(event_type: str, handler: Callable) -> None:
     """注册事件处理器的便捷函数"""
     event_system.register_handler(event_type, handler)

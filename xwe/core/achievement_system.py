@@ -7,7 +7,7 @@
 import json
 import time
 from datetime import datetime
-from typing import Dict, List, Callable, Any, Optional
+from typing import Any, Callable, Dict, List, Optional
 
 class Achievement:
     def __init__(self, id: str, name: str, description: str, 
@@ -132,7 +132,7 @@ class AchievementSystem:
         
         return achievements
         
-    def check_achievement(self, achievement_id: str, current_value: Any = None) -> bool:
+    def check_achievement(self, achievement_id: str, current_value: Optional[Any] = None) -> bool:
         """检查并可能解锁成就"""
         if achievement_id not in self.achievements:
             return False
@@ -154,7 +154,7 @@ class AchievementSystem:
             
         return False
         
-    def _unlock_achievement(self, achievement_id: str):
+    def _unlock_achievement(self, achievement_id: str) -> None:
         """解锁成就"""
         achievement = self.achievements[achievement_id]
         achievement.unlocked = True
@@ -168,7 +168,7 @@ class AchievementSystem:
         for callback in self.unlock_callbacks:
             callback(achievement)
             
-    def check_multiple_achievements(self, checks: Dict[str, Any]):
+    def check_multiple_achievements(self, checks: Dict[str, Any]) -> None:
         """批量检查成就"""
         for achievement_id, value in checks.items():
             self.check_achievement(achievement_id, value)
@@ -247,11 +247,11 @@ class AchievementSystem:
                 
         return display
         
-    def add_unlock_callback(self, callback: Callable):
+    def add_unlock_callback(self, callback: Callable) -> None:
         """添加成就解锁回调函数"""
         self.unlock_callbacks.append(callback)
         
-    def save_to_file(self, filepath: str):
+    def save_to_file(self, filepath: str) -> None:
         """保存成就数据"""
         data = {
             'total_points': self.total_points,
@@ -268,7 +268,7 @@ class AchievementSystem:
         with open(filepath, 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
             
-    def load_from_file(self, filepath: str):
+    def load_from_file(self, filepath: str) -> None:
         """加载成就数据"""
         try:
             with open(filepath, 'r', encoding='utf-8') as f:

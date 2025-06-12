@@ -6,7 +6,7 @@
 import json
 import hashlib
 from pathlib import Path
-from typing import Dict, Any, Optional, List
+from typing import Any, Dict, List, Optional
 from jsonschema import validate, ValidationError
 import logging
 
@@ -20,7 +20,7 @@ class DataManager:
     _cache: Dict[str, Dict] = {}
     _initialized = False
     
-    def __new__(cls):
+    def __new__(cls) -> Any:
         if cls._instance is None:
             cls._instance = super().__new__(cls)
         return cls._instance
@@ -137,7 +137,7 @@ class DataManager:
         logger.info(f"Successfully loaded {len(cls._cache)} configurations")
     
     @classmethod
-    def get(cls, path: str, default: Any = None) -> Any:
+    def get(cls, path: str, default: Optional[Any] = None) -> Any:
         """
         通过路径获取配置值
         
@@ -223,10 +223,10 @@ class DataManager:
 # 导出便捷接口
 DM = DataManager()
 
-def load_game_data():
+def load_game_data() -> None:
     """加载所有游戏数据的便捷函数"""
     DM.load_all()
 
-def get_config(path: str, default: Any = None) -> Any:
+def get_config(path: str, default: Optional[Any] = None) -> Any:
     """获取配置的便捷函数"""
     return DM.get(path, default)

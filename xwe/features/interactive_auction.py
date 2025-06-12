@@ -6,7 +6,7 @@
 
 import time
 import random
-from typing import Optional, List, Dict, Any, Type, Any as AnyType
+from typing import Any, Any as AnyType, Dict, List, Optional, Type
 from xwe.features.auction_system import AuctionSystem, AuctionItem, BidderType
 
 VEClass: Type[AnyType]
@@ -156,7 +156,7 @@ class InteractiveAuction:
         
         return player_won, final_price
     
-    def _display_item(self, item: AuctionItem, is_final: bool):
+    def _display_item(self, item: AuctionItem, is_final: bool) -> None:
         """展示拍品信息"""
         if is_final:
             print(self.visual.get_colored_text(
@@ -198,7 +198,7 @@ class InteractiveAuction:
         
         return "来历神秘，威力非凡"
     
-    def _initial_npc_bids(self, item: AuctionItem):
+    def _initial_npc_bids(self, item: AuctionItem) -> None:
         """初始NPC竞价"""
         print("\n*竞价开始*")
         
@@ -225,7 +225,7 @@ class InteractiveAuction:
                 
                 time.sleep(0.8)
     
-    def _display_current_status(self, item: AuctionItem):
+    def _display_current_status(self, item: AuctionItem) -> None:
         """显示当前竞价状态"""
         print(f"\n当前最高出价：{self.visual.get_colored_text(str(item.current_bid) + '灵石', 'YELLOW')}")
         print(f"出价者：{item.current_bidder}")
@@ -365,7 +365,7 @@ class InteractiveAuction:
         else:
             return random.random() < 0.7
     
-    def _generate_npc_bid_dialogue(self, bidder, amount: int, is_response: bool = False):
+    def _generate_npc_bid_dialogue(self, bidder, amount: int, is_response: bool = False) -> None:
         """生成NPC竞价对话"""
         archetype = next((a for a in self.auction_system.bidder_archetypes 
                         if a['type'] == bidder.archetype), None)
@@ -445,7 +445,7 @@ class InteractiveAuction:
         
         return True
     
-    def _announce_result(self, item: AuctionItem, player_won: bool, final_price: int):
+    def _announce_result(self, item: AuctionItem, player_won: bool, final_price: int) -> None:
         """宣布拍卖结果"""
         if player_won:
             print(self.visual.get_colored_text(

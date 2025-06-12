@@ -7,7 +7,7 @@ AI个性化和智能玩法系统
 """
 
 
-from typing import Dict, List, Any, Optional, Tuple, Set
+from typing import Any, Dict, List, Optional, Set, Tuple
 from dataclasses import dataclass, field
 from enum import Enum
 import logging
@@ -67,7 +67,7 @@ class PlayerProfile:
     statistics: Dict[str, Any] = field(default_factory=dict)
     last_analysis_time: float = 0.0
     
-    def add_behavior(self, behavior: PlayerBehavior):
+    def add_behavior(self, behavior: PlayerBehavior) -> None:
         """添加行为记录"""
         self.behavior_history.append(behavior)
         # 保留最近1000条记录
@@ -516,7 +516,7 @@ class PersonalizationEngine:
                            player_id: str,
                            action_type: str,
                            action_target: Optional[str] = None,
-                           context: Dict[str, Any] = None,
+                           context: Optional[Dict[str, Any]] = None,
                            success: bool = True):
         """记录玩家行为"""
         profile = self.get_or_create_profile(player_id)
@@ -631,11 +631,11 @@ class AIPersonalization(PersonalizationEngine):
     """`PersonalizationEngine` 的别名, 兼容旧代码"""
     pass
 
-def enhance_with_ai_features(game_core):
+def enhance_with_ai_features(game_core) -> None:
     """为游戏核心添加AI功能"""
     original_process_command = game_core.process_command
     
-    def ai_enhanced_process_command(input_text: str):
+    def ai_enhanced_process_command(input_text: str) -> None:
         """AI增强的命令处理"""
         player_id = "player_1"  # 简化处理，实际应该从游戏状态获取
         

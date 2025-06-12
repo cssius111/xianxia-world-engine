@@ -6,7 +6,7 @@
 """
 
 import logging
-from typing import Dict, List, Optional, Any, Callable
+from typing import Any, Callable, Dict, List, Optional
 from dataclasses import dataclass, field
 from enum import Enum
 import json
@@ -167,7 +167,7 @@ class DialogueTree:
         
         logger.debug(f"创建对话树: {npc_id}/{dialogue_id}")
     
-    def add_node(self, node: DialogueNode):
+    def add_node(self, node: DialogueNode) -> None:
         """添加节点"""
         self.nodes[node.id] = node
         if not self.start_node:
@@ -224,7 +224,7 @@ class DialogueTree:
         self.current_node = None
         return None
     
-    def _apply_effects(self, effects: Dict[str, Any], context: Dict[str, Any]):
+    def _apply_effects(self, effects: Dict[str, Any], context: Dict[str, Any]) -> None:
         """应用效果"""
         for effect_type, value in effects.items():
             if effect_type == 'relationship_change':
@@ -334,7 +334,7 @@ class DialogueSystem:
         
         logger.info("对话系统初始化")
     
-    def _init_default_dialogues(self):
+    def _init_default_dialogues(self) -> None:
         """初始化默认对话"""
         # 通用商人对话
         merchant_dialogue = {
@@ -504,7 +504,7 @@ class DialogueSystem:
         
         self.dialogue_templates['guard_default'] = guard_dialogue
     
-    def load_dialogue(self, npc_id: str, dialogue_id: str, dialogue_data: Dict[str, Any]):
+    def load_dialogue(self, npc_id: str, dialogue_id: str, dialogue_data: Dict[str, Any]) -> None:
         """加载对话"""
         tree = DialogueTree.from_dict(npc_id, dialogue_id, dialogue_data)
         
@@ -586,12 +586,12 @@ class DialogueSystem:
         """获取当前活跃的对话"""
         return self.active_dialogues.get(player_id)
     
-    def end_dialogue(self, player_id: str):
+    def end_dialogue(self, player_id: str) -> None:
         """结束对话"""
         if player_id in self.active_dialogues:
             del self.active_dialogues[player_id]
     
-    def register_action_handler(self, action: str, handler: Callable):
+    def register_action_handler(self, action: str, handler: Callable) -> None:
         """注册动作处理器"""
         self.action_handlers[action] = handler
     
@@ -604,7 +604,7 @@ class DialogueSystem:
         self.load_dialogue(npc_id, 'default', template)
         return True
     
-    def _load_json_dialogues(self):
+    def _load_json_dialogues(self) -> None:
         """加载JSON对话数据"""
         import os
         json_path = os.path.join(os.path.dirname(__file__), '../data/npc/dialogues.json')

@@ -8,7 +8,7 @@ from xwe.core.command_parser import CommandParser
 from xwe.features.auction_commands import auction_command_handler
 
 
-def integrate_auction_system(command_parser: CommandParser):
+def integrate_auction_system(command_parser: CommandParser) -> None:
     """
     将拍卖行系统集成到游戏命令解析器中
     
@@ -35,7 +35,7 @@ def integrate_auction_system(command_parser: CommandParser):
     print("拍卖行系统已集成到游戏中！")
     
 
-def handle_auction_in_game_loop(game, player, command, params=None):
+def handle_auction_in_game_loop(game, player, command, params=None) -> None:
     """
     在游戏主循环中处理拍卖行命令
     
@@ -71,7 +71,7 @@ def handle_auction_in_game_loop(game, player, command, params=None):
 """
 # 在 GameCore 类的 run 方法中添加拍卖行命令处理
 
-def run(self):
+def run(self) -> None:
     while self.running:
         # ... 现有代码 ...
         
@@ -96,7 +96,7 @@ def run(self):
 
 
 # 示例：添加到地点系统
-def add_auction_house_location():
+def add_auction_house_location() -> None:
     """
     将拍卖行添加为一个可访问的地点
     
@@ -128,7 +128,7 @@ def add_auction_house_location():
 
 
 # 示例：拍卖行相关的成就
-def get_auction_achievements():
+def get_auction_achievements() -> None:
     """
     获取拍卖行相关的成就配置
     """

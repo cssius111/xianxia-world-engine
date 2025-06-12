@@ -2,7 +2,7 @@
 
 import json
 import asyncio
-from typing import Dict, List, Optional, Any
+from typing import Any, Dict, List, Optional
 from collections import defaultdict
 import random
 
@@ -230,7 +230,7 @@ class AIWorldEventGenerator:
         
         return template
         
-    def _balance_event(self, event_data: Dict, severity: str) -> Dict:
+    def _balance_event(self, event_data: Dict[str, Any], severity: str) -> Dict:
         """平衡事件数据"""
         # 确保必要字段存在
         required_fields = ['name', 'description', 'scope', 'duration', 'choices']
@@ -257,7 +257,7 @@ class AIWorldEventGenerator:
             
         return event_data
         
-    def _register_world_event(self, event: Dict):
+    def _register_world_event(self, event: Dict[str, Any]) -> None:
         """注册世界事件"""
         self.event_history.append(event)
         
@@ -267,7 +267,7 @@ class AIWorldEventGenerator:
         # 触发相关系统
         self._trigger_related_systems(event)
         
-    def _update_world_state(self, event: Dict):
+    def _update_world_state(self, event: Dict[str, Any]) -> None:
         """根据事件更新世界状态"""
         # 根据事件类型和范围更新不同的世界参数
         if event['scope'] == 'global':
@@ -281,7 +281,7 @@ class AIWorldEventGenerator:
                 self.world_state['regional_states'] = {}
             self.world_state['regional_states'][affected_region] = event
             
-    def _trigger_related_systems(self, event: Dict):
+    def _trigger_related_systems(self, event: Dict[str, Any]) -> None:
         """触发相关系统"""
         # 这里可以触发其他系统响应世界事件
         # 例如：NPC反应、市场波动、任务生成等
@@ -330,7 +330,7 @@ class AIWorldEventGenerator:
             'severity': 'minor'
         }
         
-    def _schedule_event(self, event: Dict):
+    def _schedule_event(self, event: Dict[str, Any]) -> None:
         """调度事件发生"""
         # 根据事件的时机安排其发生
         delay = event.get('delay', 0)
@@ -345,7 +345,7 @@ class AIWorldEventGenerator:
                 'scheduled_time': asyncio.get_event_loop().time() + delay
             })
             
-    def process_pending_events(self):
+    def process_pending_events(self) -> None:
         """处理待发生的事件"""
         current_time = asyncio.get_event_loop().time()
         

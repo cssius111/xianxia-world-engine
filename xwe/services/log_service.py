@@ -4,7 +4,7 @@
 """
 
 from abc import ABC, abstractmethod
-from typing import Dict, Any, List, Optional
+from typing import Any, Dict, List, Optional
 from dataclasses import dataclass, field
 import time
 import json
@@ -142,7 +142,7 @@ class ILogService(ABC):
         pass
         
     @abstractmethod
-    def get_logs(self, filter: LogFilter = None, limit: int = 100, 
+    def get_logs(self, filter: Optional[LogFilter] = None, limit: int = 100, 
                  offset: int = 0) -> List[LogEntry]:
         """获取日志"""
         pass
@@ -153,12 +153,12 @@ class ILogService(ABC):
         pass
         
     @abstractmethod
-    def clear_logs(self, before_timestamp: float = None) -> int:
+    def clear_logs(self, before_timestamp: Optional[float] = None) -> int:
         """清理日志"""
         pass
         
     @abstractmethod
-    def export_logs(self, filepath: Path, filter: LogFilter = None) -> bool:
+    def export_logs(self, filepath: Path, filter: Optional[LogFilter] = None) -> bool:
         """导出日志"""
         pass
         
@@ -268,7 +268,7 @@ class LogService(ServiceBase[ILogService], ILogService):
         kwargs['category'] = 'achievement'
         return self.log(LogLevel.ACHIEVEMENT, message, **kwargs)
         
-    def get_logs(self, filter: LogFilter = None, limit: int = 100,
+    def get_logs(self, filter: Optional[LogFilter] = None, limit: int = 100,
                  offset: int = 0) -> List[LogEntry]:
         """获取日志"""
         with self._lock:
@@ -293,7 +293,7 @@ class LogService(ServiceBase[ILogService], ILogService):
             else:
                 return list(self._logs)[-limit:]
                 
-    def clear_logs(self, before_timestamp: float = None) -> int:
+    def clear_logs(self, before_timestamp: Optional[float] = None) -> int:
         """清理日志"""
         with self._lock:
             if before_timestamp is None:
@@ -310,7 +310,7 @@ class LogService(ServiceBase[ILogService], ILogService):
                 )
                 return old_size - len(self._logs)
                 
-    def export_logs(self, filepath: Path, filter: LogFilter = None) -> bool:
+    def export_logs(self, filepath: Path, filter: Optional[LogFilter] = None) -> bool:
         """导出日志"""
         try:
             logs = self.get_logs(filter, limit=999999)
@@ -440,7 +440,7 @@ class StructuredLogger:
         entry = self._format_entry("warning", message, **kwargs)
         self._write(entry)
         
-    def error(self, message: str, error: Exception = None, **kwargs) -> None:
+    def error(self, message: str, error: Optional[Exception] = None, **kwargs) -> None:
         """记录ERROR级别日志"""
         if error:
             kwargs["error"] = {
@@ -461,7 +461,7 @@ class StructuredLogger:
         import traceback
         return traceback.format_exception(type(error), error, error.__traceback__)
     
-    def set_trace_id(self, trace_id: str = None) -> None:
+    def set_trace_id(self, trace_id: Optional[str] = None) -> None:
         """设置跟踪ID"""
         self._trace_id = trace_id or str(uuid.uuid4())
     

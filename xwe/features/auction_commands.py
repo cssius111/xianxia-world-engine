@@ -4,7 +4,7 @@
 处理拍卖相关的游戏命令
 """
 
-from typing import Optional, Dict, Any
+from typing import Any, Dict, Optional
 from xwe.features.auction_system import auction_system
 
 

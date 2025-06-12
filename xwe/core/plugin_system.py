@@ -1,7 +1,7 @@
 # xwe/core/plugin_system.py
 
 from abc import ABC, abstractmethod
-from typing import Dict, List, Any, Type, Optional, Callable
+from typing import Any, Callable, Dict, List, Optional, Type
 import importlib
 import importlib.util
 import inspect
@@ -58,7 +58,7 @@ class Plugin(ABC):
         """获取配置架构"""
         return {}
         
-    def on_config_change(self, config: Dict) -> None:
+    def on_config_change(self, config: Dict[str, Any]) -> None:
         """配置变更回调"""
         pass
         
@@ -286,14 +286,14 @@ class PluginManager:
                                handler: Callable) -> None:
         """注册事件处理器"""
         # 包装处理器以添加插件上下文
-        def wrapped_handler(event):
+        def wrapped_handler(event) -> Any:
             event['_plugin'] = plugin_name
             return handler(event)
             
         if hasattr(self.engine, 'events'):
             self.engine.events.register(event_type, wrapped_handler)
             
-    def _register_api_endpoint(self, plugin_name: str, endpoint: Dict) -> None:
+    def _register_api_endpoint(self, plugin_name: str, endpoint: Dict[str, Any]) -> None:
         """注册API端点"""
         # 添加插件前缀
         endpoint['path'] = f"/plugins/{plugin_name}{endpoint['path']}"
@@ -319,7 +319,7 @@ class PluginManager:
             # 移除插件的API端点
             self.engine.api.unregister_by_prefix(f"/plugins/{plugin_name}")
             
-    def update_config(self, plugin_name: str, config: Dict) -> None:
+    def update_config(self, plugin_name: str, config: Dict[str, Any]) -> None:
         """更新插件配置"""
         if plugin_name not in self.plugins:
             raise PluginError(f"Plugin {plugin_name} not loaded")
@@ -357,7 +357,7 @@ class PluginManager:
         sorted_names = []
         visited = set()
         
-        def visit(name: str):
+        def visit(name: str) -> None:
             if name in visited:
                 return
                 
@@ -409,6 +409,6 @@ class ExamplePlugin(Plugin):
             'hello': self._hello_command
         }
         
-    def _hello_command(self, player, args):
+    def _hello_command(self, player, args) -> Any:
         """示例命令"""
         return f"Hello from {self.name} plugin!"

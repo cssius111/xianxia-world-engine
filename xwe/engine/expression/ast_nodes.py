@@ -6,7 +6,7 @@
 """
 
 from abc import ABC, abstractmethod
-from typing import Dict, Any, List, TYPE_CHECKING
+from typing import Any, Dict, List, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from .parser import ExpressionParser

@@ -6,7 +6,7 @@
 """
 
 from dataclasses import dataclass, field
-from typing import Dict, Any, List, Optional, Set
+from typing import Any, Dict, List, Optional, Set
 from enum import Enum
 import uuid
 import logging
@@ -94,7 +94,7 @@ class Character:
     # 其他数据
     extra_data: Dict[str, Any] = field(default_factory=dict)
     
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         """初始化后处理"""
         # 设置默认灵根
         if not self.spiritual_root:
@@ -158,11 +158,11 @@ class Character:
         """Convenience wrapper to check status effects."""
         return self.status_effects.has_effect(name)
 
-    def update_status_durations(self):
+    def update_status_durations(self) -> None:
         """Update durations of all status effects."""
         self.status_effects.update()
 
-    def process_dot_effects(self):
+    def process_dot_effects(self) -> None:
         """Process damage over time effects (placeholder)."""
         pass
     
@@ -206,7 +206,7 @@ class Character:
         
         return f"{health_desc}，{mana_desc}"
     
-    def take_damage(self, damage: float, damage_type: str = "physical"):
+    def take_damage(self, damage: float, damage_type: str = "physical") -> None:
         """
         受到伤害
         
@@ -226,7 +226,7 @@ class Character:
             self.state = CharacterState.DEAD
             logger.info(f"{self.name} 已死亡")
     
-    def heal(self, amount: float):
+    def heal(self, amount: float) -> None:
         """
         治疗
         
@@ -257,7 +257,7 @@ class Character:
         self.attributes.current_mana -= amount
         return True
     
-    def restore_mana(self, amount: float):
+    def restore_mana(self, amount: float) -> None:
         """
         恢复灵力
         
@@ -288,7 +288,7 @@ class Character:
         self.attributes.current_stamina -= amount
         return True
     
-    def restore_stamina(self, amount: float):
+    def restore_stamina(self, amount: float) -> None:
         """
         恢复体力
         
@@ -428,7 +428,7 @@ class Character:
         
         return False
     
-    def add_lingshi(self, amount: int):
+    def add_lingshi(self, amount: int) -> None:
         """
         添加灵石
         

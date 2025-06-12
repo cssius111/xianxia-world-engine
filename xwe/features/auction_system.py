@@ -12,7 +12,7 @@
 import json
 import random
 import time
-from typing import Dict, List, Optional, Tuple, Any, Type, Any as AnyType
+from typing import Any, Any as AnyType, Dict, List, Optional, Tuple, Type
 from pathlib import Path
 from enum import Enum
 from dataclasses import dataclass, field
@@ -98,7 +98,7 @@ class AuctionSystem:
         self.player_vip = False
         self.auction_log = []
         
-    def _load_auction_data(self):
+    def _load_auction_data(self) -> None:
         """加载拍卖行数据"""
         try:
             # 加载拍卖配置

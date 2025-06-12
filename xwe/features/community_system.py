@@ -10,7 +10,7 @@ import os
 import json
 import time
 import sqlite3
-from typing import Dict, List, Any, Optional, Callable
+from typing import Any, Callable, Dict, List, Optional
 from dataclasses import dataclass, field
 from enum import Enum
 from datetime import datetime
@@ -115,7 +115,7 @@ class FeedbackCollector:
             "物品": ["item"]
         }
     
-    def _init_database(self):
+    def _init_database(self) -> None:
         """初始化数据库"""
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
@@ -229,7 +229,7 @@ class FeedbackCollector:
         
         return FeedbackPriority.LOW
     
-    def _save_feedback(self, feedback: Feedback):
+    def _save_feedback(self, feedback: Feedback) -> None:
         """保存反馈到数据库"""
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
@@ -325,7 +325,7 @@ class FeedbackCollector:
         else:
             return f"{int(diff / 86400)}天前"
     
-    def export_feedback_report(self, output_path: str):
+    def export_feedback_report(self, output_path: str) -> None:
         """导出反馈报告"""
         stats = self.get_feedback_stats()
         
@@ -456,7 +456,7 @@ class CommunityHub:
         
         return info
     
-    def add_announcement(self, title: str, content: str, priority: str = "normal"):
+    def add_announcement(self, title: str, content: str, priority: str = "normal") -> None:
         """添加公告"""
         self.announcements.append({
             "title": title,
@@ -493,7 +493,7 @@ class PlayerDataAnalytics:
             "retention_data": {}
         }
     
-    def track_session_start(self, player_id: str):
+    def track_session_start(self, player_id: str) -> None:
         """记录会话开始"""
         self.session_data[player_id] = {
             "start_time": time.time(),
@@ -507,7 +507,7 @@ class PlayerDataAnalytics:
             self.aggregate_data["daily_active_users"] = set()
         self.aggregate_data["daily_active_users"].add(player_id)
     
-    def track_action(self, player_id: str, action: str, details: Dict[str, Any] = None):
+    def track_action(self, player_id: str, action: str, details: Optional[Dict[str, Any]] = None) -> None:
         """记录玩家行动"""
         if player_id in self.session_data:
             self.session_data[player_id]["actions"].append({
@@ -519,7 +519,7 @@ class PlayerDataAnalytics:
             # 更新热门功能统计
             self.aggregate_data["popular_features"][action] += 1
     
-    def track_error(self, player_id: str, error_type: str, error_msg: str):
+    def track_error(self, player_id: str, error_type: str, error_msg: str) -> None:
         """记录错误"""
         if player_id in self.session_data:
             self.session_data[player_id]["errors"].append({
@@ -531,7 +531,7 @@ class PlayerDataAnalytics:
             # 更新错误统计
             self.aggregate_data["error_count"][error_type] += 1
     
-    def track_session_end(self, player_id: str):
+    def track_session_end(self, player_id: str) -> None:
         """记录会话结束"""
         if player_id in self.session_data:
             session = self.session_data[player_id]
@@ -546,7 +546,7 @@ class PlayerDataAnalytics:
             # 清理会话数据
             del self.session_data[player_id]
     
-    def _save_session_data(self, player_id: str, session: Dict[str, Any], play_time: float):
+    def _save_session_data(self, player_id: str, session: Dict[str, Any], play_time: float) -> None:
         """保存会话数据"""
         session_file = os.path.join(
             self.data_dir,
@@ -603,16 +603,16 @@ class CommunitySystem:
             "python_version": platform.python_version()
         }
     
-    def _register_feedback_processors(self):
+    def _register_feedback_processors(self) -> None:
         """注册反馈处理器"""
         # Bug处理器
-        def process_bug(feedback: Feedback):
+        def process_bug(feedback: Feedback) -> None:
             if feedback.priority == FeedbackPriority.CRITICAL:
                 logger.critical(f"严重BUG报告: {feedback.content}")
                 # 可以发送通知给开发者
         
         # 建议处理器
-        def process_suggestion(feedback: Feedback):
+        def process_suggestion(feedback: Feedback) -> None:
             logger.info(f"收到建议: {feedback.content[:100]}...")
             # 可以添加到待办列表
         
@@ -684,7 +684,7 @@ class CommunitySystem:
         
         return info
     
-    def export_community_report(self, output_dir: str):
+    def export_community_report(self, output_dir: str) -> None:
         """导出社区报告"""
         os.makedirs(output_dir, exist_ok=True)
         
@@ -705,12 +705,12 @@ class CommunitySystem:
 # 全局实例
 community_system = CommunitySystem()
 
-def integrate_community_features(game_core):
+def integrate_community_features(game_core) -> None:
     """集成社区功能到游戏核心"""
     # 添加反馈命令处理
     original_process_command = game_core.process_command
     
-    def enhanced_process_command(input_text: str):
+    def enhanced_process_command(input_text: str) -> None:
         """增强的命令处理"""
         # 检查是否是反馈命令
         if input_text.startswith("反馈：") or input_text.startswith("反馈:"):
@@ -741,7 +741,7 @@ def integrate_community_features(game_core):
     if hasattr(game_core, 'start_new_game'):
         original_start_game = game_core.start_new_game
         
-        def tracked_start_game(*args, **kwargs):
+        def tracked_start_game(*args, **kwargs) -> Any:
             result = original_start_game(*args, **kwargs)
             if hasattr(game_core.game_state, 'player') and game_core.game_state.player:
                 community_system.analytics.track_session_start(game_core.game_state.player.id)

@@ -4,7 +4,7 @@
 """
 
 from abc import ABC, abstractmethod
-from typing import Dict, Any, Optional, List, Callable, Tuple
+from typing import Any, Callable, Dict, List, Optional, Tuple
 from dataclasses import dataclass, field
 import re
 import logging
@@ -61,7 +61,7 @@ class CommandHandler(ICommandHandler):
     
     def __init__(self, 
                  commands: List[str],
-                 aliases: List[str] = None,
+                 aliases: Optional[List[str]] = None,
                  description: str = "",
                  usage: str = "",
                  require_args: int = 0):

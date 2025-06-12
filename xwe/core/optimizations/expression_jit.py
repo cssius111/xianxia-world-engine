@@ -2,7 +2,7 @@
 
 import ast
 import types
-from typing import Dict, Any, Callable, List
+from typing import Any, Callable, Dict, List
 import time
 import hashlib
 
@@ -16,7 +16,7 @@ class ExpressionJITCompiler:
             'execution_speedup': []
         }
         
-    def compile_expression(self, expr_id: str, expression: Dict) -> Callable:
+    def compile_expression(self, expr_id: str, expression: Dict[str, Any]) -> Callable:
         """将表达式编译为Python函数"""
         
         if expr_id in self.compiled_functions:
@@ -133,7 +133,7 @@ class ExpressionJITCompiler:
 class ASTOptimizer(ast.NodeTransformer):
     """AST优化器"""
     
-    def visit_BinOp(self, node):
+    def visit_BinOp(self, node) -> Any:
         """优化二元运算"""
         self.generic_visit(node)
         
@@ -190,7 +190,7 @@ class ASTOptimizer(ast.NodeTransformer):
             
         return node
         
-    def visit_Call(self, node):
+    def visit_Call(self, node) -> Any:
         """优化函数调用"""
         self.generic_visit(node)
         
@@ -222,7 +222,7 @@ class ExpressionBenchmark:
         self.jit = jit_compiler
         self.results: Dict[str, Dict[str, Any]] = {}
         
-    def benchmark_expression(self, expr_id: str, expression: Dict, 
+    def benchmark_expression(self, expr_id: str, expression: Dict[str, Any], 
                            test_contexts: List[Dict], iterations: int = 10000) -> Dict:
         """基准测试单个表达式"""
         

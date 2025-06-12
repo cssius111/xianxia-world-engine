@@ -6,7 +6,7 @@
 """
 
 import logging
-from typing import Dict, List, Optional, Set, Tuple, Any
+from typing import Any, Dict, List, Optional, Set, Tuple
 from dataclasses import dataclass, field
 from enum import Enum
 import json
@@ -151,7 +151,7 @@ class WorldMap:
         
         logger.info("世界地图系统初始化")
     
-    def load_from_file(self, filepath: str):
+    def load_from_file(self, filepath: str) -> None:
         """从文件加载地图数据"""
         try:
             with open(filepath, 'r', encoding='utf-8') as f:
@@ -172,12 +172,12 @@ class WorldMap:
         except Exception as e:
             logger.error(f"加载地图数据失败: {e}")
     
-    def add_region(self, region: Region):
+    def add_region(self, region: Region) -> None:
         """添加大区域"""
         self.regions[region.id] = region
         logger.debug(f"添加大区域: {region.name}")
     
-    def add_area(self, area: Area):
+    def add_area(self, area: Area) -> None:
         """添加区域"""
         self.areas[area.id] = area
         
@@ -249,7 +249,7 @@ class WorldMap:
         
         return True, ""
     
-    def discover_area(self, area_id: str):
+    def discover_area(self, area_id: str) -> None:
         """发现区域"""
         area = self.get_area(area_id)
         if area and not area.is_discovered:

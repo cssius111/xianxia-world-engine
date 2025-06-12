@@ -3,12 +3,12 @@
 展示如何使用各个服务接口进行开发
 """
 
-from typing import Dict, Any, List
+from typing import Any, Dict, List, Optional
 from xwe.services.interfaces import *
 from xwe.services import ServiceContainer, ServiceLifetime
 
 
-def example_service_implementation():
+def example_service_implementation() -> None:
     """服务实现示例"""
     
     # 1. 实现一个服务
@@ -25,7 +25,7 @@ def example_service_implementation():
                 game_time=0.0
             )
             
-        def initialize_game(self, player_name: str = None, **options) -> bool:
+        def initialize_game(self, player_name: Optional[str] = None, **options) -> bool:
             """初始化游戏"""
             # 获取玩家服务
             player_service = self.container.resolve(IPlayerService)
@@ -53,7 +53,7 @@ def example_service_implementation():
         # ... 实现其他接口方法 ...
 
 
-def example_using_services():
+def example_using_services() -> None:
     """使用服务的示例"""
     
     # 1. 创建服务容器
@@ -75,7 +75,7 @@ def example_using_services():
     print(result.output)
 
 
-def example_player_service_usage():
+def example_player_service_usage() -> None:
     """玩家服务使用示例"""
     
     # 假设已经有了服务实例
@@ -116,7 +116,7 @@ def example_player_service_usage():
     player_service.equip_item("iron_sword", "weapon")
 
 
-def example_combat_service_usage():
+def example_combat_service_usage() -> None:
     """战斗服务使用示例"""
     
     combat_service: ICombatService = get_combat_service()  # 伪代码
@@ -166,7 +166,7 @@ def example_combat_service_usage():
     print(f"战斗结束，获得奖励：{result['rewards']}")
 
 
-def example_cultivation_service_usage():
+def example_cultivation_service_usage() -> None:
     """修炼服务使用示例"""
     
     cultivation_service: ICultivationService = get_cultivation_service()  # 伪代码
@@ -223,7 +223,7 @@ def example_cultivation_service_usage():
         cultivation_service.cleanse_pill_toxicity(30)
 
 
-def example_world_service_usage():
+def example_world_service_usage() -> None:
     """世界服务使用示例"""
     
     world_service: IWorldService = get_world_service()  # 伪代码
@@ -277,7 +277,7 @@ def example_world_service_usage():
         print(result['message'])
 
 
-def example_save_service_usage():
+def example_save_service_usage() -> None:
     """存档服务使用示例"""
     
     save_service: ISaveService = get_save_service()  # 伪代码
@@ -323,13 +323,13 @@ def example_save_service_usage():
     print(f"云端有{len(cloud_saves)}个存档")
 
 
-def example_event_driven_architecture():
+def example_event_driven_architecture() -> None:
     """事件驱动架构示例"""
     
     event_dispatcher: IEventDispatcher = get_event_dispatcher()  # 伪代码
     
     # 1. 订阅事件
-    def on_player_level_up(event):
+    def on_player_level_up(event) -> None:
         player_id = event.data['player_id']
         new_level = event.data['new_level']
         print(f"玩家{player_id}升到了{new_level}级！")
@@ -362,7 +362,7 @@ def example_event_driven_architecture():
     print(f"每分钟事件数：{stats.events_per_minute}")
 
 
-def example_command_pattern():
+def example_command_pattern() -> None:
     """命令模式示例"""
     
     from xwe.services.command_engine import CommandHandler, CommandContext, CommandResult

@@ -3,7 +3,7 @@
 NLP安全包装器 - 提供降级保护
 """
 
-from typing import Dict, Any, Optional
+from typing import Any, Dict, Optional
 
 class SafeNLPWrapper:
     """安全的NLP包装器，防止崩溃"""

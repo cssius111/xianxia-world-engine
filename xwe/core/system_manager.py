@@ -2,7 +2,7 @@
 游戏系统管理器 - 管理角色的特殊系统（如修炼系统、战斗系统等）
 """
 
-from typing import Dict, Any, Optional
+from typing import Any, Dict, Optional
 import logging
 
 logger = logging.getLogger(__name__)
@@ -14,7 +14,7 @@ class SystemManager:
     def __init__(self):
         self.active_systems: Dict[str, Dict[str, Any]] = {}
     
-    def activate_system(self, player_id: str, system_data: Dict[str, Any]):
+    def activate_system(self, player_id: str, system_data: Dict[str, Any]) -> None:
         """激活玩家的系统"""
         if not system_data:
             return
@@ -33,7 +33,7 @@ class SystemManager:
         else:
             self._activate_generic_system(player_id, system_data)
     
-    def _activate_cultivation_system(self, player_id: str, system_data: Dict):
+    def _activate_cultivation_system(self, player_id: str, system_data: Dict[str, Any]) -> None:
         """激活修炼系统"""
         rarity = system_data.get('rarity', 'common')
         
@@ -55,7 +55,7 @@ class SystemManager:
             'features': system_data.get('features', [])
         }
     
-    def _activate_combat_system(self, player_id: str, system_data: Dict):
+    def _activate_combat_system(self, player_id: str, system_data: Dict[str, Any]) -> None:
         """激活战斗系统"""
         rarity = system_data.get('rarity', 'common')
         
@@ -76,7 +76,7 @@ class SystemManager:
             'features': system_data.get('features', [])
         }
     
-    def _activate_trading_system(self, player_id: str, system_data: Dict):
+    def _activate_trading_system(self, player_id: str, system_data: Dict[str, Any]) -> None:
         """激活交易系统"""
         self.active_systems[player_id] = {
             'type': 'trading',
@@ -86,7 +86,7 @@ class SystemManager:
             'features': system_data.get('features', [])
         }
     
-    def _activate_generic_system(self, player_id: str, system_data: Dict):
+    def _activate_generic_system(self, player_id: str, system_data: Dict[str, Any]) -> None:
         """激活通用系统"""
         self.active_systems[player_id] = {
             'type': 'generic',

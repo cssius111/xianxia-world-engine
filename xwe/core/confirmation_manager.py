@@ -2,7 +2,7 @@
 确认机制管理器 - 处理需要用户确认的操作
 """
 
-from typing import Dict, Callable, Any, Optional
+from typing import Any, Callable, Dict, Optional
 from dataclasses import dataclass, field
 import uuid
 

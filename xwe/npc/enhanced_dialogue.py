@@ -6,7 +6,7 @@
 """
 
 import logging
-from typing import Dict, List, Optional, Any, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 from dataclasses import dataclass, field
 import random
 import re
@@ -151,7 +151,7 @@ class DialogueGenerator:
         return greeting
     
     def generate_response(self, context: DialogueContext, player_input: str, 
-                         intent: str = None) -> str:
+                         intent: Optional[str] = None) -> str:
         """生成响应"""
         # 基于情感状态调整语气
         emotion_factor = context.emotion_intensity
@@ -544,7 +544,7 @@ class EnhancedDialogueSystem:
         
         return node
     
-    def _update_emotion_from_input(self, context: DialogueContext, input_text: str, intent: str):
+    def _update_emotion_from_input(self, context: DialogueContext, input_text: str, intent: str) -> None:
         """根据玩家输入更新NPC情绪"""
         # 检测情感触发词
         triggers = {
@@ -574,7 +574,7 @@ class EnhancedDialogueSystem:
                 context.current_emotion = emotion_state.current_emotion.value
                 context.emotion_intensity = emotion_state.emotion_intensity
     
-    def _end_dialogue(self, player_id: str):
+    def _end_dialogue(self, player_id: str) -> None:
         """结束对话"""
         context = self.active_contexts.get(player_id)
         if context:

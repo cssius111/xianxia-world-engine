@@ -4,7 +4,7 @@
 """
 
 from abc import ABC, abstractmethod
-from typing import Optional, Dict, Any, List
+from typing import Any, Dict, List, Optional
 from dataclasses import dataclass, field
 
 
@@ -47,7 +47,7 @@ class IGameService(ABC):
     # ========== 生命周期管理 ==========
     
     @abstractmethod
-    def initialize_game(self, player_name: str = None, **options) -> bool:
+    def initialize_game(self, player_name: Optional[str] = None, **options) -> bool:
         """
         初始化新游戏
         

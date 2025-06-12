@@ -4,7 +4,7 @@
 """
 
 from abc import ABC, abstractmethod
-from typing import Dict, Any, List, Type, Callable, Optional
+from typing import Any, Callable, Dict, List, Optional, Type
 from dataclasses import dataclass, field
 import time
 import logging
@@ -24,7 +24,7 @@ class DomainEvent:
     source: Optional[str] = None
     correlation_id: Optional[str] = None
     
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         if not self.type:
             raise ValueError("Event type cannot be empty")
 
@@ -77,7 +77,7 @@ class IEventHandler(ABC):
 class EventHandler(IEventHandler):
     """事件处理器基类"""
     
-    def __init__(self, event_types: List[str] = None):
+    def __init__(self, event_types: Optional[List[str]] = None):
         self.event_types = event_types or []
         self.logger = logger.getChild(self.__class__.__name__)
         
@@ -106,7 +106,7 @@ class FunctionEventHandler(EventHandler):
     """函数式事件处理器"""
     
     def __init__(self, handler_func: Callable[[DomainEvent], None], 
-                 event_types: List[str] = None):
+                 event_types: Optional[List[str]] = None):
         super().__init__(event_types)
         self.handler_func = handler_func
         
@@ -197,7 +197,7 @@ class EventBus:
             return
             
         # 在新线程中处理异步事件
-        def run_async():
+        def run_async() -> None:
             for handler in handlers:
                 try:
                     handler.handle(event)
@@ -234,9 +234,9 @@ class EventStore:
                 self._events = self._events[-self._max_size // 2:]
                 
     def get_events(self, 
-                   event_type: str = None,
-                   start_time: float = None,
-                   end_time: float = None,
+                   event_type: Optional[str] = None,
+                   start_time: Optional[float] = None,
+                   end_time: Optional[float] = None,
                    limit: int = 100) -> List[DomainEvent]:
         """查询事件"""
         with self._lock:

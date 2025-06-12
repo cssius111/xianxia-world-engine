@@ -6,7 +6,7 @@
 """
 
 import re
-from typing import Dict, Any, List, Optional, Tuple, Callable
+from typing import Any, Callable, Dict, List, Optional, Tuple
 from dataclasses import dataclass, field
 from enum import Enum
 import logging
@@ -125,7 +125,7 @@ class CommandParser:
         self._init_patterns()
         self._init_aliases()
     
-    def _init_patterns(self):
+    def _init_patterns(self) -> None:
         """初始化命令模式"""
         # 战斗命令
         self.patterns.extend([
@@ -290,7 +290,7 @@ class CommandParser:
             ),
         ])
     
-    def _init_aliases(self):
+    def _init_aliases(self) -> None:
         """初始化别名"""
         # 技能别名
         self.aliases.update({

@@ -26,14 +26,14 @@ class ConfigurationException(GameException):
 
 
 def handle_exceptions(
-    default_return: Any = None,
+    default_return: Optional[Any] = None,
     raise_on_error: bool = False,
     log_error: bool = True
 ):
     """异常处理装饰器"""
     def decorator(func: Callable) -> Callable:
         @wraps(func)
-        def wrapper(*args, **kwargs):
+        def wrapper(*args, **kwargs) -> Any:
             try:
                 return func(*args, **kwargs)
             except Exception as e:

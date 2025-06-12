@@ -4,7 +4,7 @@
 """
 
 from abc import ABC, abstractmethod
-from typing import Optional, Dict, Any, List, Set
+from typing import Any, Dict, List, Optional, Set
 import random
 
 from . import ServiceBase, ServiceContainer

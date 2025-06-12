@@ -1,6 +1,6 @@
 # xwe/features/ai_dialogue.py
 
-from typing import Dict, List, Optional, Any
+from typing import Any, Dict, List, Optional
 import asyncio
 import re
 from collections import defaultdict
@@ -97,7 +97,7 @@ class AIDialogueManager:
         return dialogue
         
     def _enhance_context_with_history(self, context: dict, npc_id: str, 
-                                    history: List) -> dict:
+                                    history: List[Any]) -> dict:
         """用历史增强上下文"""
         enhanced = context.copy()
         
@@ -118,7 +118,7 @@ class AIDialogueManager:
         return enhanced
         
     def _update_conversation_memory(self, npc_id: str, player_input: str, 
-                                  dialogue_data: Dict):
+                                  dialogue_data: Dict[str, Any]):
         """更新对话记忆"""
         if npc_id not in self.conversation_memory:
             self.conversation_memory[npc_id] = []
@@ -142,7 +142,7 @@ class AIDialogueManager:
         if len(self.conversation_memory[npc_id]) > 100:
             self.conversation_memory[npc_id] = self.conversation_memory[npc_id][-50:]
             
-    def _update_relationship(self, npc_id: str, dialogue_data: Dict):
+    def _update_relationship(self, npc_id: str, dialogue_data: Dict[str, Any]) -> None:
         """更新关系值"""
         if npc_id not in self.relationship_tracker:
             self.relationship_tracker[npc_id] = 0
@@ -204,7 +204,7 @@ class AIDialogueManager:
         """获取与NPC的关系值"""
         return self.relationship_tracker.get(npc_id, 0)
         
-    def clear_memory(self, npc_id: Optional[str] = None):
+    def clear_memory(self, npc_id: Optional[str] = None) -> None:
         """清除对话记忆"""
         if npc_id:
             self.conversation_memory.pop(npc_id, None)

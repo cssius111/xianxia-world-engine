@@ -8,7 +8,7 @@
 
 import difflib
 import re
-from typing import Dict, List, Optional, Tuple, Any
+from typing import Any, Dict, List, Optional, Tuple
 from dataclasses import dataclass
 import json
 import logging
@@ -420,7 +420,7 @@ class GameTipsDisplay:
         self.tip_cooldown = {}  # 提示冷却时间
         self.tip_display_count = {}  # 提示显示次数
         
-    def add_tip(self, tip: str, priority: int = 0, category: str = "general"):
+    def add_tip(self, tip: str, priority: int = 0, category: str = "general") -> None:
         """添加提示到队列"""
         import time
         
@@ -470,13 +470,13 @@ class GameTipsDisplay:
 input_helper = InputHelper()
 tips_display = GameTipsDisplay()
 
-def enhance_player_experience(game_core):
+def enhance_player_experience(game_core) -> None:
     """增强游戏核心的玩家体验"""
     # 保存原始方法
     original_process_command = game_core.process_command
     original_output = game_core.output
     
-    def enhanced_process_command(input_text: str):
+    def enhanced_process_command(input_text: str) -> None:
         """增强的命令处理"""
         # 构建游戏上下文
         context = {
@@ -508,7 +508,7 @@ def enhance_player_experience(game_core):
         # 调用原始处理方法
         original_process_command(processed["command"])
     
-    def enhanced_output(text: str):
+    def enhanced_output(text: str) -> None:
         """增强的输出方法"""
         # 先输出原始内容
         original_output(text)

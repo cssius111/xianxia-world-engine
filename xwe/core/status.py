@@ -6,7 +6,7 @@
 """
 
 from dataclasses import dataclass, field
-from typing import Dict, Any, List, Optional, Callable
+from typing import Any, Callable, Dict, List, Optional
 from enum import Enum
 import uuid
 import logging
@@ -76,16 +76,16 @@ class StatusEffect:
         """是否已过期"""
         return self.duration != -1 and self.remaining_duration <= 0
     
-    def tick(self):
+    def tick(self) -> None:
         """经过一回合"""
         if self.duration != -1 and self.remaining_duration > 0:
             self.remaining_duration -= 1
     
-    def refresh(self):
+    def refresh(self) -> None:
         """刷新持续时间"""
         self.remaining_duration = self.duration
     
-    def stack(self, amount: int = 1):
+    def stack(self, amount: int = 1) -> None:
         """
         叠加层数
         
@@ -236,7 +236,7 @@ class StatusEffectManager:
         """是否有控制效果"""
         return any(e.is_control_effect() for e in self.effects)
     
-    def update(self):
+    def update(self) -> None:
         """更新所有效果（每回合调用）"""
         # 触发回合开始回调
         self._trigger_callback('on_turn_start')
@@ -263,7 +263,7 @@ class StatusEffectManager:
         # 触发回合结束回调
         self._trigger_callback('on_turn_end')
     
-    def clear_debuffs(self):
+    def clear_debuffs(self) -> None:
         """清除所有可驱散的减益效果"""
         to_remove = []
         
@@ -274,7 +274,7 @@ class StatusEffectManager:
         for effect_id in to_remove:
             self.remove_effect(effect_id)
     
-    def clear_all(self):
+    def clear_all(self) -> None:
         """清除所有效果"""
         self.effects.clear()
         logger.info("清除所有状态效果")
@@ -297,7 +297,7 @@ class StatusEffectManager:
         
         return total
     
-    def register_callback(self, event: str, callback: Callable):
+    def register_callback(self, event: str, callback: Callable) -> None:
         """
         注册事件回调
         
@@ -310,7 +310,7 @@ class StatusEffectManager:
         
         self.effect_callbacks[event].append(callback)
     
-    def _trigger_callback(self, event: str, **kwargs):
+    def _trigger_callback(self, event: str, **kwargs) -> None:
         """
         触发事件回调
         

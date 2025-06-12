@@ -7,7 +7,7 @@ import json
 import re
 import requests  # type: ignore[import-untyped]
 import logging
-from typing import Dict, Any, Optional
+from typing import Any, Dict, Optional
 from dataclasses import dataclass
 
 from ..command_parser import ParsedCommand, CommandType
@@ -475,11 +475,11 @@ Don't hold back. Give it your all. Be confident and concise."""
         
         return suggestions[:5]
 
-    def get_suggestions(self, text: str = "", context: dict = None) -> list:
+    def get_suggestions(self, text: str = "", context: Optional[dict] = None) -> list:
         """公有接口 - 获取命令建议"""
         return self._get_suggestions(text)
 
-    def process(self, *args, **kwargs):
+    def process(self, *args, **kwargs) -> Any:
         """兼容旧接口"""
         import warnings
         warnings.warn("process()已废弃，请使用parse()", DeprecationWarning)
@@ -487,7 +487,7 @@ Don't hold back. Give it your all. Be confident and concise."""
             return self.parse(args[0], args[1] if len(args) > 1 else None)
         return self.parse(kwargs.get('user_input', ''), kwargs.get('context'))
 
-    def explain_command(self, command):
+    def explain_command(self, command) -> Any:
         """解释命令对象"""
         if hasattr(command, 'command_type'):
             return f"命令类型: {command.command_type.value if hasattr(command.command_type, 'value') else command.command_type}"

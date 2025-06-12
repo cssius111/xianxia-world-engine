@@ -5,7 +5,7 @@ NPC系统优化实现
 
 import random
 import logging
-from typing import Dict, Any, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 from .data_manager import DM
 from .formula_engine import formula_engine, evaluate_expression
 
@@ -25,7 +25,7 @@ class NPCSystemV3:
         self.relationships = {}  # {player_id: {npc_id: relationship_value}}
         self._load_npc_data()
     
-    def _load_npc_data(self):
+    def _load_npc_data(self) -> None:
         """加载NPC系统数据"""
         try:
             self.npc_data = DM.load("npc_template")
@@ -120,7 +120,7 @@ class NPCSystemV3:
         
         return self.relationships[player_id].get(npc_id, 0)
     
-    def modify_relationship(self, player_id: str, npc_id: str, amount: int):
+    def modify_relationship(self, player_id: str, npc_id: str, amount: int) -> Any:
         """修改关系值"""
         if player_id not in self.relationships:
             self.relationships[player_id] = {}
@@ -327,7 +327,7 @@ class NPC:
         
         return text
     
-    def _check_dialogue_condition(self, condition: Optional[Dict], player, state: Dict) -> bool:
+    def _check_dialogue_condition(self, condition: Optional[Dict], player, state: Dict[str, Any]) -> bool:
         """检查对话条件"""
         if not condition:
             return True
@@ -551,7 +551,7 @@ class NPC:
         
         return self.current_location
     
-    def update(self, game_time: float):
+    def update(self, game_time: float) -> None:
         """更新NPC状态"""
         # 根据时间表更新位置
         scheduled_location = self.get_schedule_location(game_time)

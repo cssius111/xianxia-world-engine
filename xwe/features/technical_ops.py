@@ -26,22 +26,22 @@ except Exception:  # pragma: no cover - fallback when psutil not available
             self.percent = 0
 
     class _DummyProcess:
-        def memory_info(self):
+        def memory_info(self) -> Any:
             class Info:
                 rss = 0
 
             return Info()
 
-        def cpu_percent(self):
+        def cpu_percent(self) -> Any:
             return 0.0
 
     class psutil:  # type: ignore
         @staticmethod
-        def cpu_percent(interval=None):
+        def cpu_percent(interval=None) -> Any:
             return 0.0
 
         @staticmethod
-        def virtual_memory():
+        def virtual_memory() -> Any:
             return _DummyMem()
 
         @staticmethod
@@ -49,13 +49,13 @@ except Exception:  # pragma: no cover - fallback when psutil not available
             return _DummyProcess()
 
         @staticmethod
-        def cpu_count():
+        def cpu_count() -> Any:
             return 1
 
 
 import logging
 import platform
-from typing import Dict, List, Any, Optional, Callable
+from typing import Any, Callable, Dict, List, Optional
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
@@ -190,7 +190,7 @@ class SaveManager:
         data_str = json.dumps(data, sort_keys=True)
         return hashlib.sha256(data_str.encode()).hexdigest()[:16]
 
-    def _write_save_file(self, save_game: SaveGame):
+    def _write_save_file(self, save_game: SaveGame) -> None:
         """写入存档文件"""
         # 确定文件路径
         filename = f"{save_game.save_id}.save"
@@ -312,7 +312,7 @@ class SaveManager:
 
         return False
 
-    def _cleanup_old_saves(self, player_name: str, save_type: str):
+    def _cleanup_old_saves(self, player_name: str, save_type: str) -> None:
         """清理旧存档"""
         # 获取该玩家的所有存档
         player_saves = [
@@ -467,14 +467,14 @@ class ErrorHandler:
         error_str = f"{type(error).__name__}:{str(error)}:{time.time()}"
         return hashlib.md5(error_str.encode()).hexdigest()[:12]
 
-    def _save_error_log(self, error_log: ErrorLog):
+    def _save_error_log(self, error_log: ErrorLog) -> None:
         """保存错误日志"""
         # 追加到日志文件
         with open(self.error_log_file, "a", encoding="utf-8") as f:
             log_line = json.dumps(error_log.to_dict(), ensure_ascii=False)
             f.write(log_line + "\n")
 
-    def _create_crash_report(self, error_log: ErrorLog):
+    def _create_crash_report(self, error_log: ErrorLog) -> None:
         """创建崩溃报告"""
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         crash_file = self.crash_dir / f"crash_{timestamp}.txt"
@@ -549,7 +549,7 @@ class PerformanceMonitor:
         # 性能报警回调
         self.alert_callbacks: List[Callable[[Dict[str, Any]], Any]] = []
 
-    def start_monitoring(self):
+    def start_monitoring(self) -> None:
         """开始监控"""
         if self.monitoring:
             return
@@ -559,14 +559,14 @@ class PerformanceMonitor:
         self.monitor_thread.start()
         logger.info("性能监控已启动")
 
-    def stop_monitoring(self):
+    def stop_monitoring(self) -> None:
         """停止监控"""
         self.monitoring = False
         if self.monitor_thread:
             self.monitor_thread.join(timeout=2)
         logger.info("性能监控已停止")
 
-    def _monitor_loop(self):
+    def _monitor_loop(self) -> None:
         """监控循环"""
         while self.monitoring:
             try:
@@ -615,7 +615,7 @@ class PerformanceMonitor:
             "timestamp": time.time(),
         }
 
-    def _check_thresholds(self, metrics: Dict[str, float]):
+    def _check_thresholds(self, metrics: Dict[str, float]) -> None:
         """检查阈值"""
         alerts = []
 
@@ -677,7 +677,7 @@ class AutoBackupManager:
         self.backup_thread = None
         self.running = False
 
-    def start_auto_backup(self):
+    def start_auto_backup(self) -> None:
         """启动自动备份"""
         if self.running:
             return
@@ -687,14 +687,14 @@ class AutoBackupManager:
         self.backup_thread.start()
         logger.info("自动备份已启动")
 
-    def stop_auto_backup(self):
+    def stop_auto_backup(self) -> None:
         """停止自动备份"""
         self.running = False
         if self.backup_thread:
             self.backup_thread.join(timeout=2)
         logger.info("自动备份已停止")
 
-    def _backup_loop(self):
+    def _backup_loop(self) -> None:
         """备份循环"""
         while self.running:
             current_time = time.time()
@@ -705,7 +705,7 @@ class AutoBackupManager:
 
             time.sleep(10)  # 每10秒检查一次
 
-    def _perform_backup(self):
+    def _perform_backup(self) -> None:
         """执行备份"""
         try:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -743,7 +743,7 @@ class AutoBackupManager:
         except Exception as e:
             logger.error(f"自动备份失败: {e}")
 
-    def _cleanup_old_backups(self, max_backups: int = 10):
+    def _cleanup_old_backups(self, max_backups: int = 10) -> None:
         """清理旧备份"""
         backups = []
 
@@ -780,7 +780,7 @@ class TechnicalOpsSystem:
         # 崩溃保护
         self._setup_crash_protection()
 
-    def _setup_crash_protection(self):
+    def _setup_crash_protection(self) -> None:
         """设置崩溃保护
 
         在非主线程环境（例如 WSGI 服务器中）注册信号处理会抛出 ``ValueError``，
@@ -803,7 +803,7 @@ class TechnicalOpsSystem:
         if hasattr(signal, "SIGINT"):
             signal.signal(signal.SIGINT, self._signal_handler)
 
-    def _on_exit(self):
+    def _on_exit(self) -> None:
         """退出时的处理"""
         logger.info("游戏正在关闭...")
 
@@ -814,12 +814,12 @@ class TechnicalOpsSystem:
         # 保存性能报告
         self._save_performance_report()
 
-    def _signal_handler(self, signum, frame):
+    def _signal_handler(self, signum, frame) -> None:
         """信号处理"""
         logger.warning(f"收到信号: {signum}")
         # 可以在这里添加紧急保存等操作
 
-    def _save_performance_report(self):
+    def _save_performance_report(self) -> None:
         """保存性能报告"""
         report = {
             "performance": self.performance_monitor.get_performance_summary(),
@@ -846,7 +846,7 @@ class TechnicalOpsSystem:
             return save_game.data.get("game_state")
         return None
 
-    def handle_game_error(self, error: Exception, context: Dict[str, Any] = None):
+    def handle_game_error(self, error: Exception, context: Optional[Dict[str, Any]] = None) -> None:
         """处理游戏错误"""
         # 确定严重程度
         severity = "medium"
@@ -891,13 +891,13 @@ class TechnicalOpsSystem:
 tech_ops_system = TechnicalOpsSystem()
 
 
-def integrate_technical_features(game_core):
+def integrate_technical_features(game_core) -> None:
     """集成技术功能到游戏核心"""
     # 自动存档
     original_process_command = game_core.process_command
     command_count = 0
 
-    def auto_save_wrapper(input_text: str):
+    def auto_save_wrapper(input_text: str) -> None:
         """带自动存档的命令处理"""
         nonlocal command_count
         command_count += 1
@@ -936,7 +936,7 @@ def integrate_technical_features(game_core):
         game_core._save_game if hasattr(game_core, "_save_game") else None
     )
 
-    def enhanced_save_game():
+    def enhanced_save_game() -> None:
         """增强的保存游戏"""
         if game_core.game_state.player:
             save_id = tech_ops_system.create_game_save(

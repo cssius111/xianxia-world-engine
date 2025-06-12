@@ -6,7 +6,7 @@ NPC记忆系统
 """
 
 import logging
-from typing import Dict, List, Optional, Any, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
@@ -56,7 +56,7 @@ class Memory:
     # 关联的其他记忆
     related_memories: List[str] = field(default_factory=list)
     
-    def decay(self, time_passed: int, decay_rate: float = 0.01):
+    def decay(self, time_passed: int, decay_rate: float = 0.01) -> None:
         """
         记忆衰减
         
@@ -68,7 +68,7 @@ class Memory:
         adjusted_rate = decay_rate / self.importance.value
         self.strength = max(0, self.strength - adjusted_rate * time_passed)
     
-    def reinforce(self, amount: float = 0.2):
+    def reinforce(self, amount: float = 0.2) -> None:
         """强化记忆"""
         self.strength = min(1.0, self.strength + amount)
     
@@ -100,13 +100,13 @@ class MemoryCluster:
     total_importance: float = 0.0
     last_accessed: int = 0
     
-    def add_memory(self, memory_id: str, importance: float):
+    def add_memory(self, memory_id: str, importance: float) -> None:
         """添加记忆到簇"""
         if memory_id not in self.memories:
             self.memories.append(memory_id)
             self.total_importance += importance
     
-    def remove_memory(self, memory_id: str, importance: float):
+    def remove_memory(self, memory_id: str, importance: float) -> None:
         """从簇中移除记忆"""
         if memory_id in self.memories:
             self.memories.remove(memory_id)
@@ -278,7 +278,7 @@ class MemorySystem:
         related.sort(key=lambda x: x[0], reverse=True)
         return [m for _, m in related]
     
-    def _manage_memory_capacity(self, npc_id: str):
+    def _manage_memory_capacity(self, npc_id: str) -> None:
         """管理记忆容量"""
         memories = self.npc_memories.get(npc_id, {})
         
@@ -296,7 +296,7 @@ class MemorySystem:
         for memory in to_forget:
             self.forget_memory(npc_id, memory.id)
     
-    def _update_memory_clusters(self, npc_id: str, memory: Memory):
+    def _update_memory_clusters(self, npc_id: str, memory: Memory) -> None:
         """更新记忆簇"""
         clusters = self.memory_clusters.get(npc_id, {})
         
@@ -454,7 +454,7 @@ class MemorySystem:
             'most_important_memory': most_important.get_summary() if most_important else None
         }
     
-    def forget_memory(self, npc_id: str, memory_id: str):
+    def forget_memory(self, npc_id: str, memory_id: str) -> None:
         """遗忘记忆"""
         if npc_id not in self.npc_memories:
             return
@@ -471,7 +471,7 @@ class MemorySystem:
             
             logger.debug(f"NPC {npc_id} 遗忘记忆: {memory.get_summary()}")
     
-    def update_memory_strength(self, npc_id: str, current_time: int):
+    def update_memory_strength(self, npc_id: str, current_time: int) -> None:
         """
         更新记忆强度（自然衰减）
         

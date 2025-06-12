@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Dict, Any, Optional, List
+from typing import Any, Dict, List, Optional
 from enum import Enum
 import logging
 
@@ -95,7 +95,7 @@ class CharacterAttributes:
             return extra[name]
         raise AttributeError(f"{self.__class__.__name__} object has no attribute '{name}'")
 
-    def __setattr__(self, name: str, value: Any):
+    def __setattr__(self, name: str, value: Any) -> None:
         """Set attribute and mirror the value to ``extra_attributes``.
 
         During dataclass initialization ``extra_attributes`` may not yet
@@ -117,7 +117,7 @@ class CharacterAttributes:
                 # Fallback during early __init__ before ``extra_attributes``
                 super().__setattr__(name, value)
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         self.calculate_derived_attributes()
 
     def get(self, attr_name: str, default: float = 0.0) -> float:
@@ -125,17 +125,17 @@ class CharacterAttributes:
             return getattr(self, attr_name)
         return self.extra_attributes.get(attr_name, default)
 
-    def set(self, attr_name: str, value: float):
+    def set(self, attr_name: str, value: float) -> None:
         if hasattr(self, attr_name):
             setattr(self, attr_name, value)
         else:
             self.extra_attributes[attr_name] = value
 
-    def modify(self, attr_name: str, delta: float):
+    def modify(self, attr_name: str, delta: float) -> None:
         current = self.get(attr_name)
         self.set(attr_name, current + delta)
 
-    def calculate_derived_attributes(self):
+    def calculate_derived_attributes(self) -> None:
         self.max_health = self.constitution * 10 + self.cultivation_level * 20
         self.max_mana = self.intelligence * 8 + self.spiritual_root_purity * 2
         self.max_stamina = self.constitution * 5 + self.strength * 3
@@ -183,16 +183,16 @@ class AttributeSystem:
                     base_value = self.parser.evaluate(modifier["formula"], context)
         return base_value
 
-    def add_modifier(self, attr_name: str, modifier: Dict[str, Any]):
+    def add_modifier(self, attr_name: str, modifier: Dict[str, Any]) -> None:
         if attr_name not in self.modifiers:
             self.modifiers[attr_name] = []
         self.modifiers[attr_name].append(modifier)
 
-    def remove_modifier(self, attr_name: str, modifier_id: str):
+    def remove_modifier(self, attr_name: str, modifier_id: str) -> None:
         if attr_name in self.modifiers:
             self.modifiers[attr_name] = [m for m in self.modifiers[attr_name] if m.get("id") != modifier_id]
 
-    def clear_modifiers(self, attr_name: Optional[str] = None):
+    def clear_modifiers(self, attr_name: Optional[str] = None) -> None:
         if attr_name:
             self.modifiers.pop(attr_name, None)
         else:

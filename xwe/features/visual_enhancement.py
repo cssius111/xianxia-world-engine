@@ -8,7 +8,7 @@
 import time
 import sys
 import random
-from typing import List, Dict, Optional, Callable, Any
+from typing import Any, Callable, Dict, List, Optional
 from enum import Enum
 
 class Color:
@@ -134,7 +134,7 @@ class TextRenderer:
         
         return result + Color.RESET
     
-    def box(self, text: str, width: int = None, style: str = "single") -> str:
+    def box(self, text: str, width: Optional[int] = None, style: str = "single") -> str:
         """文字框"""
         lines = text.split('\n')
         if width is None:
@@ -285,7 +285,7 @@ class ASCIIArt:
         
         return art_text
     
-    def animate_art(self, name: str, duration: float = 1.0, color: Optional[str] = None):
+    def animate_art(self, name: str, duration: float = 1.0, color: Optional[str] = None) -> None:
         """动画显示ASCII艺术"""
         art = self.get_art(name, color)
         lines = art.split('\n')
@@ -298,7 +298,7 @@ class TextAnimation:
     """文字动画效果"""
     
     @staticmethod
-    def typewriter(text: str, delay: float = 0.05, color: Optional[str] = None):
+    def typewriter(text: str, delay: float = 0.05, color: Optional[str] = None) -> None:
         """打字机效果"""
         if color:
             sys.stdout.write(color)
@@ -313,7 +313,7 @@ class TextAnimation:
         sys.stdout.write('\n')
     
     @staticmethod
-    def fade_in(text: str, steps: int = 5):
+    def fade_in(text: str, steps: int = 5) -> None:
         """淡入效果（通过颜色亮度模拟）"""
         colors = [
             Color.BRIGHT_BLACK,
@@ -331,7 +331,7 @@ class TextAnimation:
         sys.stdout.write('\n')
     
     @staticmethod
-    def flash(text: str, times: int = 3, interval: float = 0.3):
+    def flash(text: str, times: int = 3, interval: float = 0.3) -> None:
         """闪烁效果"""
         for i in range(times):
             sys.stdout.write(f'\r{text}')
@@ -344,7 +344,7 @@ class TextAnimation:
         sys.stdout.write(f'\r{text}\n')
     
     @staticmethod
-    def scroll(text: str, width: int = 40, speed: float = 0.1):
+    def scroll(text: str, width: int = 40, speed: float = 0.1) -> None:
         """滚动效果"""
         padded_text = " " * width + text + " " * width
         
@@ -366,7 +366,7 @@ class ProgressBar:
         self.empty_char = empty_char
         self.current = 0
     
-    def update(self, current: int, prefix: str = "", suffix: str = ""):
+    def update(self, current: int, prefix: str = "", suffix: str = "") -> None:
         """更新进度条"""
         self.current = min(current, self.total)
         filled = int(self.width * self.current / self.total)
@@ -381,7 +381,7 @@ class ProgressBar:
         if self.current >= self.total:
             sys.stdout.write('\n')
     
-    def animate_to(self, target: int, duration: float = 1.0, prefix: str = "", suffix: str = ""):
+    def animate_to(self, target: int, duration: float = 1.0, prefix: str = "", suffix: str = "") -> None:
         """动画到目标值"""
         steps = 20
         step_delay = duration / steps
@@ -455,7 +455,7 @@ class VisualTheme:
         theme = self.themes.get(self.current_theme, self.themes["default"])
         return theme.get(color_type, Color.RESET)
     
-    def set_theme(self, theme_name: str):
+    def set_theme(self, theme_name: str) -> None:
         """设置主题"""
         if theme_name in self.themes:
             self.current_theme = theme_name
@@ -468,7 +468,7 @@ class VisualEffects:
         self.ascii_art = ASCIIArt()
         self.theme = VisualTheme()
     
-    def display_title(self, title: str, subtitle: str = ""):
+    def display_title(self, title: str, subtitle: str = "") -> None:
         """显示标题"""
         # ASCII艺术边框
         border = "=" * (len(title) + 4)
@@ -480,7 +480,7 @@ class VisualEffects:
         print(self.text_renderer.colorize(border, "title"))
         print()
     
-    def display_scene_transition(self, from_scene: str, to_scene: str):
+    def display_scene_transition(self, from_scene: str, to_scene: str) -> None:
         """场景转换效果"""
         print()
         TextAnimation.fade_in(f"离开 {from_scene}...")
@@ -494,7 +494,7 @@ class VisualEffects:
         TextAnimation.fade_in(f"到达 {to_scene}")
         print()
     
-    def display_combat_effect(self, attacker: str, target: str, damage: int):
+    def display_combat_effect(self, attacker: str, target: str, damage: int) -> None:
         """战斗效果"""
         # 攻击动画
         print(f"\n{self.text_renderer.colorize(attacker, 'combat')} 发动攻击！")
@@ -513,7 +513,7 @@ class VisualEffects:
         
         print(f"{self.text_renderer.colorize(target, 'dialogue')} 受到了伤害！\n")
     
-    def display_cultivation_progress(self, current: int, total: int, realm: str):
+    def display_cultivation_progress(self, current: int, total: int, realm: str) -> None:
         """修炼进度"""
         print(f"\n{self.text_renderer.colorize('修炼中...', 'cultivation')}")
         
@@ -531,7 +531,7 @@ class VisualEffects:
         )
         print()
     
-    def display_item_obtained(self, item_name: str, item_type: str = "common"):
+    def display_item_obtained(self, item_name: str, item_type: str = "common") -> None:
         """获得物品效果"""
         color_map = {
             "common": "normal",
@@ -556,7 +556,7 @@ class VisualEffects:
         TextAnimation.typewriter(f"你获得了: {item_text}", delay=0.03)
         print()
     
-    def display_dialogue(self, speaker: str, text: str, emotion: str = "normal"):
+    def display_dialogue(self, speaker: str, text: str, emotion: str = "normal") -> None:
         """显示对话"""
         # 说话者名称
         speaker_text = self.text_renderer.colorize(f"{speaker}:", "dialogue")
@@ -574,7 +574,7 @@ class VisualEffects:
         
         TextAnimation.typewriter(text, delay=0.02, color=text_color)
     
-    def display_status_bar(self, hp: int, max_hp: int, mp: int, max_mp: int, exp: int, max_exp: int):
+    def display_status_bar(self, hp: int, max_hp: int, mp: int, max_mp: int, exp: int, max_exp: int) -> None:
         """显示状态条"""
         # 气血值
         hp_bar = ProgressBar(max_hp, width=20, fill_char="❤", empty_char="♡")
@@ -588,7 +588,7 @@ class VisualEffects:
         exp_bar = ProgressBar(max_exp, width=20, fill_char="★", empty_char="☆")
         exp_bar.update(exp, prefix="EXP", suffix=f"{exp}/{max_exp}")
     
-    def display_menu(self, title: str, options: List[str], selected: int = 0):
+    def display_menu(self, title: str, options: List[str], selected: int = 0) -> None:
         """显示菜单"""
         print(self.text_renderer.box(title, style="double"))
         
@@ -604,7 +604,7 @@ class VisualEffects:
         
         print()
     
-    def display_achievement(self, achievement_name: str, description: str):
+    def display_achievement(self, achievement_name: str, description: str) -> None:
         """显示成就"""
         print()
         TextAnimation.flash(
@@ -621,12 +621,12 @@ class VisualEffects:
         print(self.text_renderer.colorize(achievement_box, "accent"))
         print()
     
-    def clear_screen(self):
+    def clear_screen(self) -> None:
         """清屏"""
         import os
         os.system('cls' if os.name == 'nt' else 'clear')
     
-    def display_loading(self, message: str = "加载中", duration: float = 2.0):
+    def display_loading(self, message: str = "加载中", duration: float = 2.0) -> None:
         """显示加载动画"""
         frames = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]
         end_time = time.time() + duration

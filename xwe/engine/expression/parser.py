@@ -8,7 +8,7 @@
 import re
 import logging
 import operator
-from typing import Dict, Any, List, Optional, Callable, Union
+from typing import Any, Callable, Dict, List, Optional, Union
 
 from .tokenizer import Tokenizer, Token, TokenType
 from .ast_nodes import (
@@ -509,7 +509,7 @@ class ExpressionParser:
             self.current += 1
         return token
 
-    def _consume(self, expected_type: TokenType, error_message: str):
+    def _consume(self, expected_type: TokenType, error_message: str) -> None:
         """消费期望类型的token"""
         token = self._advance()
         if token.type != expected_type:

@@ -4,7 +4,7 @@
 """
 
 from abc import ABC, abstractmethod
-from typing import Dict, Any, List, Optional, Callable, Type
+from typing import Any, Callable, Dict, List, Optional, Type
 from dataclasses import dataclass, field
 import time
 import logging
@@ -53,7 +53,7 @@ class IEventDispatcher(ABC):
         pass
         
     @abstractmethod
-    def get_event_history(self, event_type: str = None, limit: int = 100) -> List[DomainEvent]:
+    def get_event_history(self, event_type: Optional[str] = None, limit: int = 100) -> List[DomainEvent]:
         """获取事件历史"""
         pass
         
@@ -128,7 +128,7 @@ class EventDispatcher(ServiceBase[IEventDispatcher], IEventDispatcher):
             })
             
         # 记录处理时间（在事件处理后）
-        def record_time():
+        def record_time() -> Any:
             processing_time = time.time() - start_time
             with self._lock:
                 self._processing_times.append(processing_time)
@@ -150,7 +150,7 @@ class EventDispatcher(ServiceBase[IEventDispatcher], IEventDispatcher):
                 
     def dispatch_async(self, event: DomainEvent) -> None:
         """异步分发事件"""
-        def async_dispatch():
+        def async_dispatch() -> None:
             try:
                 self.dispatch(event)
             except Exception as e:
@@ -184,7 +184,7 @@ class EventDispatcher(ServiceBase[IEventDispatcher], IEventDispatcher):
                 
         self.logger.info(f"Unsubscribed handler from event: {event_type}")
         
-    def get_event_history(self, event_type: str = None, limit: int = 100) -> List[DomainEvent]:
+    def get_event_history(self, event_type: Optional[str] = None, limit: int = 100) -> List[DomainEvent]:
         """获取事件历史"""
         return self._event_store.get_events(
             event_type=event_type,
@@ -226,13 +226,13 @@ class EventDispatcher(ServiceBase[IEventDispatcher], IEventDispatcher):
         
     # 便捷方法
     def dispatch_game_event(self, event_type: str, data: Dict[str, Any],
-                           source: str = None) -> None:
+                           source: Optional[str] = None) -> None:
         """分发游戏事件"""
         event = GameEvent(event_type, data, source=source)
         self.dispatch(event)
         
     def dispatch_player_event(self, event_type: str, data: Dict[str, Any],
-                             player_id: str = None) -> None:
+                             player_id: Optional[str] = None) -> None:
         """分发玩家事件"""
         if player_id:
             data['player_id'] = player_id
@@ -240,7 +240,7 @@ class EventDispatcher(ServiceBase[IEventDispatcher], IEventDispatcher):
         self.dispatch(event)
         
     def dispatch_combat_event(self, event_type: str, data: Dict[str, Any],
-                             combat_id: str = None) -> None:
+                             combat_id: Optional[str] = None) -> None:
         """分发战斗事件"""
         if combat_id:
             data['combat_id'] = combat_id
@@ -248,7 +248,7 @@ class EventDispatcher(ServiceBase[IEventDispatcher], IEventDispatcher):
         self.dispatch(event)
         
     def dispatch_world_event(self, event_type: str, data: Dict[str, Any],
-                            location: str = None) -> None:
+                            location: Optional[str] = None) -> None:
         """分发世界事件"""
         if location:
             data['location'] = location

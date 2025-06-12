@@ -6,7 +6,7 @@
 """
 
 from dataclasses import dataclass, field
-from typing import Dict, Any, List, Optional, Callable
+from typing import Any, Callable, Dict, List, Optional
 from enum import Enum
 import logging
 
@@ -143,7 +143,7 @@ class Skill:
         
         return True, "可以使用"
     
-    def consume_resources(self, caster: Character):
+    def consume_resources(self, caster: Character) -> None:
         """
         消耗资源
         
@@ -159,12 +159,12 @@ class Skill:
         # 设置冷却
         self.current_cooldown = self.cooldown
     
-    def reduce_cooldown(self):
+    def reduce_cooldown(self) -> None:
         """减少冷却时间"""
         if self.current_cooldown > 0:
             self.current_cooldown -= 1
     
-    def reset_cooldown(self):
+    def reset_cooldown(self) -> None:
         """重置冷却"""
         self.current_cooldown = 0
     
@@ -244,7 +244,7 @@ class SkillSystem:
         # 加载技能数据
         self._load_skills()
     
-    def _load_skills(self):
+    def _load_skills(self) -> None:
         """加载技能数据"""
         try:
             skill_data = self.data_loader.get_skill_data()
@@ -396,7 +396,7 @@ class SkillSystem:
         
         return 1.0
     
-    def register_skill_callback(self, event: str, callback: Callable):
+    def register_skill_callback(self, event: str, callback: Callable) -> None:
         """
         注册技能事件回调
         
@@ -409,7 +409,7 @@ class SkillSystem:
         
         self.skill_callbacks[event].append(callback)
     
-    def trigger_skill_callbacks(self, event: str, **kwargs):
+    def trigger_skill_callbacks(self, event: str, **kwargs) -> None:
         """
         触发技能事件回调
         
@@ -424,7 +424,7 @@ class SkillSystem:
                 except Exception as e:
                     logger.error(f"技能回调执行失败: {e}")
     
-    def update_cooldowns(self, character: Character):
+    def update_cooldowns(self, character: Character) -> None:
         """
         更新角色技能冷却
         

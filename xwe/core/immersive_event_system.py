@@ -6,7 +6,7 @@
 
 import time
 import random
-from typing import Dict, List, Any, Optional, Callable, Tuple
+from typing import Any, Callable, Dict, List, Optional, Tuple
 from dataclasses import dataclass, field
 from enum import Enum
 
@@ -190,7 +190,7 @@ class ImmersiveEventSystem:
         
         return events
         
-    def trigger_event(self, event_id: str, context: Dict[str, Any] = None) -> bool:
+    def trigger_event(self, event_id: str, context: Optional[Dict[str, Any]] = None) -> bool:
         """触发事件"""
         if event_id not in self.events:
             return False
@@ -282,7 +282,7 @@ class ImmersiveEventSystem:
         steps = self.events[self.current_event]
         return self.current_step >= len(steps)
         
-    def complete_event(self):
+    def complete_event(self) -> None:
         """完成当前事件"""
         if self.current_event:
             # 记录历史
@@ -317,7 +317,7 @@ class ImmersiveEventSystem:
                     
         return True
         
-    def _apply_effects(self, effects: Dict[str, Any]):
+    def _apply_effects(self, effects: Dict[str, Any]) -> None:
         """应用效果"""
         if not effects:
             return
@@ -329,7 +329,7 @@ class ImmersiveEventSystem:
             
         self.current_context['event_effects'].update(effects)
         
-    def register_callback(self, event_id: str, callback: Callable):
+    def register_callback(self, event_id: str, callback: Callable) -> None:
         """注册事件完成回调"""
         self.event_callbacks[event_id] = callback
         

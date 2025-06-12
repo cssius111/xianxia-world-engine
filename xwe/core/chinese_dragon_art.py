@@ -1,3 +1,4 @@
+from typing import Any
 # chinese_dragon_art.py
 """
 中国传统龙形ASCII艺术资源
@@ -70,11 +71,11 @@ CHINESE_DRAGONS = {
     """,
 }
 
-def get_dragon_art(style="classic"):
+def get_dragon_art(style="classic") -> Any:
     """获取指定风格的中国龙ASCII艺术"""
     return CHINESE_DRAGONS.get(style, CHINESE_DRAGONS["classic"])
 
-def display_dragon_with_animation(style="flying"):
+def display_dragon_with_animation(style="flying") -> None:
     """带动画效果的龙显示（终端环境）"""
     import time
     import os
@@ -87,7 +88,7 @@ def display_dragon_with_animation(style="flying"):
         print(line)
         time.sleep(0.1)
     
-def get_dragon_for_scene(scene_type):
+def get_dragon_for_scene(scene_type) -> Any:
     """根据场景返回合适的龙图案"""
     scene_dragons = {
         "welcome": "welcome",

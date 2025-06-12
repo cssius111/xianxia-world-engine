@@ -1,7 +1,7 @@
 """
 增强的游戏输出处理器，支持将多行相关内容组合显示
 """
-from typing import List, Tuple, Optional, Any
+from typing import Any, List, Optional, Tuple
 import re
 
 
@@ -13,7 +13,7 @@ class EnhancedGameOutput:
         self.output_buffer = []
         self.current_context = None
         
-    def output(self, text: str, category: str = "system", force_new_block: bool = False):
+    def output(self, text: str, category: str = "system", force_new_block: bool = False) -> None:
         """
         智能输出处理
         
@@ -100,7 +100,7 @@ class EnhancedGameOutput:
                 
         return False
         
-    def _console_output(self, text: str, category: str):
+    def _console_output(self, text: str, category: str) -> None:
         """控制台输出（带颜色）"""
         color_map = {
             'system': '\033[90m',    # 灰色
@@ -115,7 +115,7 @@ class EnhancedGameOutput:
         
         print(f"{color}{text}{reset}")
         
-    def combat_sequence(self, actions: List[str]):
+    def combat_sequence(self, actions: List[str]) -> None:
         """输出战斗序列（作为一个整体）"""
         if not actions:
             return
@@ -124,7 +124,7 @@ class EnhancedGameOutput:
         combat_text = "\n".join(actions)
         self.output(combat_text, "combat", force_new_block=True)
         
-    def status_report(self, status_dict: dict):
+    def status_report(self, status_dict: dict) -> None:
         """输出状态报告（格式化为表格）"""
         if not status_dict:
             return
@@ -137,7 +137,7 @@ class EnhancedGameOutput:
         status_text = "\n".join(lines)
         self.output(status_text, "system", force_new_block=True)
         
-    def dialogue_exchange(self, speaker: str, dialogue: str, responses: Optional[List[str]] = None):
+    def dialogue_exchange(self, speaker: str, dialogue: str, responses: Optional[List[str]] = None) -> None:
         """输出对话交流（包括选项）"""
         dialogue_text = f"【{speaker}】: {dialogue}"
         

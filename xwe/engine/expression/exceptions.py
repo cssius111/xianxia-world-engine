@@ -1,3 +1,4 @@
+from typing import Any
 # engine/expression/exceptions.py
 """
 表达式解析器异常定义模块
@@ -15,7 +16,7 @@ class ExpressionError(Exception):
         self.position = position
         self.expression = expression
 
-    def __str__(self):
+    def __str__(self) -> Any:
         if self.position >= 0 and self.expression:
             # 显示错误位置
             lines = [

@@ -1,6 +1,6 @@
 # xwe/core/nlp/advanced/prompt_engine.py
 
-from typing import Dict, List, Any, Optional
+from typing import Any, Dict, List, Optional
 from dataclasses import dataclass
 import json
 from enum import Enum
@@ -121,7 +121,7 @@ class AdvancedPromptEngine:
         
         return base_prompt + "\n" + type_specific.get(response_type, "")
         
-    def _format_constraints(self, constraints: Dict) -> str:
+    def _format_constraints(self, constraints: Dict[str, Any]) -> str:
         """格式化约束条件"""
         if not constraints:
             return ""

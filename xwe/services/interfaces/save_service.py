@@ -4,7 +4,7 @@
 """
 
 from abc import ABC, abstractmethod
-from typing import Optional, Dict, Any, List
+from typing import Any, Dict, List, Optional
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
@@ -205,7 +205,7 @@ class ISaveService(ABC):
     # ========== 存档管理 ==========
     
     @abstractmethod
-    def list_saves(self, save_type: SaveType = None) -> List[SaveInfo]:
+    def list_saves(self, save_type: Optional[SaveType] = None) -> List[SaveInfo]:
         """
         列出所有存档
         

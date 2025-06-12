@@ -10,7 +10,7 @@ import os
 import json
 import importlib
 import importlib.util
-from typing import Dict, List, Any, Optional, Callable
+from typing import Any, Callable, Dict, List, Optional
 from dataclasses import dataclass, field
 from pathlib import Path
 import hashlib
@@ -81,7 +81,7 @@ class ModLoader:
         # 创建示例MOD目录结构
         self._create_mod_template()
     
-    def _create_mod_template(self):
+    def _create_mod_template(self) -> None:
         """创建MOD模板"""
         template_path = self.mods_directory / "template_mod"
         if not template_path.exists():
@@ -418,11 +418,11 @@ class ContentRegistry:
         self.validators: Dict[ContentType, Callable] = {}
         self.processors: Dict[ContentType, Callable] = {}
     
-    def register_validator(self, content_type: ContentType, validator: Callable):
+    def register_validator(self, content_type: ContentType, validator: Callable) -> None:
         """注册内容验证器"""
         self.validators[content_type] = validator
     
-    def register_processor(self, content_type: ContentType, processor: Callable):
+    def register_processor(self, content_type: ContentType, processor: Callable) -> None:
         """注册内容处理器"""
         self.processors[content_type] = processor
     
@@ -699,7 +699,7 @@ class ContentEcosystem:
         # 加载初始MODs
         self.load_all_mods()
     
-    def _init_validators(self):
+    def _init_validators(self) -> None:
         """初始化内容验证器"""
         # NPC验证器
         def validate_npc(content: ContentEntry) -> bool:
@@ -720,7 +720,7 @@ class ContentEcosystem:
         self.content_registry.register_validator(ContentType.ITEM, validate_item)
         self.content_registry.register_validator(ContentType.SKILL, validate_skill)
     
-    def _init_processors(self):
+    def _init_processors(self) -> None:
         """初始化内容处理器"""
         # NPC处理器
         def process_npc(content: ContentEntry) -> Dict[str, Any]:
@@ -741,7 +741,7 @@ class ContentEcosystem:
         self.content_registry.register_processor(ContentType.NPC, process_npc)
         self.content_registry.register_processor(ContentType.ITEM, process_item)
     
-    def load_all_mods(self):
+    def load_all_mods(self) -> None:
         """加载所有MODs"""
         mods = self.mod_loader.scan_mods()
         

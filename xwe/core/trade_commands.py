@@ -5,7 +5,7 @@
 处理商店、交易、讨价还价等相关命令。
 """
 
-from typing import Dict, Optional, List, Tuple, Any
+from typing import Any, Dict, List, Optional, Tuple
 import logging
 from .trade_system import TradeSystem, Shopkeeper, MarketStall, BlackMarket
 from .character import Character
@@ -19,10 +19,10 @@ class TradeCommandHandler:
     def __init__(self, trade_system: TradeSystem):
         self.trade_system = trade_system
         self.current_shop: Optional[Shopkeeper] = None
-        self.bargaining_state: Dict = {}  # 记录讨价还价状态
+        self.bargaining_state: Dict[str, Any] = {}  # 记录讨价还价状态
         self._init_shops()
     
-    def _init_shops(self):
+    def _init_shops(self) -> None:
         """初始化默认商店"""
         # 万宝楼 - 综合商店
         wanbao_shop = Shopkeeper("万宝楼掌柜", "general", markup=1.2)

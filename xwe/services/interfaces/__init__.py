@@ -1,3 +1,4 @@
+from typing import Any
 """
 服务接口汇总
 提供所有服务接口的统一导入点
@@ -95,7 +96,7 @@ SERVICE_INTERFACES = {
 }
 
 
-def get_service_interface(service_name: str):
+def get_service_interface(service_name: str) -> Any:
     """
     根据服务名称获取接口类型
     

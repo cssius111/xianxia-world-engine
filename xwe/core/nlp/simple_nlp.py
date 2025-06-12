@@ -9,7 +9,7 @@ from typing import Any, Optional
 class SimpleNLPProcessor:
     """最简单的NLP处理器实现"""
     
-    def parse(self, text: str, context=None):
+    def parse(self, text: str, context=None) -> Any:
         """简单的规则解析"""
         text_lower = text.lower()
         

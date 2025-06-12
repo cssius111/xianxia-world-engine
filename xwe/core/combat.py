@@ -6,7 +6,7 @@
 import random
 import logging
 from dataclasses import dataclass, field
-from typing import Dict, Any, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 from enum import Enum
 from .data_manager import DM
 from .formula_engine import formula_engine, calculate, evaluate_expression
@@ -79,7 +79,7 @@ class CombatSystemV3:
         self.active_combats = {}
         self._load_combat_data()
     
-    def _load_combat_data(self):
+    def _load_combat_data(self) -> None:
         """加载战斗系统数据"""
         try:
             self.combat_data = DM.load("combat_system")
@@ -504,7 +504,7 @@ class Combat:
         # 初始化战斗
         self._initialize_combat()
 
-    def add_participant(self, participant, team: str = "team"):
+    def add_participant(self, participant, team: str = "team") -> None:
         """Add a participant after combat creation."""
         self.participants[participant.id] = participant
         setattr(participant, "team", team)
@@ -515,7 +515,7 @@ class Combat:
     def is_combat_over(self) -> bool:
         return self.phase == CombatPhase.END_TURN or self._check_combat_end()
     
-    def _initialize_combat(self):
+    def _initialize_combat(self) -> None:
         """初始化战斗"""
         self.log("=== 战斗开始 ===")
         
@@ -534,7 +534,7 @@ class Combat:
         self.phase = CombatPhase.ACTION
         self.log(f"战斗顺序: {[p.name for p in self.turn_order]}")
     
-    def _detect_participants(self):
+    def _detect_participants(self) -> None:
         """检测所有参与者"""
         # 将参与者分组
         teams = {}
@@ -547,7 +547,7 @@ class Combat:
         self.teams = teams
         self.log(f"检测到 {len(teams)} 个阵营，共 {len(self.participants)} 名参与者")
     
-    def _calculate_initiative(self):
+    def _calculate_initiative(self) -> None:
         """计算先攻顺序"""
         initiative_rolls = []
         
@@ -577,12 +577,12 @@ class Combat:
         initiative_rolls.sort(key=lambda x: x[0], reverse=True)
         self.turn_order = [p for _, p in initiative_rolls]
     
-    def _apply_terrain_effects(self):
+    def _apply_terrain_effects(self) -> None:
         """应用地形效果"""
         # TODO: 实现地形系统
         pass
     
-    def _activate_pre_combat_buffs(self):
+    def _activate_pre_combat_buffs(self) -> None:
         """激活战前增益"""
         for participant in self.participants.values():
             # 激活被动技能
@@ -782,7 +782,7 @@ class Combat:
             self.log(f"{fleer.name} 逃跑失败")
             return {"success": False, "message": "逃跑失败"}
     
-    def _resolve_effects(self, effects: List[Dict]):
+    def _resolve_effects(self, effects: List[Dict]) -> None:
         """结算效果"""
         for effect in effects:
             effect_type = effect.get("type")
@@ -826,7 +826,7 @@ class Combat:
         
         return targets
     
-    def _next_turn(self):
+    def _next_turn(self) -> None:
         """进入下一回合"""
         # 回合结束处理
         current_participant = self.turn_order[self.current_turn]
@@ -840,7 +840,7 @@ class Combat:
             self.round += 1
             self.log(f"\n=== 第 {self.round} 轮 ===")
     
-    def _end_turn_effects(self, participant):
+    def _end_turn_effects(self, participant) -> None:
         """回合结束效果"""
         # 持续时间递减
         participant.update_status_durations()
@@ -868,7 +868,7 @@ class Combat:
         # 只剩一个队伍有存活者
         return len(team_alive) <= 1
     
-    def _end_combat(self):
+    def _end_combat(self) -> None:
         """结束战斗"""
         self.phase = CombatPhase.END_TURN
         self.log("\n=== 战斗结束 ===")
@@ -890,7 +890,7 @@ class Combat:
         # 清理战斗
         del self.system.active_combats[self.combat_id]
     
-    def _distribute_rewards(self, winners: List[Any]):
+    def _distribute_rewards(self, winners: List[Any]) -> None:
         """分发战斗奖励"""
         if not winners:
             return
@@ -913,7 +913,7 @@ class Combat:
         
         # TODO: 实现物品掉落系统
     
-    def log(self, message: str):
+    def log(self, message: str) -> None:
         """记录战斗日志"""
         entry = {
             "round": self.round,
@@ -933,7 +933,7 @@ class CombatState:
         self.healing_done: Dict[str, int] = {}  # {healer_id: total_healing}
         self.distances: Dict[Tuple[str, str], float] = {}  # {(id1, id2): distance}
     
-    def record_damage(self, attacker_id: str, target_id: str, damage: int):
+    def record_damage(self, attacker_id: str, target_id: str, damage: int) -> None:
         """记录伤害"""
         if attacker_id not in self.damage_dealt:
             self.damage_dealt[attacker_id] = {}
@@ -943,7 +943,7 @@ class CombatState:
         
         self.damage_dealt[attacker_id][target_id] += damage
 
-    def record_healing(self, healer_id: str, target_id: str, amount: int):
+    def record_healing(self, healer_id: str, target_id: str, amount: int) -> None:
         """记录治疗量"""
         if healer_id not in self.healing_done:
             self.healing_done[healer_id] = 0
@@ -988,7 +988,7 @@ class CombatState:
         key = tuple(sorted([char1.id, char2.id]))
         return self.distances.get(key, 1.0)  # 默认距离1.0
     
-    def set_distance(self, char1_id: str, char2_id: str, distance: float):
+    def set_distance(self, char1_id: str, char2_id: str, distance: float) -> None:
         """设置距离"""
         key = tuple(sorted([char1_id, char2_id]))
         self.distances[key] = distance

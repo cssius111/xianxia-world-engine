@@ -1,4 +1,4 @@
-from typing import List, Dict, Any, Tuple
+from typing import Any, Dict, List, Tuple
 
 
 class HtmlGameLogger:
@@ -11,7 +11,7 @@ class HtmlGameLogger:
         self.status: Dict[str, Any] = {}
         self._write_html()
 
-    def update_status(self, player):
+    def update_status(self, player) -> None:
         """更新角色状态"""
         if not player:
             return
@@ -52,7 +52,7 @@ class HtmlGameLogger:
             self.logs = self.logs[-200:]
         self._write_html()
 
-    def _write_html(self):
+    def _write_html(self) -> None:
         html = self._generate_html()
         with open(self.filepath, "w", encoding="utf-8") as f:
             f.write(html)

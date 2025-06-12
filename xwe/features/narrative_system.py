@@ -9,7 +9,7 @@
 import random
 import json
 import time
-from typing import Dict, List, Optional, Any, Callable
+from typing import Any, Callable, Dict, List, Optional
 from dataclasses import dataclass, field
 from enum import Enum
 import logging
@@ -434,7 +434,7 @@ class AchievementSystem:
         
         return newly_unlocked
     
-    def unlock_achievement(self, achievement: Achievement):
+    def unlock_achievement(self, achievement: Achievement) -> None:
         """解锁成就"""
         self.unlocked_achievements.add(achievement.id)
         self.achievement_points += achievement.points
@@ -486,12 +486,12 @@ class StoryBranchManager:
         self.current_branch = "main"  # 当前分支
         self.branch_history = []  # 分支历史
         
-    def set_flag(self, flag_name: str, value: Any = True):
+    def set_flag(self, flag_name: str, value: Any = True) -> None:
         """设置剧情标记"""
         self.story_flags[flag_name] = value
         logger.debug(f"剧情标记设置: {flag_name} = {value}")
     
-    def get_flag(self, flag_name: str, default: Any = None) -> Any:
+    def get_flag(self, flag_name: str, default: Optional[Any] = None) -> Any:
         """获取剧情标记"""
         return self.story_flags.get(flag_name, default)
     
@@ -502,11 +502,11 @@ class StoryBranchManager:
                 return False
         return True
     
-    def add_branch(self, branch_id: str, branch_data: Dict[str, Any]):
+    def add_branch(self, branch_id: str, branch_data: Dict[str, Any]) -> None:
         """添加剧情分支"""
         self.story_branches[branch_id] = branch_data
     
-    def switch_branch(self, branch_id: str):
+    def switch_branch(self, branch_id: str) -> None:
         """切换剧情分支"""
         if branch_id in self.story_branches:
             self.branch_history.append(self.current_branch)
@@ -540,7 +540,7 @@ class NarrativeEventSystem:
             EventType.SPECIAL: []
         }
     
-    def register_callback(self, event_type: EventType, callback: Callable):
+    def register_callback(self, event_type: EventType, callback: Callable) -> None:
         """注册事件回调"""
         self.event_callbacks[event_type].append(callback)
     

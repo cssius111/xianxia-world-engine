@@ -6,7 +6,7 @@ NPC管理器
 """
 
 import logging
-from typing import Dict, List, Optional, Any, Set, Tuple
+from typing import Any, Dict, List, Optional, Set, Tuple
 from dataclasses import dataclass, field
 from enum import Enum
 import random
@@ -113,7 +113,7 @@ class NPCManager:
         
         logger.info("NPC管理器初始化")
     
-    def _init_default_npcs(self):
+    def _init_default_npcs(self) -> None:
         """初始化默认NPC档案"""
         # 王老板 - 商人
         wang_profile = NPCProfile(
@@ -168,7 +168,7 @@ class NPCManager:
             for dialogue_id, dialogue_data in dialogues.items():
                 self.dialogue_system.load_dialogue(f"npc_{npc_id}", dialogue_id, dialogue_data)
     
-    def register_npc_profile(self, profile: NPCProfile):
+    def register_npc_profile(self, profile: NPCProfile) -> None:
         """注册NPC档案"""
         self.npc_profiles[profile.id] = profile
         logger.debug(f"注册NPC档案: {profile.name}")
@@ -234,7 +234,7 @@ class NPCManager:
         """获取NPC档案"""
         return self.npc_profiles.get(npc_id)
     
-    def update_npc_behavior(self, game_time: int):
+    def update_npc_behavior(self, game_time: int) -> None:
         """
         更新NPC行为
         
@@ -249,7 +249,7 @@ class NPCManager:
             elif profile.behavior == NPCBehavior.SCHEDULE:
                 self._update_schedule_behavior(npc_id, profile, game_time)
     
-    def _update_patrol_behavior(self, npc_id: str, profile: NPCProfile, game_time: int):
+    def _update_patrol_behavior(self, npc_id: str, profile: NPCProfile, game_time: int) -> None:
         """更新巡逻行为"""
         if not profile.patrol_routes:
             return
@@ -276,7 +276,7 @@ class NPCManager:
         
         logger.debug(f"NPC {profile.name} 巡逻到 {next_location}")
     
-    def _update_wander_behavior(self, npc_id: str, profile: NPCProfile, game_time: int):
+    def _update_wander_behavior(self, npc_id: str, profile: NPCProfile, game_time: int) -> None:
         """更新漫游行为"""
         last_move = self.behavior_timers.get(npc_id, -100)
         if game_time - last_move < 10:
@@ -292,7 +292,7 @@ class NPCManager:
         self.behavior_timers[npc_id] = game_time
         logger.debug(f"NPC {profile.name} 漫游到 {next_area}")
     
-    def _update_schedule_behavior(self, npc_id: str, profile: NPCProfile, game_time: int):
+    def _update_schedule_behavior(self, npc_id: str, profile: NPCProfile, game_time: int) -> None:
         """更新日程行为"""
         schedule: Dict[str, str] = profile.extra_data.get("schedule", {})
         if not schedule:
@@ -345,7 +345,7 @@ class NPCManager:
         """获取NPC位置"""
         return self.npc_locations.get(npc_id)
     
-    def set_npc_location(self, npc_id: str, location: str):
+    def set_npc_location(self, npc_id: str, location: str) -> None:
         """设置NPC位置"""
         self.npc_locations[npc_id] = location
     
@@ -373,7 +373,7 @@ class NPCManager:
         
         return self.npc_relationships[player_id][npc_id]
     
-    def modify_relationship(self, player_id: str, npc_id: str, change: int):
+    def modify_relationship(self, player_id: str, npc_id: str, change: int) -> None:
         """
         修改关系值
         
@@ -396,7 +396,7 @@ class NPCManager:
         """获取某个位置的所有NPC"""
         return [npc_id for npc_id, loc in self.npc_locations.items() if loc == location]
     
-    def start_dialogue(self, player_id: str, npc_id: str, player_info: Dict[str, Any] = None,
+    def start_dialogue(self, player_id: str, npc_id: str, player_info: Optional[Dict[str, Any]] = None,
                       use_enhanced: bool = True, game_time: int = 0) -> Optional[DialogueNode]:
         """
         开始与NPC对话

@@ -6,7 +6,7 @@ AI系统模块
 """
 
 from dataclasses import dataclass, field
-from typing import Dict, Any, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 from enum import Enum
 import random
 import logging
@@ -138,7 +138,7 @@ class AIController:
         # 初始化默认行为树
         self._init_default_behaviors()
     
-    def _init_default_behaviors(self):
+    def _init_default_behaviors(self) -> None:
         """初始化默认行为树"""
         # 激进型AI
         aggressive_tree = self._build_aggressive_tree()

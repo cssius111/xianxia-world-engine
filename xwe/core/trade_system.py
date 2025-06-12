@@ -6,7 +6,7 @@
 支持灵石货币系统（下品、中品、上品、极品）。
 """
 
-from typing import Dict, List, Optional, Tuple, Any
+from typing import Any, Dict, List, Optional, Tuple
 from random import uniform, random
 from dataclasses import dataclass
 import json
@@ -20,12 +20,12 @@ logger = logging.getLogger(__name__)
 class ShopItem:
     """商店物品"""
     item_id: str
-    item_data: Dict
+    item_data: Dict[str, Any]
     quantity: int
     sell_price: int  # 卖出价（商家卖给玩家）
     buy_price: int   # 收购价（商家从玩家收购）
     
-    def __str__(self):
+    def __str__(self) -> Any:
         return f"{self.item_data['name']} x{self.quantity}"
 
 
@@ -121,7 +121,7 @@ class Shopkeeper:
         self.trade_history: List[Dict] = []
         self.player_reputation = 0  # 玩家在此商店的声望
         
-    def add_goods(self, item_id: str, quantity: int, item_data: Dict):
+    def add_goods(self, item_id: str, quantity: int, item_data: Dict[str, Any]) -> None:
         """添加商品到商店"""
         base_price = item_data.get('base_price', 100)
         variance = item_data.get('variance', 0)
@@ -252,7 +252,7 @@ class Shopkeeper:
         
         return None
     
-    def complete_purchase(self, item_id: str, quantity: int, final_price: int):
+    def complete_purchase(self, item_id: str, quantity: int, final_price: int) -> None:
         """
         完成购买
         
@@ -276,7 +276,7 @@ class Shopkeeper:
             # 提升声望
             self.player_reputation += 1
     
-    def complete_sale(self, item_id: str, quantity: int, item_data: Dict):
+    def complete_sale(self, item_id: str, quantity: int, item_data: Dict[str, Any]) -> None:
         """
         完成出售（玩家卖给商店）
         
@@ -316,7 +316,7 @@ class MarketStall(Shopkeeper):
         )
         self.is_special_vendor = random() < 0.1  # 10%概率是特殊商贩
         
-    def refresh_inventory(self):
+    def refresh_inventory(self) -> None:
         """刷新摊位商品（每日刷新）"""
         self.inventory.clear()
         self.markup = uniform(0.9, 1.5)

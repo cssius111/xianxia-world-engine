@@ -5,7 +5,7 @@ Prometheus指标导出器
 
 import time
 import threading
-from typing import Dict, Any, Callable, Optional, List
+from typing import Any, Callable, Dict, List, Optional
 from dataclasses import dataclass, field
 from enum import Enum
 from collections import defaultdict
@@ -46,7 +46,7 @@ class PrometheusMetrics:
         # 注册核心指标
         self._register_core_metrics()
         
-    def _register_core_metrics(self):
+    def _register_core_metrics(self) -> None:
         """注册核心监控指标"""
         # HTTP请求指标
         self.register_histogram(
@@ -93,7 +93,7 @@ class PrometheusMetrics:
             labels=["error_type", "severity"]
         )
         
-    def register_counter(self, name: str, help: str, labels: List[str] = None) -> None:
+    def register_counter(self, name: str, help: str, labels: Optional[List[str]] = None) -> None:
         """注册计数器指标"""
         with self._lock:
             self._metrics[name] = Metric(
@@ -103,7 +103,7 @@ class PrometheusMetrics:
                 labels=labels or []
             )
             
-    def register_gauge(self, name: str, help: str, labels: List[str] = None) -> None:
+    def register_gauge(self, name: str, help: str, labels: Optional[List[str]] = None) -> None:
         """注册仪表指标"""
         with self._lock:
             self._metrics[name] = Metric(
@@ -113,7 +113,7 @@ class PrometheusMetrics:
                 labels=labels or []
             )
             
-    def register_histogram(self, name: str, help: str, labels: List[str] = None) -> None:
+    def register_histogram(self, name: str, help: str, labels: Optional[List[str]] = None) -> None:
         """注册直方图指标"""
         with self._lock:
             self._metrics[name] = Metric(
@@ -123,7 +123,7 @@ class PrometheusMetrics:
                 labels=labels or []
             )
             
-    def inc_counter(self, name: str, value: float = 1, labels: Dict[str, str] = None) -> None:
+    def inc_counter(self, name: str, value: float = 1, labels: Optional[Dict[str, str]] = None) -> None:
         """增加计数器值"""
         with self._lock:
             if name not in self._metrics:
@@ -147,7 +147,7 @@ class PrometheusMetrics:
             else:
                 self._values[name] += value
                 
-    def set_gauge(self, name: str, value: float, labels: Dict[str, str] = None) -> None:
+    def set_gauge(self, name: str, value: float, labels: Optional[Dict[str, str]] = None) -> None:
         """设置仪表值"""
         with self._lock:
             if name not in self._metrics:
@@ -162,7 +162,7 @@ class PrometheusMetrics:
             else:
                 self._values[name] = value
                 
-    def observe_histogram(self, name: str, value: float, labels: Dict[str, str] = None) -> None:
+    def observe_histogram(self, name: str, value: float, labels: Optional[Dict[str, str]] = None) -> None:
         """记录直方图观测值"""
         with self._lock:
             if name not in self._metrics:
@@ -181,7 +181,7 @@ class PrometheusMetrics:
                 self._histograms[key] = []
             self._histograms[key].append(value)
             
-    def time_histogram(self, name: str, labels: Dict[str, str] = None):
+    def time_histogram(self, name: str, labels: Optional[Dict[str, str]] = None) -> None:
         """计时器上下文管理器"""
         class Timer:
             def __init__(self, metrics, metric_name, metric_labels):
@@ -190,11 +190,11 @@ class PrometheusMetrics:
                 self.metric_labels = metric_labels
                 self.start_time = None
                 
-            def __enter__(self):
+            def __enter__(self) -> Any:
                 self.start_time = time.time()
                 return self
                 
-            def __exit__(self, exc_type, exc_val, exc_tb):
+            def __exit__(self, exc_type, exc_val, exc_tb) -> Any:
                 duration = time.time() - self.start_time
                 self.metrics.observe_histogram(self.metric_name, duration, self.metric_labels)
                 
@@ -316,21 +316,21 @@ metrics_registry = PrometheusMetrics()
 
 
 # 便捷函数
-def inc_counter(name: str, value: float = 1, labels: Dict[str, str] = None) -> None:
+def inc_counter(name: str, value: float = 1, labels: Optional[Dict[str, str]] = None) -> None:
     """增加计数器"""
     metrics_registry.inc_counter(name, value, labels)
     
 
-def set_gauge(name: str, value: float, labels: Dict[str, str] = None) -> None:
+def set_gauge(name: str, value: float, labels: Optional[Dict[str, str]] = None) -> None:
     """设置仪表值"""
     metrics_registry.set_gauge(name, value, labels)
     
 
-def observe_histogram(name: str, value: float, labels: Dict[str, str] = None) -> None:
+def observe_histogram(name: str, value: float, labels: Optional[Dict[str, str]] = None) -> None:
     """记录直方图值"""
     metrics_registry.observe_histogram(name, value, labels)
     
 
-def time_histogram(name: str, labels: Dict[str, str] = None):
+def time_histogram(name: str, labels: Optional[Dict[str, str]] = None) -> Any:
     """计时器装饰器/上下文管理器"""
     return metrics_registry.time_histogram(name, labels)

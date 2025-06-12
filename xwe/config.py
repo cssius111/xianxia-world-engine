@@ -4,7 +4,7 @@
 """
 
 import os
-from typing import Dict, Any, Optional
+from typing import Any, Dict, Optional
 from dataclasses import dataclass
 import logging
 
@@ -113,7 +113,7 @@ class Config:
 config = Config.from_env()
 
 
-def configure_logging(app=None):
+def configure_logging(app=None) -> None:
     """配置日志系统"""
     import logging.config
     

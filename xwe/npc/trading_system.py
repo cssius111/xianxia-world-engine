@@ -6,7 +6,7 @@
 """
 
 import logging
-from typing import Dict, List, Optional, Any
+from typing import Any, Dict, List, Optional
 from dataclasses import dataclass, field
 from enum import Enum
 
@@ -100,7 +100,7 @@ class TradingSystem:
         
         logger.info("交易系统初始化")
     
-    def _init_default_items(self):
+    def _init_default_items(self) -> None:
         """初始化默认物品"""
         # 消耗品
         items = [
@@ -192,7 +192,7 @@ class TradingSystem:
         for item in items:
             self.register_item(item)
     
-    def _init_default_shops(self):
+    def _init_default_shops(self) -> None:
         """初始化默认商店"""
         # 王老板的基础商店
         wang_shop = Shop(
@@ -211,12 +211,12 @@ class TradingSystem:
         )
         self.register_shop(wang_shop)
     
-    def register_item(self, item: ItemData):
+    def register_item(self, item: ItemData) -> None:
         """注册物品"""
         self.items[item.id] = item
         logger.debug(f"注册物品: {item.name}")
     
-    def register_shop(self, shop: Shop):
+    def register_shop(self, shop: Shop) -> None:
         """注册商店"""
         self.shops[shop.id] = shop
         logger.debug(f"注册商店: {shop.name}")
@@ -424,7 +424,7 @@ class TradingSystem:
         
         return True
     
-    def refresh_shop(self, shop_id: str, game_time: int):
+    def refresh_shop(self, shop_id: str, game_time: int) -> None:
         """
         刷新商店
         

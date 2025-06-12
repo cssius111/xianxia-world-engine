@@ -4,7 +4,7 @@
 """
 
 from abc import ABC, abstractmethod
-from typing import Optional, Dict, Any, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 from dataclasses import dataclass, field
 from enum import Enum
 
@@ -255,7 +255,7 @@ class ICombatService(ABC):
         pass
         
     @abstractmethod
-    def use_skill(self, skill_id: str, target_id: str = None) -> CombatResult:
+    def use_skill(self, skill_id: str, target_id: Optional[str] = None) -> CombatResult:
         """
         使用技能
         
@@ -289,7 +289,7 @@ class ICombatService(ABC):
         pass
         
     @abstractmethod
-    def use_item(self, item_id: str, target_id: str = None) -> CombatResult:
+    def use_item(self, item_id: str, target_id: Optional[str] = None) -> CombatResult:
         """
         使用物品
         

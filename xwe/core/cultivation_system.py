@@ -5,7 +5,7 @@
 
 import random
 import logging
-from typing import Dict, Any, Optional, Tuple, List
+from typing import Any, Dict, List, Optional, Tuple
 from datetime import datetime
 from .data_manager import DM
 from .formula_engine import formula_engine, calculate
@@ -24,7 +24,7 @@ class CultivationSystem:
         self.formula_engine = formula_engine
         self._load_cultivation_data()
     
-    def _load_cultivation_data(self):
+    def _load_cultivation_data(self) -> None:
         """加载修炼相关数据"""
         try:
             self.realm_data = DM.load("cultivation_realm")
@@ -274,7 +274,7 @@ class CultivationSystem:
         
         return True
     
-    def _calculate_breakthrough_chance(self, player, current_realm: Dict, next_realm: Dict) -> float:
+    def _calculate_breakthrough_chance(self, player, current_realm: Dict[str, Any], next_realm: Dict[str, Any]) -> float:
         """
         计算突破成功率
         使用公式: breakthrough_chance
@@ -304,7 +304,7 @@ class CultivationSystem:
         logger.debug(f"Breakthrough chance calculated: {success_rate}")
         return success_rate
     
-    def _apply_realm_benefits(self, player, realm: Dict[str, Any]):
+    def _apply_realm_benefits(self, player, realm: Dict[str, Any]) -> None:
         """应用境界提升的好处"""
         benefits = realm.get("level_benefits", {}).get("per_level", {})
         
@@ -490,7 +490,7 @@ class CultivationSystem:
         
         return event
     
-    def _trigger_breakthrough_event(self, player, result: Dict[str, Any]):
+    def _trigger_breakthrough_event(self, player, result: Dict[str, Any]) -> None:
         """触发突破相关事件"""
         # TODO: 与事件系统集成
         event_data = {

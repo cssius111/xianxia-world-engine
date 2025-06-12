@@ -6,7 +6,7 @@ NPC情感系统
 """
 
 import logging
-from typing import Dict, List, Optional, Tuple, Any
+from typing import Any, Dict, List, Optional, Tuple
 from dataclasses import dataclass, field
 from enum import Enum
 import random
@@ -58,7 +58,7 @@ class EmotionState:
         return self.intensity
 
     @emotion_intensity.setter
-    def emotion_intensity(self, value: float):
+    def emotion_intensity(self, value: float) -> None:
         self.intensity = value
     
     def get_dominant_emotion(self) -> Tuple[EmotionType, float]:
@@ -67,7 +67,7 @@ class EmotionState:
             return self.secondary, self.secondary_intensity
         return self.primary, self.intensity
     
-    def blend_with(self, other: 'EmotionState', weight: float = 0.3):
+    def blend_with(self, other: 'EmotionState', weight: float = 0.3) -> None:
         """混合情绪"""
         # 如果新情绪强度更高，可能替换主情绪
         if other.intensity > self.intensity * 1.5:
@@ -80,7 +80,7 @@ class EmotionState:
             self.secondary = other.primary
             self.secondary_intensity = other.intensity * weight
     
-    def decay(self, amount: float = 0.1):
+    def decay(self, amount: float = 0.1) -> None:
         """情绪衰减"""
         self.intensity = max(0, self.intensity - amount)
         if self.secondary:
@@ -231,7 +231,7 @@ class EmotionSystem:
         
         return templates
     
-    def register_npc(self, npc_id: str, personality_template: Optional[str] = None):
+    def register_npc(self, npc_id: str, personality_template: Optional[str] = None) -> None:
         """
         注册NPC
         
@@ -392,7 +392,7 @@ class EmotionSystem:
         
         return emotion
     
-    def update_emotions(self, delta_time: float = 1.0):
+    def update_emotions(self, delta_time: float = 1.0) -> None:
         """
         更新所有NPC的情绪（情绪衰减）
         

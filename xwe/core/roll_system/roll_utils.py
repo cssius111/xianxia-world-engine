@@ -5,7 +5,7 @@ Roll 系统工具函数
 """
 
 import random
-from typing import Dict, Any, List, Tuple
+from typing import Any, Dict, List, Tuple
 
 
 def weighted_random_choice(items_with_weights: Dict[str, Dict[str, Any]]) -> Tuple[str, Dict[str, Any]]:

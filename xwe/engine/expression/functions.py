@@ -7,7 +7,7 @@
 
 import math
 import random
-from typing import Dict, Any, Callable
+from typing import Any, Callable, Dict
 
 
 def create_builtin_functions() -> Dict[str, Dict[str, Any]]:

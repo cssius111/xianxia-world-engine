@@ -2,7 +2,7 @@
 """
 简易背包系统，用于管理角色携带的物品。
 """
-from typing import Dict, List, Tuple, Any
+from typing import Any, Dict, List, Tuple
 
 class Inventory:
     def __init__(self):

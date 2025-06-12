@@ -5,7 +5,7 @@
 """
 
 import re
-from typing import Dict, Callable, Any, Optional, Tuple, List
+from typing import Any, Callable, Dict, List, Optional, Tuple
 from dataclasses import dataclass, field
 from enum import Enum
 
@@ -284,11 +284,11 @@ class CommandRouter:
                 available.extend(cmd_def.patterns)
         return available
         
-    def set_context(self, context: str):
+    def set_context(self, context: str) -> None:
         """设置当前上下文"""
         self.current_context = context
         
-    def set_nlp_handler(self, handler: Callable):
+    def set_nlp_handler(self, handler: Callable) -> None:
         """设置NLP处理器"""
         self.nlp_handler = handler
         

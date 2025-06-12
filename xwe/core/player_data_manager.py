@@ -7,7 +7,7 @@ import json
 import random
 from pathlib import Path
 from datetime import datetime
-from typing import Dict, Any, List, Optional
+from typing import Any, Dict, List, Optional
 
 
 class PlayerDataManager:
@@ -87,7 +87,7 @@ class PlayerDataManager:
             "cultivation_multiplier": 1.0
         }
     
-    def save_all(self):
+    def save_all(self) -> None:
         """保存所有数据"""
         # 更新最后保存时间
         self.player_data["last_save"] = datetime.now().isoformat()
@@ -348,7 +348,7 @@ class PlayerDataManager:
                 "description": f"突破失败！受到{damage}点反噬伤害，损失部分经验。"
             }
     
-    def _add_history(self, action: str, data: Dict[str, Any]):
+    def _add_history(self, action: str, data: Dict[str, Any]) -> None:
         """添加历史记录"""
         entry = {
             "id": len(self.history) + 1,
