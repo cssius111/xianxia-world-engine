@@ -147,7 +147,7 @@ class EmotionSystem:
     管理NPC的情绪变化和性格表现。
     """
     
-    def __init__(self):
+    def __init__(self) -> None:
         """初始化情感系统"""
         self.npc_emotions: Dict[str, EmotionState] = {}
         self.npc_personalities: Dict[str, Personality] = {}
@@ -159,7 +159,7 @@ class EmotionSystem:
     
     def _init_personality_templates(self) -> Dict[str, Personality]:
         """初始化性格模板"""
-        templates = {}
+        templates: Dict[str, Any] = {}
         
         # 商人性格
         templates['merchant'] = Personality(
@@ -258,12 +258,12 @@ class EmotionSystem:
         traits = random.sample(list(PersonalityTrait), num_traits)
         
         # 生成权重
-        trait_weights = {}
+        trait_weights: Dict[str, Any] = {}
         for trait in traits:
             trait_weights[trait] = random.uniform(0.3, 0.9)
         
         # 生成情绪倾向
-        emotion_tendencies = {}
+        emotion_tendencies: Dict[str, Any] = {}
         for emotion in EmotionType:
             if emotion != EmotionType.NEUTRAL:
                 emotion_tendencies[emotion] = random.uniform(-0.5, 0.5)

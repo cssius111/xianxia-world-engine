@@ -171,7 +171,7 @@ class ILogService(ABC):
 class LogService(ServiceBase[ILogService], ILogService):
     """日志服务实现"""
     
-    def __init__(self, container: ServiceContainer):
+    def __init__(self, container: ServiceContainer) -> None:
         super().__init__(container)
         self._logs: deque = deque(maxlen=10000)
         self._log_id_counter = 0
@@ -385,7 +385,7 @@ class LogService(ServiceBase[ILogService], ILogService):
 class StructuredLogger:
     """结构化日志记录器 - 输出JSON格式日志"""
     
-    def __init__(self, service_name: str = "xwe", output_stream=None):
+    def __init__(self, service_name: str = "xwe", output_stream=None) -> None:
         self.service_name = service_name
         self.output_stream = output_stream or sys.stdout
         self._lock = threading.Lock()

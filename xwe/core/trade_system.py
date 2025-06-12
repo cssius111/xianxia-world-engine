@@ -32,7 +32,7 @@ class ShopItem:
 class TradeSystem:
     """交易系统主类"""
     
-    def __init__(self):
+    def __init__(self) -> None:
         self.items_data = self._load_items_data()
         self.shopkeepers = {}
         
@@ -306,7 +306,7 @@ class Shopkeeper:
 class MarketStall(Shopkeeper):
     """集市摊贩（流动商贩）"""
     
-    def __init__(self, name: str, stall_type: str = "random"):
+    def __init__(self, name: str, stall_type: str = "random") -> None:
         # 集市摊贩价格波动更大，砍价空间也更大
         super().__init__(
             name=name,
@@ -331,7 +331,7 @@ class MarketStall(Shopkeeper):
 class BlackMarket(Shopkeeper):
     """黑市商人"""
     
-    def __init__(self, name: str = "神秘商人"):
+    def __init__(self, name: str = "神秘商人") -> None:
         super().__init__(
             name=name,
             shop_type="black_market",

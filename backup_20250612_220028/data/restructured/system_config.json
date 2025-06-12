@@ -1,0 +1,255 @@
+{
+  "meta": {
+    "version": "3.0.0",
+    "description": "修仙世界引擎系统配置",
+    "schema_version": "2020-12",
+    "last_modified": "2025-06-07"
+  },
+  "engine_settings": {
+    "rng_seed": 42,
+    "tick_rate_ms": 100,
+    "autosave_interval_min": 5,
+    "backup_count": 3,
+    "log_level": "INFO",
+    "debug_mode": false,
+    "performance_profiling": false
+  },
+  "game_settings": {
+    "difficulty": {
+      "default": "normal",
+      "modifiers": {
+        "easy": {
+          "player_damage_dealt": 1.5,
+          "player_damage_taken": 0.5,
+          "experience_gain": 1.2,
+          "drop_rate": 1.5
+        },
+        "normal": {
+          "player_damage_dealt": 1.0,
+          "player_damage_taken": 1.0,
+          "experience_gain": 1.0,
+          "drop_rate": 1.0
+        },
+        "hard": {
+          "player_damage_dealt": 0.8,
+          "player_damage_taken": 1.5,
+          "experience_gain": 0.8,
+          "drop_rate": 0.8
+        },
+        "nightmare": {
+          "player_damage_dealt": 0.5,
+          "player_damage_taken": 2.0,
+          "experience_gain": 0.5,
+          "drop_rate": 0.5,
+          "permadeath": true
+        }
+      }
+    },
+    "world_settings": {
+      "world_size": "medium",
+      "npc_density": 1.0,
+      "event_frequency": 1.0,
+      "time_scale": 1.0,
+      "weather_enabled": true,
+      "day_night_cycle": true
+    },
+    "balance_settings": {
+      "level_cap": 100,
+      "stat_cap": 999,
+      "skill_cap": 10,
+      "inventory_size": 100,
+      "currency_cap": 999999999
+    }
+  },
+  "feature_flags": {
+    "enable_pvp": false,
+    "enable_trading": true,
+    "enable_crafting": true,
+    "enable_housing": false,
+    "enable_pets": true,
+    "enable_formations": true,
+    "enable_auction": true,
+    "dynamic_weather": true,
+    "ai_memory_persistence": true,
+    "procedural_generation": false,
+    "mod_support": true,
+    "multiplayer": false
+  },
+  "network_settings": {
+    "server_port": 8080,
+    "max_connections": 1000,
+    "heartbeat_interval": 30,
+    "timeout_seconds": 300,
+    "compression": true,
+    "encryption": true
+  },
+  "database_settings": {
+    "type": "sqlite",
+    "path": "data/game.db",
+    "pool_size": 10,
+    "auto_migrate": true,
+    "backup_on_start": true
+  },
+  "cache_settings": {
+    "enable_cache": true,
+    "cache_size_mb": 512,
+    "ttl_seconds": 3600,
+    "cache_types": {
+      "formulas": true,
+      "items": true,
+      "npcs": true,
+      "world_data": true
+    }
+  },
+  "ai_settings": {
+    "npc_ai_level": "advanced",
+    "pathfinding_algorithm": "a_star",
+    "decision_frequency": 1.0,
+    "memory_size": 100,
+    "learning_enabled": true,
+    "personality_variance": 0.2
+  },
+  "combat_settings": {
+    "combat_speed": 1.0,
+    "auto_combat": true,
+    "damage_numbers": true,
+    "combat_log_size": 100,
+    "flee_enabled": true,
+    "death_penalty": {
+      "experience_loss": 0.1,
+      "item_drop": false,
+      "respawn_time": 60
+    }
+  },
+  "economy_settings": {
+    "inflation_rate": 0.01,
+    "tax_rate": 0.05,
+    "vendor_refresh_hours": 24,
+    "auction_duration_hours": 48,
+    "trade_fee": 0.02
+  },
+  "notification_settings": {
+    "achievement_notifications": true,
+    "level_up_notifications": true,
+    "item_notifications": true,
+    "system_messages": true,
+    "combat_messages": true,
+    "notification_duration": 5000
+  },
+  "graphics_settings": {
+    "resolution": "1920x1080",
+    "fullscreen": false,
+    "vsync": true,
+    "fps_limit": 60,
+    "particle_effects": true,
+    "text_speed": 1.0,
+    "ui_scale": 1.0,
+    "color_blind_mode": false
+  },
+  "audio_settings": {
+    "master_volume": 0.8,
+    "music_volume": 0.6,
+    "sfx_volume": 0.7,
+    "voice_volume": 0.8,
+    "ambient_volume": 0.5,
+    "enable_3d_audio": true
+  },
+  "localization_settings": {
+    "default_language": "zh_CN",
+    "supported_languages": ["zh_CN", "zh_TW", "en_US", "ja_JP", "ko_KR"],
+    "date_format": "YYYY-MM-DD",
+    "number_format": "thousand_separator"
+  },
+  "mod_settings": {
+    "mod_directory": "mods/",
+    "enable_mods": true,
+    "mod_validation": true,
+    "allow_script_mods": false,
+    "max_mods": 50
+  },
+  "telemetry_settings": {
+    "enable_telemetry": false,
+    "analytics_endpoint": "",
+    "error_reporting": true,
+    "performance_tracking": false,
+    "user_behavior_tracking": false
+  },
+  "debug_settings": {
+    "enable_console": false,
+    "god_mode": false,
+    "unlimited_resources": false,
+    "reveal_map": false,
+    "fast_travel": false,
+    "instant_kill": false,
+    "no_clip": false
+  },
+  "validation_rules": {
+    "name_length": {
+      "min": 2,
+      "max": 16
+    },
+    "chat_message_length": {
+      "max": 200
+    },
+    "save_file_size": {
+      "max_mb": 100
+    }
+  },
+  "rate_limits": {
+    "actions_per_minute": 60,
+    "chat_messages_per_minute": 10,
+    "trades_per_hour": 100,
+    "api_calls_per_minute": 30
+  },
+  "scheduled_events": {
+    "daily_reset": {
+      "time": "00:00",
+      "actions": ["reset_daily_quests", "refresh_vendors", "calculate_interest"]
+    },
+    "weekly_reset": {
+      "day": "monday",
+      "time": "00:00",
+      "actions": ["reset_weekly_quests", "faction_rewards", "tournament_registration"]
+    },
+    "special_events": {
+      "full_moon": {
+        "effects": {
+          "cultivation_speed": 1.5,
+          "demon_spawn_rate": 2.0
+        }
+      },
+      "new_year": {
+        "duration_days": 7,
+        "effects": {
+          "experience_gain": 2.0,
+          "drop_rate": 2.0
+        }
+      }
+    }
+  },
+  "plugin_hooks": {
+    "on_startup": [],
+    "on_shutdown": [],
+    "on_tick": [],
+    "on_player_join": [],
+    "on_player_leave": [],
+    "on_combat_start": [],
+    "on_combat_end": [],
+    "on_level_up": [],
+    "on_item_obtained": [],
+    "on_achievement": []
+  },
+  "performance_thresholds": {
+    "fps_warning": 30,
+    "fps_critical": 15,
+    "memory_warning_mb": 2048,
+    "memory_critical_mb": 3072,
+    "cpu_warning_percent": 80,
+    "cpu_critical_percent": 95
+  },
+  "_custom_tags": [
+    "environment_specific",
+    "platform_overrides",
+    "experimental_features"
+  ]
+}

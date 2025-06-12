@@ -1,0 +1,357 @@
+[
+  {
+    "id": "hui_qi_dan",
+    "name": "回气丹",
+    "grade": "下品",
+    "type": "丹药",
+    "base_price": 20,
+    "variance": 5,
+    "stackable": true,
+    "effect": {
+      "mana_restore": 50,
+      "mana_regen_buff": 0.2,
+      "duration": 600
+    },
+    "description": "恢复法力的下品丹药。服用后立即恢复50点法力，并在10分钟内法力恢复速度+20%。"
+  },
+  {
+    "id": "zhu_ji_dan",
+    "name": "筑基丹",
+    "grade": "上品",
+    "type": "丹药",
+    "base_price": 1200,
+    "variance": 100,
+    "stackable": true,
+    "effect": {
+      "breakthrough_bonus": 0.30
+    },
+    "description": "突破炼气期瓶颈的关键丹药，成功率+30%。极为珍贵，是无数散修梦寐以求的灵丹妙药。"
+  },
+  {
+    "id": "bi_gu_dan",
+    "name": "辟谷丹",
+    "grade": "下品",
+    "type": "丹药",
+    "base_price": 50,
+    "variance": 10,
+    "stackable": true,
+    "effect": {
+      "suppress_hunger_hours": 480
+    },
+    "description": "服用后可在20日内无需进食。修士外出历练时的必备丹药。"
+  },
+  {
+    "id": "xiao_huan_dan",
+    "name": "小还丹",
+    "grade": "下品",
+    "type": "丹药",
+    "base_price": 30,
+    "variance": 5,
+    "stackable": true,
+    "effect": {
+      "health_restore": 100
+    },
+    "description": "基础疗伤丹药，可快速恢复100点生命值。"
+  },
+  {
+    "id": "da_huan_dan",
+    "name": "大还丹",
+    "grade": "中品",
+    "type": "丹药",
+    "base_price": 200,
+    "variance": 30,
+    "stackable": true,
+    "effect": {
+      "health_restore": 500,
+      "heal_injuries": true
+    },
+    "description": "中品疗伤丹药，恢复500点生命值并治疗轻度内伤。"
+  },
+  {
+    "id": "qing_xin_dan",
+    "name": "清心丹",
+    "grade": "中品",
+    "type": "丹药",
+    "base_price": 150,
+    "variance": 20,
+    "stackable": true,
+    "effect": {
+      "clear_mind": true,
+      "cultivation_bonus": 0.15,
+      "duration": 3600
+    },
+    "description": "清心净神，提升修炼效率15%，持续1小时。适合突破瓶颈时使用。"
+  },
+  {
+    "id": "ling_zhi",
+    "name": "百年灵芝",
+    "grade": "中品",
+    "type": "灵草",
+    "base_price": 80,
+    "variance": 15,
+    "stackable": true,
+    "effect": {
+      "health_restore": 200,
+      "cultivation_exp": 50
+    },
+    "description": "百年份的灵芝，可恢复200点生命值，服用后还能增加少量修为。"
+  },
+  {
+    "id": "xue_lian",
+    "name": "千年雪莲",
+    "grade": "上品",
+    "type": "灵草",
+    "base_price": 500,
+    "variance": 50,
+    "stackable": true,
+    "effect": {
+      "heal_pct": 0.3,
+      "detoxify": true,
+      "ice_resistance": 0.3
+    },
+    "description": "生长在极寒之地的千年雪莲，可恢复30%生命值，解除所有毒素，并在一天内获得30%冰系抗性。"
+  },
+  {
+    "id": "ju_ling_cao",
+    "name": "聚灵草",
+    "grade": "下品",
+    "type": "灵草",
+    "base_price": 15,
+    "variance": 3,
+    "stackable": true,
+    "effect": {
+      "mana_restore": 30
+    },
+    "description": "常见的灵草，可恢复30点法力值，也是炼制聚气丹的主要材料。"
+  },
+  {
+    "id": "huo_ball_fu",
+    "name": "火球符",
+    "grade": "下品",
+    "type": "符箓",
+    "base_price": 25,
+    "variance": 5,
+    "stackable": true,
+    "effect": {
+      "fire_damage": 120,
+      "single_use": true
+    },
+    "description": "一次性攻击符箓，释放后产生火球攻击，造成120点火系伤害。"
+  },
+  {
+    "id": "feng_shen_fu",
+    "name": "封身符",
+    "grade": "中品",
+    "type": "符箓",
+    "base_price": 300,
+    "variance": 30,
+    "stackable": true,
+    "effect": {
+      "invincible_duration": 3,
+      "single_use": true
+    },
+    "description": "防御型符箓，激活后3秒内处于无敌状态。关键时刻可保命。"
+  },
+  {
+    "id": "shen_xing_fu",
+    "name": "神行符",
+    "grade": "下品",
+    "type": "符箓",
+    "base_price": 40,
+    "variance": 8,
+    "stackable": true,
+    "effect": {
+      "speed_boost": 2.0,
+      "duration": 300,
+      "single_use": true
+    },
+    "description": "加速符箓，使用后移动速度翻倍，持续5分钟。逃命追击皆宜。"
+  },
+  {
+    "id": "jin_gang_fu",
+    "name": "金刚符",
+    "grade": "中品",
+    "type": "符箓",
+    "base_price": 150,
+    "variance": 20,
+    "stackable": true,
+    "effect": {
+      "defense_boost": 50,
+      "duration": 600,
+      "single_use": true
+    },
+    "description": "防御符箓，增加50点防御力，持续10分钟。"
+  },
+  {
+    "id": "fei_feng_jian",
+    "name": "飞锋剑",
+    "grade": "下品法器",
+    "type": "法器",
+    "base_price": 600,
+    "variance": 60,
+    "stackable": false,
+    "effect": {
+      "attack_bonus": 15,
+      "accuracy_bonus": 5
+    },
+    "description": "下品飞剑，攻击力+15，命中+5。炼气期修士的标准装备。"
+  },
+  {
+    "id": "mu_shield",
+    "name": "木灵盾",
+    "grade": "下品法器",
+    "type": "法器",
+    "base_price": 450,
+    "variance": 50,
+    "stackable": false,
+    "effect": {
+      "defense_bonus": 20,
+      "wood_resistance": 0.1
+    },
+    "description": "木属性防御法器，防御力+20，木系抗性+10%。"
+  },
+  {
+    "id": "qing_feng_dao_pao",
+    "name": "清风道袍",
+    "grade": "中品法器",
+    "type": "法器",
+    "base_price": 800,
+    "variance": 80,
+    "stackable": false,
+    "effect": {
+      "mana_bonus": 100,
+      "mana_regen": 0.2,
+      "defense_bonus": 10
+    },
+    "description": "中品道袍，法力上限+100，法力恢复+20%，防御+10。"
+  },
+  {
+    "id": "yi_jie_ju_ling_pan",
+    "name": "一阶聚灵阵盘",
+    "grade": "一阶",
+    "type": "阵具",
+    "base_price": 800,
+    "variance": 120,
+    "stackable": false,
+    "effect": {
+      "cultivation_speed_mul": 1.3
+    },
+    "description": "布置后形成小型聚灵阵，阵内修炼速度提升30%。可重复使用。"
+  },
+  {
+    "id": "er_jie_kun_mon_flag",
+    "name": "二阶困魔阵旗",
+    "grade": "二阶",
+    "type": "阵具",
+    "base_price": 2000,
+    "variance": 200,
+    "stackable": false,
+    "effect": {
+      "trap_duration": 30,
+      "defense_formation": true
+    },
+    "description": "困敌阵法的阵旗（4件套），可困住敌人30秒。需要四面阵旗配合使用。"
+  },
+  {
+    "id": "cui_xue_tie",
+    "name": "催血铁",
+    "grade": "一阶",
+    "type": "材料",
+    "base_price": 40,
+    "variance": 8,
+    "stackable": true,
+    "effect": {},
+    "description": "炼器材料，带有淡淡血腥味的特殊矿石，可用于炼制攻击型法器。"
+  },
+  {
+    "id": "han_tie",
+    "name": "千年寒铁",
+    "grade": "二阶",
+    "type": "材料",
+    "base_price": 200,
+    "variance": 30,
+    "stackable": true,
+    "effect": {},
+    "description": "极寒之地的千年寒铁，炼制冰系法器的上好材料。"
+  },
+  {
+    "id": "ling_shi_low",
+    "name": "下品灵石",
+    "grade": "货币",
+    "type": "货币",
+    "base_price": 1,
+    "variance": 0,
+    "stackable": true,
+    "effect": {
+      "currency_value": 1
+    },
+    "description": "修仙界的基础货币，蕴含少量灵气。"
+  },
+  {
+    "id": "ling_shi_mid",
+    "name": "中品灵石",
+    "grade": "货币",
+    "type": "货币",
+    "base_price": 100,
+    "variance": 0,
+    "stackable": true,
+    "effect": {
+      "currency_value": 100
+    },
+    "description": "相当于100枚下品灵石，灵气更加纯净。"
+  },
+  {
+    "id": "ling_shi_high",
+    "name": "上品灵石",
+    "grade": "货币",
+    "type": "货币",
+    "base_price": 10000,
+    "variance": 0,
+    "stackable": true,
+    "effect": {
+      "currency_value": 10000
+    },
+    "description": "相当于100枚中品灵石，灵气纯度极高，可直接用于修炼。"
+  },
+  {
+    "id": "shen_mi_xiao_ping",
+    "name": "神秘小瓶",
+    "grade": "特殊",
+    "type": "奇物",
+    "base_price": 0,
+    "variance": 0,
+    "stackable": false,
+    "effect": {
+      "grow_speed_bonus": 5.0
+    },
+    "description": "传闻能催生灵草的神秘瓶子，外观普通，却蕴含莫测力量。"
+  },
+  {
+    "id": "qian_lan_bing_yan",
+    "name": "乾蓝冰焰",
+    "grade": "天阶",
+    "type": "异火",
+    "base_price": 50000,
+    "variance": 5000,
+    "stackable": false,
+    "effect": {
+      "fire_damage_bonus": 1000,
+      "ice_damage_bonus": 1000
+    },
+    "description": "传说诞生于极寒之地的异火，可焚万物亦可凝冰。"
+  },
+  {
+    "id": "qing_yuan_jian",
+    "name": "青元剑",
+    "grade": "黄阶上品",
+    "type": "法器",
+    "base_price": 1200,
+    "variance": 100,
+    "stackable": false,
+    "effect": {
+      "attack_bonus": 25,
+      "agility_bonus": 5
+    },
+    "description": "锋芒内敛的长剑，韩立早期常用的本命法器。"
+  }
+]

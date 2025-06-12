@@ -62,7 +62,7 @@ class Tokenizer:
         'WHITESPACE': r'\s+',
     }
 
-    def __init__(self, expression: str):
+    def __init__(self, expression: str) -> None:
         """
         初始化词法分析器
 

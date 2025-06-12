@@ -55,7 +55,7 @@ class EventStep:
     next_step: Optional[str] = None  # 下一步ID
 
 class ImmersiveEventSystem:
-    def __init__(self, output_handler=None):
+    def __init__(self, output_handler=None) -> None:
         self.output_handler = output_handler
         self.events = self._init_events()
         self.current_event = None

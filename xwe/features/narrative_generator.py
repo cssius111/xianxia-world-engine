@@ -7,7 +7,7 @@ from collections import defaultdict
 class DynamicNarrativeGenerator:
     """动态叙事生成器"""
     
-    def __init__(self, llm_client, style_manager=None):
+    def __init__(self, llm_client, style_manager=None) -> None:
         self.llm = llm_client
         self.style_manager = style_manager or DefaultStyleManager()
         self.narrative_cache = {}  # 缓存常见场景

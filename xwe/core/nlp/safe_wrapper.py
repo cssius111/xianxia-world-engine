@@ -8,7 +8,7 @@ from typing import Any, Dict, Optional
 class SafeNLPWrapper:
     """安全的NLP包装器，防止崩溃"""
     
-    def __init__(self, nlp_processor=None):
+    def __init__(self, nlp_processor=None) -> None:
         self.nlp = nlp_processor
         
     def parse(self, user_input: str, context: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:

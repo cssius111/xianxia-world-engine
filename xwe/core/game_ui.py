@@ -8,7 +8,7 @@ import sys
 class GameUI:
     """游戏UI管理器"""
     
-    def __init__(self):
+    def __init__(self) -> None:
         self.last_status = None
     
     def display_cultivation_result(self, duration: str, gained_exp: int, player_status=None) -> None:

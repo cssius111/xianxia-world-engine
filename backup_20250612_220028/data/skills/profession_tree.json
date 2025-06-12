@@ -1,0 +1,306 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "description": "玄苍界职业系统，支持主流职业与隐藏职业，为杂灵根提供多样化发展路径"
+  },
+  "profession_categories": {
+    "combat": "战斗类职业",
+    "support": "辅助类职业", 
+    "crafting": "制作类职业",
+    "special": "特殊类职业",
+    "hidden": "隐藏类职业",
+    "forbidden": "禁忌类职业"
+  },
+  "mainstream_professions": [
+    {
+      "id": "SWORD_CULTIVATOR",
+      "name": "剑修",
+      "category": "combat",
+      "description": "以剑为道，追求极致的攻击力和剑意境界",
+      "primary_requirements": {
+        "recommended_roots": ["金灵根"],
+        "min_purity": 0.6,
+        "alternative_conditions": "雷灵根纯度≥0.5"
+      },
+      "secondary_paths": {
+        "多元剑修": {
+          "requirements": "任意灵根纯度≥0.4 + 剑心资质",
+          "penalty": "修炼效率-20%",
+          "advantage": "技能多样化"
+        }
+      },
+      "abilities": ["剑气", "御剑术", "剑意", "斩击"],
+      "advancement": ["剑童", "剑徒", "剑师", "剑宗", "剑圣", "剑仙"],
+      "synergies": ["与雷法师：雷剑术", "与体修：剑体双修"]
+    },
+    {
+      "id": "SPELL_CASTER",
+      "name": "法修",
+      "category": "combat",
+      "description": "精通各系法术，以智慧和法力制胜",
+      "primary_requirements": {
+        "recommended_roots": ["任意单系灵根"],
+        "min_purity": 0.5
+      },
+      "secondary_paths": {
+        "全系法师": {
+          "requirements": "拥有3个以上不同灵根",
+          "penalty": "单系威力-15%",
+          "advantage": "法术种类丰富，适应性强"
+        }
+      },
+      "specializations": {
+        "火法师": "专精火系法术，爆发力强",
+        "水法师": "专精水冰法术，控制力强",
+        "土法师": "专精土系法术，防御力强",
+        "木法师": "专精木系法术，辅助治疗",
+        "金法师": "专精金系法术，穿透力强"
+      },
+      "abilities": ["元素掌控", "法术释放", "法力增幅", "元素融合"],
+      "advancement": ["法童", "法徒", "法师", "法宗", "大法师", "法仙"]
+    },
+    {
+      "id": "BODY_CULTIVATOR", 
+      "name": "体修",
+      "category": "combat",
+      "description": "淬炼肉身，以强悍体魄抗衡天地",
+      "primary_requirements": {
+        "recommended_roots": ["土灵根"],
+        "min_purity": 0.4,
+        "physical_constitution": "强健体魄"
+      },
+      "secondary_paths": {
+        "元素体修": {
+          "requirements": "任意灵根纯度≥0.3",
+          "specializations": ["雷体", "火体", "冰体", "金体", "木体"]
+        }
+      },
+      "abilities": ["肉身强化", "体术", "抗性提升", "生命力增强"],
+      "advancement": ["体童", "体徒", "体师", "体宗", "武圣", "体仙"]
+    },
+    {
+      "id": "ALCHEMIST",
+      "name": "丹修",
+      "category": "crafting",
+      "description": "炼制丹药，以丹道通玄妙",
+      "primary_requirements": {
+        "recommended_roots": ["火灵根"],
+        "min_purity": 0.5,
+        "intelligence": 0.7
+      },
+      "secondary_paths": {
+        "多元丹师": {
+          "requirements": "火灵根 + 其他任意灵根≥0.3",
+          "advantage": "可炼制复合属性丹药"
+        }
+      },
+      "abilities": ["炼丹术", "火候控制", "药性分析", "丹方创新"],
+      "advancement": ["丹童", "丹徒", "丹师", "丹宗", "丹圣", "丹仙"]
+    },
+    {
+      "id": "BEAST_TAMER",
+      "name": "御兽师",
+      "category": "support",
+      "description": "驯服灵兽，与灵兽共同战斗",
+      "primary_requirements": {
+        "recommended_roots": ["木灵根"],
+        "min_purity": 0.4,
+        "beast_affinity": 0.6
+      },
+      "secondary_paths": {
+        "元素兽使": {
+          "requirements": "任意灵根纯度≥0.4",
+          "specializations": "可契约对应属性灵兽"
+        }
+      },
+      "abilities": ["兽语", "契约术", "兽魂融合", "群兽指挥"],
+      "advancement": ["兽童", "兽徒", "兽师", "兽宗", "兽王", "兽仙"]
+    }
+  ],
+  "hidden_professions": [
+    {
+      "id": "FORMATION_MASTER",
+      "name": "阵法大师",
+      "category": "hidden",
+      "description": "精通阵法布置，以阵法改天换地",
+      "unlock_conditions": {
+        "primary": "五灵根纯度差值≤0.1",
+        "secondary": "土灵根纯度≥0.6 + 阵法天赋",
+        "knowledge": "掌握至少10种基础阵法"
+      },
+      "advantages": [
+        "可同时使用多种元素阵法",
+        "阵法稳定性极高",
+        "创新阵法能力强"
+      ],
+      "abilities": ["五行阵", "复合阵法", "阵法创新", "天地借力"],
+      "advancement": ["阵童", "阵徒", "阵师", "阵宗", "阵圣", "阵仙"]
+    },
+    {
+      "id": "CHAOS_WALKER",
+      "name": "界域旅者",
+      "category": "hidden",
+      "description": "穿梭于不同界域，掌握空间之力",
+      "unlock_conditions": {
+        "灵根冲突率": "≥60%",
+        "survival_experience": "在灵根冲突状态下存活1年",
+        "spatial_affinity": "天生空间感知能力"
+      },
+      "advantages": [
+        "空间传送能力",
+        "跨界域适应性",
+        "多元素抗性"
+      ],
+      "abilities": ["空间折叠", "界域穿越", "混沌抗性", "多元适应"],
+      "advancement": ["行者", "游者", "旅者", "跨界者", "界主", "界仙"]
+    },
+    {
+      "id": "PSEUDO_HEAVENLY",
+      "name": "伪天灵根者",
+      "category": "hidden",
+      "description": "通过特殊方法达到天灵根效果",
+      "unlock_conditions": {
+        "any_root_purity": "≥0.9",
+        "suppression_technique": "掌握其他灵根压制法",
+        "will_power": "极强的意志力"
+      },
+      "advantages": [
+        "临时获得天灵根效率",
+        "专精度极高",
+        "突破概率增加"
+      ],
+      "abilities": ["灵根聚焦", "属性纯化", "极限爆发", "天道模拟"],
+      "risks": ["其他灵根可能废化", "反噬风险极高"]
+    },
+    {
+      "id": "BALANCE_KEEPER",
+      "name": "平衡守护者",
+      "category": "hidden",
+      "description": "维护天地平衡，调和五行之力",
+      "unlock_conditions": {
+        "五行平衡": "五灵根纯度差≤0.05",
+        "karma_balance": "善恶业力平衡",
+        "harmony_achievement": "化解过重大冲突"
+      },
+      "advantages": [
+        "天道眷顾",
+        "化解冲突能力",
+        "五行协调术"
+      ],
+      "abilities": ["平衡调节", "冲突化解", "五行协调", "天道沟通"],
+      "advancement": ["调节者", "协调者", "平衡者", "守护者", "平衡圣", "平衡仙"]
+    },
+    {
+      "id": "ELEMENTAL_FUSION",
+      "name": "元素融合师",
+      "category": "hidden",
+      "description": "创造全新的元素组合，开拓修炼新路",
+      "unlock_conditions": {
+        "fusion_success": "成功融合过2种以上灵根",
+        "innovation_spirit": "创新天赋",
+        "risk_tolerance": "能承受融合失败的风险"
+      },
+      "advantages": [
+        "创造新型法术",
+        "融合成功率提高",
+        "元素创新能力"
+      ],
+      "abilities": ["元素融合", "新法创造", "融合稳定", "元素进化"],
+      "advancement": ["融合者", "创新者", "进化者", "创造者", "融合圣", "创世仙"]
+    }
+  ],
+  "mixed_root_advantages": {
+    "profession_flexibility": {
+      "description": "杂灵根的职业灵活性",
+      "benefits": [
+        "可同时修习多个职业",
+        "职业间技能可以融合",
+        "适应各种环境和挑战",
+        "有机会解锁独特职业"
+      ]
+    },
+    "skill_combinations": {
+      "description": "技能组合优势",
+      "examples": [
+        "剑修 + 法修 = 法剑双修",
+        "丹修 + 御兽 = 兽丹专家", 
+        "体修 + 阵法 = 阵体合一",
+        "多职业 = 全能修士"
+      ]
+    },
+    "unique_paths": {
+      "description": "杂灵根专属发展路径",
+      "paths": [
+        {
+          "name": "万能修士",
+          "description": "掌握多种技能的全能型修士",
+          "requirements": "至少精通3个不同类型职业"
+        },
+        {
+          "name": "创新大师",
+          "description": "开创新修炼方法的先驱者",
+          "requirements": "创造过新的修炼技法"
+        },
+        {
+          "name": "平衡之道",
+          "description": "追求完美平衡的修士",
+          "requirements": "各项能力均衡发展"
+        }
+      ]
+    }
+  },
+  "profession_interactions": {
+    "synergies": {
+      "description": "职业间的协同效应",
+      "combinations": [
+        {
+          "professions": ["剑修", "阵法师"],
+          "synergy": "剑阵合一",
+          "effect": "剑气可激活阵法节点"
+        },
+        {
+          "professions": ["丹修", "体修"],
+          "synergy": "体丹双修",
+          "effect": "炼制强体丹药，体修辅助炼丹"
+        },
+        {
+          "professions": ["法修", "御兽师"],
+          "synergy": "魔兽融合",
+          "effect": "法术增强兽类，兽类增强法术"
+        }
+      ]
+    },
+    "conflicts": {
+      "description": "职业间的冲突",
+      "examples": [
+        "正道修士 vs 魔道修士",
+        "传统保守派 vs 创新开拓派",
+        "专精主义 vs 全能主义"
+      ]
+    }
+  },
+  "advancement_mechanics": {
+    "experience_sources": [
+      "专业技能练习",
+      "实战应用",
+      "师父指导",
+      "同道交流",
+      "突破创新"
+    ],
+    "promotion_requirements": {
+      "技能熟练度": "达到当前等级要求",
+      "实际成就": "完成相应等级的任务",
+      "品德考核": "符合职业道德要求",
+      "同行认可": "获得同行或师门认可"
+    },
+    "specialization_system": {
+      "description": "职业特化系统",
+      "mechanism": "在基础职业上发展专门方向",
+      "examples": [
+        "剑修 → 飞剑专家/剑阵大师/杀戮剑仙",
+        "法修 → 元素大师/禁咒专家/法阵融合",
+        "丹修 → 毒丹专家/仙丹大师/活人丹神"
+      ]
+    }
+  }
+}

@@ -77,7 +77,7 @@ class IEventHandler(ABC):
 class EventHandler(IEventHandler):
     """事件处理器基类"""
     
-    def __init__(self, event_types: Optional[List[str]] = None):
+    def __init__(self, event_types: Optional[List[str]] = None) -> None:
         self.event_types = event_types or []
         self.logger = logger.getChild(self.__class__.__name__)
         
@@ -118,7 +118,7 @@ class FunctionEventHandler(EventHandler):
 class EventBus:
     """事件总线"""
     
-    def __init__(self):
+    def __init__(self) -> None:
         self._handlers: Dict[str, List[IEventHandler]] = defaultdict(list)
         self._async_handlers: Dict[str, List[IEventHandler]] = defaultdict(list)
         self._middleware: List[Callable] = []
@@ -219,7 +219,7 @@ class EventBus:
 class EventStore:
     """事件存储"""
     
-    def __init__(self, max_size: int = 10000):
+    def __init__(self, max_size: int = 10000) -> None:
         self._events: List[DomainEvent] = []
         self._max_size = max_size
         self._lock = threading.Lock()

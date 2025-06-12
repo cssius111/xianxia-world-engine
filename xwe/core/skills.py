@@ -228,7 +228,7 @@ class SkillSystem:
     负责技能的加载、管理和效果计算。
     """
     
-    def __init__(self, data_loader, expression_parser: ExpressionParser):
+    def __init__(self, data_loader, expression_parser: ExpressionParser) -> None:
         """
         初始化技能系统
         

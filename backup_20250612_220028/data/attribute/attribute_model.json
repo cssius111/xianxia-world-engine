@@ -1,0 +1,718 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "description": "玄苍界属性模型，定义基础属性、成长曲线与属性间关系"
+  },
+  "primary_attributes": {
+    "strength": {
+      "name": "力量",
+      "description": "影响物理攻击力和负重能力",
+      "base_range": [1, 20],
+      "racial_modifiers": {
+        "人族": 1.0,
+        "妖族": 1.2,
+        "魔族": 1.1,
+        "器灵": 0.8
+      },
+      "growth_formula": {
+        "operation": "+",
+        "operands": [
+          {"base": "racial_base"},
+          {
+            "operation": "*",
+            "operands": [
+              {"attribute": "body_cultivation_level"},
+              {"constant": 0.5}
+            ]
+          },
+          {"modifier": "equipment_bonus"},
+          {"modifier": "temporary_effects"}
+        ]
+      },
+      "effects_on": [
+        {
+          "target": "attack_power",
+          "formula": {
+            "operation": "*",
+            "operands": [
+              {"attribute": "strength"},
+              {"constant": 2}
+            ]
+          }
+        },
+        {
+          "target": "carrying_capacity",
+          "formula": {
+            "operation": "*",
+            "operands": [
+              {"attribute": "strength"},
+              {"constant": 10}
+            ]
+          }
+        },
+        {
+          "target": "physical_resistance",
+          "formula": {
+            "operation": "*",
+            "operands": [
+              {"attribute": "strength"},
+              {"constant": 0.1}
+            ]
+          }
+        }
+      ]
+    },
+    "agility": {
+      "name": "敏捷",
+      "description": "影响速度、闪避和行动顺序",
+      "base_range": [1, 20],
+      "racial_modifiers": {
+        "人族": 1.0,
+        "妖族": 1.3,
+        "魔族": 0.9,
+        "器灵": 1.1
+      },
+      "growth_formula": {
+        "operation": "+",
+        "operands": [
+          {"base": "racial_base"},
+          {
+            "operation": "*",
+            "operands": [
+              {"attribute": "movement_technique_level"},
+              {"constant": 0.3}
+            ]
+          },
+          {"modifier": "equipment_bonus"}
+        ]
+      },
+      "effects_on": [
+        {
+          "target": "speed",
+          "formula": {
+            "operation": "*",
+            "operands": [
+              {"attribute": "agility"},
+              {"constant": 3}
+            ]
+          }
+        },
+        {
+          "target": "evasion",
+          "formula": {
+            "operation": "*",
+            "operands": [
+              {"attribute": "agility"},
+              {"constant": 0.02}
+            ]
+          }
+        },
+        {
+          "target": "initiative",
+          "formula": {
+            "operation": "*",
+            "operands": [
+              {"attribute": "agility"},
+              {"constant": 1.5}
+            ]
+          }
+        }
+      ]
+    },
+    "constitution": {
+      "name": "体质",
+      "description": "影响生命值和抗性",
+      "base_range": [1, 20],
+      "racial_modifiers": {
+        "人族": 1.0,
+        "妖族": 1.4,
+        "魔族": 1.2,
+        "器灵": 0.6
+      },
+      "growth_formula": {
+        "operation": "+",
+        "operands": [
+          {"base": "racial_base"},
+          {
+            "operation": "*",
+            "operands": [
+              {"attribute": "body_cultivation_level"},
+              {"constant": 0.8}
+            ]
+          },
+          {"modifier": "longevity_pills"},
+          {"modifier": "constitution_training"}
+        ]
+      },
+      "effects_on": [
+        {
+          "target": "max_health",
+          "formula": {
+            "operation": "*",
+            "operands": [
+              {"attribute": "constitution"},
+              {"constant": 15}
+            ]
+          }
+        },
+        {
+          "target": "health_regeneration",
+          "formula": {
+            "operation": "/",
+            "operands": [
+              {"attribute": "constitution"},
+              {"constant": 10}
+            ]
+          }
+        },
+        {
+          "target": "poison_resistance",
+          "formula": {
+            "operation": "*",
+            "operands": [
+              {"attribute": "constitution"},
+              {"constant": 0.05}
+            ]
+          }
+        },
+        {
+          "target": "disease_resistance",
+          "formula": {
+            "operation": "*",
+            "operands": [
+              {"attribute": "constitution"},
+              {"constant": 0.03}
+            ]
+          }
+        }
+      ]
+    },
+    "intelligence": {
+      "name": "智力",
+      "description": "影响学习能力和法术理解",
+      "base_range": [1, 20],
+      "racial_modifiers": {
+        "人族": 1.0,
+        "妖族": 0.8,
+        "魔族": 1.1,
+        "器灵": 1.5
+      },
+      "growth_formula": {
+        "operation": "+",
+        "operands": [
+          {"base": "racial_base"},
+          {
+            "operation": "*",
+            "operands": [
+              {"attribute": "knowledge_accumulation"},
+              {"constant": 0.1}
+            ]
+          },
+          {"modifier": "wisdom_pills"},
+          {"modifier": "scholarly_training"}
+        ]
+      },
+      "effects_on": [
+        {
+          "target": "skill_learning_speed",
+          "formula": {
+            "operation": "*",
+            "operands": [
+              {"attribute": "intelligence"},
+              {"constant": 0.1}
+            ]
+          }
+        },
+        {
+          "target": "spell_complexity_limit",
+          "formula": {
+            "operation": "+",
+            "operands": [
+              {"attribute": "intelligence"},
+              {"constant": -5}
+            ]
+          }
+        },
+        {
+          "target": "crafting_success_rate",
+          "formula": {
+            "operation": "*",
+            "operands": [
+              {"attribute": "intelligence"},
+              {"constant": 0.02}
+            ]
+          }
+        }
+      ]
+    },
+    "willpower": {
+      "name": "意志力",
+      "description": "影响法术抗性和心境稳定",
+      "base_range": [1, 20],
+      "racial_modifiers": {
+        "人族": 1.0,
+        "妖族": 0.9,
+        "魔族": 0.7,
+        "器灵": 1.3
+      },
+      "growth_formula": {
+        "operation": "+",
+        "operands": [
+          {"base": "racial_base"},
+          {
+            "operation": "*",
+            "operands": [
+              {"attribute": "mental_cultivation_level"},
+              {"constant": 0.4}
+            ]
+          },
+          {"modifier": "meditation_practice"},
+          {"modifier": "hardship_experience"}
+        ]
+      },
+      "effects_on": [
+        {
+          "target": "magic_resistance",
+          "formula": {
+            "operation": "*",
+            "operands": [
+              {"attribute": "willpower"},
+              {"constant": 0.03}
+            ]
+          }
+        },
+        {
+          "target": "mental_status_resistance",
+          "formula": {
+            "operation": "*",
+            "operands": [
+              {"attribute": "willpower"},
+              {"constant": 0.04}
+            ]
+          }
+        },
+        {
+          "target": "breakthrough_stability",
+          "formula": {
+            "operation": "*",
+            "operands": [
+              {"attribute": "willpower"},
+              {"constant": 0.02}
+            ]
+          }
+        }
+      ]
+    },
+    "charisma": {
+      "name": "魅力",
+      "description": "影响社交和领导能力",
+      "base_range": [1, 20],
+      "racial_modifiers": {
+        "人族": 1.0,
+        "妖族": 1.2,
+        "魔族": 0.8,
+        "器灵": 0.7
+      },
+      "growth_formula": {
+        "operation": "+",
+        "operands": [
+          {"base": "racial_base"},
+          {"modifier": "social_experience"},
+          {"modifier": "leadership_practice"},
+          {"modifier": "appearance_enhancement"}
+        ]
+      },
+      "effects_on": [
+        {
+          "target": "npc_reaction_bonus",
+          "formula": {
+            "operation": "*",
+            "operands": [
+              {"attribute": "charisma"},
+              {"constant": 0.05}
+            ]
+          }
+        },
+        {
+          "target": "leadership_capacity",
+          "formula": {
+            "operation": "*",
+            "operands": [
+              {"attribute": "charisma"},
+              {"constant": 2}
+            ]
+          }
+        },
+        {
+          "target": "negotiation_success",
+          "formula": {
+            "operation": "*",
+            "operands": [
+              {"attribute": "charisma"},
+              {"constant": 0.03}
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "cultivation_attributes": {
+    "spiritual_power": {
+      "name": "灵力",
+      "description": "修士的基础能量，用于施展法术",
+      "base_range": [0, 1000],
+      "growth_formula": {
+        "operation": "+",
+        "operands": [
+          {
+            "operation": "*",
+            "operands": [
+              {"attribute": "cultivation_realm_level"},
+              {"constant": 50}
+            ]
+          },
+          {
+            "operation": "*",
+            "operands": [
+              {"attribute": "spiritual_root_quality"},
+              {"constant": 100}
+            ]
+          },
+          {"modifier": "technique_bonus"},
+          {"modifier": "treasure_enhancement"}
+        ]
+      },
+      "regeneration": {
+        "formula": {
+          "operation": "*",
+          "operands": [
+            {"attribute": "max_spiritual_power"},
+            {"constant": 0.1}
+          ]
+        },
+        "modifiers": ["meditation_skill", "environment_bonus", "pills_effect"]
+      }
+    },
+    "comprehension": {
+      "name": "悟性",
+      "description": "理解修炼奥义的能力",
+      "base_range": [0.1, 2.0],
+      "factors": [
+        {
+          "source": "destiny_grade",
+          "weight": 0.4
+        },
+        {
+          "source": "intelligence",
+          "weight": 0.3
+        },
+        {
+          "source": "spiritual_root_harmony",
+          "weight": 0.2
+        },
+        {
+          "source": "experience_accumulation",
+          "weight": 0.1
+        }
+      ],
+      "effects_on": [
+        {
+          "target": "breakthrough_chance",
+          "formula": {
+            "operation": "*",
+            "operands": [
+              {"attribute": "base_breakthrough_chance"},
+              {"attribute": "comprehension"}
+            ]
+          }
+        },
+        {
+          "target": "technique_learning_speed",
+          "formula": {
+            "operation": "*",
+            "operands": [
+              {"attribute": "base_learning_speed"},
+              {"attribute": "comprehension"}
+            ]
+          }
+        }
+      ]
+    },
+    "spiritual_sense": {
+      "name": "神识",
+      "description": "精神感知和探测能力",
+      "base_range": [1, 100],
+      "growth_formula": {
+        "operation": "+",
+        "operands": [
+          {
+            "operation": "*",
+            "operands": [
+              {"attribute": "cultivation_realm_level"},
+              {"constant": 5}
+            ]
+          },
+          {
+            "operation": "*",
+            "operands": [
+              {"attribute": "willpower"},
+              {"constant": 2}
+            ]
+          },
+          {"modifier": "soul_cultivation_bonus"}
+        ]
+      },
+      "applications": [
+        "detecting_hidden_enemies",
+        "appraising_treasures",
+        "reading_formations",
+        "long_distance_communication",
+        "soul_attacks"
+      ]
+    }
+  },
+  "derived_attributes": {
+    "max_health": {
+      "name": "气血值上限",
+      "formula": {
+        "operation": "+",
+        "operands": [
+          {
+            "operation": "*",
+            "operands": [
+              {"attribute": "constitution"},
+              {"constant": 15}
+            ]
+          },
+          {
+            "operation": "*",
+            "operands": [
+              {"attribute": "cultivation_realm_level"},
+              {"constant": 100}
+            ]
+          },
+          {"modifier": "body_cultivation_bonus"},
+          {"modifier": "equipment_bonus"}
+        ]
+      }
+    },
+    "max_mana": {
+      "name": "灵力值上限",
+      "formula": {
+        "operation": "+",
+        "operands": [
+          {
+            "operation": "*",
+            "operands": [
+              {"attribute": "spiritual_power"},
+              {"constant": 3}
+            ]
+          },
+          {
+            "operation": "*",
+            "operands": [
+              {"attribute": "intelligence"},
+              {"constant": 10}
+            ]
+          },
+          {"modifier": "spiritual_root_bonus"},
+          {"modifier": "technique_bonus"}
+        ]
+      }
+    },
+    "attack_power": {
+      "name": "攻击力",
+      "formula": {
+        "operation": "+",
+        "operands": [
+          {
+            "operation": "*",
+            "operands": [
+              {"attribute": "strength"},
+              {"constant": 2}
+            ]
+          },
+          {"modifier": "weapon_bonus"},
+          {"modifier": "skill_bonus"},
+          {"modifier": "cultivation_bonus"}
+        ]
+      }
+    },
+    "defense": {
+      "name": "防御力",
+      "formula": {
+        "operation": "+",
+        "operands": [
+          {
+            "operation": "*",
+            "operands": [
+              {"attribute": "constitution"},
+              {"constant": 1}
+            ]
+          },
+          {"modifier": "armor_bonus"},
+          {"modifier": "defensive_skill_bonus"},
+          {"modifier": "body_cultivation_bonus"}
+        ]
+      }
+    }
+  },
+  "growth_curves": {
+    "linear_growth": {
+      "description": "固定数值增长",
+      "formula": {
+        "operation": "+",
+        "operands": [
+          {"base": "base_value"},
+          {
+            "operation": "*",
+            "operands": [
+              {"variable": "level"},
+              {"constant": "growth_rate"}
+            ]
+          }
+        ]
+      },
+      "applicable_to": ["basic_attributes", "skills"]
+    },
+    "logarithmic_growth": {
+      "description": "递减增长率",
+      "formula": {
+        "operation": "+",
+        "operands": [
+          {"base": "base_value"},
+          {
+            "operation": "*",
+            "operands": [
+              {"function": "log", "input": {"variable": "level"}},
+              {"constant": "growth_multiplier"}
+            ]
+          }
+        ]
+      },
+      "applicable_to": ["cultivation_realms", "skill_mastery"]
+    },
+    "exponential_growth": {
+      "description": "递增增长率",
+      "formula": {
+        "operation": "*",
+        "operands": [
+          {"base": "base_value"},
+          {
+            "operation": "pow",
+            "operands": [
+              {"constant": "growth_base"},
+              {"variable": "level"}
+            ]
+          }
+        ]
+      },
+      "applicable_to": ["power_levels", "resource_requirements"]
+    },
+    "stepped_growth": {
+      "description": "阶段性增长",
+      "thresholds": [
+        {"level_range": [1, 10], "growth_rate": 1.0},
+        {"level_range": [11, 25], "growth_rate": 0.8},
+        {"level_range": [26, 50], "growth_rate": 0.6},
+        {"level_range": [51, 100], "growth_rate": 0.4}
+      ],
+      "applicable_to": ["skill_improvements", "attribute_gains"]
+    }
+  },
+  "attribute_relationships": {
+    "complementary_pairs": [
+      {
+        "attributes": ["strength", "constitution"],
+        "synergy": "physical_prowess",
+        "bonus": {
+          "operation": "*",
+          "operands": [
+            {"function": "min", "inputs": ["strength", "constitution"]},
+            {"constant": 0.1}
+          ]
+        }
+      },
+      {
+        "attributes": ["intelligence", "willpower"],
+        "synergy": "mental_fortitude",
+        "bonus": {
+          "operation": "*",
+          "operands": [
+            {"function": "min", "inputs": ["intelligence", "willpower"]},
+            {"constant": 0.15}
+          ]
+        }
+      }
+    ],
+    "conflicting_pairs": [
+      {
+        "attributes": ["brute_force", "finesse"],
+        "conflict": "opposing_approaches",
+        "penalty": "当两者差距过大时效率降低"
+      }
+    ],
+    "scaling_relationships": [
+      {
+        "primary": "cultivation_realm",
+        "affected": ["spiritual_power", "max_health", "max_mana"],
+        "scaling_type": "exponential"
+      },
+      {
+        "primary": "age", 
+        "affected": ["wisdom", "experience"],
+        "scaling_type": "logarithmic",
+        "peak_age": 1000,
+        "decline_after": 2000
+      }
+    ]
+  },
+  "attribute_caps": {
+    "soft_caps": {
+      "description": "超过此值后增长效率递减",
+      "strength": 50,
+      "agility": 50,
+      "constitution": 50,
+      "intelligence": 50,
+      "willpower": 50,
+      "charisma": 50
+    },
+    "hard_caps": {
+      "description": "无法超越的绝对上限",
+      "strength": 100,
+      "agility": 100,
+      "constitution": 100,
+      "intelligence": 100,python run_v3.py
+      "willpower": 100,
+      "charisma": 100
+    },
+    "breakthrough_thresholds": {
+      "description": "突破境界时的属性要求",
+      "筑基期": {"spiritual_power": 100, "comprehension": 0.5},
+      "金丹期": {"spiritual_power": 500, "comprehension": 0.7},
+      "元婴期": {"spiritual_power": 2000, "comprehension": 0.9}
+    }
+  },
+  "temporary_modifiers": {
+    "duration_types": {
+      "instant": "立即生效，瞬间结束",
+      "short_term": "持续数秒到数分钟",
+      "medium_term": "持续数小时到数天",
+      "long_term": "持续数月到数年",
+      "permanent": "永久性改变"
+    },
+    "modifier_sources": [
+      "pills_and_elixirs",
+      "equipment_enchantments",
+      "environmental_effects",
+      "status_conditions",
+      "divine_blessings_or_curses",
+      "cultivation_breakthroughs"
+    ],
+    "stacking_rules": {
+      "same_source": "refresh_duration",
+      "different_sources": "additive",
+      "conflicting_effects": "highest_priority_wins"
+    }
+  }
+}

@@ -8,7 +8,7 @@ import re
 class EnhancedGameOutput:
     """增强的游戏输出处理器"""
     
-    def __init__(self, html_logger=None):
+    def __init__(self, html_logger=None) -> None:
         self.html_logger = html_logger
         self.output_buffer = []
         self.current_context = None

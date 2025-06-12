@@ -1,0 +1,92 @@
+{
+  "regions": [
+    {
+      "id": "tian_nan",
+      "name": "天南",
+      "type": "大陆型",
+      "description": "玄苍界五大主陆之一，由正魔势力割据，资源中等但地势复杂，灵脉交错。",
+      "dominant_energy": "灵气",
+      "ambient_laws": ["基础因果", "五行法则", "灵根兼容"],
+      "faction_control": ["正道", "魔道", "九国联盟"],
+      "world_events": ["坠魔谷开启", "天南宗门战乱"],
+      "areas": [
+        {
+          "id": "duo_yue_mountain",
+          "name": "堕月山脉",
+          "area_type": "山脉",
+          "spirit_density": 2,
+          "danger_level": 2,
+          "law_flow": ["冥意干扰", "血脉回响"],
+          "chaos_index": 0.3,
+          "faction": "魔道",
+          "travel_cost": {
+            "time": 2,
+            "risk": "中"
+          },
+          "can_settle": false,
+          "can_fly": false,
+          "npc_spawn": {
+            "max_npc": 6,
+            "factions": ["魔道", "散修"],
+            "behaviors": ["巡逻", "伏击", "闭关"]
+          },
+          "locations": [
+            {
+              "id": "zui_mo_valley",
+              "name": "坠魔谷",
+              "location_type": "高危秘境",
+              "entry_requirements": ["金丹期以上", "特殊法符"],
+              "features": ["魔气源泉", "时空扭曲", "三百年开启一次"],
+              "event_hooks": ["魔道本源复苏", "正道封印松动"],
+              "random_encounters": {
+                "enabled": true,
+                "difficulty_range": [3, 5],
+                "types": ["迷失修士", "魔兽孽体", "古魔投影"]
+              },
+              "loot_model": {
+                "rare_item_chance": 0.12,
+                "artifact_table": ["魔纹骨剑", "堕灵丹", "封魂珠"]
+              }
+            }
+          ]
+        },
+        {
+          "id": "tian_ji_market",
+          "name": "天机坊市",
+          "area_type": "坊市",
+          "spirit_density": 3,
+          "danger_level": 1,
+          "law_flow": ["交易平衡", "因果平缓"],
+          "chaos_index": 0.05,
+          "faction": "正道",
+          "can_settle": true,
+          "can_fly": true,
+          "npc_spawn": {
+            "max_npc": 12,
+            "factions": ["商会", "宗门", "散修"],
+            "behaviors": ["交易", "情报贩卖", "布置陷阱"]
+          },
+          "locations": [
+            {
+              "id": "heishi_entrance",
+              "name": "黑市入口",
+              "location_type": "隐秘场所",
+              "features": ["可出售违禁品", "可暗杀目标"],
+              "visibility": "低",
+              "event_hooks": ["失落功法拍卖", "暗杀名单轮换"]
+            },
+            {
+              "id": "zhengdao_auction",
+              "name": "正道拍卖行",
+              "location_type": "拍卖行",
+              "features": ["定期事件刷新", "高价值物品聚集"],
+              "can_be_robbed": true,
+              "security_level": 4,
+              "event_hooks": ["万灵榜天材出现", "天骄争夺战"]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

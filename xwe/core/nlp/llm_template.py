@@ -6,7 +6,7 @@ LLM集成模板 - 为后续接入DeepSeek/OpenAI做准备
 class LLMIntegrationTemplate:
     """LLM集成模板类"""
     
-    def __init__(self, api_key=None, provider="deepseek"):
+    def __init__(self, api_key=None, provider="deepseek") -> None:
         self.api_key = api_key
         self.provider = provider
         

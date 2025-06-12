@@ -81,7 +81,7 @@ class IGameService(ABC):
 class GameService(ServiceBase[IGameService], IGameService):
     """游戏服务实现"""
     
-    def __init__(self, container: ServiceContainer):
+    def __init__(self, container: ServiceContainer) -> None:
         super().__init__(container)
         self._initialized = False
         self._game_start_time = 0

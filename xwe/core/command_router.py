@@ -29,7 +29,7 @@ class CommandDefinition:
     aliases: List[str] = field(default_factory=list)  # 别名列表
 
 class CommandRouter:
-    def __init__(self):
+    def __init__(self) -> None:
         self.abbreviations = {}  # 一定要第一行
         self.commands = self._init_commands()
         self.current_context = 'exploration'  # 当前上下文

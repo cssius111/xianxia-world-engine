@@ -10,7 +10,7 @@ from typing import Any
 class ExpressionError(Exception):
     """表达式错误基类"""
 
-    def __init__(self, message: str, position: int = -1, expression: str = ""):
+    def __init__(self, message: str, position: int = -1, expression: str = "") -> None:
         super().__init__(message)
         self.message = message
         self.position = position

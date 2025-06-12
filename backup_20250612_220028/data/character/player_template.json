@@ -1,0 +1,104 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "description": "玩家角色初始状态模板"
+  },
+  "initial_state": {
+    "name": "玩家",
+    "type": "player",
+    "base_attributes": {
+      "strength": 10,
+      "constitution": 10,
+      "agility": 10,
+      "intelligence": 10,
+      "willpower": 10,
+      "comprehension": 10,
+      "luck": 10
+    },
+    "cultivation": {
+      "realm": "聚气期",
+      "realm_level": 1,
+      "level": 1
+    },
+    "spiritual_root": {
+      "金": 20,
+      "木": 20,
+      "水": 20,
+      "火": 20,
+      "土": 20
+    },
+    "skills": [],
+    "faction": "",
+    "ai_profile": "player"
+  },
+  "initial_skills": [
+    "basic_attack",
+    "defend",
+    "meditation"
+  ],
+  "character_creation": {
+    "basic_info": {
+      "name": {
+        "type": "string",
+        "constraints": ["2-8个汉字", "不含特殊符号"],
+        "suggestion": "可选择道号或俗名，建议符合修仙风格"
+      },
+      "gender": {
+        "type": "enum",
+        "values": ["男", "女"],
+        "description": "影响部分剧情分支和社交互动"
+      },
+      "age": {
+        "type": "integer",
+        "range": [16, 25],
+        "description": "起始年龄，影响初始属性分配"
+      }
+    },
+    "background_origin": [
+      {
+        "id": "MORTAL_COMMONER",
+        "name": "平民出身",
+        "probability": 0.6,
+        "description": "普通凡人家庭，白手起家",
+        "initial_bonuses": {
+          "wealth": 100,
+          "reputation": 0
+        },
+        "special_traits": ["坚韧不拔", "珍惜机缘"]
+      },
+      {
+        "id": "MERCHANT_FAMILY",
+        "name": "商贾之家",
+        "probability": 0.2,
+        "description": "商人家族出身，不缺修炼资源",
+        "initial_bonuses": {
+          "wealth": 1000,
+          "reputation": 50
+        },
+        "special_traits": ["商业头脑", "人脉广泛"]
+      },
+      {
+        "id": "FALLEN_NOBLE",
+        "name": "没落世家",
+        "probability": 0.15,
+        "description": "曾经辉煌的修仙家族后裔",
+        "initial_bonuses": {
+          "wealth": 300,
+          "reputation": -20
+        },
+        "special_traits": ["家学渊源", "背负宿怨"]
+      },
+      {
+        "id": "ORPHAN",
+        "name": "孤儿身世",
+        "probability": 0.05,
+        "description": "身世成谜的孤儿，可能有特殊血脉",
+        "initial_bonuses": {
+          "wealth": 50,
+          "reputation": 0
+        },
+        "special_traits": ["身世之谜", "潜力无限"]
+      }
+    ]
+  }
+}

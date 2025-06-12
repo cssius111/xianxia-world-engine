@@ -1,0 +1,169 @@
+{
+  "auctioneer": {
+    "name": "柳掌柜",
+    "title": "天宝阁首席拍卖师",
+    "personality": "professional",
+    "speech_style": "formal",
+    "catchphrases": [
+      "诸位道友，请看此物！",
+      "还有更高的价格吗？",
+      "一次！两次！",
+      "恭喜这位道友！",
+      "此物乃是千年难遇的珍品！"
+    ]
+  },
+  "bidder_archetypes": [
+    {
+      "type": "aggressive",
+      "name_pool": ["血刀门弟子", "魔道散修", "狂刀客"],
+      "bid_style": "rapid",
+      "price_tolerance": 1.5,
+      "grudge_probability": 0.3,
+      "personality_traits": {
+        "patience": 0.3,
+        "aggression": 0.9,
+        "wealth": 0.7
+      },
+      "speech_patterns": [
+        "此物我势在必得！",
+        "谁敢与我争夺？",
+        "{price}！看谁还敢加价！"
+      ]
+    },
+    {
+      "type": "conservative",
+      "name_pool": ["青云宗长老", "万宝阁管事", "富商王员外"],
+      "bid_style": "cautious",
+      "price_tolerance": 1.2,
+      "grudge_probability": 0.1,
+      "personality_traits": {
+        "patience": 0.8,
+        "aggression": 0.3,
+        "wealth": 0.9
+      },
+      "speech_patterns": [
+        "老夫出价{price}",
+        "这个价格还算合理",
+        "超过底线了，算了"
+      ]
+    },
+    {
+      "type": "strategic",
+      "name_pool": ["云梦仙子", "智谋道人", "玄机子"],
+      "bid_style": "calculated",
+      "price_tolerance": 1.3,
+      "grudge_probability": 0.2,
+      "personality_traits": {
+        "patience": 0.6,
+        "aggression": 0.5,
+        "wealth": 0.8
+      },
+      "speech_patterns": [
+        "有意思，我出{price}",
+        "看来竞争很激烈啊",
+        "这个价格... 我再考虑考虑"
+      ]
+    },
+    {
+      "type": "mysterious",
+      "name_pool": ["神秘贵客", "黑袍人", "包厢贵宾"],
+      "bid_style": "unpredictable",
+      "price_tolerance": 2.0,
+      "grudge_probability": 0.4,
+      "personality_traits": {
+        "patience": 0.7,
+        "aggression": 0.6,
+        "wealth": 1.0
+      },
+      "speech_patterns": [
+        "*包厢中传出声音* {price}！",
+        "*一个低沉的声音响起* 加价到{price}",
+        "*神秘人举牌* {price}"
+      ]
+    },
+    {
+      "type": "nouveau_riche",
+      "name_pool": ["暴发户李老板", "灵石矿主", "新晋金丹"],
+      "bid_style": "showy",
+      "price_tolerance": 1.8,
+      "grudge_probability": 0.15,
+      "personality_traits": {
+        "patience": 0.4,
+        "aggression": 0.7,
+        "wealth": 0.85
+      },
+      "speech_patterns": [
+        "区区{price}灵石，本座全要了！",
+        "不就是灵石吗？我有的是！{price}！",
+        "让你们见识见识什么叫财大气粗！"
+      ]
+    }
+  ],
+  "grudge_npcs": [
+    {
+      "id": "xue_dao_men",
+      "name": "血煞真人",
+      "faction": "血刀门",
+      "grudge_trigger": "player_faction_enemy",
+      "bid_multiplier": 1.5,
+      "special_dialogue": [
+        "呵呵，是你啊，看来今天要让你大出血了！",
+        "既然你想要，那我偏不让你如愿！",
+        "跟我血刀门作对，就要付出代价！"
+      ]
+    },
+    {
+      "id": "rival_cultivator",
+      "name": "天骄榜对手",
+      "faction": "various",
+      "grudge_trigger": "competition_history",
+      "bid_multiplier": 1.3,
+      "special_dialogue": [
+        "又见面了，这次看谁能笑到最后！",
+        "上次输给你，这次定要扳回一城！",
+        "哼，区区灵石算什么，我要的是面子！"
+      ]
+    },
+    {
+      "id": "jealous_merchant",
+      "name": "妒忌商人",
+      "faction": "merchant_guild",
+      "grudge_trigger": "business_rival",
+      "bid_multiplier": 1.4,
+      "special_dialogue": [
+        "想从我手里抢生意？做梦！",
+        "这件宝物关系到一笔大买卖，我势在必得！",
+        "钱不是问题，我就是要让你知道谁才是真正的富商！"
+      ]
+    }
+  ],
+  "auction_events": {
+    "fake_bid": {
+      "probability": 0.05,
+      "description": "有人恶意哄抬价格",
+      "dialogues": [
+        "拍卖师皱眉：「这位道友，请出示您的资产证明！」",
+        "*场内一阵骚动* 竟然是虚报价格！",
+        "守卫上前：「扰乱拍卖秩序者，逐出会场！」"
+      ]
+    },
+    "sudden_raid": {
+      "probability": 0.02,
+      "description": "突发劫案",
+      "dialogues": [
+        "*轰隆一声巨响* 墙壁被轰开一个大洞！",
+        "蒙面人冲入：「都不要动！交出宝物！」",
+        "拍卖师大喊：「快保护拍品！启动防御阵法！」"
+      ]
+    },
+    "special_guest": {
+      "probability": 0.03,
+      "description": "大人物到场",
+      "dialogues": [
+        "*全场肃然* 一位化神期强者降临！",
+        "拍卖师恭敬行礼：「恭迎前辈光临寒舍！」",
+        "神秘强者：「听说有件有趣的东西，我来看看。」"
+      ]
+    }
+  }
+}

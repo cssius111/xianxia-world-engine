@@ -25,7 +25,7 @@ class GameContext:
 class AdvancedPromptEngine:
     """高级提示引擎"""
     
-    def __init__(self):
+    def __init__(self) -> None:
         self.templates = self._load_templates()
         self.style_guides = self._load_style_guides()
         self.few_shot_examples = self._load_examples()

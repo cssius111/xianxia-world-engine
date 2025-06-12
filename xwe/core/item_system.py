@@ -20,7 +20,7 @@ class Item:
 class ItemSystem:
     """物品系统管理器"""
     
-    def __init__(self):
+    def __init__(self) -> None:
         self.items: Dict[str, Item] = {}
         self.player_inventories: Dict[str, Dict[str, int]] = {}
     

@@ -15,7 +15,7 @@ from .game_core import GameCore
 from .event_system import EventSystemV3 as EventSystem
 
 # 其他可选模块（安全导入）
-_optional_modules = {}
+_optional_modules: Dict[str, Any] = {}
 
 try:
     from .data_manager import DataManager, load_game_data, get_config

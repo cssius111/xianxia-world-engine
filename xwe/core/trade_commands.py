@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 class TradeCommandHandler:
     """交易命令处理器"""
     
-    def __init__(self, trade_system: TradeSystem):
+    def __init__(self, trade_system: TradeSystem) -> None:
         self.trade_system = trade_system
         self.current_shop: Optional[Shopkeeper] = None
         self.bargaining_state: Dict[str, Any] = {}  # 记录讨价还价状态

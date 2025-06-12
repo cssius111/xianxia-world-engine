@@ -1,0 +1,162 @@
+# core/data_loader.py
+"""
+数据加载器模块
+
+负责加载和管理所有JSON配置文件。
+"""
+
+import json
+import os
+from typing import Any, Dict, Union
+from pathlib import Path
+import logging
+
+logger = logging.getLogger(__name__)
+
+
+class DataLoader:
+    """
+    游戏数据加载器
+    
+    负责加载所有JSON配置文件并提供访问接口。
+    """
+    
+    def __init__(self, data_path: Union[str, Path] | None = None):
+        """
+        初始化数据加载器
+        
+        Args:
+            data_path: 数据文件夹路径
+        """
+        if data_path is None:
+            # 默认使用相对路径
+            current_dir = Path(__file__).parent.parent
+            data_path = current_dir / "data"
+
+        self.data_path = Path(data_path)
+        self.cache: Dict[str, Any] = {}
+        
+        # 预定义的数据类别
+        self.categories = {
+            'world': 'world',
+            'character': 'character', 
+            'combat': 'combat',
+            'skills': 'skills',
+            'items': 'items',
+            'attribute': 'attribute',
+            'interaction': 'interaction',
+            'engine': 'engine'
+        }
+        
+        logger.info(f"数据加载器初始化，数据路径: {self.data_path}")
+    
+    def load_file(self, category: str, filename: str, force_reload: bool = False) -> Dict[str, Any]:
+        """
+        加载指定的JSON文件
+        
+        Args:
+            category: 数据类别
+            filename: 文件名（不含.json后缀）
+            force_reload: 是否强制重新加载
+            
+        Returns:
+            加载的数据字典
+            
+        Raises:
+            FileNotFoundError: 文件不存在
+            json.JSONDecodeError: JSON格式错误
+        """
+        cache_key = f"{category}/{filename}"
+        
+        # 检查缓存
+        if not force_reload and cache_key in self.cache:
+            return self.cache[cache_key]
+        
+        # 构建文件路径
+        file_path = self.data_path / category / f"{filename}.json"
+        
+        if not file_path.exists():
+            raise FileNotFoundError(f"数据文件不存在: {file_path}")
+        
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                
+            # 缓存数据
+            self.cache[cache_key] = data
+            logger.debug(f"成功加载数据文件: {file_path}")
+            
+            return data
+            
+        except json.JSONDecodeError as e:
+            logger.error(f"JSON解析错误 {file_path}: {e}")
+            raise
+    
+    def load_all(self, category: str) -> Dict[str, Dict[str, Any]]:
+        """
+        加载指定类别下的所有JSON文件
+        
+        Args:
+            category: 数据类别
+            
+        Returns:
+            文件名到数据的映射字典
+        """
+        category_path = self.data_path / category
+        
+        if not category_path.exists():
+            logger.warning(f"数据类别目录不存在: {category_path}")
+            return {}
+        
+        result = {}
+        
+        for file_path in category_path.glob("*.json"):
+            if file_path.is_file():
+                filename = file_path.stem  # 不含扩展名的文件名
+                try:
+                    result[filename] = self.load_file(category, filename)
+                except Exception as e:
+                    logger.error(f"加载文件失败 {file_path}: {e}")
+        
+        return result
+    
+    def get_world_config(self) -> Dict[str, Any]:
+        """获取世界配置"""
+        return self.load_file('world', 'world_config')
+    
+    def get_cultivation_rules(self) -> Dict[str, Any]:
+        """获取修炼规则"""
+        return self.load_file('world', 'cultivation_rules')
+    
+    def get_combat_system(self) -> Dict[str, Any]:
+        """获取战斗系统配置"""
+        return self.load_file('combat', 'combat_system_v2')
+    
+    def get_skill_data(self) -> Dict[str, Any]:
+        """获取技能数据"""
+        return self.load_file('skills', 'skills')
+    
+    def get_skill_system(self) -> Dict[str, Any]:
+        """获取技能系统配置"""
+        return self.load_file('skills', 'skills_system')
+    
+    def get_spiritual_root_system(self) -> Dict[str, Any]:
+        """获取灵根系统配置"""
+        return self.load_file('attribute', 'spiritual_root_system')
+    
+    def get_npc_templates(self) -> Dict[str, Any]:
+        """获取NPC模板"""
+        return self.load_file('character', 'npc_template')
+    
+    def get_player_template(self) -> Dict[str, Any]:
+        """获取玩家模板"""
+        return self.load_file('character', 'player_template')
+    
+    def get_faction_system(self) -> Dict[str, Any]:
+        """获取门派系统配置"""
+        return self.load_file('character', 'faction_system')
+    
+    def clear_cache(self) -> None:
+        """清空缓存"""
+        self.cache.clear()
+        logger.info("数据缓存已清空")

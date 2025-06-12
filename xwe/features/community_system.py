@@ -81,7 +81,7 @@ class CommunityLink:
 class FeedbackCollector:
     """反馈收集器"""
     
-    def __init__(self, data_dir: str = "feedback"):
+    def __init__(self, data_dir: str = "feedback") -> None:
         self.data_dir = data_dir
         os.makedirs(data_dir, exist_ok=True)
         
@@ -263,7 +263,7 @@ class FeedbackCollector:
         total_count = cursor.fetchone()[0]
         
         # 按类型统计
-        type_stats = {}
+        type_stats: Dict[str, Any] = {}
         for feedback_type in FeedbackType:
             cursor.execute(
                 "SELECT COUNT(*) FROM feedback WHERE type = ?",
@@ -363,7 +363,7 @@ class FeedbackCollector:
 class CommunityHub:
     """社区中心"""
     
-    def __init__(self):
+    def __init__(self) -> None:
         self.links = [
             CommunityLink(
                 name="官方Discord",
@@ -480,7 +480,7 @@ class CommunityHub:
 class PlayerDataAnalytics:
     """玩家数据分析"""
     
-    def __init__(self, data_dir: str = "analytics"):
+    def __init__(self, data_dir: str = "analytics") -> None:
         self.data_dir = data_dir
         os.makedirs(data_dir, exist_ok=True)
         
@@ -588,7 +588,7 @@ class PlayerDataAnalytics:
 class CommunitySystem:
     """社区系统管理器"""
     
-    def __init__(self):
+    def __init__(self) -> None:
         self.feedback_collector = FeedbackCollector()
         self.community_hub = CommunityHub()
         self.analytics = PlayerDataAnalytics()

@@ -20,7 +20,7 @@ class PendingConfirmation:
 class ConfirmationManager:
     """确认机制管理器"""
     
-    def __init__(self):
+    def __init__(self) -> None:
         self.pending_confirmations: Dict[str, PendingConfirmation] = {}
     
     def request_confirmation(

@@ -103,7 +103,7 @@ class ExpressionParser:
         },
     }
 
-    def __init__(self, debug: bool = False):
+    def __init__(self, debug: bool = False) -> None:
         """
         初始化表达式解析器
 

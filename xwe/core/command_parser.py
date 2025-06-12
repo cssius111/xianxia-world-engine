@@ -115,7 +115,7 @@ class CommandParser:
     将自然语言转换为游戏命令。
     """
     
-    def __init__(self):
+    def __init__(self) -> None:
         """初始化命令解析器"""
         self.patterns: List[CommandPattern] = []
         self.aliases: Dict[str, str] = {}

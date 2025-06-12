@@ -71,7 +71,7 @@ class IEventDispatcher(ABC):
 class EventDispatcher(ServiceBase[IEventDispatcher], IEventDispatcher):
     """事件分发器实现"""
     
-    def __init__(self, container: ServiceContainer):
+    def __init__(self, container: ServiceContainer) -> None:
         super().__init__(container)
         self._event_bus: Optional[EventBus] = None
         self._event_store: Optional[EventStore] = None
@@ -264,7 +264,7 @@ class EventDispatcher(ServiceBase[IEventDispatcher], IEventDispatcher):
 class SystemEventHandler(EventHandler):
     """系统事件处理器"""
     
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(event_types=[
             'system_startup',
             'system_shutdown',
@@ -287,7 +287,7 @@ class SystemEventHandler(EventHandler):
 class LogEventHandler(EventHandler):
     """日志事件处理器"""
     
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()  # 处理所有事件
         self.event_log = []
         self.max_log_size = 1000

@@ -48,7 +48,7 @@ class ICombatService(ABC):
 class CombatService(ServiceBase[ICombatService], ICombatService):
     """战斗服务实现"""
 
-    def __init__(self, container: ServiceContainer):
+    def __init__(self, container: ServiceContainer) -> None:
         super().__init__(container)
         self._in_combat = False
         self._current_enemy = None

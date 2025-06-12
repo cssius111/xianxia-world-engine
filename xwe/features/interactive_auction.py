@@ -30,7 +30,7 @@ else:
 class InteractiveAuction:
     """交互式拍卖处理器"""
     
-    def __init__(self, auction_system: AuctionSystem):
+    def __init__(self, auction_system: AuctionSystem) -> None:
         self.auction_system = auction_system
         self.visual = VEClass()
         self.current_item = None

@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 class SystemManager:
     """游戏系统管理器"""
     
-    def __init__(self):
+    def __init__(self) -> None:
         self.active_systems: Dict[str, Dict[str, Any]] = {}
     
     def activate_system(self, player_id: str, system_data: Dict[str, Any]) -> None:

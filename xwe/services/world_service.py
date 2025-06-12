@@ -52,7 +52,7 @@ class IWorldService(ABC):
 class WorldService(ServiceBase[IWorldService], IWorldService):
     """世界服务实现"""
     
-    def __init__(self, container: ServiceContainer):
+    def __init__(self, container: ServiceContainer) -> None:
         super().__init__(container)
         self._locations: Dict[str, Dict[str, Any]] = {}
         self._connections: Dict[str, List[str]] = {}

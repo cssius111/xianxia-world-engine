@@ -56,7 +56,7 @@ class AIDecision:
 class AIBehaviorNode:
     """AI行为树节点"""
     
-    def __init__(self, name: str):
+    def __init__(self, name: str) -> None:
         self.name = name
         self.children: List['AIBehaviorNode'] = []
         
@@ -93,7 +93,7 @@ class SequenceNode(AIBehaviorNode):
 class ConditionNode(AIBehaviorNode):
     """条件节点"""
     
-    def __init__(self, name: str, condition_func):
+    def __init__(self, name: str, condition_func) -> None:
         super().__init__(name)
         self.condition_func = condition_func
         
@@ -110,7 +110,7 @@ class ConditionNode(AIBehaviorNode):
 class ActionNode(AIBehaviorNode):
     """行动节点"""
     
-    def __init__(self, name: str, action_func):
+    def __init__(self, name: str, action_func) -> None:
         super().__init__(name)
         self.action_func = action_func
         
@@ -125,7 +125,7 @@ class AIController:
     负责NPC的决策和行为控制。
     """
     
-    def __init__(self, skill_system: SkillSystem):
+    def __init__(self, skill_system: SkillSystem) -> None:
         """
         初始化AI控制器
         
@@ -432,7 +432,7 @@ class AIController:
                     action_type=CombatActionType.SKILL,
                     actor_id=character.id,
                     target_ids=[character.id],
-                    skill_id=skill.id
+                    skill=skill.id
                 ),
                 priority=10,
                 reasoning="紧急治疗自己"
@@ -476,7 +476,7 @@ class AIController:
                 action_type=CombatActionType.SKILL,
                 actor_id=character.id,
                 target_ids=[target.id],
-                skill_id=skill.id
+                skill=skill.id
             ),
             priority=8,
             reasoning=f"使用强力技能 {skill.name}"
@@ -504,7 +504,7 @@ class AIController:
                     action_type=CombatActionType.SKILL,
                     actor_id=character.id,
                     target_ids=[target.id],
-                    skill_id=skill.id
+                    skill=skill.id
                 ),
                 priority=7,
                 reasoning="激进技能攻击"
@@ -565,7 +565,7 @@ class AIController:
                 action_type=CombatActionType.SKILL,
                 actor_id=character.id,
                 target_ids=[target_id],
-                skill_id=skill.id
+                skill=skill.id
             ),
             priority=8,
             reasoning=reasoning
@@ -586,7 +586,7 @@ class AIController:
                     action_type=CombatActionType.SKILL,
                     actor_id=character.id,
                     target_ids=[character.id],
-                    skill_id=skill.id
+                    skill=skill.id
                 ),
                 priority=9,
                 reasoning="紧急自我治疗"
@@ -616,7 +616,7 @@ class AIController:
                     action_type=CombatActionType.SKILL,
                     actor_id=character.id,
                     target_ids=[target.id],
-                    skill_id=skill.id
+                    skill=skill.id
                 ),
                 priority=5,
                 reasoning="保守技能攻击"
@@ -656,7 +656,7 @@ class AIController:
                         action_type=CombatActionType.SKILL,
                         actor_id=character.id,
                         target_ids=[target.id],
-                        skill_id=skill.id
+                        skill=skill.id
                     ),
                     priority=6,
                     reasoning="均衡技能攻击"

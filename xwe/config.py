@@ -99,7 +99,7 @@ class Config:
     
     def to_dict(self) -> Dict[str, Any]:
         """转换为字典（隐藏敏感信息）"""
-        result = {}
+        result: Dict[str, Any] = {}
         for key, value in self.__dict__.items():
             if key.upper() == key:  # 只包含大写字段
                 if 'SECRET' in key or 'PASSWORD' in key:

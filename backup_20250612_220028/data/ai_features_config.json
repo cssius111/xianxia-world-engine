@@ -1,0 +1,84 @@
+{
+  "ai_features": {
+    "enabled": true,
+    "prompt_engine": {
+      "provider": "deepseek",
+      "api_key_env": "DEEPSEEK_API_KEY",
+      "temperature": {
+        "narrative": 0.9,
+        "dialogue": 0.8,
+        "command_parse": 0.2,
+        "world_event": 0.85
+      },
+      "max_tokens": {
+        "narrative": 300,
+        "dialogue": 200,
+        "command_parse": 100,
+        "world_event": 250
+      }
+    },
+    "dialogue_system": {
+      "enabled": true,
+      "memory_size": 100,
+      "relationship_tracking": true,
+      "emotion_system": true,
+      "dialogue_styles": [
+        "formal",
+        "casual", 
+        "ancient",
+        "mysterious"
+      ]
+    },
+    "narrative_generation": {
+      "enabled": true,
+      "cache_common_scenes": true,
+      "style_variations": true,
+      "dynamic_length": true,
+      "quality_threshold": 0.7
+    },
+    "world_events": {
+      "enabled": true,
+      "auto_generate": true,
+      "generation_interval": 3600,
+      "severity_weights": {
+        "minor": 0.6,
+        "major": 0.3,
+        "critical": 0.1
+      },
+      "event_chains": true,
+      "player_influence": true
+    }
+  },
+  "performance_optimizations": {
+    "expression_jit": {
+      "enabled": true,
+      "compile_threshold": 10,
+      "cache_compiled": true,
+      "optimization_level": 2
+    },
+    "smart_cache": {
+      "enabled": true,
+      "max_memory_mb": 100,
+      "eviction_policy": "adaptive",
+      "prediction_model": "heuristic"
+    },
+    "async_events": {
+      "enabled": true,
+      "worker_count": 4,
+      "max_queue_size": 10000,
+      "batch_processing": true,
+      "cpu_intensive_threadpool": true
+    }
+  },
+  "plugin_system": {
+    "enabled": true,
+    "auto_discover": true,
+    "plugin_directories": [
+      "plugins",
+      "xwe/plugins",
+      "mods/plugins"
+    ],
+    "safe_mode": false,
+    "api_endpoints": true
+  }
+}

@@ -64,7 +64,7 @@ class DialogueContext:
 class DialogueGenerator:
     """对话生成器"""
     
-    def __init__(self):
+    def __init__(self) -> None:
         """初始化对话生成器"""
         # 对话模板
         self.greeting_templates = {
@@ -341,7 +341,7 @@ class EnhancedDialogueSystem:
         
         # 使用NLP理解意图
         intent = None
-        entities = {}
+        entities: Dict[str, Any] = {}
         
         if self.nlp_processor:
             try:

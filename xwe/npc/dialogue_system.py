@@ -148,7 +148,7 @@ class DialogueNode:
 class DialogueTree:
     """对话树"""
     
-    def __init__(self, npc_id: str, dialogue_id: str):
+    def __init__(self, npc_id: str, dialogue_id: str) -> None:
         """
         初始化对话树
         
@@ -317,7 +317,7 @@ class DialogueSystem:
     管理所有NPC的对话。
     """
     
-    def __init__(self):
+    def __init__(self) -> None:
         """初始化对话系统"""
         self.dialogue_trees: Dict[str, Dict[str, DialogueTree]] = {}  # npc_id -> dialogue_id -> tree
         self.active_dialogues: Dict[str, DialogueTree] = {}  # player_id -> active tree

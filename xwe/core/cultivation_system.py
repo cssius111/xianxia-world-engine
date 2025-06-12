@@ -19,7 +19,7 @@ class CultivationSystem:
     从JSON配置加载所有境界数据和突破逻辑
     """
     
-    def __init__(self):
+    def __init__(self) -> None:
         self.realm_data = {}
         self.formula_engine = formula_engine
         self._load_cultivation_data()
@@ -333,7 +333,7 @@ class CultivationSystem:
     
     def _apply_breakthrough_penalty(self, player, realm: Dict[str, Any]) -> Dict[str, Any]:
         """应用突破失败的惩罚"""
-        penalties = {}
+        penalties: Dict[str, Any] = {}
         
         # 根据失败次数决定惩罚严重程度
         failure_count = player.cultivation.get("failure_count", 0)

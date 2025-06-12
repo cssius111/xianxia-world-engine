@@ -7,7 +7,7 @@ import time
 from typing import Any, Dict, Optional
 
 class StatusDisplayManager:
-    def __init__(self):
+    def __init__(self) -> None:
         self.display_contexts = {
             'battle': True,      # 战斗中始终显示
             'cultivation': True, # 修炼中显示

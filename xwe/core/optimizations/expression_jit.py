@@ -9,7 +9,7 @@ import hashlib
 class ExpressionJITCompiler:
     """表达式JIT编译器"""
     
-    def __init__(self):
+    def __init__(self) -> None:
         self.compiled_functions = {}
         self.optimization_stats = {
             'compile_time': 0,
@@ -218,7 +218,7 @@ class ASTOptimizer(ast.NodeTransformer):
 class ExpressionBenchmark:
     """表达式性能基准测试"""
     
-    def __init__(self, jit_compiler: ExpressionJITCompiler):
+    def __init__(self, jit_compiler: ExpressionJITCompiler) -> None:
         self.jit = jit_compiler
         self.results: Dict[str, Dict[str, Any]] = {}
         

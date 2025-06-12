@@ -4,7 +4,7 @@ from typing import Any, Dict, List, Tuple
 class HtmlGameLogger:
     """简单的HTML日志和状态显示器"""
 
-    def __init__(self, filepath: str = "game_log.html", refresh_interval: int = 2):
+    def __init__(self, filepath: str = "game_log.html", refresh_interval: int = 2) -> None:
         self.filepath = filepath
         self.refresh_interval = refresh_interval
         self.logs: List[Tuple[str, str]] = []

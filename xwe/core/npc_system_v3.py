@@ -18,7 +18,7 @@ class NPCSystemV3:
     从JSON配置加载所有NPC数据和行为模式
     """
     
-    def __init__(self):
+    def __init__(self) -> None:
         self.npc_data = {}
         self.npcs = {}  # {npc_id: NPC instance}
         self.dialogue_states = {}  # {player_id: {npc_id: dialogue_state}}
@@ -137,7 +137,7 @@ class NPCSystemV3:
 class NPC:
     """NPC类"""
     
-    def __init__(self, system: NPCSystemV3, npc_id: str, template: Dict[str, Any]):
+    def __init__(self, system: NPCSystemV3, npc_id: str, template: Dict[str, Any]) -> None:
         self.system = system
         self.id = npc_id
         self.template = template

@@ -15,7 +15,7 @@ def example_service_implementation() -> None:
     class MyGameService(IGameService):
         """游戏服务的具体实现"""
         
-        def __init__(self, container: ServiceContainer):
+        def __init__(self, container: ServiceContainer) -> None:
             self.container = container
             self._initialized = False
             self._game_state = GameState(
@@ -370,7 +370,7 @@ def example_command_pattern() -> None:
     class TeleportCommandHandler(CommandHandler):
         """传送命令处理器"""
         
-        def __init__(self, world_service: IWorldService):
+        def __init__(self, world_service: IWorldService) -> None:
             super().__init__(
                 commands=['传送', 'teleport', 'tp'],
                 aliases=['瞬移'],

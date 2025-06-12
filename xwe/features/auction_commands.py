@@ -11,7 +11,7 @@ from xwe.features.auction_system import auction_system
 class AuctionCommandHandler:
     """拍卖行命令处理器"""
     
-    def __init__(self):
+    def __init__(self) -> None:
         self.auction_system = auction_system
         self.active_auction = False
         self.waiting_for_bid = False

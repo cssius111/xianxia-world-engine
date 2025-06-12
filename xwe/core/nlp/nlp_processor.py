@@ -28,7 +28,7 @@ class NLPConfig:
 class NLPProcessor:
     """NLP处理器 - 修复JSON解析"""
 
-    def __init__(self, command_parser=None, config: Optional[NLPConfig] = None):
+    def __init__(self, command_parser=None, config: Optional[NLPConfig] = None) -> None:
         self.command_parser = command_parser
         self.config = config or NLPConfig()
 
@@ -235,7 +235,7 @@ Don't hold back. Give it your all. Be confident and concise."""
         
         for keywords, (cmd_type, confidence) in keyword_map.items():
             if any(kw in response_lower for kw in keywords):
-                params = {}
+                params: Dict[str, Any] = {}
                 
                 # 尝试提取参数
                 if cmd_type == CommandType.USE_SKILL and "剑气斩" in response_lower:
@@ -289,7 +289,7 @@ Don't hold back. Give it your all. Be confident and concise."""
         # 修炼相关
         if any(w in text_lower for w in ["修炼", "修行", "打坐", "练功", "闭关"]):
             # 提取时长
-            params = {}
+            params: Dict[str, Any] = {}
             duration = self._extract_duration(text)
             if duration:
                 params["duration"] = duration

@@ -166,7 +166,7 @@ class CharacterAttributes:
 
 
 class AttributeSystem:
-    def __init__(self, expression_parser: ExpressionParser):
+    def __init__(self, expression_parser: ExpressionParser) -> None:
         self.parser = expression_parser
         self.modifiers: Dict[str, List[Dict[str, Any]]] = {}
 

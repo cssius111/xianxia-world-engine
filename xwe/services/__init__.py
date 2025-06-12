@@ -38,7 +38,7 @@ T = TypeVar('T')
 class ServiceBase(IService, Generic[T]):
     """服务基类"""
     
-    def __init__(self, container: 'ServiceContainer'):
+    def __init__(self, container: 'ServiceContainer') -> None:
         self.container = container
         self.logger = logger.getChild(self.__class__.__name__)
         self._initialized = False
@@ -102,7 +102,7 @@ class ServiceNotFoundError(Exception):
 class ServiceContainer:
     """服务容器 - 依赖注入容器"""
     
-    def __init__(self):
+    def __init__(self) -> None:
         self._descriptors: Dict[Type, ServiceDescriptor] = {}
         self._singletons: Dict[Type, Any] = {}
         self._scoped_instances: Dict[Type, Any] = {}
@@ -234,7 +234,7 @@ class ServiceContainer:
         params = sig.parameters
         
         # 准备参数
-        kwargs = {}
+        kwargs: Dict[str, Any] = {}
         for param_name, param in params.items():
             if param_name == 'self':
                 continue
@@ -279,7 +279,7 @@ class ServiceContainer:
 class ServiceScope:
     """服务作用域"""
     
-    def __init__(self, container: ServiceContainer):
+    def __init__(self, container: ServiceContainer) -> None:
         self.container = container
         self._original_scoped = dict(container._scoped_instances)
         

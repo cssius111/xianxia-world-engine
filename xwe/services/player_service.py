@@ -148,7 +148,7 @@ class IPlayerService(ABC):
 class PlayerService(ServiceBase[IPlayerService], IPlayerService):
     """玩家服务实现"""
     
-    def __init__(self, container: ServiceContainer):
+    def __init__(self, container: ServiceContainer) -> None:
         super().__init__(container)
         self._players: Dict[str, PlayerData] = {}
         self._current_player_id: Optional[str] = None

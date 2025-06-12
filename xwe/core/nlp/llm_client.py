@@ -30,7 +30,7 @@ class LLMConfig:
 class LLMProvider(ABC):
     """LLM提供者基类"""
     
-    def __init__(self, config: LLMConfig):
+    def __init__(self, config: LLMConfig) -> None:
         self.config = config
     
     @abstractmethod
@@ -47,7 +47,7 @@ class LLMProvider(ABC):
 class DeepSeekProvider(LLMProvider):
     """DeepSeek API提供者"""
     
-    def __init__(self, config: LLMConfig):
+    def __init__(self, config: LLMConfig) -> None:
         super().__init__(config)
         if not config.api_base:
             config.api_base = "https://api.deepseek.com/v1"
@@ -100,7 +100,7 @@ class DeepSeekProvider(LLMProvider):
 class OpenAIProvider(LLMProvider):
     """OpenAI API提供者"""
     
-    def __init__(self, config: LLMConfig):
+    def __init__(self, config: LLMConfig) -> None:
         super().__init__(config)
         if not config.api_base:
             config.api_base = "https://api.openai.com/v1"
@@ -180,7 +180,7 @@ class LLMClient:
     提供统一的接口访问不同的LLM服务。
     """
 
-    def __init__(self, provider: Optional[str] = None, config: Optional[Dict[str, Any]] = None):
+    def __init__(self, provider: Optional[str] = None, config: Optional[Dict[str, Any]] = None) -> None:
         """
         初始化LLM客户端
 

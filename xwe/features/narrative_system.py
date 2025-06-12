@@ -94,7 +94,7 @@ class Achievement:
 class OpeningEventGenerator:
     """开局事件生成器"""
     
-    def __init__(self):
+    def __init__(self) -> None:
         self.opening_events = [
             StoryEvent(
                 id="mysterious_elder",
@@ -257,7 +257,7 @@ class OpeningEventGenerator:
 class AchievementSystem:
     """成就系统"""
     
-    def __init__(self):
+    def __init__(self) -> None:
         self.achievements = self._init_achievements()
         self.unlocked_achievements = set()
         self.achievement_points = 0
@@ -480,7 +480,7 @@ class AchievementSystem:
 class StoryBranchManager:
     """剧情分支管理器"""
     
-    def __init__(self):
+    def __init__(self) -> None:
         self.story_flags = {}  # 剧情标记
         self.story_branches = {}  # 剧情分支
         self.current_branch = "main"  # 当前分支
@@ -522,7 +522,7 @@ class StoryBranchManager:
 class NarrativeEventSystem:
     """叙事事件系统"""
     
-    def __init__(self):
+    def __init__(self) -> None:
         self.event_generator = OpeningEventGenerator()
         self.achievement_system = AchievementSystem()
         self.story_manager = StoryBranchManager()

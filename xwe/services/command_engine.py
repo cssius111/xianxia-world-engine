@@ -156,7 +156,7 @@ class ICommandEngine(ABC):
 class CommandEngine(ServiceBase[ICommandEngine], ICommandEngine):
     """命令引擎实现"""
     
-    def __init__(self, container: ServiceContainer):
+    def __init__(self, container: ServiceContainer) -> None:
         super().__init__(container)
         self._handlers: List[ICommandHandler] = []
         self._pattern_handlers: List[Tuple[re.Pattern, Callable]] = []
@@ -327,7 +327,7 @@ class CommandEngine(ServiceBase[ICommandEngine], ICommandEngine):
 class HelpCommandHandler(CommandHandler):
     """帮助命令处理器"""
     
-    def __init__(self, engine: CommandEngine):
+    def __init__(self, engine: CommandEngine) -> None:
         super().__init__(
             commands=['帮助', 'help'],
             aliases=['?', 'h'],

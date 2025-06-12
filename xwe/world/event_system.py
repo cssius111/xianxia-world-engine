@@ -210,7 +210,7 @@ class EventSystem:
     管理和处理游戏中的各种事件。
     """
     
-    def __init__(self):
+    def __init__(self) -> None:
         """初始化事件系统"""
         self.events: Dict[str, WorldEvent] = {}
         self.active_events: List[str] = []
@@ -335,7 +335,7 @@ class EventSystem:
                 EventChoice(
                     id="leave",
                     text="礼貌拒绝",
-                    consequences={}
+                    consequences: Dict[str, Any] = {}
                 )
             ],
             repeatable=True,

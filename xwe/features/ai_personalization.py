@@ -86,7 +86,7 @@ class PlayerProfile:
 class PlayerStyleAnalyzer:
     """玩家风格分析器"""
     
-    def __init__(self):
+    def __init__(self) -> None:
         # 行为到风格的映射权重
         self.behavior_style_weights = {
             "attack": {PlayerStyle.WARRIOR: 2.0, PlayerStyle.SPEEDRUNNER: 1.0},
@@ -195,7 +195,7 @@ class PlayerStyleAnalyzer:
 class AdaptiveGuideSystem:
     """自适应引导系统"""
     
-    def __init__(self):
+    def __init__(self) -> None:
         self.guide_templates = {
             PlayerStyle.WARRIOR: {
                 "tips": [
@@ -346,7 +346,7 @@ class AdaptiveGuideSystem:
 class DynamicNPCBehavior:
     """动态NPC行为系统"""
     
-    def __init__(self):
+    def __init__(self) -> None:
         self.npc_personalities = {
             "friendly": {
                 "greeting_style": ["热情", "友好", "亲切"],
@@ -498,7 +498,7 @@ class DynamicNPCBehavior:
 class PersonalizationEngine:
     """个性化引擎"""
     
-    def __init__(self):
+    def __init__(self) -> None:
         self.style_analyzer = PlayerStyleAnalyzer()
         self.guide_system = AdaptiveGuideSystem()
         self.npc_behavior = DynamicNPCBehavior()

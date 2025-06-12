@@ -8,7 +8,7 @@ from collections import defaultdict
 class AIDialogueManager:
     """AI驱动的对话管理器"""
     
-    def __init__(self, llm_client, prompt_engine):
+    def __init__(self, llm_client, prompt_engine) -> None:
         self.llm = llm_client
         self.prompt_engine = prompt_engine
         self.conversation_memory = {}  # 对话记忆

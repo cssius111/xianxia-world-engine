@@ -72,7 +72,7 @@ class NPCManager:
     管理所有NPC的行为和状态。
     """
     
-    def __init__(self, dialogue_system: DialogueSystem, nlp_processor=None):
+    def __init__(self, dialogue_system: DialogueSystem, nlp_processor=None) -> None:
         """
         初始化NPC管理器
         

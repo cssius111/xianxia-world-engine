@@ -119,7 +119,7 @@ class StatusEffectManager:
     管理角色身上的所有状态效果。
     """
     
-    def __init__(self):
+    def __init__(self) -> None:
         """初始化状态效果管理器"""
         self.effects: List[StatusEffect] = []
         self.effect_callbacks: Dict[str, List[Callable]] = {}

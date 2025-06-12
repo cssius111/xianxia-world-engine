@@ -1,0 +1,167 @@
+{
+  "auction_items": {
+    "low_tier": [
+      {
+        "id": "bainian_lingzhi",
+        "name": "百年灵芝",
+        "description": "蕴含天地灵气的百年药材，可用于炼制筑基期丹药",
+        "type": "药材",
+        "tier": "低阶",
+        "base_price": 500,
+        "max_price": 1200,
+        "effects": {
+          "cultivation_boost": 10,
+          "healing": 20
+        },
+        "event_probability": 0.05,
+        "popularity": 0.4
+      },
+      {
+        "id": "ju_ling_fu",
+        "name": "聚灵符",
+        "description": "可在修炼时提升20%的灵气吸收效率，持续一个时辰",
+        "type": "符箓",
+        "tier": "低阶",
+        "base_price": 300,
+        "max_price": 800,
+        "effects": {
+          "cultivation_efficiency": 0.2,
+          "duration": 3600
+        },
+        "event_probability": 0.02,
+        "popularity": 0.6
+      },
+      {
+        "id": "huo_yan_dao",
+        "name": "火焰刀",
+        "description": "下品灵器，附带火焰伤害，适合炼气期修士使用",
+        "type": "武器",
+        "tier": "低阶",
+        "base_price": 800,
+        "max_price": 2000,
+        "effects": {
+          "attack_bonus": 15,
+          "fire_damage": 10
+        },
+        "event_probability": 0.1,
+        "popularity": 0.5
+      }
+    ],
+    "mid_tier": [
+      {
+        "id": "xuantie_feijian",
+        "name": "玄铁飞剑",
+        "description": "中品灵器，可御剑飞行，速度极快，攻击凌厉",
+        "type": "武器",
+        "tier": "中阶",
+        "base_price": 5000,
+        "max_price": 15000,
+        "effects": {
+          "attack_bonus": 50,
+          "speed_bonus": 30,
+          "flying_ability": true
+        },
+        "event_probability": 0.3,
+        "popularity": 0.7
+      },
+      {
+        "id": "ningying_dan",
+        "name": "凝婴丹",
+        "description": "突破至元婴期的必备丹药，成功率提升30%",
+        "type": "丹药",
+        "tier": "中阶",
+        "base_price": 10000,
+        "max_price": 30000,
+        "effects": {
+          "breakthrough_bonus": 0.3,
+          "target_realm": "元婴期"
+        },
+        "event_probability": 0.4,
+        "popularity": 0.9
+      },
+      {
+        "id": "hunyuan_ding",
+        "name": "混元鼎",
+        "description": "中品炼丹炉，成丹率提升25%，可炼制金丹期丹药",
+        "type": "法宝",
+        "tier": "中阶",
+        "base_price": 8000,
+        "max_price": 20000,
+        "effects": {
+          "alchemy_success_rate": 0.25,
+          "max_pill_tier": "金丹期"
+        },
+        "event_probability": 0.2,
+        "popularity": 0.6
+      }
+    ],
+    "high_tier": [
+      {
+        "id": "shanggu_gongfa",
+        "name": "上古功法残卷",
+        "description": "记载着上古时期的修炼功法，威力强大但有残缺",
+        "type": "功法",
+        "tier": "高阶",
+        "base_price": 50000,
+        "max_price": 200000,
+        "effects": {
+          "cultivation_speed": 2.0,
+          "special_skills": ["上古秘术"],
+          "completeness": 0.7
+        },
+        "event_probability": 0.5,
+        "popularity": 1.0
+      },
+      {
+        "id": "longwen_liandan_lu",
+        "name": "龙纹炼丹炉",
+        "description": "上品法宝，成丹率提升30%，可炼制元婴期灵药",
+        "type": "法宝",
+        "tier": "高阶",
+        "base_price": 30000,
+        "max_price": 100000,
+        "effects": {
+          "alchemy_success_rate": 0.3,
+          "max_pill_tier": "元婴期",
+          "special_effect": "丹药品质提升"
+        },
+        "event_probability": 0.4,
+        "popularity": 0.8
+      }
+    ],
+    "legendary_tier": [
+      {
+        "id": "dujie_fabao",
+        "name": "渡劫法宝·天雷盾",
+        "description": "传说级防御法宝，可抵挡天劫雷霆，大幅提升渡劫成功率",
+        "type": "法宝",
+        "tier": "压轴",
+        "base_price": 100000,
+        "max_price": 500000,
+        "effects": {
+          "tribulation_defense": 0.5,
+          "defense_bonus": 100,
+          "special_ability": "雷电免疫"
+        },
+        "event_probability": 0.8,
+        "popularity": 1.0
+      },
+      {
+        "id": "wannian_xuanlian",
+        "name": "万年雪莲",
+        "description": "生长于极寒之地的万年灵药，可生死人肉白骨，更能提升一个大境界",
+        "type": "灵药",
+        "tier": "压轴",
+        "base_price": 80000,
+        "max_price": 300000,
+        "effects": {
+          "instant_breakthrough": true,
+          "full_healing": true,
+          "lifespan_increase": 100
+        },
+        "event_probability": 0.7,
+        "popularity": 1.0
+      }
+    ]
+  }
+}

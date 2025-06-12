@@ -83,7 +83,7 @@ class Bidder:
 class AuctionSystem:
     """拍卖行系统"""
     
-    def __init__(self):
+    def __init__(self) -> None:
         """初始化拍卖系统"""
         self.data_loader = DataLoader()
         self.visual = VEClass()

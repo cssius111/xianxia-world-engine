@@ -5,7 +5,7 @@
 from typing import Any, Dict, List, Tuple
 
 class Inventory:
-    def __init__(self):
+    def __init__(self) -> None:
         self.items: Dict[str, int] = {}
         self.max_slots = 100  # 最大格数
 

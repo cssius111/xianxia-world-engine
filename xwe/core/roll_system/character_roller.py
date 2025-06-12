@@ -148,7 +148,7 @@ class RollResult:
 class CharacterRoller:
     """角色Roll系统主类"""
     
-    def __init__(self):
+    def __init__(self) -> None:
         self.data = ROLL_DATA
         self.roll_count = 0
     
@@ -178,7 +178,7 @@ class CharacterRoller:
         identity_key, identity_data = weighted_random_choice(self.data['identities'])
         
         # 生成基础属性
-        attributes = {}
+        attributes: Dict[str, Any] = {}
         for attr_name, attr_config in self.data['base_attributes'].items():
             attributes[attr_name] = random_attribute_value(attr_config)
         

@@ -19,7 +19,7 @@ class EventSystemV3:
     从JSON配置加载所有事件定义和触发条件
     """
     
-    def __init__(self):
+    def __init__(self) -> None:
         self.event_data = {}
         self.active_events = {}
         self.event_history = []

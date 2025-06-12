@@ -1,0 +1,11 @@
+{
+  "regions": {
+    "tiannan_region": {
+      "name": "天南州",
+      "areas": [
+        "qingyun_city",
+        "tiannan_market"
+      ]
+    }
+  }
+}

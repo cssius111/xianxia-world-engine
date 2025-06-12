@@ -1,0 +1,24 @@
+{
+  "npcs": {
+    "npc_wang_boss": {
+      "name": "王老板",
+      "title": "坊市商人",
+      "level": 20,
+      "faction": "天南商会"
+    },
+    "npc_han_li": {
+      "name": "韩立",
+      "title": "低阶散修",
+      "level": 15,
+      "faction": "无门无派",
+      "description": "看似平凡的年轻修士，实则身怀秘密法宝。"
+    },
+    "npc_nangong_wan": {
+      "name": "南宫婉",
+      "title": "黄枫谷弟子",
+      "level": 18,
+      "faction": "黄枫谷",
+      "description": "气质清冷的女修，与韩立有着复杂的因缘。"
+    }
+  }
+}

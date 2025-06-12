@@ -9,7 +9,7 @@ from collections import OrderedDict
 from functools import wraps
 
 class SmartCache:
-    def __init__(self, max_size: int = 1000, ttl: float = 300.0, max_memory_mb: Optional[int] = None):
+    def __init__(self, max_size: int = 1000, ttl: float = 300.0, max_memory_mb: Optional[int] = None) -> None:
         self.max_size = max_size
         self.ttl = ttl
         self.max_memory_mb = max_memory_mb

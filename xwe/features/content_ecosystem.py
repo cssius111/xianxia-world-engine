@@ -68,7 +68,7 @@ class ContentEntry:
 class ModLoader:
     """MOD加载器"""
     
-    def __init__(self, mods_directory: str = "mods"):
+    def __init__(self, mods_directory: str = "mods") -> None:
         self.mods_directory = Path(mods_directory)
         self.loaded_mods: Dict[str, ModInfo] = {}
         self.mod_contents: Dict[str, List[ContentEntry]] = {}
@@ -411,7 +411,7 @@ class ModLoader:
 class ContentRegistry:
     """内容注册表"""
     
-    def __init__(self):
+    def __init__(self) -> None:
         self.registry: Dict[ContentType, Dict[str, Any]] = {
             content_type: {} for content_type in ContentType
         }
@@ -493,7 +493,7 @@ class ContentRegistry:
 class HotUpdateManager:
     """热更新管理器"""
     
-    def __init__(self, mod_loader: ModLoader, content_registry: ContentRegistry):
+    def __init__(self, mod_loader: ModLoader, content_registry: ContentRegistry) -> None:
         self.mod_loader = mod_loader
         self.content_registry = content_registry
         self.update_interval = 60  # 检查间隔（秒）
@@ -524,7 +524,7 @@ class HotUpdateManager:
     
     def apply_updates(self, mod_ids: List[str]) -> Dict[str, bool]:
         """应用更新"""
-        results = {}
+        results: Dict[str, Any] = {}
         
         for mod_id in mod_ids:
             if mod_id in self.mod_loader.loaded_mods:
@@ -563,7 +563,7 @@ class HotUpdateManager:
 class ModCreator:
     """MOD创建工具"""
     
-    def __init__(self, mods_directory: str = "mods"):
+    def __init__(self, mods_directory: str = "mods") -> None:
         self.mods_directory = Path(mods_directory)
     
     def create_mod(self, mod_id: str, mod_name: str, author: str, description: str) -> bool:
@@ -686,7 +686,7 @@ class ModCreator:
 class ContentEcosystem:
     """内容生态系统管理器"""
     
-    def __init__(self):
+    def __init__(self) -> None:
         self.mod_loader = ModLoader()
         self.content_registry = ContentRegistry()
         self.hot_update_manager = HotUpdateManager(self.mod_loader, self.content_registry)

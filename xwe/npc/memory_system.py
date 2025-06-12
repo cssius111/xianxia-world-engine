@@ -164,7 +164,7 @@ class MemorySystem:
     管理NPC的长期和短期记忆。
     """
     
-    def __init__(self, max_memories_per_npc: int = 100):
+    def __init__(self, max_memories_per_npc: int = 100) -> None:
         """
         初始化记忆系统
         

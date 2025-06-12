@@ -73,7 +73,7 @@ class CombatSystemV3:
     # 提供枚举别名，便于外部访问
     ActionType = ActionType
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.combat_data = {}
         self.element_data = {}
         self.active_combats = {}
@@ -368,7 +368,7 @@ class CombatSystemV3:
     
     def _calculate_threats(self, character, combat_state: 'CombatState') -> Dict[str, float]:
         """计算威胁值"""
-        threats = {}
+        threats: Dict[str, Any] = {}
         threat_formula = self.combat_data["ai_behavior"]["threat_calculation"]["formula"]
         modifiers = self.combat_data["ai_behavior"]["threat_calculation"]["modifiers"]
         
@@ -490,7 +490,7 @@ class CombatSystemV3:
 class Combat:
     """战斗实例类"""
     
-    def __init__(self, system: CombatSystemV3, combat_id: str, participants: List[Any]):
+    def __init__(self, system: CombatSystemV3, combat_id: str, participants: List[Any]) -> None:
         self.system = system
         self.combat_id = combat_id
         self.participants = {p.id: p for p in participants}
@@ -537,7 +537,7 @@ class Combat:
     def _detect_participants(self) -> None:
         """检测所有参与者"""
         # 将参与者分组
-        teams = {}
+        teams: Dict[str, Any] = {}
         for participant in self.participants.values():
             team = getattr(participant, "team", 0)
             if team not in teams:
@@ -927,7 +927,7 @@ class Combat:
 class CombatState:
     """战斗状态管理"""
     
-    def __init__(self, participants: List[Any]):
+    def __init__(self, participants: List[Any]) -> None:
         self.participants = {p.id: p for p in participants}
         self.damage_dealt: Dict[str, Dict[str, int]] = {}  # {attacker_id: {target_id: damage}}
         self.healing_done: Dict[str, int] = {}  # {healer_id: total_healing}
@@ -999,7 +999,7 @@ class CombatState:
 class CombatSystem(CombatSystemV3):
     """向后兼容的 CombatSystem 包装类"""
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__()
 
 

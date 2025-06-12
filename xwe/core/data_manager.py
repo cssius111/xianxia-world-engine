@@ -25,7 +25,7 @@ class DataManager:
             cls._instance = super().__new__(cls)
         return cls._instance
     
-    def __init__(self):
+    def __init__(self) -> None:
         if not self._initialized:
             self.repo_root = Path(__file__).resolve().parents[2]
             self.data_dir = self.repo_root / "xwe" / "data" / "restructured"

@@ -13,7 +13,7 @@ from typing import Any, Dict, List, Optional
 class PlayerDataManager:
     """负责玩家存档与修炼数据的管理器"""
     
-    def __init__(self, save_dir: str = "saves"):
+    def __init__(self, save_dir: str = "saves") -> None:
         self.save_dir = Path(save_dir)
         self.save_dir.mkdir(exist_ok=True)
         
@@ -260,7 +260,7 @@ class PlayerDataManager:
         self.player_data["next_level_exp"] = int(100 * (1.5 ** self.player_data["level"]))
         
         # 随机属性提升
-        attr_gains = {}
+        attr_gains: Dict[str, Any] = {}
         for attr in self.player_data["attributes"]:
             gain = random.randint(1, 3)
             self.player_data["attributes"][attr] += gain

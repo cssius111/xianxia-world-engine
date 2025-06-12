@@ -24,7 +24,7 @@ class Achievement:
         self.max_progress = 1
         
 class AchievementSystem:
-    def __init__(self):
+    def __init__(self) -> None:
         self.achievements = self._init_achievements()
         self.unlock_callbacks = []
         self.total_points = 0

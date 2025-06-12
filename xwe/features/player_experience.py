@@ -27,7 +27,7 @@ class CommandAlias:
 class SmartCommandProcessor:
     """智能命令处理器 - 支持模糊匹配、错别字纠正等"""
     
-    def __init__(self):
+    def __init__(self) -> None:
         # 命令别名映射
         self.command_aliases = [
             CommandAlias(
@@ -219,7 +219,7 @@ class SmartCommandProcessor:
 class PlayerGuidance:
     """玩家引导系统"""
     
-    def __init__(self):
+    def __init__(self) -> None:
         self.tips = {
             "welcome": [
                 "提示：输入 '帮助' 可以查看所有可用命令",
@@ -296,7 +296,7 @@ class PlayerGuidance:
 class FriendlyErrorHandler:
     """友善的错误处理器"""
     
-    def __init__(self):
+    def __init__(self) -> None:
         self.error_messages = {
             "unknown_command": [
                 "我不太明白你的意思，要不要试试 '{suggestion}'？",
@@ -340,7 +340,7 @@ class FriendlyErrorHandler:
 class InputHelper:
     """输入辅助器"""
     
-    def __init__(self):
+    def __init__(self) -> None:
         self.command_processor = SmartCommandProcessor()
         self.guidance = PlayerGuidance()
         self.error_handler = FriendlyErrorHandler()
@@ -415,7 +415,7 @@ class InputHelper:
 class GameTipsDisplay:
     """游戏提示显示管理"""
     
-    def __init__(self):
+    def __init__(self) -> None:
         self.tip_queue = []
         self.tip_cooldown = {}  # 提示冷却时间
         self.tip_display_count = {}  # 提示显示次数

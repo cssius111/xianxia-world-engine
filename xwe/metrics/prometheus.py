@@ -35,7 +35,7 @@ class PrometheusMetrics:
     # 标签基数限制
     MAX_LABEL_CARDINALITY = 1000  # 每个指标最多1000个标签组合
     
-    def __init__(self):
+    def __init__(self) -> None:
         self._metrics: Dict[str, Metric] = {}
         self._values: Dict[str, float] = defaultdict(float)
         self._labels_values: Dict[str, Dict[tuple, float]] = defaultdict(lambda: defaultdict(float))
@@ -184,7 +184,7 @@ class PrometheusMetrics:
     def time_histogram(self, name: str, labels: Optional[Dict[str, str]] = None) -> None:
         """计时器上下文管理器"""
         class Timer:
-            def __init__(self, metrics, metric_name, metric_labels):
+            def __init__(self, metrics, metric_name, metric_labels) -> None:
                 self.metrics = metrics
                 self.metric_name = metric_name
                 self.metric_labels = metric_labels

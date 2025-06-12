@@ -84,7 +84,7 @@ class GameCore:
     管理所有游戏系统和主循环。
     """
     
-    def __init__(self, data_path: Union[str, Path] | None = None):
+    def __init__(self, data_path: Union[str, Path] | None = None) -> None:
         """
         初始化游戏核心
         
@@ -704,7 +704,7 @@ class GameCore:
                         action_type=CombatActionType.SKILL,
                         actor_id=player.id,
                         target_ids=target_ids,
-                        skill_id=skill.id
+                        skill=skill.id
                     )
                 else:
                     self.output(f"无法确定技能目标")
@@ -1690,7 +1690,7 @@ class GameCore:
                         action_type=CombatActionType.SKILL,
                         actor_id=player.id,
                         target_ids=target_ids,
-                        skill_id=skill.id
+                        skill=skill.id
                     )
                 else:
                     self.output(f"无法确定技能目标")

@@ -58,7 +58,7 @@ class Color:
 class TextRenderer:
     """文字渲染器"""
     
-    def __init__(self, enable_color: bool = True):
+    def __init__(self, enable_color: bool = True) -> None:
         self.enable_color = enable_color
         
         # 预定义的颜色方案
@@ -173,7 +173,7 @@ class TextRenderer:
 class ASCIIArt:
     """ASCII艺术"""
     
-    def __init__(self):
+    def __init__(self) -> None:
         self.arts = {
             "sword": [
                 r"        />",
@@ -359,7 +359,7 @@ class TextAnimation:
 class ProgressBar:
     """进度条"""
     
-    def __init__(self, total: int, width: int = 40, fill_char: str = "█", empty_char: str = "░"):
+    def __init__(self, total: int, width: int = 40, fill_char: str = "█", empty_char: str = "░") -> None:
         self.total = total
         self.width = width
         self.fill_char = fill_char
@@ -394,7 +394,7 @@ class ProgressBar:
 class VisualTheme:
     """视觉主题"""
     
-    def __init__(self):
+    def __init__(self) -> None:
         self.themes = {
             "default": {
                 "primary": Color.BRIGHT_CYAN,
@@ -463,7 +463,7 @@ class VisualTheme:
 class VisualEffects:
     """视觉效果管理器"""
     
-    def __init__(self):
+    def __init__(self) -> None:
         self.text_renderer = TextRenderer()
         self.ascii_art = ASCIIArt()
         self.theme = VisualTheme()
@@ -649,7 +649,7 @@ visual_effects = VisualEffects()
 class VisualEnhancement:
     """兼容旧接口的包装类"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._effects = VisualEffects()
 
     def get_colored_text(self, text: str, color: str) -> str:

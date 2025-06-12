@@ -34,7 +34,7 @@ class LocationManager:
     管理所有实体的位置和移动。
     """
     
-    def __init__(self, world_map: WorldMap):
+    def __init__(self, world_map: WorldMap) -> None:
         """
         初始化位置管理器
         

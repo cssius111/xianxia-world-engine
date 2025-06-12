@@ -143,7 +143,7 @@ class WorldMap:
     管理所有区域和它们之间的关系。
     """
     
-    def __init__(self):
+    def __init__(self) -> None:
         """初始化世界地图"""
         self.regions: Dict[str, Region] = {}
         self.areas: Dict[str, Area] = {}

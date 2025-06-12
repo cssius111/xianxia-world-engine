@@ -89,7 +89,7 @@ class TradingSystem:
     管理商店和物品交易。
     """
     
-    def __init__(self):
+    def __init__(self) -> None:
         """初始化交易系统"""
         self.items: Dict[str, ItemData] = {}
         self.shops: Dict[str, Shop] = {}

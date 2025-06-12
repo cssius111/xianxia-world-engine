@@ -21,7 +21,7 @@ class DataLoader:
     负责加载所有JSON配置文件并提供访问接口。
     """
     
-    def __init__(self, data_path: Union[str, Path] | None = None):
+    def __init__(self, data_path: Union[str, Path] | None = None) -> None:
         """
         初始化数据加载器
         
@@ -108,7 +108,7 @@ class DataLoader:
             logger.warning(f"数据类别目录不存在: {category_path}")
             return {}
         
-        result = {}
+        result: Dict[str, Any] = {}
         
         for file_path in category_path.glob("*.json"):
             if file_path.is_file():

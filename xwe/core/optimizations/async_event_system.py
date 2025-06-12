@@ -10,7 +10,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 class AsyncEventHandler:
-    def __init__(self, max_workers: int = 4):
+    def __init__(self, max_workers: int = 4) -> None:
         self.max_workers = max_workers
         self.event_queue: deque[Dict[str, Any]] = deque()
         self.handlers: Dict[str, Callable[[Dict[str, Any]], None]] = {}

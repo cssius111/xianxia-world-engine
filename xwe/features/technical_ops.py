@@ -20,7 +20,7 @@ try:
 except Exception:  # pragma: no cover - fallback when psutil not available
 
     class _DummyMem:
-        def __init__(self):
+        def __init__(self) -> None:
             self.used = 0
             self.total = 0
             self.percent = 0
@@ -120,7 +120,7 @@ class ErrorLog:
 class SaveManager:
     """存档管理器"""
 
-    def __init__(self, save_dir: str = "saves"):
+    def __init__(self, save_dir: str = "saves") -> None:
         self.save_dir = Path(save_dir)
         self.save_dir.mkdir(exist_ok=True)
 
@@ -396,7 +396,7 @@ class SaveManager:
 class ErrorHandler:
     """错误处理器"""
 
-    def __init__(self, log_dir: str = "logs"):
+    def __init__(self, log_dir: str = "logs") -> None:
         self.log_dir = Path(log_dir)
         self.log_dir.mkdir(exist_ok=True)
 
@@ -527,7 +527,7 @@ class ErrorHandler:
 class PerformanceMonitor:
     """性能监控器"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.metrics: Dict[str, List[float]] = {
             "fps": [],
             "frame_time": [],
@@ -669,7 +669,7 @@ class PerformanceMonitor:
 class AutoBackupManager:
     """自动备份管理器"""
 
-    def __init__(self, save_manager: SaveManager):
+    def __init__(self, save_manager: SaveManager) -> None:
         self.save_manager = save_manager
         self.backup_enabled = True
         self.backup_interval = 3600  # 1小时
@@ -767,7 +767,7 @@ class AutoBackupManager:
 class TechnicalOpsSystem:
     """技术运营系统"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.save_manager = SaveManager()
         self.error_handler = ErrorHandler()
         self.performance_monitor = PerformanceMonitor()

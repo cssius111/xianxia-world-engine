@@ -50,7 +50,7 @@ class ISaveService(ABC):
 class SaveService(ServiceBase[ISaveService], ISaveService):
     """存档服务实现"""
     
-    def __init__(self, container: ServiceContainer):
+    def __init__(self, container: ServiceContainer) -> None:
         super().__init__(container)
         self._save_dir = Path('saves')
         self._max_saves = 10

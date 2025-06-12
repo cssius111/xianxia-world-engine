@@ -71,7 +71,7 @@ class PluginError(Exception):
 class PluginManager:
     """插件管理器"""
     
-    def __init__(self, engine):
+    def __init__(self, engine) -> None:
         self.engine = engine
         self.plugins: Dict[str, Plugin] = {}
         self.load_order: List[str] = []
@@ -349,7 +349,7 @@ class PluginManager:
     def _topological_sort(self, plugins: List[Dict]) -> List[Dict]:
         """拓扑排序插件（处理依赖关系）"""
         # 构建依赖图
-        graph = {}
+        graph: Dict[str, Any] = {}
         for plugin in plugins:
             graph[plugin['name']] = plugin['dependencies']
             

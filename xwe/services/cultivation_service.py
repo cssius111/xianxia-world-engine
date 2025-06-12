@@ -32,7 +32,7 @@ class ICultivationService(ABC):
 class CultivationService(ServiceBase[ICultivationService], ICultivationService):
     """修炼服务实现"""
     
-    def __init__(self, container: ServiceContainer):
+    def __init__(self, container: ServiceContainer) -> None:
         super().__init__(container)
         self._cultivation_realms = [
             '炼气期', '筑基期', '金丹期', '元婴期', 

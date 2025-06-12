@@ -1,0 +1,90 @@
+{
+  "category": "passive_skills",
+  "name": "被动技能",
+  "description": "永久提升角色属性的技能",
+  "skills": {
+    "iron_body": {
+      "id": "iron_body",
+      "name": "铁布衫",
+      "description": "强化肉身，提高防御力",
+      "type": "passive",
+      "element": "earth",
+      "effects": [
+        {
+          "attribute": "defense",
+          "value": "defense * 1.2"
+        },
+        {
+          "attribute": "physical_resistance",
+          "value": 0.1
+        }
+      ],
+      "requirements": {
+        "level": 5,
+        "constitution": 20
+      }
+    },
+    "meditation": {
+      "id": "meditation",
+      "name": "冥想",
+      "description": "提高法力恢复速度",
+      "type": "passive",
+      "element": "neutral",
+      "effects": [
+        {
+          "attribute": "mana_regen",
+          "value": "mana_regen * 1.5"
+        },
+        {
+          "attribute": "max_mana",
+          "value": "max_mana + level * 5"
+        }
+      ],
+      "requirements": {
+        "level": 1
+      }
+    },
+    "swift_movement": {
+      "id": "swift_movement",
+      "name": "身法",
+      "description": "提高移动速度和闪避率",
+      "type": "passive",
+      "element": "wind",
+      "effects": [
+        {
+          "attribute": "speed",
+          "value": "speed * 1.15"
+        },
+        {
+          "attribute": "evasion",
+          "value": 0.05
+        }
+      ],
+      "requirements": {
+        "level": 10,
+        "agility": 25
+      }
+    },
+    "spiritual_perception": {
+      "id": "spiritual_perception",
+      "name": "灵觉",
+      "description": "提高对灵气的感知，增加经验获取",
+      "type": "passive",
+      "element": "neutral",
+      "effects": [
+        {
+          "attribute": "exp_gain",
+          "value": 1.2
+        },
+        {
+          "attribute": "item_drop_rate",
+          "value": 1.1
+        }
+      ],
+      "requirements": {
+        "level": 20,
+        "realm": "foundation"
+      }
+    }
+  }
+}

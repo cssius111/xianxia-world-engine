@@ -42,7 +42,7 @@ class ASTNode(ABC):
 class NumberNode(ASTNode):
     """数字字面量节点"""
 
-    def __init__(self, value: float):
+    def __init__(self, value: float) -> None:
         self.value = value
 
     def evaluate(self, context: Dict[str, float], parser: 'ExpressionParser') -> float:
@@ -56,7 +56,7 @@ class NumberNode(ASTNode):
 class VariableNode(ASTNode):
     """变量引用节点"""
 
-    def __init__(self, name: str):
+    def __init__(self, name: str) -> None:
         self.name = name
 
     def evaluate(self, context: Dict[str, float], parser: 'ExpressionParser') -> float:
@@ -87,7 +87,7 @@ class VariableNode(ASTNode):
 class BinaryOpNode(ASTNode):
     """二元运算节点"""
 
-    def __init__(self, operator: str, left: ASTNode, right: ASTNode):
+    def __init__(self, operator: str, left: ASTNode, right: ASTNode) -> None:
         self.operator = operator
         self.left = left
         self.right = right
@@ -117,7 +117,7 @@ class BinaryOpNode(ASTNode):
 class UnaryOpNode(ASTNode):
     """一元运算节点"""
 
-    def __init__(self, operator: str, operand: ASTNode):
+    def __init__(self, operator: str, operand: ASTNode) -> None:
         self.operator = operator
         self.operand = operand
 
@@ -141,7 +141,7 @@ class UnaryOpNode(ASTNode):
 class FunctionCallNode(ASTNode):
     """函数调用节点"""
 
-    def __init__(self, name: str, args: List[ASTNode]):
+    def __init__(self, name: str, args: List[ASTNode]) -> None:
         self.name = name
         self.args = args
 

@@ -9,7 +9,7 @@ import random
 class AIWorldEventGenerator:
     """AI驱动的世界事件生成器"""
     
-    def __init__(self, llm_client, world_state):
+    def __init__(self, llm_client, world_state) -> None:
         self.llm = llm_client
         self.world_state = world_state
         self.event_history = []

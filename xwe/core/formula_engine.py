@@ -61,7 +61,7 @@ class FormulaEngine:
         'exp': math.exp,
     }
     
-    def __init__(self):
+    def __init__(self) -> None:
         self._formula_cache = {}
         self._compiled_cache = {}
         self.cache_hits = 0
@@ -366,7 +366,7 @@ def evaluate_expression(expression: str, context: Optional[Dict[str, Any]] = Non
     兼容传入上下文字典或关键字参数的两种调用方式。
     """
     if context is None:
-        context = {}
+        context: Dict[str, Any] = {}
     elif not isinstance(context, dict):
         raise TypeError("context must be a dict")
 
