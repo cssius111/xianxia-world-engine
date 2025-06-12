@@ -1,0 +1,10 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'xwe-metrics'
+    static_configs:
+      - targets: ['xwe:5001']
+    metrics_path: '/api/v1/metrics'
+    scrape_interval: 5s

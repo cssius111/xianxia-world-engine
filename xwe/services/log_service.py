@@ -13,6 +13,9 @@ from collections import deque
 from enum import Enum
 import threading
 from pathlib import Path
+import sys
+from datetime import datetime
+import uuid
 
 from . import ServiceBase, ServiceContainer
 
@@ -377,3 +380,91 @@ class LogService(ServiceBase[ILogService], ILogService):
             self._setup_file_logging()
             
             self.log_info("Log file rotated")
+
+
+class StructuredLogger:
+    """结构化日志记录器 - 输出JSON格式日志"""
+    
+    def __init__(self, service_name: str = "xwe", output_stream=None):
+        self.service_name = service_name
+        self.output_stream = output_stream or sys.stdout
+        self._lock = threading.Lock()
+        self._trace_id = None  # 支持请求追踪
+        
+    def _format_entry(self, level: str, message: str, **kwargs) -> Dict[str, Any]:
+        """格式化日志条目为JSON结构"""
+        entry = {
+            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "level": level.upper(),
+            "service": self.service_name,
+            "message": message,
+            "thread_id": threading.get_ident(),
+        }
+        
+        # 添加trace_id（如果存在）
+        if self._trace_id:
+            entry["trace_id"] = self._trace_id
+        elif "trace_id" in kwargs:
+            entry["trace_id"] = kwargs.pop("trace_id")
+        
+        # 添加额外的元数据
+        if kwargs:
+            entry["metadata"] = kwargs
+            
+        # 特殊字段提升到顶层
+        for field in ["player_id", "request_id", "category", "error"]:
+            if field in kwargs:
+                entry[field] = kwargs.pop(field)
+                
+        return entry
+        
+    def _write(self, entry: Dict[str, Any]) -> None:
+        """写入日志条目"""
+        with self._lock:
+            json_line = json.dumps(entry, ensure_ascii=False)
+            self.output_stream.write(json_line + "\n")
+            self.output_stream.flush()
+            
+    def debug(self, message: str, **kwargs) -> None:
+        """记录DEBUG级别日志"""
+        entry = self._format_entry("debug", message, **kwargs)
+        self._write(entry)
+        
+    def info(self, message: str, **kwargs) -> None:
+        """记录INFO级别日志"""
+        entry = self._format_entry("info", message, **kwargs)
+        self._write(entry)
+        
+    def warning(self, message: str, **kwargs) -> None:
+        """记录WARNING级别日志"""
+        entry = self._format_entry("warning", message, **kwargs)
+        self._write(entry)
+        
+    def error(self, message: str, error: Exception = None, **kwargs) -> None:
+        """记录ERROR级别日志"""
+        if error:
+            kwargs["error"] = {
+                "type": type(error).__name__,
+                "message": str(error),
+                "stack": self._get_traceback(error)  # 改为stack字段
+            }
+        entry = self._format_entry("error", message, **kwargs)
+        self._write(entry)
+        
+    def critical(self, message: str, **kwargs) -> None:
+        """记录CRITICAL级别日志"""
+        entry = self._format_entry("critical", message, **kwargs)
+        self._write(entry)
+        
+    def _get_traceback(self, error: Exception) -> List[str]:
+        """获取异常的堆栈跟踪"""
+        import traceback
+        return traceback.format_exception(type(error), error, error.__traceback__)
+    
+    def set_trace_id(self, trace_id: str = None) -> None:
+        """设置跟踪ID"""
+        self._trace_id = trace_id or str(uuid.uuid4())
+    
+    def clear_trace_id(self) -> None:
+        """清除跟踪ID"""
+        self._trace_id = None

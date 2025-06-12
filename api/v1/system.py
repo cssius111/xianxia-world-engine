@@ -10,6 +10,7 @@ import psutil
 import os
 
 from ..utils import api_response
+from xwe.metrics import metrics_registry
 
 
 # 创建蓝图
@@ -246,41 +247,106 @@ def health_check():
             "checks": {
                 "database": "ok",
                 "cache": "ok",
-                "storage": "ok"
-            }
+                "storage": "ok",
+                "services": "ok"
+            },
+            "details": {...}
         }
     """
+    from xwe.services import ServiceContainer
     checks = {}
+    details = {}
     
     # 检查存档目录
     try:
         saves_dir = 'saves'
         if os.path.exists(saves_dir) and os.access(saves_dir, os.W_OK):
             checks['storage'] = 'ok'
+            details['storage'] = {
+                'path': saves_dir,
+                'writable': True
+            }
         else:
             checks['storage'] = 'error'
-    except:
+            details['storage'] = {
+                'path': saves_dir,
+                'error': 'Directory not writable'
+            }
+    except Exception as e:
         checks['storage'] = 'error'
+        details['storage'] = {'error': str(e)}
     
     # 检查会话
     try:
         if session:
             checks['session'] = 'ok'
         else:
-            checks['session'] = 'error'
+            checks['session'] = 'warning'
     except:
         checks['session'] = 'error'
+    
+    # 检查服务容器
+    try:
+        container = ServiceContainer.get_instance()
+        if container:
+            service_count = len(container._services)
+            initialized_count = sum(1 for s in container._services.values() if s.get('instance'))
+            
+            if initialized_count > 0:
+                checks['services'] = 'ok'
+                details['services'] = {
+                    'registered': service_count,
+                    'initialized': initialized_count
+                }
+            else:
+                checks['services'] = 'warning'
+                details['services'] = {
+                    'registered': service_count,
+                    'initialized': 0,
+                    'warning': 'No services initialized'
+                }
+        else:
+            checks['services'] = 'error'
+            details['services'] = {'error': 'ServiceContainer not available'}
+    except Exception as e:
+        checks['services'] = 'error'
+        details['services'] = {'error': str(e)}
+    
+    # 检查内存使用
+    try:
+        memory = psutil.virtual_memory()
+        if memory.percent < 90:
+            checks['memory'] = 'ok'
+        else:
+            checks['memory'] = 'warning'
+        details['memory'] = {
+            'used_mb': memory.used // (1024 * 1024),
+            'total_mb': memory.total // (1024 * 1024),
+            'percent': memory.percent
+        }
+    except:
+        checks['memory'] = 'unknown'
     
     # 简化的数据库和缓存检查
     checks['database'] = 'ok'  # 当前使用文件系统
     checks['cache'] = 'ok'     # 当前使用内存
     
     # 判断整体状态
-    all_ok = all(status == 'ok' for status in checks.values())
+    error_count = sum(1 for status in checks.values() if status == 'error')
+    warning_count = sum(1 for status in checks.values() if status == 'warning')
+    
+    if error_count > 0:
+        overall_status = 'unhealthy'
+    elif warning_count > 0:
+        overall_status = 'degraded'
+    else:
+        overall_status = 'healthy'
     
     return {
-        'status': 'healthy' if all_ok else 'unhealthy',
-        'checks': checks
+        'status': overall_status,
+        'checks': checks,
+        'details': details,
+        'timestamp': int(time.time())
     }
 
 
@@ -350,6 +416,31 @@ def get_game_time():
         'game_time': game_time,
         'game_date': game_date
     }
+
+
+@system_bp.route('/metrics', methods=['GET'])
+def get_metrics():
+    """
+    获取Prometheus格式的系统指标
+    
+    Returns:
+        Prometheus text format metrics
+    """
+    # 更新一些系统指标
+    memory = psutil.virtual_memory()
+    metrics_registry.set_gauge('memory_usage_bytes', memory.used)
+    metrics_registry.set_gauge('cpu_usage_percent', psutil.cpu_percent(interval=0.1))
+    
+    # 获取在线玩家数（简化实现）
+    active_players = len([s for s in dir(session) if not s.startswith('_')])
+    metrics_registry.set_gauge('active_players', active_players)
+    
+    # 返回Prometheus格式的指标
+    from flask import Response
+    return Response(
+        metrics_registry.export_metrics(),
+        mimetype='text/plain; version=0.0.4'
+    )
 
 
 # 记录启动时间

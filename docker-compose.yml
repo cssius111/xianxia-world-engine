@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  xwe:
+    build: .
+    container_name: xianxia-world-engine
+    ports:
+      - "5001:5001"
+    environment:
+      - FLASK_ENV=development
+      - FLASK_DEBUG=0
+      - LOG_LEVEL=INFO
+    volumes:
+      # 开发模式下挂载源代码
+      - ./xwe:/app/xwe
+      - ./api:/app/api
+      - ./static:/app/static
+      - ./templates_enhanced:/app/templates_enhanced
+      # 持久化日志
+      - ./logs:/app/logs
+      # 持久化存档
+      - ./saves:/app/saves
+    restart: unless-stopped
+    networks:
+      - xwe-network
+    labels:
+      - "com.xwe.description=XianXia World Engine"
+      - "com.xwe.version=1.0.0"
+
+  # 可选：添加Prometheus监控
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: xwe-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    networks:
+      - xwe-network
+    depends_on:
+      - xwe
+
+networks:
+  xwe-network:
+    driver: bridge
+
+volumes:
+  prometheus-data:

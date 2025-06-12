@@ -1,40 +1,31 @@
 """
-修仙世界引擎 - API模块
-负责注册和管理所有API端点
+OpenAPI 文档生成器
+用于配置 Swagger UI 前端页面及 JSON 文档返回
 """
 
-from flask import Flask
-from .v1 import game_bp, player_bp, save_bp, system_bp
-from .middleware import register_middleware
+from flask_swagger_ui import get_swaggerui_blueprint
+from flask import jsonify
 
+# OpenAPI 规范主体结构
+openapi_spec = {
+    "openapi": "3.0.0",
+    "info": {
+        "title": "修仙世界引擎 API",
+        "version": "1.0.0"
+    },
+    "paths": {}  # 接口路径可在此处追加
+}
 
-def register_api(app: Flask, url_prefix: str = '/api'):
-    """
-    注册所有API蓝图到Flask应用
-    
-    Args:
-        app: Flask应用实例
-        url_prefix: API的URL前缀，默认为 '/api'
-    """
-    # 注册中间件
-    register_middleware(app)
-    
-    # 注册v1版本的API
-    v1_prefix = f"{url_prefix}/v1"
-    
-    # 游戏相关API
-    app.register_blueprint(game_bp, url_prefix=f"{v1_prefix}/game")
-    
-    # 玩家相关API
-    app.register_blueprint(player_bp, url_prefix=f"{v1_prefix}/player")
-    
-    # 存档相关API
-    app.register_blueprint(save_bp, url_prefix=f"{v1_prefix}/save")
-    
-    # 系统相关API
-    app.register_blueprint(system_bp, url_prefix=f"{v1_prefix}/system")
-    
-    print(f"✅ API v1 已注册到: {v1_prefix}")
+# 返回 OpenAPI JSON 格式文档
+def openapi_json():
+    return jsonify(openapi_spec)
 
-
-__all__ = ['register_api']
+# 设置 Swagger UI 到 Flask 应用
+def setup_swagger_ui(app):
+    swagger_ui = get_swaggerui_blueprint(
+        '/api/docs',           # 文档前端访问路径
+        '/api/openapi.json',   # 文档 JSON 数据源
+        config={ 'app_name': "修仙世界引擎 API" }
+    )
+    app.register_blueprint(swagger_ui, url_prefix='/api/docs')
+    app.add_url_rule("/api/openapi.json", "openapi_json", openapi_json)

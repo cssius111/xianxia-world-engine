@@ -7,6 +7,8 @@ import os
 import sys
 from pathlib import Path
 
+import app
+
 # 添加项目根目录到Python路径
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
@@ -23,6 +25,9 @@ from xwe.features.narrative_system import NarrativeSystem
 from xwe.features.ai_personalization import AIPersonalization
 from xwe.features.community_system import CommunitySystem
 from xwe.features.technical_ops import TechnicalOps
+from api import register_api
+register_api(app)
+
 
 app = Flask(__name__, static_folder='static', template_folder='templates_enhanced')
 app.secret_key = 'xianxia_world_secret_key_2025'

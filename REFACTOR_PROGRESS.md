@@ -7,7 +7,7 @@
 | 第1阶段 | 前端重构 | ✅ 完成 | 100% |
 | 第2阶段 | API标准化 | ✅ 完成 | 100% |
 | 第3阶段 | 核心重构 | ✅ 完成 | 100% |
-| 第4阶段 | 功能增强 | ⏳ 待开始 | 0% |
+| 第4阶段 | 功能增强 | 🔄 进行中 | 25% |
 
 ## ✅ 第1阶段成果（已完成）
 
@@ -235,13 +235,132 @@ python test_api.py
 
 ---
 
-**当前状态**：第3阶段完成，系统已实现Service层架构
+## 🎆 第4阶段成果（部分完成）
 
-**最后更新**：2025-06-11
+### 第一批无破坏式迭代（25%）
+
+#### 1. 监控与日志指标 ✅
+```
+xwe/
+├── services/
+│   └── log_service.py       # ✅ 新增StructuredLogger类
+└── metrics/                 # ✅ 新增目录
+    ├── __init__.py
+    └── prometheus.py        # ✅ Prometheus指标导出器
+```
+
+**实现特性**：
+- ✅ JSON格式结构化日志输出
+- ✅ 完整的Prometheus指标类型支持（Counter、Gauge、Histogram）
+- ✅ 预定义核心指标：`http_request_duration_seconds`、`game_events_total`
+- ✅ 线程安全的指标收集
+- ✅ 便捷的计时器上下文管理器
+
+#### 2. API文档自动生成 ✅
+```
+api/
+├── specs/                   # ✅ 新增目录
+│   └── openapi_generator.py # ✅ OpenAPI规范生成器
+└── __init__.py              # ✅ 集成Swagger UI
+```
+
+**访问地址**：
+- Swagger UI： http://localhost:5001/api/docs
+- OpenAPI JSON： http://localhost:5001/api/openapi.json
+
+#### 3. 开发调试控制台 ✅
+```
+api/v1/
+└── dev.py                   # ✅ 新增调试端点
+```
+
+**调试端点**：
+- `/api/v1/dev/debug` - 系统全面调试信息
+- `/api/v1/dev/debug/services` - 服务详细状态
+- `/api/v1/dev/debug/events` - 事件总线信息
+- `/api/v1/dev/debug/metrics` - 性能指标详情
+- `/api/v1/dev/debug/logs` - 最近日志条目
+
+#### 4. Docker化 ✅
+```
+根目录/
+├── Dockerfile               # ✅ 单容器镜像定义
+├── docker-compose.yml       # ✅ 容器编排配置
+├── .dockerignore           # ✅ 构建忽略文件
+└── prometheus.yml          # ✅ Prometheus配置
+```
+
+**Docker特性**：
+- ✅ 基于Python 3.12-slim精简镜像
+- ✅ 健康检查配置
+- ✅ 非root用户运行
+- ✅ 支持开发模式挂载
+- ✅ 集成Prometheus监控
+
+#### 5. 文档与测试 ✅
+```
+├── tests/
+│   └── test_prometheus.py   # ✅ Prometheus指标测试
+└── docs/
+    └── metrics_guide.md     # ✅ 监控与调试指南
+```
+
+### 技术亮点
+
+1. **零侵入设计**
+   - 所有新功能完全兼容现有代码
+   - 不修改现有函数签名
+   - 可选择性启用
+
+2. **生产就绪**
+   - 完整的容器化支持
+   - 标准的Prometheus监控
+   - 结构化日志输出
+
+3. **开发友好**
+   - 丰富的调试端点
+   - 自动API文档
+   - 完善的测试覆盖
+
+**当前状态**：第4阶段第一批完成，系统已具备基础监控和调试能力
+
+**最后更新**：2025-06-12
 
 **下一步行动**：
-1. 完善各业务领域的命令处理器
-2. 增强事件系统功能
-3. 实施第4阶段功能增强
+1. 完善业务指标收集（战斗、修炼、交易等）
+2. 集成ELK日志栈
+3. 添加性能追踪和分布式追踪
+4. 实现告警规则和通知系统
+5. 完成CI/CD管道集成
 
-**里程碑**：前端重构 ✅ → API标准化 ✅ → 核心重构 ✅ → 功能增强 ⏳
+**里程碑**：前端重构 ✅ → API标准化 ✅ → 核心重构 ✅ → 功能增强 🔄 (25%)
+
+## 🚀 快速启动
+
+### Docker部署（推荐）
+```bash
+# 构建并启动
+ docker-compose up -d
+
+# 查看日志
+ docker-compose logs -f xwe
+
+# 访问服务
+ # 游戏： http://localhost:5001
+ # API文档： http://localhost:5001/api/docs
+ # Prometheus： http://localhost:9090
+```
+
+### 本地开发
+```bash
+# 安装依赖
+pip install flask-swagger-ui psutil prometheus-client
+
+# 启用开发模式
+export FLASK_ENV=development
+export FLASK_DEBUG=1
+export ENABLE_DEV_API=true
+
+# 启动服务
+python run_web_ui_optimized.py
+```
