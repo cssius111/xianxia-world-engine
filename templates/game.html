@@ -185,6 +185,16 @@
             margin-bottom: 12px;
         }
 
+        .log-title {
+            background: #2c2c2c;
+            padding: 10px 15px;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            margin: 12px 0;
+            text-align: center;
+            font-weight: 500;
+        }
+
  
         /* .title-card, .msg-system, .msg-event, .msg-combat, .msg-player are
            legacy styles kept for compatibility but currently unused */
@@ -320,10 +330,10 @@
         }
 
         .modal-content {
-            background: #2a2a2a;
+            background: #1a1a1a;
             padding: 20px;
             border-radius: 8px;
-            width: 70%;
+            width: 80%;
             max-height: 80%;
             overflow-y: auto;
             color: #d8d8d8;
@@ -404,22 +414,20 @@
             <div class="status-block">
                 <div class="status-line">
                     <span class="status-label">境界</span>
-                    <span class="status-value" id="realm">{{ player.attributes.realm_name if player }} ({{ realm_percent }}%)</span>
+                    <span class="status-value" id="realm" title="当前修炼境界和突破进度">{{ player.attributes.realm_name if player }} ({{ realm_percent }}%)</span>
                 </div>
                 <div class="status-line">
                     <span class="status-label">气血值</span>
-                    <span class="status-value" id="health">{{ player.attributes.current_health if player }} / {{ player.attributes.max_health if player }}</span>
+                    <span class="status-value" id="health" title="当前生命值/上限">{{ player.attributes.current_health if player }} / {{ player.attributes.max_health if player }}</span>
                 </div>
                 <div class="status-line">
                     <span class="status-label">灵力值</span>
-                    <span class="status-value" id="mana">{{ player.attributes.current_mana if player }} / {{ player.attributes.max_mana if player }}</span>
+                    <span class="status-value" id="mana" title="当前灵力值/上限">{{ player.attributes.current_mana if player }} / {{ player.attributes.max_mana if player }}</span>
                 </div>
                 <div class="status-line">
-                    <span class="status-label">攻击</span>
+                    <span class="status-label" title="决定造成伤害的高低">攻击</span>
                     <span class="status-value" id="attack">{{ player.attributes.attack_power if player }}</span>
-                </div>
-                <div class="status-line">
-                    <span class="status-label">防御</span>
+                    <span class="status-label" style="margin-left:20px" title="降低受到的伤害">防御</span>
                     <span class="status-value" id="defense">{{ player.attributes.defense if player }}</span>
                 </div>
             </div>
@@ -540,12 +548,8 @@
             log.innerHTML = '';
             data.logs.forEach(text => {
                 const entry = document.createElement('div');
- 
                 const isTitle = /^===.+===$/.test(text.trim());
-                entry.className = 'log-entry log-card' + (isTitle ? ' title-card' : '');
- 
-                entry.className = 'log-entry log-card';
- 
+                entry.className = isTitle ? 'log-entry log-title' : 'log-entry log-card';
                 entry.innerHTML = marked.parse(text);
                 log.appendChild(entry);
             });
@@ -673,8 +677,11 @@
             document.getElementById('command-input').focus();
             fetchLog();
             fetchStatus();
-            document.getElementById('realm').title = '表示修炼境界及突破进度';
+            document.getElementById('realm').title = '当前修炼境界和突破进度';
+            document.getElementById('health').title = '当前生命值/上限';
             document.getElementById('mana').title = '当前灵力值/上限';
+            document.getElementById('attack').title = '决定造成伤害的高低';
+            document.getElementById('defense').title = '降低受到的伤害';
             setInterval(checkUpdates, 2000);
         }
         window.onload = init;
