@@ -504,6 +504,7 @@
 
 </body>
     <script>
+        let lastKnownStatus = null;
         async function fetchStatus() {
             const res = await fetch('/status');
             const data = await res.json();
@@ -539,11 +540,21 @@
         }
 
         async function checkUpdates() {
-            const res = await fetch('/need_refresh');
-            const data = await res.json();
-            if (data.refresh) {
-                fetchLog();
-                fetchStatus();
+            try {
+                const res = await fetch('/need_refresh');
+                if (!res.ok) return;
+
+                const data = await res.json();
+                if (JSON.stringify(data) !== JSON.stringify(lastKnownStatus)) {
+                    lastKnownStatus = data;
+
+                    if (data.refresh) {
+                        fetchLog();
+                        fetchStatus();
+                    }
+                }
+            } catch (err) {
+                console.warn('轮询失败:', err);
             }
         }
 
@@ -677,7 +688,7 @@
             document.getElementById('mana').title = '当前灵力值/上限';
             document.getElementById('attack').title = '决定造成伤害的高低';
             document.getElementById('defense').title = '降低受到的伤害';
-            setInterval(throttledCheck, 1000);
+            setInterval(throttledCheck, 5000);
         }
         window.onload = init;
     </script>

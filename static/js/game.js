@@ -20,6 +20,9 @@
         lastUpdateTime: 0
     };
 
+    // 记录上一次获取的刷新状态
+    let lastKnownStatus = null;
+
     // 可用命令列表（与服务器同步）
     const availableCommands = [
         { cmd: '状态', desc: '查看角色状态', shortcut: 's' },
@@ -481,19 +484,25 @@
     async function checkUpdates() {
         // 如果用户正在交互，跳过自动刷新
         if (gameState.isUserInteracting) return;
-        
+
         try {
             const res = await fetch('/need_refresh');
             if (!res.ok) return;
-            
+
             const data = await res.json();
-            if (data.refresh && data.last_update > gameState.lastUpdateTime) {
-                gameState.lastUpdateTime = data.last_update;
-                await fetchLog();
-                await fetchStatus();
+
+            // 仅在状态变化时刷新
+            if (JSON.stringify(data) !== JSON.stringify(lastKnownStatus)) {
+                lastKnownStatus = data;
+
+                if (data.refresh && data.last_update > gameState.lastUpdateTime) {
+                    gameState.lastUpdateTime = data.last_update;
+                    await fetchLog();
+                    await fetchStatus();
+                }
             }
         } catch (error) {
-            console.error('检查更新失败:', error);
+            console.warn('检查更新失败:', error);
         }
     }
 
