@@ -240,7 +240,7 @@
 /* 游戏面板通用样式 */
 .game-panel {
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    border: 2px solid #6b8b7d;
+    border: 2px solid #aaa;
     border-radius: 10px;
     width: 90%;
     max-width: 600px;
@@ -276,14 +276,14 @@
 
 .panel-header h3 {
     margin: 0;
-    color: #6b8b7d;
+    color: #aaa;
     font-size: 20px;
 }
 
 .panel-close {
     background: none;
     border: none;
-    color: #6b8b7d;
+    color: #aaa;
     font-size: 24px;
     cursor: pointer;
     opacity: 0.7;
@@ -318,12 +318,12 @@
 }
 
 .status-item label {
-    color: #6b8b7d;
+    color: #aaa;
     font-weight: bold;
 }
 
 .status-item span {
-    color: #d5e5d3;
+    color: #ccc;
 }
 
 /* 背包样式 */
@@ -348,7 +348,7 @@
 }
 
 .inventory-slot:hover {
-    border-color: #6b8b7d;
+    border-color: #aaa;
     background: rgba(107, 139, 125, 0.1);
 }
 
@@ -361,7 +361,7 @@
 
 .item-info h4 {
     margin: 0 0 10px 0;
-    color: #6b8b7d;
+    color: #aaa;
 }
 
 /* 修炼系统样式 */
@@ -370,7 +370,7 @@
 }
 
 .cultivation-section h4 {
-    color: #6b8b7d;
+    color: #aaa;
     margin: 0 0 15px 0;
 }
 
@@ -384,11 +384,11 @@
 
 .technique-name {
     font-weight: bold;
-    color: #d5e5d3;
+    color: #ccc;
 }
 
 .technique-progress {
-    color: #6b8b7d;
+    color: #aaa;
 }
 
 .technique-list {
@@ -426,7 +426,7 @@
 
 .cultivation-input button {
     padding: 5px 15px;
-    background: #6b8b7d;
+    background: #aaa;
     color: #1a1a2e;
     border: none;
     border-radius: 5px;
@@ -435,12 +435,12 @@
 }
 
 .cultivation-tip {
-    color: #d5e5d3;
+    color: #ccc;
     margin-bottom: 10px;
 }
 
 .warning-text {
-    color: #ff9800;
+    color: #bbb;
     font-size: 14px;
     margin-bottom: 10px;
 }
@@ -453,7 +453,7 @@
 
 .achievement-table th {
     background: rgba(107, 139, 125, 0.2);
-    color: #6b8b7d;
+    color: #aaa;
     padding: 10px;
     text-align: left;
 }
@@ -472,7 +472,7 @@
     display: block;
     margin: 20px auto;
     padding: 15px 30px;
-    background: linear-gradient(135deg, #6b8b7d 0%, #d5e5d3 100%);
+    background: linear-gradient(135deg, #aaa 0%, #ccc 100%);
     color: #1a1a2e;
     border: none;
     border-radius: 25px;
@@ -513,12 +513,12 @@
     padding: 15px;
     background: rgba(0, 0, 0, 0.3);
     border-radius: 5px;
-    border-left: 3px solid #6b8b7d;
+    border-left: 3px solid #aaa;
 }
 
 .quest-item h5 {
     margin: 0 0 10px 0;
-    color: #6b8b7d;
+    color: #aaa;
 }
 
 .quest-item p {
@@ -545,12 +545,12 @@
 }
 
 .save-btn {
-    background: #6b8b7d;
+    background: #aaa;
     color: white;
 }
 
 .load-btn {
-    background: #6b8b7d;
+    background: #aaa;
     color: white;
 }
 
@@ -562,12 +562,12 @@
 .save-load-message {
     text-align: center;
     padding: 15px;
-    color: #6b8b7d;
+    color: #aaa;
 }
 
 /* 帮助文档样式 */
 .help-content h4 {
-    color: #6b8b7d;
+    color: #aaa;
     margin: 20px 0 10px 0;
 }
 
@@ -585,7 +585,7 @@
     background: rgba(107, 139, 125, 0.2);
     padding: 2px 5px;
     border-radius: 3px;
-    color: #d5e5d3;
+    color: #ccc;
 }
 
 /* 滚动条 */
@@ -777,9 +777,9 @@ const GamePanels = {
         
         // 功法列表
         const techniques = [
-            { name: '青云诀', level: '黄阶下品', color: '#6b8b7d' },
-            { name: '烈火诀', level: '黄阶中品', color: '#ff9800' },
-            { name: '寒冰诀', level: '黄阶中品', color: '#03a9f4' }
+            { name: '青云诀', level: '黄阶下品', color: '#aaa' },
+            { name: '烈火诀', level: '黄阶中品', color: '#bbb' },
+            { name: '寒冰诀', level: '黄阶中品', color: '#bbb' }
         ];
         
         const list = document.getElementById('techniqueList');
@@ -833,7 +833,7 @@ const GamePanels = {
                 <ul>
                     <li><a href="#" onclick="GamePanels.travelTo('青云城')">青云城</a> - 繁华的修真城市</li>
                     <li><a href="#" onclick="GamePanels.travelTo('青云峰')">青云峰</a> - 青云宗山门</li>
-                    <li><a href="#" onclick="GamePanels.travelTo('灵兽森林')">灵兽森林<span style="color: #6b8b7d">(新)</span></a> - 危险的森林</li>
+                    <li><a href="#" onclick="GamePanels.travelTo('灵兽森林')">灵兽森林<span style="color: #aaa">(新)</span></a> - 危险的森林</li>
                 </ul>
             </div>
         `;
@@ -857,7 +857,7 @@ const GamePanels = {
             item.innerHTML = `
                 <h5>${quest.name}</h5>
                 <p>${quest.desc}</p>
-                <p style="color: #6b8b7d">状态：${quest.progress}</p>
+                <p style="color: #aaa">状态：${quest.progress}</p>
             `;
             list.appendChild(item);
         });
@@ -890,7 +890,7 @@ const GamePanels = {
         result.innerHTML = '<p>正在探索中...</p>';
         
         setTimeout(() => {
-            result.innerHTML = '<p>你在附近发现了一株<span style="color: #6b8b7d">百年人参</span>！</p>';
+            result.innerHTML = '<p>你在附近发现了一株<span style="color: #aaa">百年人参</span>！</p>';
         }, 1000);
     },
     
@@ -915,10 +915,10 @@ const GamePanels = {
             const msg = document.getElementById('saveLoadMessage');
             if (data.success) {
                 msg.textContent = '游戏保存成功！';
-                msg.style.color = '#6b8b7d';
+                msg.style.color = '#aaa';
             } else {
                 msg.textContent = '保存失败：' + data.error;
-                msg.style.color = '#f44336';
+                msg.style.color = '#bbb';
             }
         } catch (error) {
             console.error('保存失败:', error);
@@ -936,7 +936,7 @@ const GamePanels = {
             const msg = document.getElementById('saveLoadMessage');
             if (data.success) {
                 msg.textContent = '游戏加载成功！';
-                msg.style.color = '#6b8b7d';
+                msg.style.color = '#aaa';
                 // 刷新游戏状态
                 if (typeof GameUI !== 'undefined' && GameUI.refreshStatus) {
                     GameUI.refreshStatus();
@@ -944,7 +944,7 @@ const GamePanels = {
                 setTimeout(() => this.closePanel('saveLoadPanel'), 1000);
             } else {
                 msg.textContent = '加载失败：' + data.error;
-                msg.style.color = '#f44336';
+                msg.style.color = '#bbb';
             }
         } catch (error) {
             console.error('加载失败:', error);
