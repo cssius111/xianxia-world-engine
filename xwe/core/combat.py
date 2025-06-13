@@ -74,6 +74,12 @@ class CombatSystemV3:
     ActionType = ActionType
 
     def __init__(self) -> None:
+        if getattr(self, "_initialized", False):
+            logger.debug("战斗系统已初始化，跳过")
+            return
+
+        self._initialized = True
+
         self.combat_data = {}
         self.element_data = {}
         self.active_combats = {}

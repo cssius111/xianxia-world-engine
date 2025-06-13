@@ -80,6 +80,12 @@ class NPCManager:
             dialogue_system: 对话系统实例
             nlp_processor: NLP处理器（可选）
         """
+        if getattr(self, "_initialized", False):
+            logger.debug("NPC管理器已初始化，跳过")
+            return
+
+        self._initialized = True
+
         self.dialogue_system = dialogue_system
         self.npc_profiles: Dict[str, NPCProfile] = {}
         self.npc_characters: Dict[str, Character] = {}

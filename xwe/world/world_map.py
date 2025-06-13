@@ -145,10 +145,16 @@ class WorldMap:
     
     def __init__(self) -> None:
         """初始化世界地图"""
+        if getattr(self, "_initialized", False):
+            logger.debug("地图系统已初始化，跳过")
+            return
+
+        self._initialized = True
+
         self.regions: Dict[str, Region] = {}
         self.areas: Dict[str, Area] = {}
         self.area_graph: Dict[str, Set[str]] = {}  # 邻接表表示的地图连接
-        
+
         logger.info("世界地图系统初始化")
     
     def load_from_file(self, filepath: str) -> None:

@@ -655,6 +655,19 @@
             }
         }
 
+        function throttle(fn, delay) {
+            let last = 0;
+            return (...args) => {
+                const now = Date.now();
+                if (now - last > delay) {
+                    last = now;
+                    fn(...args);
+                }
+            };
+        }
+
+        const throttledCheck = throttle(checkUpdates, 5000);
+
         function init() {
             document.getElementById('command-input').focus();
             fetchLog();
@@ -664,7 +677,7 @@
             document.getElementById('mana').title = '当前灵力值/上限';
             document.getElementById('attack').title = '决定造成伤害的高低';
             document.getElementById('defense').title = '降低受到的伤害';
-            setInterval(checkUpdates, 2000);
+            setInterval(throttledCheck, 1000);
         }
         window.onload = init;
     </script>

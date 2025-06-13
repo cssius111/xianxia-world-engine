@@ -91,6 +91,12 @@ class GameCore:
         Args:
             data_path: 数据文件路径
         """
+        if getattr(self, "_initialized", False):
+            logger.debug("GameCore 已初始化，跳过")
+            return
+
+        self._initialized = True
+
         # 初始化系统
         self.data_loader = DataLoader(data_path)
         self.parser = ExpressionParser()
