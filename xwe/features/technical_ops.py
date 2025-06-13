@@ -768,6 +768,15 @@ class TechnicalOpsSystem:
     """技术运营系统"""
 
     def __init__(self) -> None:
+        if getattr(self, "_initialized", False):
+            logger.debug("TechnicalOpsSystem 已初始化，跳过")
+            return
+
+        self._initialized = True
+
+        self._last_backup_time: float = 0.0
+        self._backup_interval: float = 30.0  # 最短30秒执行一次备份
+
         self.save_manager = SaveManager()
         self.error_handler = ErrorHandler()
         self.performance_monitor = PerformanceMonitor()
@@ -830,6 +839,16 @@ class TechnicalOpsSystem:
         report_file = self.error_handler.log_dir / "performance_report.json"
         with open(report_file, "w") as f:
             json.dump(report, f, indent=2)
+
+    def try_backup(self) -> None:
+        """在冷却时间内避免重复备份"""
+        current = time.time()
+        if current - self._last_backup_time < self._backup_interval:
+            logger.info("跳过备份：距离上次备份时间过短")
+            return
+
+        self.backup_manager._perform_backup()
+        self._last_backup_time = current
 
     def create_game_save(
         self, game_state: Dict[str, Any], save_type: str = "manual"

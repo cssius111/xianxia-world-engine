@@ -20,6 +20,12 @@ class CultivationSystem:
     """
     
     def __init__(self) -> None:
+        if getattr(self, "_initialized", False):
+            logger.debug("修炼系统已初始化，跳过")
+            return
+
+        self._initialized = True
+
         self.realm_data = {}
         self.formula_engine = formula_engine
         self._load_cultivation_data()
