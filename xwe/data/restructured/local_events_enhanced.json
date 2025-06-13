@@ -1,0 +1,740 @@
+{
+  "events": [
+    {
+      "id": "evt_childhood_injury",
+      "name": "幼年摔伤",
+      "description": "年幼时不慎从树上摔下，伤了筋骨，导致体质略有受损，但也因此学会了谨慎。",
+      "type": "random",
+      "category": "background",
+      "rarity": "common",
+      "weight": 100,
+      "effect": {
+        "type": "stat_delta",
+        "payload": {
+          "physique": -2,
+          "agility": -1,
+          "intelligence": 1
+        }
+      },
+      "flags": ["childhood_injury=true", "cautious_nature=true"],
+      "tags": ["童年", "负面", "成长"]
+    },
+    
+    {
+      "id": "evt_spirit_spring",
+      "name": "灵泉奇遇",
+      "description": "在深山中发现一处隐秘的灵泉，泉水清澈见底，散发着淡淡灵气。",
+      "type": "random",
+      "category": "exploration",
+      "rarity": "rare",
+      "weight": 30,
+      "choices": [
+        {
+          "id": "drink",
+          "text": "直接饮用灵泉水",
+          "success_rate": 0.7,
+          "outcomes": {
+            "success": {
+              "description": "灵泉水甘甜清冽，你感觉浑身充满力量！",
+              "effects": [{
+                "type": "stat_delta",
+                "payload": {"vitality": 5, "spiritual_power": 30}
+              }]
+            },
+            "failure": {
+              "description": "灵泉水过于精纯，你的身体无法完全吸收，造成了轻微的经脉震荡。",
+              "effects": [{
+                "type": "stat_delta",
+                "payload": {"vitality": -2, "spiritual_power": 10}
+              }]
+            }
+          }
+        },
+        {
+          "id": "bottle",
+          "text": "用容器装走一些",
+          "requirements": {"items": ["empty_bottle"]},
+          "outcomes": {
+            "success": {
+              "description": "你小心地装了一瓶灵泉水，以备不时之需。",
+              "effects": [{
+                "type": "item_reward",
+                "payload": {"items": [{"id": "spirit_spring_water", "count": 1}]}
+              }]
+            }
+          }
+        },
+        {
+          "id": "cultivate",
+          "text": "在灵泉边修炼",
+          "requirements": {"min_level": 5},
+          "outcomes": {
+            "success": {
+              "description": "借助灵泉的精纯灵气，你的修炼事半功倍！",
+              "effects": [{
+                "type": "stat_delta",
+                "payload": {"exp": 500, "cultivation_speed": 0.1}
+              }]
+            }
+          }
+        }
+      ],
+      "conditions": {
+        "location": ["深山", "秘境"],
+        "min_luck": 5
+      }
+    },
+    
+    {
+      "id": "evt_demonic_temptation",
+      "name": "魔道诱惑",
+      "description": "一位神秘的黑衣人出现在你面前，手持一本散发着邪恶气息的功法。",
+      "type": "triggered",
+      "category": "fate",
+      "rarity": "epic",
+      "weight": 10,
+      "choices": [
+        {
+          "id": "accept",
+          "text": "接受魔功",
+          "karma_cost": -100,
+          "outcomes": {
+            "success": {
+              "description": "你接过魔功，感受到一股强大而邪恶的力量涌入体内。修炼速度大增，但你的眼中闪过一丝血光。",
+              "effects": [
+                {
+                  "type": "item_reward",
+                  "payload": {"items": [{"id": "blood_demon_scripture", "count": 1}]}
+                },
+                {
+                  "type": "stat_delta",
+                  "payload": {"cultivation_speed": 0.5, "karma": -100}
+                },
+                {
+                  "type": "boolean_flag",
+                  "payload": {"action": "set", "flags": ["demonic_cultivator"]}
+                }
+              ],
+              "consequences": {
+                "immediate": "正道人士对你的态度恶化",
+                "future": "可能引发正道追杀"
+              }
+            }
+          }
+        },
+        {
+          "id": "refuse",
+          "text": "断然拒绝",
+          "karma_cost": 50,
+          "outcomes": {
+            "success": {
+              "description": "你义正言辞地拒绝了诱惑。黑衣人冷笑一声，消失在黑雾中。",
+              "effects": [
+                {
+                  "type": "stat_delta",
+                  "payload": {"karma": 50, "willpower": 2}
+                },
+                {
+                  "type": "boolean_flag",
+                  "payload": {"action": "set", "flags": ["righteous_heart"]}
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "pretend",
+          "text": "假意接受，伺机上报",
+          "requirements": {"intelligence": 15, "charm": 10},
+          "outcomes": {
+            "success": {
+              "description": "你巧妙地欺骗了黑衣人，获得了魔道的情报。",
+              "effects": [
+                {
+                  "type": "item_reward",
+                  "payload": {"items": [{"id": "demon_intel", "count": 1}]}
+                },
+                {
+                  "type": "relationship_change",
+                  "payload": {"faction": "righteous_alliance", "change": 100}
+                }
+              ]
+            },
+            "failure": {
+              "description": "黑衣人识破了你的伎俩，愤怒地攻击你！",
+              "combat_trigger": {
+                "enemy": "demon_envoy",
+                "difficulty": "hard"
+              }
+            }
+          }
+        }
+      ],
+      "conditions": {
+        "min_level": 20,
+        "no_flags": ["demonic_cultivator"]
+      },
+      "chain_events": ["demon_sect_revenge", "righteous_reward"]
+    },
+    
+    {
+      "id": "evt_ancient_inheritance",
+      "name": "上古传承",
+      "description": "在一处古老遗迹中，你发现了一个尘封万年的传承玉简。玉简散发着淡淡金光，似乎在等待有缘人。",
+      "type": "triggered",
+      "category": "fate",
+      "rarity": "legendary",
+      "weight": 5,
+      "choices": [
+        {
+          "id": "blood_drop",
+          "text": "滴血认主",
+          "outcomes": {
+            "success": {
+              "description": "玉简认可了你！古老的传承涌入脑海，你获得了失传已久的功法！",
+              "effects": [
+                {
+                  "type": "skill_grant",
+                  "payload": {
+                    "skills": [{"id": "ancient_god_technique", "level": 1}],
+                    "enlightenment": {"type": "ancient_dao", "level": "initial"}
+                  }
+                },
+                {
+                  "type": "realm_influence",
+                  "payload": {"breakthrough_chance": 0.3, "enlightenment_state": {"duration": 86400, "bonus": 3.0}}
+                }
+              ],
+              "achievement": "ancient_inheritor"
+            },
+            "failure": {
+              "description": "玉简拒绝了你，并释放出强大的反噬之力！",
+              "effects": [{
+                "type": "stat_delta",
+                "payload": {"health": -50, "spiritual_power": -30}
+              }]
+            },
+            "critical_failure": {
+              "chance": 0.1,
+              "description": "玉简中竟藏着上古邪灵！它试图夺舍你的身体！",
+              "combat_trigger": {
+                "enemy": "ancient_evil_spirit",
+                "difficulty": "nightmare"
+              }
+            }
+          }
+        },
+        {
+          "id": "study_first",
+          "text": "先仔细研究",
+          "requirements": {"intelligence": 20},
+          "outcomes": {
+            "success": {
+              "description": "通过仔细研究，你发现了安全接收传承的方法。",
+              "next_event": "safe_inheritance"
+            }
+          }
+        },
+        {
+          "id": "sell",
+          "text": "将玉简卖给他人",
+          "outcomes": {
+            "success": {
+              "description": "你以天价卖出了玉简，获得了巨额财富，但也失去了一个改变命运的机会。",
+              "effects": [{
+                "type": "item_reward",
+                "payload": {"money": 100000, "karma": -20}
+              }],
+              "flags": ["missed_ancient_inheritance"]
+            }
+          }
+        }
+      ],
+      "conditions": {
+        "location": ["ancient_ruins"],
+        "min_luck": 8,
+        "min_level": 30
+      }
+    },
+    
+    {
+      "id": "evt_sect_conspiracy",
+      "name": "宗门阴谋",
+      "description": "你无意中听到两位长老的密谈，似乎涉及到一个惊天阴谋...",
+      "type": "triggered",
+      "category": "social",
+      "rarity": "rare",
+      "weight": 20,
+      "choices": [
+        {
+          "id": "report",
+          "text": "立即上报宗主",
+          "outcomes": {
+            "success": {
+              "description": "宗主相信了你，及时阻止了阴谋。你获得了丰厚奖励。",
+              "effects": [
+                {
+                  "type": "relationship_change",
+                  "payload": {"npc_id": "sect_master", "change": 200}
+                },
+                {
+                  "type": "item_reward",
+                  "payload": {"contribution_points": 1000}
+                }
+              ]
+            },
+            "failure": {
+              "description": "原来宗主也是阴谋的一部分！你陷入了危险！",
+              "effects": [{
+                "type": "boolean_flag",
+                "payload": {"action": "set", "flags": ["sect_enemy", "hunted"]}
+              }],
+              "next_event": "escape_from_sect"
+            }
+          }
+        },
+        {
+          "id": "blackmail",
+          "text": "以此要挟获利",
+          "requirements": {"personality": ["cunning", "greedy"]},
+          "outcomes": {
+            "success": {
+              "description": "长老们被迫给了你封口费，但你也上了他们的必杀名单。",
+              "effects": [
+                {
+                  "type": "item_reward",
+                  "payload": {"money": 10000, "items": [{"id": "rare_pill", "count": 5}]}
+                },
+                {
+                  "type": "karma_event",
+                  "payload": {"karma_change": -50, "karma_debt": {"target": "corrupt_elders", "type": "revenge"}}
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "investigate",
+          "text": "暗中调查真相",
+          "requirements": {"intelligence": 15, "stealth_skill": 5},
+          "outcomes": {
+            "success": {
+              "description": "你发现这个阴谋牵扯甚广，涉及多个宗门的存亡。",
+              "next_event": "grand_conspiracy_revealed"
+            }
+          }
+        }
+      ],
+      "conditions": {
+        "faction": "any_sect",
+        "min_position": "inner_disciple"
+      }
+    },
+    
+    {
+      "id": "evt_time_anomaly",
+      "name": "时空裂缝",
+      "description": "空间突然扭曲，一道裂缝出现在你面前。透过裂缝，你似乎看到了另一个时空...",
+      "type": "random",
+      "category": "system",
+      "rarity": "legendary",
+      "weight": 1,
+      "choices": [
+        {
+          "id": "enter",
+          "text": "进入裂缝",
+          "outcomes": {
+            "success": {
+              "description": "你进入了一个时间流速不同的空间！在里面修炼一年，外界只过去一天。",
+              "effects": [
+                {
+                  "type": "world_event",
+                  "payload": {
+                    "personal_time_dilation": 365,
+                    "effects": {"cultivation_result": "one_year_progress"}
+                  }
+                }
+              ]
+            },
+            "failure": {
+              "description": "时空乱流将你卷入其中！你被传送到了未知的地方。",
+              "effects": [{
+                "type": "teleport",
+                "payload": {"destination": "random", "disoriented": true}
+              }]
+            }
+          }
+        },
+        {
+          "id": "study",
+          "text": "研究裂缝",
+          "requirements": {"skill": "space_comprehension"},
+          "outcomes": {
+            "success": {
+              "description": "你领悟了一丝空间法则！",
+              "effects": [{
+                "type": "skill_grant",
+                "payload": {"skills": [{"id": "spatial_manipulation", "level": 1}]}
+              }]
+            }
+          }
+        }
+      ]
+    },
+    
+    {
+      "id": "evt_dao_companion",
+      "name": "道侣缘分",
+      "description": "在一次历练中，你遇到了一位气质出众的同道中人。你们并肩作战，配合默契。",
+      "type": "triggered",
+      "category": "social",
+      "rarity": "uncommon",
+      "weight": 50,
+      "choices": [
+        {
+          "id": "pursue",
+          "text": "表达心意",
+          "requirements": {"charm": 15},
+          "outcomes": {
+            "success": {
+              "description": "对方接受了你的心意，你们结为道侣，从此双修共进。",
+              "effects": [
+                {
+                  "type": "relationship_change",
+                  "payload": {"npc_id": "generated_dao_companion", "change": 1000, "relationship_type": "romance"}
+                },
+                {
+                  "type": "stat_delta",
+                  "payload": {"cultivation_speed": 0.2, "happiness": 50}
+                }
+              ],
+              "achievement": "find_dao_companion"
+            },
+            "failure": {
+              "description": "对方婉拒了你，但愿意与你做朋友。",
+              "effects": [{
+                "type": "relationship_change",
+                "payload": {"npc_id": "generated_dao_companion", "change": 100, "relationship_type": "friendship"}
+              }]
+            }
+          }
+        },
+        {
+          "id": "friend",
+          "text": "保持朋友关系",
+          "outcomes": {
+            "success": {
+              "description": "你们成为了生死之交，虽无情爱，却有深厚友谊。",
+              "effects": [{
+                "type": "relationship_change",
+                "payload": {"npc_id": "generated_dao_companion", "change": 200, "relationship_type": "friendship"}
+              }]
+            }
+          }
+        }
+      ],
+      "conditions": {
+        "min_level": 25,
+        "no_flags": ["has_dao_companion"]
+      }
+    },
+    
+    {
+      "id": "evt_tribulation_help",
+      "name": "渡劫相助",
+      "description": "你的朋友即将渡劫，请求你护法。这很危险，但朋友有难，你该如何选择？",
+      "type": "triggered",
+      "category": "social",
+      "rarity": "rare",
+      "weight": 30,
+      "choices": [
+        {
+          "id": "help",
+          "text": "冒险相助",
+          "outcomes": {
+            "success": {
+              "description": "在你的帮助下，朋友成功渡劫！你们的友谊更加深厚。",
+              "effects": [
+                {
+                  "type": "relationship_change",
+                  "payload": {"change": 500}
+                },
+                {
+                  "type": "karma_event",
+                  "payload": {"karma_change": 100, "karma_debt": {"type": "gratitude", "amount": 200}}
+                }
+              ]
+            },
+            "failure": {
+              "description": "雷劫太强，你也被波及！虽然朋友渡劫成功，你却受了重伤。",
+              "effects": [{
+                "type": "stat_delta",
+                "payload": {"health": -80, "max_health": -10}
+              }]
+            },
+            "critical_failure": {
+              "description": "你的介入导致天劫异变！朋友渡劫失败，而你也...",
+              "effects": [{
+                "type": "death_check",
+                "payload": {"chance": 0.3}
+              }]
+            }
+          }
+        },
+        {
+          "id": "refuse",
+          "text": "婉言拒绝",
+          "outcomes": {
+            "success": {
+              "description": "朋友理解你的顾虑，独自渡劫。你们的关系略有疏远。",
+              "effects": [{
+                "type": "relationship_change",
+                "payload": {"change": -100}
+              }]
+            }
+          }
+        }
+      ],
+      "conditions": {
+        "has_friend": true,
+        "friend_breakthrough_ready": true
+      }
+    },
+    
+    {
+      "id": "evt_past_life_memory",
+      "name": "前世记忆",
+      "description": "一阵剧烈的头痛后，你脑海中闪过陌生yet熟悉的画面...",
+      "type": "random",
+      "category": "fate",
+      "rarity": "epic",
+      "weight": 5,
+      "effect": {
+        "type": "multi_effect",
+        "payload": [
+          {
+            "type": "skill_grant",
+            "payload": {"skills": [{"id": "past_life_technique", "level": 1}]}
+          },
+          {
+            "type": "stat_delta",
+            "payload": {"intelligence": 5, "spiritual_sense": 3}
+          },
+          {
+            "type": "boolean_flag",
+            "payload": {"action": "set", "flags": ["past_life_awakened"]}
+          }
+        ]
+      },
+      "chain_events": ["past_life_enemy", "past_life_inheritance", "past_life_lover"],
+      "conditions": {
+        "min_level": 40,
+        "special_condition": "near_death_experience"
+      }
+    },
+    
+    {
+      "id": "evt_heavenly_dao_test",
+      "name": "天道考验",
+      "description": "天空突然暗了下来，一个宏大的声音在你脑海中响起：'汝可愿接受天道考验？'",
+      "type": "triggered",
+      "category": "fate",
+      "rarity": "legendary",
+      "weight": 1,
+      "choices": [
+        {
+          "id": "accept",
+          "text": "接受考验",
+          "outcomes": {
+            "success": {
+              "description": "你通过了天道的考验！获得了天道认可，今后修炼将一帆风顺。",
+              "effects": [
+                {
+                  "type": "world_event",
+                  "payload": {
+                    "personal_blessing": "heavenly_dao",
+                    "effects": {
+                      "tribulation_reduction": 0.5,
+                      "cultivation_speed": 2.0,
+                      "luck": 10
+                    }
+                  }
+                }
+              ],
+              "achievement": "heaven_blessed"
+            },
+            "failure": {
+              "description": "你失败了，但天道仁慈，给了你第二次机会。",
+              "effects": [{
+                "type": "stat_delta",
+                "payload": {"all_stats": -5}
+              }],
+              "next_event": "second_chance"
+            }
+          }
+        },
+        {
+          "id": "refuse",
+          "text": "拒绝天道",
+          "outcomes": {
+            "success": {
+              "description": "你选择了逆天而行！虽然艰难，但你将走出自己的道。",
+              "effects": [
+                {
+                  "type": "boolean_flag",
+                  "payload": {"action": "set", "flags": ["heaven_defier"]}
+                },
+                {
+                  "type": "stat_delta",
+                  "payload": {"willpower": 10, "tribulation_power": 0.5}
+                }
+              ],
+              "achievement": "defy_heaven"
+            }
+          }
+        }
+      ],
+      "conditions": {
+        "min_realm": "元婴期",
+        "karma": {"min": 500}
+      }
+    }
+  ],
+  
+  "event_pools": {
+    "early_game": [
+      "evt_childhood_injury", 
+      "evt_village_help", 
+      "evt_find_herbs",
+      "evt_bandit_encounter"
+    ],
+    "mid_game": [
+      "evt_spirit_spring",
+      "evt_elder_guidance", 
+      "evt_beast_friend",
+      "evt_treasure_map",
+      "evt_sect_conspiracy"
+    ],
+    "late_game": [
+      "evt_ancient_inheritance",
+      "evt_demonic_temptation",
+      "evt_time_anomaly",
+      "evt_past_life_memory"
+    ],
+    "social_events": [
+      "evt_dao_companion",
+      "evt_tribulation_help",
+      "evt_sect_conspiracy"
+    ],
+    "fate_events": [
+      "evt_demonic_temptation",
+      "evt_ancient_inheritance",
+      "evt_past_life_memory",
+      "evt_heavenly_dao_test"
+    ],
+    "exploration_events": [
+      "evt_spirit_spring",
+      "evt_find_herbs",
+      "evt_treasure_map",
+      "evt_time_anomaly"
+    ]
+  },
+  
+  "dynamic_event_modifiers": {
+    "karma_influence": {
+      "high_karma": {
+        "min": 500,
+        "event_weight_modifier": {
+          "positive_events": 1.5,
+          "negative_events": 0.5
+        }
+      },
+      "low_karma": {
+        "max": -500,
+        "event_weight_modifier": {
+          "positive_events": 0.5,
+          "negative_events": 1.5,
+          "demonic_events": 2.0
+        }
+      }
+    },
+    "location_modifiers": {
+      "dangerous_area": {
+        "combat_events": 2.0,
+        "treasure_events": 1.5,
+        "social_events": 0.2
+      },
+      "city": {
+        "social_events": 2.0,
+        "merchant_events": 1.5,
+        "combat_events": 0.3
+      },
+      "sect": {
+        "cultivation_events": 1.5,
+        "social_events": 1.2,
+        "political_events": 1.8
+      }
+    },
+    "time_modifiers": {
+      "night": {
+        "mysterious_events": 1.5,
+        "demon_events": 2.0,
+        "social_events": 0.5
+      },
+      "festival": {
+        "social_events": 3.0,
+        "positive_events": 1.5,
+        "merchant_events": 2.0
+      }
+    }
+  },
+  
+  "special_trigger_conditions": {
+    "near_death": {
+      "health_percentage": 0.1,
+      "triggers": ["desperate_breakthrough", "past_life_awakening", "hidden_bloodline"]
+    },
+    "perfect_cultivation": {
+      "consecutive_perfect_cultivation": 100,
+      "triggers": ["heavenly_recognition", "natural_phenomenon"]
+    },
+    "max_relationship": {
+      "relationship_value": 1000,
+      "triggers": ["life_death_bond", "dao_companion_proposal"]
+    },
+    "karma_extreme": {
+      "karma_absolute": 1000,
+      "triggers": ["saint_transformation", "demon_transformation"]
+    }
+  },
+  
+  "event_chain_definitions": {
+    "demon_path": {
+      "stages": [
+        "first_temptation",
+        "power_corruption", 
+        "moral_struggle",
+        "final_choice"
+      ],
+      "endings": {
+        "redemption": "Return to righteous path",
+        "demon_lord": "Become demon cultivator",
+        "balance": "Walk between light and dark"
+      }
+    },
+    "love_story": {
+      "stages": [
+        "first_meeting",
+        "growing_closer",
+        "confession",
+        "trials_together",
+        "eternal_bond"
+      ],
+      "variations": {
+        "tragic": "Separated by fate",
+        "happy": "Dual cultivation partners",
+        "bittersweet": "Different paths"
+      }
+    }
+  }
+}

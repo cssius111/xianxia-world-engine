@@ -1,0 +1,161 @@
+{
+  "global_news": {
+    "categories": ["宗门动态", "秘境消息", "魔道动向", "商会公告", "天地异象"],
+    "templates": [
+      {
+        "id": "sect_news_001",
+        "category": "宗门动态",
+        "title": "青云宗即将举办收徒大典",
+        "content": "据可靠消息，青云宗将于下月初八举办三年一度的收徒大典。此次大典门槛有所降低，凡炼气三层以上、年龄不超过二十的修士皆可参加。宗门长老透露，此次将招收外门弟子三百名，内门弟子三十名。有意者可前往青云山脚坊市报名。",
+        "ttl": 2592000,
+        "relevance_level": 5,
+        "tags": ["青云宗", "收徒", "机会"],
+        "interactable_task_id": "join_qingyun_sect",
+        "conditions": {
+          "min_level": 3,
+          "max_age": 20
+        }
+      },
+      {
+        "id": "secret_realm_001",
+        "category": "秘境消息",
+        "title": "落日秘境现世征兆初现",
+        "content": "东海之滨出现异常灵气波动，多位金丹修士推测为千年秘境'落日洞天'即将开启的征兆。上次此秘境开启时，有三位筑基修士获得结丹机缘，更有人得到上古传承。各大势力已开始调动人手，预计半年内秘境将完全显现。",
+        "ttl": 15552000,
+        "relevance_level": 8,
+        "tags": ["秘境", "机缘", "落日洞天"],
+        "warning": "秘境凶险，筑基期以下修士入内九死一生"
+      },
+      {
+        "id": "demon_activity_001", 
+        "category": "魔道动向",
+        "title": "血魔宗余孽在西域作乱",
+        "content": "正道联盟发布通缉令：血魔宗余孽'血手人屠'陈三在西域大开杀戒，已有三个小型修真家族遭其毒手。此人修为疑似突破至筑基后期，手段残忍，擅长血遁之术。联盟悬赏灵石十万，活捉奖励翻倍。",
+        "ttl": 7776000,
+        "relevance_level": 6,
+        "tags": ["通缉", "血魔宗", "危险"],
+        "danger_level": "high",
+        "bounty": 100000
+      },
+      {
+        "id": "merchant_announce_001",
+        "category": "商会公告", 
+        "title": "万宝商会新进一批筑基丹材料",
+        "content": "万宝商会于昨日从南疆进购大批炼制筑基丹的珍稀灵药，包括千年雪莲三株、地心灵乳十瓶、紫玉参五十株。商会承诺，本月内购买可享八折优惠。另外，商会同时收购各类妖兽材料，价格公道。",
+        "ttl": 2592000,
+        "relevance_level": 7,
+        "tags": ["筑基丹", "灵药", "商机"],
+        "merchant_id": "wanbao_merchant",
+        "discount": 0.8
+      },
+      {
+        "id": "heaven_phenomenon_001",
+        "category": "天地异象",
+        "title": "北域惊现九星连珠异象", 
+        "content": "昨夜子时，北域上空出现罕见的九星连珠天象，持续一个时辰。多位元婴老祖推测，此乃天地灵气复苏之兆。已有数位卡在瓶颈多年的金丹修士借此契机成功突破。天机阁预言：未来百年内，修真界或将迎来一个黄金时代。",
+        "ttl": 31104000,
+        "relevance_level": 10,
+        "tags": ["天象", "机遇", "灵气复苏"],
+        "effects": {
+          "cultivation_bonus": 0.1,
+          "breakthrough_bonus": 0.2
+        }
+      }
+    ]
+  },
+  
+  "personal_intelligence": {
+    "sources": ["npc", "vendor", "rumor", "quest", "exploration"],
+    "templates": [
+      {
+        "id": "intel_001",
+        "source": "npc",
+        "source_name": "神秘老者",
+        "title": "青云后山的隐秘",
+        "content": "一位自称曾是青云宗弟子的老者醉后吐露：青云后山禁地中藏有宗门先祖的修炼洞府，每逢月圆之夜，会有淡淡青光从山中透出。不过后山有护山大阵，寻常弟子靠近必死无疑。",
+        "confidence": 0.6,
+        "location": "青云山后山",
+        "requirements": {
+          "faction": "青云宗",
+          "position": "内门弟子以上"
+        },
+        "tags": ["秘密", "机缘", "危险"]
+      },
+      {
+        "id": "intel_002",
+        "source": "vendor",
+        "source_name": "黑市商人", 
+        "title": "走私灵石的秘密路线",
+        "content": "花费重金从黑市商人处得知：每月初三、十八，会有商队假扮普通行商，从东门出城，实则运送大批未缴税的灵石。若能截获，可获暴利。但商队有金丹期供奉保护。",
+        "confidence": 0.8,
+        "risk": "high",
+        "potential_reward": {
+          "spirit_stones": "10000-50000",
+          "reputation": -100
+        },
+        "tags": ["违法", "暴利", "高风险"]
+      },
+      {
+        "id": "intel_003",
+        "source": "rumor",
+        "source_name": "坊市传闻",
+        "title": "炼丹大师的下落",
+        "content": "坊市中流传，曾经名动一时的炼丹大师柳青峰并未陨落，而是隐居在东郊废弃的道观中。据说他手中还有一炉即将练成的天品筑基丹。不过也有人说这只是骗人的谣言。",
+        "confidence": 0.3,
+        "location": "东郊废弃道观",
+        "npc_id": "liu_qingfeng",
+        "tags": ["传闻", "炼丹师", "不确定"]
+      },
+      {
+        "id": "intel_004",
+        "source": "quest",
+        "source_name": "任务线索",
+        "title": "失踪弟子的线索",
+        "content": "在调查失踪弟子的过程中发现：最近失踪的几名弟子都曾前往过城西的'醉仙楼'。楼中似乎暗藏玄机，可能与邪修组织有关。建议谨慎调查。",
+        "confidence": 0.9,
+        "quest_id": "missing_disciples",
+        "location": "醉仙楼",
+        "tags": ["任务", "线索", "邪修"]
+      },
+      {
+        "id": "intel_005",
+        "source": "exploration",
+        "source_name": "亲身发现",
+        "title": "隐藏的灵脉",
+        "content": "在荒山探索时意外发现一处隐蔽的小型灵脉，灵气浓度约为普通地方的三倍。此地隐蔽，暂时无人知晓。可作为秘密修炼场所。",
+        "confidence": 1.0,
+        "location": "荒山坐标[1847, 2931]",
+        "benefits": {
+          "cultivation_speed": 3.0,
+          "privacy": true
+        },
+        "tags": ["独占", "修炼圣地", "保密"]
+      }
+    ]
+  },
+  
+  "news_config": {
+    "global_news": {
+      "max_items": 20,
+      "refresh_interval": 86400,
+      "priority_weights": {
+        "宗门动态": 100,
+        "秘境消息": 150, 
+        "魔道动向": 120,
+        "商会公告": 80,
+        "天地异象": 200
+      }
+    },
+    "personal_intelligence": {
+      "max_items": 50,
+      "sources_trust_level": {
+        "npc": 0.7,
+        "vendor": 0.6,
+        "rumor": 0.3,
+        "quest": 0.9,
+        "exploration": 1.0
+      },
+      "decay_rate": 0.95
+    }
+  }
+}

@@ -1,0 +1,721 @@
+{
+  "timeline_events": [
+    {
+      "event_id": "sect_recruit_qingyun",
+      "name": "青云宗收徒大典",
+      "type": "recurring",
+      "trigger_date": "Y+0 M+1 D+0",
+      "recurrence": "every_3_years",
+      "duration_days": 3,
+      "phases": [
+        {
+          "phase": "announcement",
+          "day": -30,
+          "news": "青云宗即将举办收徒大典的消息传遍修真界"
+        },
+        {
+          "phase": "registration",
+          "day": -7,
+          "action": "open_registration"
+        },
+        {
+          "phase": "examination",
+          "day": 0,
+          "action": "start_tests"
+        },
+        {
+          "phase": "results",
+          "day": 3,
+          "action": "announce_results"
+        }
+      ],
+      "requirements": {
+        "realm": {"min": "炼气期三层", "max": "炼气期大圆满"},
+        "age": {"max": 20},
+        "karma": {"min": -100},
+        "flags_forbidden": ["demon_cultivator", "sect_traitor"]
+      },
+      "description": "三大正道宗门之一的青云宗举办收徒大典。这是加入名门正派的绝佳机会。",
+      "detailed_content": {
+        "background": "青云宗每三年开山门广纳贤才，不论出身，只看资质与心性。",
+        "tests": [
+          {"name": "资质测试", "type": "spiritual_root_check"},
+          {"name": "心性测试", "type": "illusion_trial"},
+          {"name": "悟性测试", "type": "puzzle_solving"},
+          {"name": "实战测试", "type": "combat_trial"}
+        ]
+      },
+      "rewards": {
+        "success": {
+          "faction_join": "青云宗",
+          "position": "外门弟子",
+          "items": ["青云宗弟子令", "基础功法·青云诀", "下品储物袋"],
+          "monthly_resources": {
+            "spirit_stones": 10,
+            "cultivation_pills": 3,
+            "contribution_points": 0
+          },
+          "access": ["外门区域", "藏经阁一层", "任务堂"]
+        },
+        "exceptional": {
+          "condition": "top_10_percent",
+          "position": "内门弟子",
+          "additional_rewards": ["中品法器", "洗髓丹x1"]
+        }
+      },
+      "failure_options": [
+        {
+          "id": "retry_later",
+          "description": "三年后可再次参加"
+        },
+        {
+          "id": "join_outer_sect",
+          "description": "成为记名弟子，通过贡献晋升",
+          "requirements": {"show_potential": true}
+        }
+      ]
+    },
+    
+    {
+      "event_id": "blood_moon_tide",
+      "name": "血月潮汐",
+      "type": "cyclical",
+      "trigger_date": "Y+0 M+2 D+15",
+      "cycle": {
+        "pattern": "lunar",
+        "frequency": "every_73_days",
+        "variance": 3
+      },
+      "duration_days": 1,
+      "description": "罕见的血月现象引发灵气潮汐，妖魔实力暴涨，但机遇也随之而来。",
+      "global_effects": {
+        "monster_attributes": {
+          "strength": 1.5,
+          "aggression": 2.0,
+          "spawn_rate": 3.0
+        },
+        "drop_rates": {
+          "all_items": 2.0,
+          "rare_items": 3.0,
+          "unique_items": 5.0
+        },
+        "cultivation_effects": {
+          "evil_cultivation": 1.5,
+          "righteous_cultivation": 0.8,
+          "neutral_cultivation": 1.0
+        },
+        "special_spawns": [
+          {"id": "blood_moon_demon", "chance": 0.1},
+          {"id": "lunar_spirit_beast", "chance": 0.05}
+        ]
+      },
+      "player_choices": [
+        {
+          "id": "hunt_monsters",
+          "name": "猎杀妖兽",
+          "risks": ["increased_danger", "evil_karma"],
+          "rewards": ["rare_materials", "combat_experience"]
+        },
+        {
+          "id": "defensive_cultivation",
+          "name": "防守修炼",
+          "risks": ["missed_opportunity"],
+          "rewards": ["safety", "steady_progress"]
+        },
+        {
+          "id": "blood_moon_ritual",
+          "name": "血月仪式",
+          "requirements": {"knowledge": "blood_moon_secret"},
+          "risks": ["corruption", "backlash"],
+          "rewards": ["power_boost", "unique_skill"]
+        }
+      ],
+      "warnings": ["外出凶险度提升300%", "邪修活跃", "正道巡逻加强"],
+      "lore": "血月出现时，天地间阴阳失衡，上古封印松动，沉睡的存在开始苏醒..."
+    },
+    
+    {
+      "event_id": "grand_auction",
+      "name": "天机拍卖会",
+      "type": "scheduled",
+      "trigger_date": "Y+0 M+6 D+1",
+      "duration_days": 1,
+      "requirements": {
+        "realm": {"min": "筑基期"},
+        "wealth": {"min": 10000},
+        "reputation": {"min": 500}
+      },
+      "description": "天机阁举办的顶级拍卖会，各种珍稀宝物云集。",
+      "auction_categories": [
+        {
+          "category": "功法秘籍",
+          "items": [
+            {
+              "id": "heaven_tier_technique",
+              "name": "残缺天阶功法",
+              "starting_bid": 100000,
+              "description": "虽然残缺，但品阶极高"
+            }
+          ]
+        },
+        {
+          "category": "丹药灵材",
+          "items": [
+            {
+              "id": "boundary_breaking_pill",
+              "name": "破境丹",
+              "starting_bid": 50000,
+              "description": "增加突破成功率30%"
+            }
+          ]
+        },
+        {
+          "category": "法宝神兵",
+          "items": [
+            {
+              "id": "pseudo_immortal_artifact",
+              "name": "准仙器·破天剑",
+              "starting_bid": 500000,
+              "description": "接近仙器品质的绝世神兵"
+            }
+          ]
+        },
+        {
+          "category": "特殊物品",
+          "items": [
+            {
+              "id": "realm_coordinate",
+              "name": "小世界坐标",
+              "starting_bid": 1000000,
+              "description": "一个未开发小世界的精确坐标"
+            }
+          ]
+        }
+      ],
+      "auction_mechanics": {
+        "bidding_system": "open_ascending",
+        "increment_minimum": 0.1,
+        "anonymous_bidding": true,
+        "payment_methods": ["spirit_stones", "barter", "favors"],
+        "special_rules": [
+          "禁止恶意抬价",
+          "成交后不得反悔",
+          "私下交易视为违规"
+        ]
+      },
+      "special_events": [
+        {
+          "trigger": "total_sales_exceed_10m",
+          "event": "mystery_item_appears"
+        },
+        {
+          "trigger": "player_wins_3_items",
+          "event": "attract_unwanted_attention"
+        }
+      ]
+    },
+    
+    {
+      "event_id": "ancient_secret_realm",
+      "name": "太古秘境现世",
+      "type": "unique",
+      "trigger_date": "Y+1 M+0 D+0",
+      "duration_days": 90,
+      "build_up_events": [
+        {
+          "days_before": 180,
+          "event": "异象初现",
+          "description": "各地灵脉出现异常波动"
+        },
+        {
+          "days_before": 90,
+          "event": "空间裂缝",
+          "description": "虚空中出现不稳定的空间裂缝"
+        },
+        {
+          "days_before": 30,
+          "event": "秘境轮廓",
+          "description": "巨大的秘境虚影在天空显现"
+        },
+        {
+          "days_before": 7,
+          "event": "入口稳定",
+          "description": "秘境入口逐渐稳定，各方势力集结"
+        }
+      ],
+      "description": "传说中的太古秘境，据说是仙界碎片，内含无数机缘。",
+      "entry_rules": {
+        "level_scaling": true,
+        "realm_zones": [
+          {"zone": "外围", "max_realm": "筑基期"},
+          {"zone": "内圈", "max_realm": "金丹期"},
+          {"zone": "核心", "max_realm": "元婴期"}
+        ],
+        "team_size": {"min": 1, "max": 5},
+        "entry_item": "秘境令牌"
+      },
+      "realm_features": [
+        {
+          "name": "时间流速异常",
+          "description": "内部一天等于外界一小时",
+          "effect": {"time_dilation": 24}
+        },
+        {
+          "name": "法则压制",
+          "description": "高境界修士被压制实力",
+          "effect": {"level_cap": true}
+        },
+        {
+          "name": "机缘遍地",
+          "description": "灵药、传承、法宝随处可见",
+          "effect": {"treasure_rate": 10.0}
+        }
+      ],
+      "major_opportunities": [
+        {
+          "id": "immortal_inheritance",
+          "name": "仙人传承",
+          "chance": 0.001,
+          "requirements": {"luck": 15, "karma": 500}
+        },
+        {
+          "id": "law_comprehension",
+          "name": "法则领悟",
+          "chance": 0.01,
+          "requirements": {"comprehension": 20}
+        },
+        {
+          "id": "bloodline_evolution",
+          "name": "血脉进化",
+          "chance": 0.05,
+          "requirements": {"special_physique": true}
+        }
+      ],
+      "dangers": [
+        {
+          "name": "空间风暴",
+          "frequency": "random",
+          "damage_type": "true_damage",
+          "avoidance": "spatial_awareness"
+        },
+        {
+          "name": "太古凶兽",
+          "frequency": "common",
+          "difficulty": "nightmare",
+          "rewards": "ancient_materials"
+        },
+        {
+          "name": "秘境守护者",
+          "frequency": "boss_areas",
+          "difficulty": "raid",
+          "rewards": "inheritance_keys"
+        }
+      ],
+      "closure_event": {
+        "warning_time": 3600,
+        "collapse_sequence": [
+          "空间开始震动",
+          "裂缝逐渐缩小",
+          "最后传送机会",
+          "秘境彻底关闭"
+        ],
+        "trapped_consequence": "被困百年"
+      }
+    },
+    
+    {
+      "event_id": "demon_invasion",
+      "name": "魔道入侵",
+      "type": "triggered",
+      "trigger_conditions": {
+        "world_state": "chaos_level_high",
+        "faction_balance": "evil_dominant"
+      },
+      "duration_days": 30,
+      "description": "魔道集结大军，发动全面战争，修真界陷入浩劫。",
+      "war_phases": [
+        {
+          "phase": 1,
+          "name": "边境冲突",
+          "duration": 5,
+          "battles": ["边城防卫", "资源争夺", "斥候战"]
+        },
+        {
+          "phase": 2,
+          "name": "全面开战",
+          "duration": 15,
+          "battles": ["宗门保卫战", "野战", "城市攻防"]
+        },
+        {
+          "phase": 3,
+          "name": "决战时刻",
+          "duration": 10,
+          "battles": ["最终决战", "斩首行动", "封印大阵"]
+        }
+      ],
+      "faction_mechanics": {
+        "join_conditions": {
+          "righteous": {"karma": {"min": 0}, "no_demon_flags": true},
+          "demonic": {"accept_corruption": true},
+          "neutral": {"no_faction_loyalty": true}
+        },
+        "contribution_system": {
+          "battle_participation": 100,
+          "enemy_kills": "10_per_kill",
+          "strategic_objectives": 500,
+          "supply_missions": 200
+        },
+        "rewards_shop": {
+          "currency": "war_merits",
+          "items": [
+            {"name": "战功法宝", "cost": 1000},
+            {"name": "军功章", "cost": 500},
+            {"name": "特殊称号", "cost": 2000}
+          ]
+        }
+      },
+      "dynamic_events": [
+        {
+          "id": "hero_emergence",
+          "trigger": "faction_morale_low",
+          "effect": "spawn_legendary_npc"
+        },
+        {
+          "id": "betrayal",
+          "trigger": "random_chance",
+          "effect": "faction_defection"
+        },
+        {
+          "id": "ancient_weapon",
+          "trigger": "desperation",
+          "effect": "unlock_forbidden_power"
+        }
+      ],
+      "war_outcomes": {
+        "righteous_victory": {
+          "world_effects": {
+            "evil_suppression": 10,
+            "peace_period": 36500,
+            "righteous_dominance": true
+          },
+          "player_rewards": "based_on_contribution"
+        },
+        "demonic_victory": {
+          "world_effects": {
+            "chaos_increase": 50,
+            "dark_age": true,
+            "survival_mode": true
+          },
+          "player_consequences": "based_on_faction"
+        },
+        "stalemate": {
+          "world_effects": {
+            "cold_war": true,
+            "faction_tension": "maximum",
+            "neutral_zones": "expanded"
+          }
+        }
+      }
+    },
+    
+    {
+      "event_id": "heavenly_tournament",
+      "name": "天骄争霸赛",
+      "type": "recurring",
+      "trigger_date": "Y+0 M+9 D+1",
+      "recurrence": "every_5_years",
+      "duration_days": 7,
+      "description": "各方天骄齐聚，争夺天骄榜排名。胜者名扬天下，更有重宝奖励。",
+      "tournament_format": {
+        "preliminaries": {
+          "format": "swiss_system",
+          "rounds": 5,
+          "advancement": "top_128"
+        },
+        "main_event": {
+          "format": "single_elimination",
+          "rounds": 7,
+          "special_rules": ["realm_equalization", "no_pills", "standard_equipment"]
+        }
+      },
+      "participation_requirements": {
+        "age": {"max": 100},
+        "realm": {"min": "炼气期九层", "max": "金丹期"},
+        "registration_fee": 1000,
+        "recommendation": "sect_or_reputation"
+      },
+      "rewards_structure": {
+        "champion": {
+          "title": "天骄榜首",
+          "items": ["天阶功法", "上品灵器", "悟道石"],
+          "opportunities": ["secret_realm_vip", "grandmaster_teaching"],
+          "fame": 10000
+        },
+        "top_8": {
+          "title": "八强天骄",
+          "items": ["地阶功法", "中品灵器"],
+          "fame": 2000
+        },
+        "top_32": {
+          "title": "天骄榜成员",
+          "items": ["玄阶功法", "下品灵器"],
+          "fame": 500
+        }
+      },
+      "special_encounters": [
+        {
+          "id": "hidden_master_scout",
+          "description": "隐世高人可能看中表现优异者收为弟子"
+        },
+        {
+          "id": "dao_companion_meeting",
+          "description": "可能遇到合适的道侣"
+        },
+        {
+          "id": "rival_birth",
+          "description": "可能结下一生之敌"
+        }
+      ]
+    },
+    
+    {
+      "event_id": "spiritual_energy_recovery",
+      "name": "灵气复苏",
+      "type": "progressive",
+      "trigger_date": "Y+2 M+0 D+0",
+      "duration_days": "permanent",
+      "description": "天地灵气开始复苏，修炼环境大幅改善，但也带来新的挑战。",
+      "recovery_stages": [
+        {
+          "stage": 1,
+          "name": "初期征兆",
+          "duration": 365,
+          "effects": {
+            "global_spiritual_energy": 1.2,
+            "breakthrough_difficulty": 0.9,
+            "new_spiritual_veins": 10
+          }
+        },
+        {
+          "stage": 2,
+          "name": "全面复苏",
+          "duration": 730,
+          "effects": {
+            "global_spiritual_energy": 1.5,
+            "ancient_sites_awakening": true,
+            "new_realms_accessible": ["化神", "炼虚"]
+          }
+        },
+        {
+          "stage": 3,
+          "name": "黄金时代",
+          "duration": "permanent",
+          "effects": {
+            "global_spiritual_energy": 2.0,
+            "immortal_ascension_possible": true,
+            "world_expansion": true
+          }
+        }
+      ],
+      "consequences": [
+        {
+          "name": "远古存在苏醒",
+          "description": "沉睡的老怪物纷纷出世",
+          "spawn_events": ["ancient_cultivator_return", "primordial_beast_awakening"]
+        },
+        {
+          "name": "新势力崛起",
+          "description": "散修和小宗门获得发展机会",
+          "world_change": "power_redistribution"
+        },
+        {
+          "name": "位面链接",
+          "description": "其他世界的通道开始出现",
+          "new_content": "cross_world_travel"
+        }
+      ]
+    },
+    
+    {
+      "event_id": "karmic_convergence",
+      "name": "因果汇聚",
+      "type": "personal",
+      "trigger_conditions": {
+        "karma_absolute": {"min": 1000},
+        "major_choices_made": {"min": 10}
+      },
+      "description": "你的因果达到临界点，命运的转折点到来。",
+      "convergence_types": {
+        "positive_karma": {
+          "events": [
+            "benefactor_appears",
+            "hidden_inheritance_unlocked",
+            "calamity_averted",
+            "saint_transformation_option"
+          ]
+        },
+        "negative_karma": {
+          "events": [
+            "enemies_unite",
+            "curse_manifestation",
+            "tribulation_intensified",
+            "demon_transformation_risk"
+          ]
+        },
+        "balanced_karma": {
+          "events": [
+            "choice_of_paths",
+            "karma_cleansing_opportunity",
+            "destiny_rewrite_chance"
+          ]
+        }
+      }
+    },
+    
+    {
+      "event_id": "realm_war",
+      "name": "界域之战",
+      "type": "triggered",
+      "trigger_conditions": {
+        "world_development": "plane_connection_established",
+        "player_level": {"min": 100}
+      },
+      "description": "其他世界的入侵者到来，为了世界的存亡而战。",
+      "invasion_mechanics": {
+        "invasion_points": ["spatial_rifts", "weak_barriers", "summoning_sites"],
+        "enemy_types": ["void_creatures", "foreign_cultivators", "mechanical_legion"],
+        "defense_systems": ["barrier_reinforcement", "militia_organization", "alliance_formation"]
+      },
+      "player_roles": [
+        {
+          "role": "frontline_warrior",
+          "tasks": ["rift_closing", "enemy_elimination", "rescue_operations"]
+        },
+        {
+          "role": "strategist",
+          "tasks": ["intelligence_gathering", "trap_setting", "coordination"]
+        },
+        {
+          "role": "support",
+          "tasks": ["healing_stations", "supply_lines", "barrier_maintenance"]
+        }
+      ]
+    }
+  ],
+  
+  "dynamic_timeline_system": {
+    "event_chains": {
+      "description": "事件可以触发后续事件链",
+      "chain_types": [
+        {
+          "type": "consequence_chain",
+          "example": "player_action → faction_response → world_event"
+        },
+        {
+          "type": "branching_chain",
+          "example": "initial_event → choice_a|choice_b → different_outcomes"
+        },
+        {
+          "type": "convergent_chain",
+          "example": "multiple_events → culminating_event"
+        }
+      ]
+    },
+    
+    "event_modification": {
+      "player_influence": {
+        "description": "玩家行为可以改变事件走向",
+        "methods": [
+          "prevent_event",
+          "accelerate_event",
+          "change_outcome",
+          "create_new_branch"
+        ]
+      },
+      "world_state_impact": {
+        "factors": [
+          "faction_balance",
+          "resource_availability",
+          "chaos_level",
+          "technology_progress"
+        ]
+      }
+    },
+    
+    "adaptive_difficulty": {
+      "scaling_factors": [
+        "player_power_level",
+        "player_resources",
+        "player_allies",
+        "player_experience"
+      ],
+      "difficulty_adjustments": {
+        "enemy_strength": "dynamic",
+        "reward_quality": "scaled",
+        "challenge_complexity": "adaptive"
+      }
+    }
+  },
+  
+  "timeline_config": {
+    "date_format": "Y+{years} M+{months} D+{days}",
+    "time_units": {
+      "year": 360,
+      "month": 30,
+      "week": 7,
+      "day": 24,
+      "hour": 1
+    },
+    "check_interval": 3600,
+    "advance_notice": {
+      "major_events": 30,
+      "regular_events": 7,
+      "urgent_events": 1
+    },
+    "event_priorities": {
+      "world_ending": 1000,
+      "major_conflict": 100,
+      "opportunity": 50,
+      "regular": 10,
+      "flavor": 1
+    },
+    "missed_event_handling": {
+      "recurring": "wait_next_cycle",
+      "unique": "alternate_outcome",
+      "progressive": "delayed_progression"
+    }
+  },
+  
+  "event_api_integration": {
+    "deepseek_generation": {
+      "enabled": true,
+      "generation_rules": {
+        "must_fit_timeline": true,
+        "respect_world_state": true,
+        "maintain_consistency": true,
+        "appropriate_scale": true
+      },
+      "templates": [
+        "regional_incident",
+        "npc_breakthrough",
+        "resource_discovery",
+        "political_shift"
+      ]
+    },
+    
+    "player_created_events": {
+      "enabled": true,
+      "requirements": {
+        "minimum_influence": 1000,
+        "resource_cost": "variable",
+        "approval_needed": true
+      },
+      "types": [
+        "organize_tournament",
+        "establish_market",
+        "found_sect",
+        "declare_war"
+      ]
+    }
+  }
+}
