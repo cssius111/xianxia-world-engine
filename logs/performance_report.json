@@ -1,31 +1,22 @@
 {
   "performance": {
     "current": {
-      "cpu_usage": 22.1,
-      "memory_usage": 5964.875
+      "cpu_usage": 0.0,
+      "memory_usage": 5366.046875
     },
     "average": {
-      "memory_usage": 5981.429335056391,
-      "cpu_usage": 14.500751879699248
+      "memory_usage": 5366.046875,
+      "cpu_usage": 0.0
     },
     "peak": {
-      "memory_usage": 6126.71875,
-      "cpu_usage": 94.0
+      "memory_usage": 5366.046875,
+      "cpu_usage": 0.0
     }
   },
   "errors": {
-    "total_errors": 1,
-    "error_types": {
-      "ValueError": 1
-    },
-    "recent_errors": [
-      {
-        "time": "2025-06-12 21:35:46",
-        "type": "ValueError",
-        "msg": "\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9519\u8bef",
-        "severity": "high"
-      }
-    ]
+    "total_errors": 0,
+    "error_types": {},
+    "recent_errors": []
   },
-  "timestamp": 1749735642.736991
+  "timestamp": 1749817162.128889
 }

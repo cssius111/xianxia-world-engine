@@ -437,16 +437,13 @@
             <div class="nav-section">
                 <a class="nav-link" onclick="showStatusModal()">查看状态</a>
                 <a class="nav-link" onclick="showInventoryModal()">查看背包</a>
- 
                 <a class="nav-link" onclick="showHelpModal()">帮助文档</a>
- 
                 <a class="nav-link" onclick="showSkillsModal()">查看功法</a>
                 <a class="nav-link" onclick="sendCommand('修炼')">开始修炼</a>
                 <a class="nav-link" onclick="sendCommand('帮助')">帮助文档</a>
  
             </div>
         </div>
-
         <!-- 中央叙事区域 -->
         <div class="narrative-log" id="narrative-log">
             {% for line in logs %}
@@ -491,6 +488,7 @@
             <h3 id="help-title" style="margin-bottom:10px"></h3>
             <div id="help-content"></div>
         </div>
+    </div>
 
     <!-- 信息弹窗 -->
     <div class="modal" id="info-modal">
@@ -503,6 +501,7 @@
     </div>
 
 </body>
+
     <script>
         let lastKnownStatus = null;
         async function fetchStatus() {
