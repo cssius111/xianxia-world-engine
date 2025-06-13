@@ -710,6 +710,8 @@
             achievementTotal: 20
         };
 
+        let lastKnownStatus = null;
+
         // 可用命令列表（与服务器同步）
         const availableCommands = [
             { cmd: '状态', desc: '查看角色状态', shortcut: 's' },
@@ -1029,13 +1031,18 @@
         async function checkUpdates() {
             try {
                 const res = await fetch('/need_refresh');
+                if (!res.ok) return;
+
                 const data = await res.json();
-                if (data.refresh) {
-                    fetchLog();
-                    fetchStatus();
+                if (JSON.stringify(data) !== JSON.stringify(lastKnownStatus)) {
+                    lastKnownStatus = data;
+                    if (data.refresh) {
+                        fetchLog();
+                        fetchStatus();
+                    }
                 }
             } catch (e) {
-                console.error('检查更新失败:', e);
+                console.warn('检查更新失败:', e);
             }
         }
 
@@ -1178,7 +1185,7 @@
             updateAchievementDisplay();
             
             // 定期检查更新
-            setInterval(checkUpdates, 3000);
+            setInterval(checkUpdates, 5000);
             
             // 定期随机事件
             setInterval(() => {
