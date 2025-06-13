@@ -25,11 +25,16 @@ from xwe.features.ai_personalization import AIPersonalization
 from xwe.features.community_system import CommunitySystem
 from xwe.features.technical_ops import TechnicalOps
 from api import register_api
+from routes import lore, character
 
 
 app = Flask(__name__, static_folder='static', template_folder='templates_enhanced')
 app.secret_key = 'xianxia_world_secret_key_2025'
 register_api(app)
+
+# 注册路由蓝图
+app.register_blueprint(lore.bp)
+app.register_blueprint(character.bp)
 
 # 全局游戏实例管理
 game_instances = {}
@@ -119,13 +124,16 @@ def cleanup_old_instances():
 
 @app.route('/')
 def index():
-    """主页面"""
+    """主页面 - 显示欢迎页面或游戏主界面"""
     # 清理旧实例
     cleanup_old_instances()
     
     # 确保会话ID
     if 'session_id' not in session:
         session['session_id'] = str(time.time())
+        session['is_new_session'] = True
+    else:
+        session['is_new_session'] = False
     
     # 获取游戏实例
     instance = get_game_instance(session['session_id'])
@@ -134,11 +142,13 @@ def index():
     # 准备渲染数据
     player = game.game_state.player
     
-    return render_template('game_main.html', 
+    # 传递是否是新会话的标志
+    return render_template('game_main_v2.html', 
                          player=player,
                          location=game.game_state.current_location,
                          buffs=[],
-                         special_status=[])
+                         special_status=[],
+                         is_new_session=session.get('is_new_session', False))
 
 @app.route('/command', methods=['POST'])
 def process_command():

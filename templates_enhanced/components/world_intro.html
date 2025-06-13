@@ -1,0 +1,297 @@
+<!-- 世界背景介绍 -->
+<div id="worldIntroModal" class="world-intro-modal" style="display: none;">
+    <div class="world-intro-content">
+        <div class="intro-header">
+            <h2 class="intro-title">天地初开</h2>
+            <button class="intro-skip" onclick="WorldIntroSystem.skip()">跳过</button>
+        </div>
+        
+        <div class="intro-body">
+            <div class="intro-text" id="introText">
+                <p>三千年前，天地灵气充沛，修真界鼎盛一时。</p>
+                <p>然而一场浩劫降临，灵气枯竭，修真界衰败。</p>
+                <p>如今，灵气复苏的征兆初现，新的时代即将来临...</p>
+                <p>你，一个普通的凡人，在这个时代的转折点踏上了修真之路。</p>
+                <p>是成为一代天骄，还是泯然众人，一切尽在你的选择。</p>
+            </div>
+            
+            <div class="intro-tips">
+                <h3>游戏提示</h3>
+                <ul>
+                    <li>输入命令进行游戏，如：<code>探索</code>、<code>修炼</code></li>
+                    <li>点击左侧功能链接查看详细信息</li>
+                    <li>注意管理气血和灵力，避免过度消耗</li>
+                    <li>多探索世界，寻找机缘和资源</li>
+                    <li>选择适合的功法，稳步提升境界</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="intro-footer">
+            <button class="intro-btn" onclick="WorldIntroSystem.next()">
+                <span>开始冒险</span>
+                <span class="btn-arrow">→</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+/* 世界介绍模态框 */
+.world-intro-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.5s ease;
+}
+
+.world-intro-content {
+    width: 90%;
+    max-width: 700px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border: 2px solid #c9b037;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 0 50px rgba(201, 176, 55, 0.3);
+}
+
+/* 头部 */
+.intro-header {
+    padding: 20px 30px;
+    border-bottom: 1px solid rgba(201, 176, 55, 0.3);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.intro-title {
+    margin: 0;
+    font-size: 28px;
+    color: #c9b037;
+    text-shadow: 0 0 20px rgba(201, 176, 55, 0.5);
+}
+
+.intro-skip {
+    padding: 8px 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #999;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 14px;
+}
+
+.intro-skip:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ccc;
+}
+
+/* 主体 */
+.intro-body {
+    padding: 40px;
+}
+
+.intro-text {
+    margin-bottom: 40px;
+    animation: textFadeIn 1s ease;
+}
+
+.intro-text p {
+    margin: 20px 0;
+    font-size: 18px;
+    line-height: 1.8;
+    color: #e0e0e0;
+    text-indent: 2em;
+}
+
+@keyframes textFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 游戏提示 */
+.intro-tips {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    padding: 25px;
+    border: 1px solid rgba(201, 176, 55, 0.2);
+}
+
+.intro-tips h3 {
+    margin: 0 0 15px 0;
+    color: #c9b037;
+    font-size: 20px;
+}
+
+.intro-tips ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.intro-tips li {
+    margin: 10px 0;
+    color: #e0e0e0;
+    padding-left: 20px;
+    position: relative;
+}
+
+.intro-tips li::before {
+    content: '✦';
+    position: absolute;
+    left: 0;
+    color: #c9b037;
+}
+
+.intro-tips code {
+    background: rgba(201, 176, 55, 0.2);
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: #f4e7c1;
+    font-size: 14px;
+}
+
+/* 底部 */
+.intro-footer {
+    padding: 20px 40px 30px;
+    text-align: center;
+}
+
+.intro-btn {
+    padding: 15px 40px;
+    background: linear-gradient(135deg, #c9b037 0%, #f4e7c1 100%);
+    color: #1a1a2e;
+    border: none;
+    border-radius: 30px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.intro-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(201, 176, 55, 0.4);
+}
+
+.btn-arrow {
+    font-size: 20px;
+    transition: transform 0.3s;
+}
+
+.intro-btn:hover .btn-arrow {
+    transform: translateX(5px);
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+    .intro-body {
+        padding: 30px 20px;
+    }
+    
+    .intro-text p {
+        font-size: 16px;
+    }
+    
+    .intro-tips {
+        padding: 20px;
+    }
+}
+
+/* 特效背景 */
+.world-intro-modal::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(201, 176, 55, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 50%, rgba(201, 176, 55, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+}
+</style>
+
+<script>
+/**
+ * 世界介绍系统
+ */
+const WorldIntroSystem = {
+    /**
+     * 显示世界介绍
+     */
+    show(onComplete) {
+        this.onComplete = onComplete;
+        const modal = document.getElementById('worldIntroModal');
+        if (modal) {
+            modal.style.display = 'flex';
+            
+            // 添加淡入动画
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.style.transition = 'opacity 0.5s ease';
+                modal.style.opacity = '1';
+            }, 10);
+        }
+    },
+    
+    /**
+     * 跳过介绍
+     */
+    skip() {
+        if (confirm('确定要跳过世界介绍吗？')) {
+            this.close();
+        }
+    },
+    
+    /**
+     * 下一步
+     */
+    next() {
+        this.close();
+    },
+    
+    /**
+     * 关闭介绍
+     */
+    close() {
+        const modal = document.getElementById('worldIntroModal');
+        if (modal) {
+            modal.style.transition = 'opacity 0.5s ease';
+            modal.style.opacity = '0';
+            
+            setTimeout(() => {
+                modal.style.display = 'none';
+                modal.style.opacity = '1';
+                
+                // 执行回调
+                if (typeof this.onComplete === 'function') {
+                    this.onComplete();
+                }
+            }, 500);
+        }
+    }
+};
+
+// 导出到全局
+window.WorldIntroSystem = WorldIntroSystem;
+</script>

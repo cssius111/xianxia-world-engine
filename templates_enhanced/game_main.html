@@ -26,7 +26,18 @@
     <!-- 浮动提示 -->
     <div class="tooltip" id="tooltip"></div>
 
+    <!-- 欢迎页面 -->
+    {% include 'components/welcome_modal.html' %}
+    
+    <!-- 世界观模态框 -->
+    {% include 'components/lore_modal.html' %}
+    
+    <!-- 角色创建Roll面板 -->
+    {% include 'components/roll_modal.html' %}
+
     <!-- 外部JS文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="{{ url_for('static', filename='js/lore.js') }}"></script>
     <script src="{{ url_for('static', filename='js/game.js') }}"></script>
     <!-- 命令处理函数绑定 -->
     <script>
@@ -35,6 +46,21 @@
         const executeCommand = GameUI.executeCommand;
         const handleKeyDown = event => GameUI.handleKeyDown(event);
         const handleKeyUp = event => GameUI.handleKeyUp(event);
+        
+        // 检查是否是新会话
+        window.addEventListener('DOMContentLoaded', function() {
+            const isNewSession = {{ is_new_session|tojson }};
+            
+            if (isNewSession) {
+                // 显示欢迎页面
+                setTimeout(() => {
+                    WelcomeSystem.show();
+                }, 300);
+            }
+            
+            // 检查是否需要显示世界观介绍（仅当直接进入游戏时）
+            // 这个逻辑现在被欢迎页面管理
+        });
     </script>
 </body>
 </html>
