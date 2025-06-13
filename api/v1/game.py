@@ -7,9 +7,14 @@ from flask import Blueprint, request, session
 from typing import Dict, Any, List
 
 from xwe.services import get_service_container, IGameService, ILogService
-from xwe.services.log_service import LogFilter
+from xwe.services.log_service import LogFilter, LogLevel
 from ..utils import api_response, validate_request
-from ..errors import InvalidCommandError, PlayerDeadError, GameNotInitializedError
+from ..errors import (
+    InvalidCommandError,
+    PlayerDeadError,
+    GameNotInitializedError,
+    InvalidRequestError,
+)
 
 
 # 创建蓝图
@@ -213,10 +218,10 @@ def get_game_log():
         }
     """
     # 获取参数
-    limit = min(request.args.get('limit', 50, type=int), 200)
-    offset = request.args.get('offset', 0, type=int)
-    level = request.args.get('level')
-    category = request.args.get('category')
+    limit = min(request.args.get("limit", 50, type=int), 200)
+    offset = request.args.get("offset", 0, type=int)
+    level = request.args.get("level")
+    category = request.args.get("category")
     
     # 获取日志服务
     container = get_service_container()
@@ -225,7 +230,12 @@ def get_game_log():
     # 创建过滤器
     filter = LogFilter()
     if level:
-        filter.levels = [level]
+        try:
+            filter.levels = [LogLevel(level)]
+        except ValueError:
+            raise InvalidRequestError(
+                f"无效的日志级别: {level}", details={"level": level}
+            )
     if category:
         filter.categories = [category]
     
