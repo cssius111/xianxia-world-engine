@@ -176,24 +176,7 @@
             animation: fadeIn 0.8s ease forwards;
         }
 
-        /* 卡片式日志 */
-        .log-card {
-            background: #2c2c2c;
-            padding: 10px 15px;
-            border-radius: 6px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            margin-bottom: 12px;
-        }
 
-        .log-title {
-            background: #2c2c2c;
-            padding: 10px 15px;
-            border-radius: 6px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            margin: 12px 0;
-            text-align: center;
-            font-weight: 500;
-        }
 
  
         /* .title-card, .msg-system, .msg-event, .msg-combat, .msg-player are
@@ -467,7 +450,7 @@
         <!-- 中央叙事区域 -->
         <div class="narrative-log" id="narrative-log">
             {% for line in logs %}
-            <div class="log-entry log-card">{{ line|safe }}</div>
+            <div class="log-entry">{{ line|safe }}</div>
             {% endfor %}
         </div>
     </div>
@@ -548,9 +531,8 @@
             log.innerHTML = '';
             data.logs.forEach(text => {
                 const entry = document.createElement('div');
-                const isTitle = /^===.+===$/.test(text.trim());
-                entry.className = isTitle ? 'log-entry log-title' : 'log-entry log-card';
-                entry.innerHTML = marked.parse(text);
+                entry.className = 'log-entry';
+                entry.textContent = text;
                 log.appendChild(entry);
             });
             log.scrollTop = log.scrollHeight;
