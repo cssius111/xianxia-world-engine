@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# @dev_only
 """
 第4阶段功能验证脚本
 验证所有新增功能是否正常工作
@@ -123,7 +124,7 @@ def main():
     if api_skip == len(api_results):
         print("API端点检查: 跳过（服务未运行）")
         print("\n提示: 运行以下命令启动服务后再次验证:")
-        print("  python run_web_ui_optimized.py")
+        print("  python entrypoints/run_web_ui_optimized.py")
         print("  或")
         print("  docker-compose up")
     else:

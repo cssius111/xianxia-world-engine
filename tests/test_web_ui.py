@@ -1,10 +1,10 @@
 
 """Web UI 测试"""
 
-from run_web_ui_optimized import app
+from entrypoints.run_web_ui_optimized import app
 
-from run_web_ui_optimized import app as simple_app
-from run_web_ui_optimized import app as enhanced_app
+from entrypoints.run_web_ui_optimized import app as simple_app
+from entrypoints.run_web_ui_optimized import app as enhanced_app
 
 
 

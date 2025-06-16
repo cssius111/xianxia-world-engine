@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# @dev_only
 """
 批量更新文件引用工具
 将所有对 run_web_ui_v3.py 的引用替换为 run_web_ui.py

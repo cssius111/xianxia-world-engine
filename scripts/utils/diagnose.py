@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# @dev_only
 """修仙世界引擎 - 错误诊断工具"""
 
 import os

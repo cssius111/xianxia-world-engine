@@ -1,4 +1,5 @@
 #!/bin/bash
+# @dev_only
 # 快速开始修复 MyPy 错误的脚本
 
 echo "=== xianxia_world_engine MyPy 错误修复工具 ==="

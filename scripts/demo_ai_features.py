@@ -1,3 +1,4 @@
+# @dev_only
 # demo_ai_features.py
 
 """

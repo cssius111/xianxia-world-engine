@@ -104,7 +104,7 @@ RollSystem.randomAll()
 ### 1. 注册蓝图
 
 ```python
-# run_web_ui_optimized.py
+# entrypoints/run_web_ui_optimized.py
 from routes import lore, character
 
 app.register_blueprint(lore.bp)

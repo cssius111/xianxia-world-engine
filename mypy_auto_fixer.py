@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# @dev_only
 """
 MyPy 错误自动修复工具
 自动修复常见的 mypy 类型错误，不破坏代码功能

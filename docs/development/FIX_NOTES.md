@@ -13,10 +13,10 @@
 ### 3. 缺失的数据文件
 已创建以下必要的数据文件：
 - NPC对话数据 (`xwe/data/npc/dialogues.json`)
-- 角色模板 (`xwe/data/templates/character.json`)
-- NPC模板 (`xwe/data/templates/npc.json`)
-- 技能模板 (`xwe/data/templates/skill.json`)
-- 物品模板 (`xwe/data/templates/item.json`)
+- 角色模板 (`xwe/data/restructured/character.json`)
+- NPC模板 (`xwe/data/restructured/npc.json`)
+- 技能模板 (`xwe/data/restructured/skill.json`)
+- 物品模板 (`xwe/data/restructured/item.json`)
 - 武技数据 (`xwe/data/skills/martial_arts.json`)
 - 法术数据 (`xwe/data/skills/spells.json`)
 - 被动技能数据 (`xwe/data/skills/passive_skills.json`)

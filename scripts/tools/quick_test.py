@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# @dev_only
 """
 修仙世界引擎 - 快速测试指南
 一步步验证所有功能是否正常

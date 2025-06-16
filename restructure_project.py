@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
+# @dev_only
 """
 项目结构重组脚本
-- 保留 run_web_ui_optimized.py 为主入口
+- 保留 entrypoints/run_web_ui_optimized.py 为主入口
 - 整理测试、文档、脚本等文件到合理目录
 - 支持 dry-run 模式预览更改
 """
@@ -221,7 +222,7 @@ class ProjectRestructure:
 ## 项目结构说明（重构于 {date}）
 
 ### 主入口
-- `run_web_ui_optimized.py` - **主入口文件**，运行 Flask Web UI
+- `entrypoints/run_web_ui_optimized.py` - **主入口文件**，运行 Flask Web UI
 
 ### 目录结构
 - `xwe/` - 核心游戏引擎模块
@@ -335,8 +336,8 @@ def main():
     
     # 确认项目路径
     project_root = Path(args.project_root).resolve()
-    if not (project_root / "run_web_ui_optimized.py").exists():
-        print(f"错误：在 {project_root} 找不到 run_web_ui_optimized.py")
+    if not (project_root / "entrypoints" / "run_web_ui_optimized.py").exists():
+        print(f"错误：在 {project_root} 找不到 entrypoints/run_web_ui_optimized.py")
         print("请确保在正确的项目根目录运行此脚本。")
         return
         

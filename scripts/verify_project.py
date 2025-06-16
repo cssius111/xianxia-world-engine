@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# @dev_only
 """
 项目验证脚本
 检查项目结构、依赖和功能是否正常
