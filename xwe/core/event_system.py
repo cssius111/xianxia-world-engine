@@ -9,6 +9,7 @@ from typing import Any, Callable, Dict, List, Optional
 from datetime import datetime
 from .data_manager import DM
 from .formula_engine import formula_engine, evaluate_expression
+from ..features.deepseek_client import DeepSeekClient
 
 logger = logging.getLogger(__name__)
 
@@ -24,6 +25,12 @@ class EventSystemV3:
         self.active_events = {}
         self.event_history = []
         self.event_handlers = {}
+        self.deepseek_client = DeepSeekClient()
+        try:
+            self.local_events = DM.load("local_events").get("events", [])
+        except Exception as e:
+            logger.warning(f"Failed to load local events: {e}")
+            self.local_events = []
         self._load_event_data()
     
     def _load_event_data(self) -> None:
@@ -402,6 +409,37 @@ class EventSystemV3:
     def get_event_history(self, limit: int = 10) -> List[Dict[str, Any]]:
         """获取事件历史"""
         return self.event_history[-limit:]
+
+    def _validate_event(self, event: Dict[str, Any]) -> bool:
+        """校验事件结构是否符合 event_schema.md"""
+        required = {"id", "name", "description", "type", "category", "effect"}
+        if not isinstance(event, dict):
+            return False
+        if not required.issubset(event.keys()):
+            return False
+        effect = event.get("effect")
+        if not isinstance(effect, dict) or "type" not in effect:
+            return False
+        return True
+
+    def generate_event(self, context: Dict[str, Any]) -> Dict[str, Any]:
+        """生成单个事件，优先使用 DeepSeek API"""
+        if self.deepseek_client.api_key:
+            try:
+                event = self.deepseek_client.generate_event(context)
+                if self._validate_event(event):
+                    return event
+            except Exception as e:
+                logger.warning(f"DeepSeek event generation failed: {e}")
+
+        if not self.local_events:
+            try:
+                self.local_events = DM.load("local_events").get("events", [])
+            except Exception as e:
+                logger.error(f"Failed to load fallback events: {e}")
+                return {}
+
+        return random.choice(self.local_events) if self.local_events else {}
     
     def create_custom_event(self, event_data: Dict[str, Any]) -> Dict[str, Any]:
         """创建自定义事件"""
