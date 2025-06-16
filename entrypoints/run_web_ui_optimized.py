@@ -1,9 +1,15 @@
 from pathlib import Path
 import os
+import sys
 from flask import Flask, render_template, request, jsonify, session
 import json
 import time
 from datetime import datetime
+
+# Ensure project root is available in sys.path when executing this script
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 # 导入游戏核心
 from xwe.core.game_core_enhanced import create_enhanced_game
