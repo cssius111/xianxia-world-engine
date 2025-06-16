@@ -26,6 +26,11 @@ class PlayerData:
     victories: int = 0
     defeats: int = 0
 
+    @property
+    def experience_to_next(self) -> int:
+        """计算升级所需经验"""
+        return self.level * 100 + 50
+
 class IPlayerService(ABC):
     """玩家服务接口"""
 
