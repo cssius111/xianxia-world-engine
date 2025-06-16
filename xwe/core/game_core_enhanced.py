@@ -1,32 +1,32 @@
 """Enhanced game core helpers."""
 
-from .game_core import GameCore
-from ..features.html_output import HtmlGameLogger
-from ..features.enhanced_output import EnhancedGameOutput
+from xwe.core.game_core import GameCore
+from xwe.features.html_output import HtmlGameLogger
+from xwe.features.enhanced_output import EnhancedGameOutput
 
 # 可选系统
 try:
-    from ..features.ai_personalization import AIPersonalization
+    from xwe.features.ai_personalization import AIPersonalization
 except Exception:  # pragma: no cover - optional dependency
     AIPersonalization = None  # type: ignore
 
 try:
-    from ..features.community_system import CommunitySystem
+    from xwe.features.community_system import CommunitySystem
 except Exception:  # pragma: no cover - optional dependency
     CommunitySystem = None  # type: ignore
 
 try:
-    from ..features.narrative_system import NarrativeSystem
+    from xwe.features.narrative_system import NarrativeSystem
 except Exception:  # pragma: no cover - optional dependency
     NarrativeSystem = None  # type: ignore
 
 try:
-    from ..features.technical_ops import TechnicalOps
+    from xwe.features.technical_ops import TechnicalOps
 except Exception:  # pragma: no cover - optional dependency
     TechnicalOps = None  # type: ignore
 
 try:
-    from .cultivation_system import CultivationSystem
+    from xwe.core.cultivation_system import CultivationSystem
 except Exception:  # pragma: no cover - optional dependency
     CultivationSystem = None  # type: ignore
 

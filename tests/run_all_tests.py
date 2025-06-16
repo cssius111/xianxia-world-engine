@@ -31,7 +31,6 @@ from xwe.utils.requests_helper import ensure_requests
 
 # 项目根目录
 PROJECT_ROOT = Path(__file__).parent
-sys.path.insert(0, str(PROJECT_ROOT))
 
 class TestRunner:
     def __init__(self):

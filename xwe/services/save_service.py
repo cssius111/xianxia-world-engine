@@ -10,7 +10,7 @@ import json
 import time
 from pathlib import Path
 
-from . import ServiceBase, ServiceContainer
+from xwe.services import ServiceBase, ServiceContainer
 
 
 class ISaveService(ABC):

@@ -8,7 +8,7 @@ from pathlib import Path
 from dataclasses import dataclass
 from typing import List, Dict, Any, Optional
 
-from .intelligence_system import IntelligenceSystem, IntelItem
+from xwe.features.intelligence_system import IntelligenceSystem, IntelItem
 
 
 @dataclass(order=True)

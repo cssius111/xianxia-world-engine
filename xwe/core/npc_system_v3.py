@@ -6,8 +6,8 @@ NPC系统优化实现
 import random
 import logging
 from typing import Any, Dict, List, Optional, Tuple
-from .data_manager import DM
-from .formula_engine import formula_engine, evaluate_expression
+from xwe.core.data_manager import DM
+from xwe.core.formula_engine import formula_engine, evaluate_expression
 
 logger = logging.getLogger(__name__)
 

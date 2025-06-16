@@ -7,7 +7,7 @@ from abc import ABC, abstractmethod
 from typing import Any, Dict
 import random
 
-from . import ServiceBase, ServiceContainer
+from xwe.services import ServiceBase, ServiceContainer
 
 
 class ICultivationService(ABC):
@@ -42,7 +42,7 @@ class CultivationService(ServiceBase[ICultivationService], ICultivationService):
     def cultivate(self) -> Dict[str, Any]:
         """进行修炼"""
         # 获取玩家服务
-        from .player_service import IPlayerService
+        from xwe.services.player_service import IPlayerService
         player_service = self.get_service(IPlayerService)
         
         player = player_service.get_current_player()
@@ -97,7 +97,7 @@ class CultivationService(ServiceBase[ICultivationService], ICultivationService):
     def breakthrough(self) -> Dict[str, Any]:
         """突破境界"""
         # 获取玩家服务
-        from .player_service import IPlayerService
+        from xwe.services.player_service import IPlayerService
         player_service = self.get_service(IPlayerService)
         
         player = player_service.get_current_player()
@@ -162,7 +162,7 @@ class CultivationService(ServiceBase[ICultivationService], ICultivationService):
             
     def get_cultivation_info(self) -> Dict[str, Any]:
         """获取修炼信息"""
-        from .player_service import IPlayerService
+        from xwe.services.player_service import IPlayerService
         player_service = self.get_service(IPlayerService)
         
         player = player_service.get_current_player()

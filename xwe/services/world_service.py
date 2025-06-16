@@ -7,7 +7,7 @@ from abc import ABC, abstractmethod
 from typing import Any, Dict, List, Optional, Set
 import random
 
-from . import ServiceBase, ServiceContainer
+from xwe.services import ServiceBase, ServiceContainer
 
 
 class IWorldService(ABC):

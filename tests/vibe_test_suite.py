@@ -8,13 +8,10 @@ import os
 import sys
 import json
 import subprocess
-from pathlib import Path
 from datetime import datetime
 from typing import Dict, List, Tuple, Any
 
 # Project paths
-PROJECT_ROOT = Path(__file__).parent.parent
-sys.path.insert(0, str(PROJECT_ROOT))
 
 class VibeTester:
     """Modern test orchestrator for XianXia World Engine"""
@@ -168,7 +165,6 @@ class VibeTester:
         
         try:
             # Check environment configuration
-            env_example = PROJECT_ROOT / '.env'
             if env_example.exists():
                 with open(env_example, 'r') as f:
                     content = f.read()
@@ -216,7 +212,6 @@ class VibeTester:
                 cmd, 
                 capture_output=True, 
                 text=True,
-                cwd=PROJECT_ROOT
             )
             
             # Parse results

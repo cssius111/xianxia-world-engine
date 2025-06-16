@@ -11,8 +11,8 @@ import logging
 from collections import defaultdict, deque
 import threading
 
-from . import ServiceBase, ServiceContainer
-from ..events import (
+from xwe.services import ServiceBase, ServiceContainer
+from xwe.events import (
     DomainEvent, EventBus, EventStore, EventHandler,
     GameEvent, PlayerEvent, CombatEvent, WorldEvent, SystemEvent
 )
@@ -163,7 +163,7 @@ class EventDispatcher(ServiceBase[IEventDispatcher], IEventDispatcher):
                   priority: int = 0) -> None:
         """订阅事件"""
         # 创建事件处理器包装
-        from ..events import FunctionEventHandler
+        from xwe.events import FunctionEventHandler
         handler_wrapper = FunctionEventHandler(handler, [event_type])
         
         # 注册到事件总线

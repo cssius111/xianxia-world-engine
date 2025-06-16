@@ -11,9 +11,9 @@ from enum import Enum
 import uuid
 import logging
 
-from .attributes import CharacterAttributes
-from .status import StatusEffectManager
-from .inventory import Inventory
+from xwe.core.attributes import CharacterAttributes
+from xwe.core.status import StatusEffectManager
+from xwe.core.inventory import Inventory
 
 logger = logging.getLogger(__name__)
 

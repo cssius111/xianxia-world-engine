@@ -9,10 +9,7 @@ import asyncio
 import json
 import random
 from typing import Dict, List, Any
-import sys
-from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent))
 
 from xwe.core.optimizations import ExpressionJITCompiler, SmartCache, AsyncEventSystem
 from xwe.core.optimizations.expression_jit import ExpressionBenchmark, SimpleExpressionInterpreter

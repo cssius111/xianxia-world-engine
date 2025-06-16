@@ -17,7 +17,7 @@ import sys
 from datetime import datetime
 import uuid
 
-from . import ServiceBase, ServiceContainer
+from xwe.services import ServiceBase, ServiceContainer
 
 
 class LogLevel(Enum):

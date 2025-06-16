@@ -13,27 +13,27 @@ import json
 import os
 from datetime import datetime
 
-from ..engine.expression import ExpressionParser
-from .item_system import item_system
-from .data_loader import DataLoader
-from .attributes import AttributeSystem
-from .character import Character, CharacterType
-from .inventory import Inventory
-from .skills import SkillSystem
-from .combat import CombatSystem, CombatState, CombatAction, CombatActionType
-from .ai import AIController
-from .command_parser import CommandParser, CommandType, ParsedCommand
-from .nlp import NLPProcessor, NLPConfig
-from ..world import WorldMap, LocationManager, EventSystem, AreaType, TimeSystem
-# from ..npc import NPCManager, DialogueSystem, TradingSystem  # 移到使用时导入，避免循环依赖
-from .roll_system import CharacterRoller  # 导入Roll系统
+from xwe.engine.expression import ExpressionParser
+from xwe.core.item_system import item_system
+from xwe.core.data_loader import DataLoader
+from xwe.core.attributes import AttributeSystem
+from xwe.core.character import Character, CharacterType
+from xwe.core.inventory import Inventory
+from xwe.core.skills import SkillSystem
+from xwe.core.combat import CombatSystem, CombatState, CombatAction, CombatActionType
+from xwe.core.ai import AIController
+from xwe.core.command_parser import CommandParser, CommandType, ParsedCommand
+from xwe.core.nlp import NLPProcessor, NLPConfig
+from xwe.world import WorldMap, LocationManager, EventSystem, AreaType, TimeSystem
+# from xwe.npc import NPCManager, DialogueSystem, TradingSystem  # 移到使用时导入，避免循环依赖
+from xwe.core.roll_system import CharacterRoller  # 导入Roll系统
 
 # 导入优化系统
-from .chinese_dragon_art import get_dragon_art, get_dragon_for_scene
-from .status_manager import StatusDisplayManager
-from .achievement_system import AchievementSystem
-from .command_router import CommandRouter, CommandPriority
-from .immersive_event_system import ImmersiveEventSystem, EventType, SpecialEventHandler
+from xwe.core.chinese_dragon_art import get_dragon_art, get_dragon_for_scene
+from xwe.core.status_manager import StatusDisplayManager
+from xwe.core.achievement_system import AchievementSystem
+from xwe.core.command_router import CommandRouter, CommandPriority
+from xwe.core.immersive_event_system import ImmersiveEventSystem, EventType, SpecialEventHandler
 
 logger = logging.getLogger(__name__)
 
@@ -147,7 +147,7 @@ class GameCore:
         
         # 初始化NPC系统
         # 局部导入避免循环依赖
-        from ..npc import NPCManager, DialogueSystem, TradingSystem
+        from xwe.npc import NPCManager, DialogueSystem, TradingSystem
         
         self.dialogue_system = DialogueSystem()
         self.npc_manager = NPCManager(self.dialogue_system)
@@ -467,13 +467,13 @@ class GameCore:
         world_config = self.data_loader.get_world_config()
         
         # 初始化默认地图
-        from ..world.world_map import DEFAULT_MAP_DATA, Region
+        from xwe.world.world_map import DEFAULT_MAP_DATA, Region
         for region_data in DEFAULT_MAP_DATA['regions']:
             region = Region.from_dict(region_data)
             self.world_map.add_region(region)
         
         for area_data in DEFAULT_MAP_DATA['areas']:
-            from ..world.world_map import Area
+            from xwe.world.world_map import Area
             area = Area.from_dict(area_data)
             self.world_map.add_area(area)
         

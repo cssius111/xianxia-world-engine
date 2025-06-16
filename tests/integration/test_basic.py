@@ -5,12 +5,8 @@
 测试各个核心系统是否正常工作。
 """
 
-import sys
-from pathlib import Path
 
 # 添加项目根目录到Python路径
-project_root = Path(__file__).parent
-sys.path.insert(0, str(project_root))
 
 from xwe.engine.expression import ExpressionParser
 from xwe.core import (

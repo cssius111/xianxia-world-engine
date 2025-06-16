@@ -10,8 +10,8 @@ from typing import Any, Callable, Dict, List, Optional
 from enum import Enum
 import logging
 
-from ..engine.expression import ExpressionParser
-from .character import Character
+from xwe.engine.expression import ExpressionParser
+from xwe.core.character import Character
 
 logger = logging.getLogger(__name__)
 

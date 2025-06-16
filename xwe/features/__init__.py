@@ -4,7 +4,7 @@
 """
 
 # 1. 基础玩家体验
-from .player_experience import (
+from xwe.features.player_experience import (
     SmartCommandProcessor,
     PlayerGuidance,
     FriendlyErrorHandler,
@@ -16,7 +16,7 @@ from .player_experience import (
 )
 
 # 2. 沉浸式叙事
-from .narrative_system import (
+from xwe.features.narrative_system import (
     StoryEvent,
     Achievement,
     OpeningEventGenerator,
@@ -30,7 +30,7 @@ from .narrative_system import (
 )
 
 # 3. 内容生态
-from .content_ecosystem import (
+from xwe.features.content_ecosystem import (
     ContentType,
     ModInfo,
     ContentEntry,
@@ -43,7 +43,7 @@ from .content_ecosystem import (
 )
 
 # 4. AI个性化
-from .ai_personalization import (
+from xwe.features.ai_personalization import (
     PlayerStyle,
     ContentPreference,
     PlayerProfile,
@@ -57,7 +57,7 @@ from .ai_personalization import (
 )
 
 # 5. 社区系统
-from .community_system import (
+from xwe.features.community_system import (
     FeedbackType,
     FeedbackPriority,
     Feedback,
@@ -73,7 +73,7 @@ from .community_system import (
 )
 
 # 6. 技术运营
-from .technical_ops import (
+from xwe.features.technical_ops import (
     SaveGame,
     ErrorLog,
     SaveManager,
@@ -87,7 +87,7 @@ from .technical_ops import (
 )
 
 # 7. 视觉增强
-from .visual_enhancement import (
+from xwe.features.visual_enhancement import (
     Color,
     TextRenderer,
     ASCIIArt,
@@ -97,10 +97,10 @@ from .visual_enhancement import (
     VisualEffects,
     visual_effects
 )
-from .html_output import HtmlGameLogger
+from xwe.features.html_output import HtmlGameLogger
 
 # 8. 拍卖行系统
-from .auction_system import (
+from xwe.features.auction_system import (
     AuctionMode,
     BidderType,
     AuctionItem,
@@ -108,12 +108,12 @@ from .auction_system import (
     AuctionSystem,
     auction_system
 )
-from .auction_commands import (
+from xwe.features.auction_commands import (
     AuctionCommandHandler,
     auction_command_handler
 )
-from .interactive_auction import InteractiveAuction
-from .intelligence_system import (
+from xwe.features.interactive_auction import InteractiveAuction
+from xwe.features.intelligence_system import (
     IntelItem,
     IntelligenceSystem,
     intelligence_system,

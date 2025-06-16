@@ -2,13 +2,10 @@
 """
 基础优化功能测试
 """
-import sys
 import time
 import logging
-from pathlib import Path
 
 # 添加项目路径
-sys.path.insert(0, str(Path(__file__).parent))
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

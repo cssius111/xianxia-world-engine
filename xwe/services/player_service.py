@@ -9,8 +9,8 @@ from dataclasses import dataclass, field
 import uuid
 import time
 
-from . import ServiceBase, ServiceContainer
-from ..events import EventBus, PlayerEvent
+from xwe.services import ServiceBase, ServiceContainer
+from xwe.events import EventBus, PlayerEvent
 
 
 @dataclass

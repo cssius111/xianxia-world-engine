@@ -5,12 +5,8 @@
 测试NLP模块的命令理解能力。
 """
 
-import sys
-from pathlib import Path
 
 # 添加项目根目录到Python路径
-project_root = Path(__file__).parent
-sys.path.insert(0, str(project_root))
 
 from xwe.core import CommandParser
 from xwe.core.nlp import NLPProcessor, NLPConfig

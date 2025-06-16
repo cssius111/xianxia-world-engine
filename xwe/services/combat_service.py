@@ -7,8 +7,8 @@ from abc import ABC, abstractmethod
 from typing import Any, Dict, List, Optional
 from dataclasses import dataclass
 
-from . import ServiceBase, ServiceContainer
-from .game_service import CommandResult
+from xwe.services import ServiceBase, ServiceContainer
+from xwe.services.game_service import CommandResult
 
 
 class ICombatService(ABC):
