@@ -6,10 +6,11 @@
 ## 项目结构说明（重构于 2025-06-12）
 
 ### 主入口
-- `run_web_ui_optimized.py` - **主入口文件**，运行 Flask Web UI
+- `entrypoints/run_web_ui_optimized.py` - **主入口文件**，运行 Flask Web UI
 
 ### 目录结构
 - `xwe/` - 核心游戏引擎模块
+- `xwe/data/restructured/` - 统一的数据模板目录
 - `templates/` - Flask 模板文件
 - `static/` - 静态资源文件
 - `scripts/` - 辅助脚本和示例代码

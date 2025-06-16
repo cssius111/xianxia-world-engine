@@ -149,7 +149,7 @@ xianxia_world_engine/
 python test_v2_system.py
 
 # 或直接运行
-python run_web_ui_optimized.py
+python entrypoints/run_web_ui_optimized.py
 ```
 
 ### 添加背景音乐
