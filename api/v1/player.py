@@ -41,7 +41,7 @@ def get_player_info():
         'id': player.id,
         'name': player.name,
         'level': player.level,
-        'realm': player.cultivation_realm,
+        'realm': player.realm,
         'attributes': {
             'health': player.health,
             'max_health': player.max_health,
@@ -53,7 +53,7 @@ def get_player_info():
         },
         'stats': {
             'experience': player.experience,
-            'experience_to_next': player.experience_to_next_level,
+            'experience_to_next': player.experience_to_next,
             'spiritual_root': player.spiritual_root,
             'talent': player.talent,
             'fate': player.fate
