@@ -146,7 +146,7 @@ def main():
     
     # 启动服务器
     try:
-        from run_web_ui_optimized import app
+        from entrypoints.run_web_ui_optimized import app
         
         # 设置一些测试配置
         app.config['TESTING'] = True
@@ -161,7 +161,7 @@ def main():
         print(f"\n错误: {e}")
         print("\n请检查:")
         print("1. 端口5001是否被占用")
-        print("2. run_web_ui_optimized.py 是否正确")
+        print("2. entrypoints/run_web_ui_optimized.py 是否正确")
         print("3. 所有依赖是否已安装")
 
 if __name__ == '__main__':

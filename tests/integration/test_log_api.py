@@ -1,6 +1,6 @@
 """API 日志接口集成测试"""
 
-from run_web_ui_optimized import app
+from entrypoints.run_web_ui_optimized import app
 from xwe.services import register_services, get_service_container, ILogService
 
 

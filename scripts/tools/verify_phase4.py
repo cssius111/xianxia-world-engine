@@ -124,7 +124,7 @@ def main():
     if api_skip == len(api_results):
         print("API端点检查: 跳过（服务未运行）")
         print("\n提示: 运行以下命令启动服务后再次验证:")
-        print("  python run_web_ui_optimized.py")
+        print("  python entrypoints/run_web_ui_optimized.py")
         print("  或")
         print("  docker-compose up")
     else:
