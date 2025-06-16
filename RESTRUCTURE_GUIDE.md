@@ -87,7 +87,7 @@ python restructure_project.py --project-root /path/to/xianxia_world_engine
 ### 清理操作
 - 删除所有 `__pycache__` 目录
 - 删除所有 `.pyc` 文件
-- 运行 `auto_archive.py` 自动归档并删除旧备份
+- 运行 `scripts/tools/auto_archive.py` 自动归档并删除旧备份
 
 ### README 更新
 - 自动在 README.md 中添加项目结构说明
