@@ -42,6 +42,7 @@ class IntelItem:
     title: str
     content: str
     ttl: int
+    raw_event: Optional[Dict[str, Any]] = None
     category: Optional[str] = None
     interactable_task_id: Optional[str] = None
     created_at: datetime = field(default_factory=datetime.now)

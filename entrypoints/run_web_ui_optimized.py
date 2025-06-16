@@ -28,7 +28,8 @@ from api import register_api
 from routes import lore, character, intel
 
 
-app = Flask(__name__, static_folder='static', template_folder='templates_enhanced')
+templates_path = Path(__file__).resolve().parent.parent / 'templates_enhanced'
+app = Flask(__name__, static_folder='static', template_folder=str(templates_path))
 app.secret_key = 'xianxia_world_secret_key_2025'
 register_api(app)
 
