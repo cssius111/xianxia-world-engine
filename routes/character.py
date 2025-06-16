@@ -82,7 +82,7 @@ def create_character():
         
         # 这里需要从主应用获取游戏实例
         # 使用current_app来避免循环引用
-        import run_web_ui_optimized
+        from entrypoints import run_web_ui_optimized
         instance = run_web_ui_optimized.get_game_instance(session['session_id'])
         game = instance['game']
 
@@ -214,7 +214,7 @@ def get_character_info():
                 'error': '会话已过期'
             }), 401
         
-        import run_web_ui_optimized
+        from entrypoints import run_web_ui_optimized
         instance = run_web_ui_optimized.get_game_instance(session['session_id'])
         game = instance['game']
         

@@ -109,13 +109,13 @@ def main():
     
     # 导入并运行主应用
     try:
-        from run_web_ui_optimized import app
+        from entrypoints.run_web_ui_optimized import app
         app.run(debug=True, host='0.0.0.0', port=5001, use_reloader=False)
     except KeyboardInterrupt:
         print("\n\n服务器已停止")
     except Exception as e:
         print(f"\n错误: {e}")
-        print("请确保 run_web_ui_optimized.py 文件正确配置")
+        print("请确保 entrypoints/run_web_ui_optimized.py 文件正确配置")
 
 if __name__ == '__main__':
     main()
