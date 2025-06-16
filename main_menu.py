@@ -41,6 +41,11 @@ def show_main_menu():
     return choice
 
 
+
+def start_new_game(mode: str = "player"):
+    """普通开始游戏"""
+    game = GameCore(game_mode=mode)
+
 def start_new_game(game_mode: str) -> None:
     """普通开始游戏"""
     game = GameCore(game_mode=game_mode)
@@ -71,7 +76,11 @@ def start_new_game(game_mode: str) -> None:
         print(line)
 
 
+
+def start_with_roll(mode: str = "player"):
+
 def start_with_roll(game_mode: str) -> None:
+
     """带Roll的新游戏"""
     print("\n=== 开局Roll系统 ===")
     print("你可以无限次重置角色，直到满意为止！")
@@ -97,7 +106,11 @@ def start_with_roll(game_mode: str) -> None:
             player_name = input("\n请输入角色名: ").strip() or character.name
             
             # 开始新游戏（会自动进入Roll流程）
+
+            game = GameCore(game_mode=mode)
+
             game = GameCore(game_mode=game_mode)
+
             game.start_new_game(player_name)
             
             # 游戏主循环
@@ -164,21 +177,35 @@ def show_settings():
 
 def main() -> None:
     """主函数"""
+
+    parser = argparse.ArgumentParser(description="修仙世界引擎主菜单")
+    parser.add_argument("--mode", default="player", help="运行模式：player 或 dev")
+    args = parser.parse_args()
+
+
     parser = argparse.ArgumentParser()
     parser.add_argument("--mode", default="player", help="game mode: player or dev")
     args = parser.parse_args()
 
     game_mode = args.mode
 
+
     while True:
         clear_screen()
         choice = show_main_menu()
 
         if choice == '1':
+
+            start_new_game(args.mode)
+            
+        elif choice == '2':
+            start_with_roll(args.mode)
+
             start_new_game(game_mode)
 
         elif choice == '2':
             start_with_roll(game_mode)
+
             
         elif choice == '3':
             test_roll_system()

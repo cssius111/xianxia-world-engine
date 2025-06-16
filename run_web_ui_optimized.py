@@ -44,7 +44,8 @@ def get_game_instance(session_id):
     """获取或创建游戏实例"""
     if session_id not in game_instances:
         # 创建新游戏实例
-        game = create_enhanced_game()
+        game_mode = os.getenv("GAME_MODE", "player")
+        game = create_enhanced_game(game_mode=game_mode)
         
         # 初始化各系统
         # CultivationSystem 构造函数不接受游戏实例参数
