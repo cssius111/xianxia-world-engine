@@ -45,8 +45,10 @@ class GameState:
     current_location: str = "qingyun_city"
     current_combat: Optional[str] = None
     game_time: int = 0  # 游戏时间（回合数）
+    game_mode: str = "player"  # 游戏模式：player 或 dev
     flags: Dict[str, Any] = field(default_factory=dict)
     npcs: Dict[str, Character] = field(default_factory=dict)
+    game_mode: str = "player"
     
     def to_dict(self) -> Dict[str, Any]:
         """转换为可序列化的字典"""
@@ -55,8 +57,10 @@ class GameState:
             'current_location': self.current_location,
             'current_combat': self.current_combat,
             'game_time': self.game_time,
+            'game_mode': self.game_mode,
             'flags': self.flags,
-            'npcs': {npc_id: npc.to_dict() for npc_id, npc in self.npcs.items()}
+            'npcs': {npc_id: npc.to_dict() for npc_id, npc in self.npcs.items()},
+            'game_mode': self.game_mode
         }
     
     @classmethod
@@ -70,9 +74,12 @@ class GameState:
         state.current_location = data.get('current_location', 'qingyun_city')
         state.current_combat = data.get('current_combat')
         state.game_time = data.get('game_time', 0)
+        state.game_mode = data.get('game_mode', 'player')
         state.flags = data.get('flags', {})
         if 'npcs' in data:
             state.npcs = {nid: Character.from_dict(nc) for nid, nc in data['npcs'].items()}
+
+        state.game_mode = data.get('game_mode', 'player')
 
         return state
 
@@ -84,12 +91,13 @@ class GameCore:
     管理所有游戏系统和主循环。
     """
     
-    def __init__(self, data_path: Union[str, Path] | None = None) -> None:
+    def __init__(self, data_path: Union[str, Path] | None = None, game_mode: str = "player") -> None:
         """
         初始化游戏核心
         
         Args:
             data_path: 数据文件路径
+            game_mode: 运行模式（player 或 dev）
         """
         if getattr(self, "_initialized", False):
             logger.debug("GameCore 已初始化，跳过")
@@ -141,7 +149,11 @@ class GameCore:
         self.immersive_event_system = ImmersiveEventSystem(self.output)
         
         # 游戏状态
+
+        self.game_state = GameState(game_mode=game_mode)
         self.game_state = GameState()
+        self.game_state.game_mode = game_mode
+        self.game_mode = game_mode
         self.running = False
         
         # 输出缓冲
@@ -182,10 +194,21 @@ class GameCore:
         self.output("让我们先看看命运为你准备了什么样的开局...")
         self.output("")
         
-        # 进入Roll流程
-        self._character_creation_flow(player_name)
+        # 进入Roll流程（开发者模式可跳过）
+        if self.game_state.game_mode == 'dev':
+            roll_result = self.character_roller.roll()
+            self.game_state.player = self._create_player_from_roll(player_name, roll_result)
+            self._finalize_character_creation()
+        else:
+            self._character_creation_flow(player_name)
     def _character_creation_flow(self, player_name: str) -> None:
         """角色创建流程 - 使用Roll系统"""
+        if self.game_state.game_mode != "player":
+            roll_result = self.character_roller.roll()
+            self._display_roll_result(roll_result)
+            self.game_state.player = self._create_player_from_roll(player_name, roll_result)
+            self._finalize_character_creation()
+            return
         self.output("=== 开局Roll ===")
         self.output("你可以无限次重置角色面板，直到获得满意的属性。")
         self.output("每次Roll都会随机生成：灵根、命格、天赋、系统等。")
@@ -387,6 +410,10 @@ class GameCore:
         
         # 解锁第一个成就
         self.achievement_system.check_achievement('first_step', 1)
+
+        if self.game_state.game_mode == 'dev':
+            self.game_state.flags['gm_enabled'] = True
+            self.output("[开发者模式] GM 指令已启用。")
         
         # 显示游戏开始
         self.output("")

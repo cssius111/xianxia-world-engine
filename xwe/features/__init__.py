@@ -113,6 +113,12 @@ from .auction_commands import (
     auction_command_handler
 )
 from .interactive_auction import InteractiveAuction
+from .intelligence_system import (
+    IntelItem,
+    IntelligenceSystem,
+    intelligence_system,
+    integrate_intelligence_system,
+)
 
 # 版本信息
 __version__ = "2.0.0"
@@ -154,5 +160,9 @@ __all__ = [
     # 拍卖行系统
     "auction_system",
     "auction_command_handler",
-    "InteractiveAuction"
+    "InteractiveAuction",
+    "intelligence_system",
+    "integrate_intelligence_system",
+    "IntelItem",
+    "IntelligenceSystem"
 ]
