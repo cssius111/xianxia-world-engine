@@ -28,7 +28,7 @@
 ## 📄 新增的脚本
 
 ### 一键运行脚本
-- `run_game.py` - 一键修复并运行游戏（推荐）
+- `entrypoints/run_web_ui_optimized.py` - 启动优化版 Web UI（推荐）
 - `quick_start.py` - 快速启动器
 - `complete_fix.py` - 完整的修复和验证脚本
 - `fix_and_verify.py` - 基础修复脚本
@@ -41,7 +41,7 @@
 
 最简单的方式：
 ```bash
-python run_game.py
+python entrypoints/run_web_ui_optimized.py
 ```
 
 如果遇到问题，先运行修复：

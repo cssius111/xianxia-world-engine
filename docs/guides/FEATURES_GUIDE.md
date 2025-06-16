@@ -8,7 +8,7 @@
 
 ### 一键运行
 ```bash
-python run_game.py
+python entrypoints/run_web_ui_optimized.py
 ```
 
 ### 手动运行
