@@ -1,4 +1,10 @@
 {
+  "meta": {
+    "version": "3.0.0",
+    "description": "修仙世界引擎情报模板定义",
+    "schema_version": "2020-12",
+    "last_modified": "2025-06-07"
+  },
   "global_news": {
     "categories": ["宗门动态", "秘境消息", "魔道动向", "商会公告", "天地异象"],
     "templates": [
