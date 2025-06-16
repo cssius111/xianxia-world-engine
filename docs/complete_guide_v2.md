@@ -28,7 +28,7 @@ pip install flask markdown
 ### 3. 启动游戏
 
 ```bash
-python run_web_ui_optimized.py
+python entrypoints/run_web_ui_optimized.py
 ```
 
 访问：http://localhost:5001
