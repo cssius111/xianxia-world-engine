@@ -25,6 +25,10 @@ REPLACEMENTS = [
     (r'start_enhanced_ui', 'run_web_ui'),
     (r'run_web_ui_enhanced\.py', 'run_web_ui.py'),
     (r'run_web_ui_enhanced', 'run_web_ui'),
+    # 更新 auto_archive 路径
+    (r'auto_archive\.py', 'scripts/tools/auto_archive.py'),
+    # 将相对导入转换为绝对导入示例
+    (r'from \.([a-zA-Z0-9_]+) import', r'from xwe.bar.\1 import'),
 ]
 
 
