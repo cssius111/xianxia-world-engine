@@ -1,11 +1,6 @@
-"""
-修仙世界引擎 - 优化版Web UI服务器
-使用组合式日志显示，提升阅读体验
-"""
-
-import os
 import sys
 from pathlib import Path
+
 
 
 # 添加项目根目录到Python路径
@@ -165,6 +160,7 @@ def process_command():
     instance = get_game_instance(session['session_id'])
     game = instance['game']
     
+    
     # 处理命令
     game.process_command(command)
     
@@ -283,14 +279,7 @@ def load_game():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)})
 
-if __name__ == '__main__':
     print("=== 修仙世界引擎 Web UI (优化版) ===")
     print("访问 http://localhost:5001 开始游戏")
     print("使用 Ctrl+C 停止服务器")
     print("=====================================")
-    
-    # 确保存档目录存在
-    os.makedirs('saves', exist_ok=True)
-    
-    # 启动服务器
-    app.run(debug=True, host='0.0.0.0', port=5001)

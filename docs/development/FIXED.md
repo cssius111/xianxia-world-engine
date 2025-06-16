@@ -10,7 +10,7 @@
 
 最简单的方式：
 ```bash
-python run_game.py
+python entrypoints/run_web_ui_optimized.py
 ```
 
 或者直接运行：
@@ -20,7 +20,7 @@ python play_demo.py
 
 ## 📝 可用的脚本
 
-- `run_game.py` - 一键验证并运行游戏
+- `entrypoints/run_web_ui_optimized.py` - 启动优化版 Web UI
 - `verify_fix.py` - 快速验证修复是否成功
 - `complete_fix.py` - 完整的修复和诊断脚本
 - `quick_start.py` - 直接启动游戏
