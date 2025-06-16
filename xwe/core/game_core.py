@@ -47,6 +47,7 @@ class GameState:
     game_time: int = 0  # 游戏时间（回合数）
     flags: Dict[str, Any] = field(default_factory=dict)
     npcs: Dict[str, Character] = field(default_factory=dict)
+    game_mode: str = "player"
     
     def to_dict(self) -> Dict[str, Any]:
         """转换为可序列化的字典"""
@@ -56,7 +57,8 @@ class GameState:
             'current_combat': self.current_combat,
             'game_time': self.game_time,
             'flags': self.flags,
-            'npcs': {npc_id: npc.to_dict() for npc_id, npc in self.npcs.items()}
+            'npcs': {npc_id: npc.to_dict() for npc_id, npc in self.npcs.items()},
+            'game_mode': self.game_mode
         }
     
     @classmethod
@@ -74,6 +76,8 @@ class GameState:
         if 'npcs' in data:
             state.npcs = {nid: Character.from_dict(nc) for nid, nc in data['npcs'].items()}
 
+        state.game_mode = data.get('game_mode', 'player')
+
         return state
 
 
@@ -84,7 +88,7 @@ class GameCore:
     管理所有游戏系统和主循环。
     """
     
-    def __init__(self, data_path: Union[str, Path] | None = None) -> None:
+    def __init__(self, data_path: Union[str, Path] | None = None, game_mode: str = "player") -> None:
         """
         初始化游戏核心
         
@@ -142,6 +146,8 @@ class GameCore:
         
         # 游戏状态
         self.game_state = GameState()
+        self.game_state.game_mode = game_mode
+        self.game_mode = game_mode
         self.running = False
         
         # 输出缓冲
@@ -186,6 +192,12 @@ class GameCore:
         self._character_creation_flow(player_name)
     def _character_creation_flow(self, player_name: str) -> None:
         """角色创建流程 - 使用Roll系统"""
+        if self.game_state.game_mode != "player":
+            roll_result = self.character_roller.roll()
+            self._display_roll_result(roll_result)
+            self.game_state.player = self._create_player_from_roll(player_name, roll_result)
+            self._finalize_character_creation()
+            return
         self.output("=== 开局Roll ===")
         self.output("你可以无限次重置角色面板，直到获得满意的属性。")
         self.output("每次Roll都会随机生成：灵根、命格、天赋、系统等。")

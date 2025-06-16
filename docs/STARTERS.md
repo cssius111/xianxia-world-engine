@@ -5,7 +5,7 @@
 | 脚本 | 说明 |
 | ---- | ---- |
 | `python run_game.py` | 自动修复并启动游戏（推荐） |
-| `python main_menu.py` | 启动主菜单，可从菜单进入游戏或其他工具 |
+| `python main_menu.py [--mode dev]` | 启动主菜单，可选择玩家或开发者模式 |
 | `python main.py` | 直接运行命令行版本游戏 |
 | `python main_enhanced.py` | 含 2.0 功能的增强版，生成 `game_log.html` |
  

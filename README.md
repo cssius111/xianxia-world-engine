@@ -82,6 +82,12 @@ python run_game.py
 
 更多启动脚本和说明请参阅 [docs/STARTERS.md](docs/STARTERS.md)。
 
+启动主菜单示例：
+```bash
+python main_menu.py --mode player  # 默认玩家模式
+python main_menu.py --mode dev     # 开发者模式
+```
+
 ### 安装步骤
 ```bash
 # 1. 克隆项目
