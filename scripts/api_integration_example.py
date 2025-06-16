@@ -1,3 +1,4 @@
+# @dev_only
 """
 API集成示例
 展示如何将新的RESTful API集成到现有的Flask应用

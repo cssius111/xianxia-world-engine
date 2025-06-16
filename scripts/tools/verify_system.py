@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# @dev_only
 """
 验证游戏是否能正常运行
 """

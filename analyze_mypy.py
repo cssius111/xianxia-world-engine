@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# @dev_only
 """
 运行 mypy 并分析类型错误
 """

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# @dev_only
 """
 项目结构重组脚本
 - 保留 run_web_ui_optimized.py 为主入口

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# @dev_only
 """
 MyPy 错误自动修复脚本
 用于批量修复常见的类型错误

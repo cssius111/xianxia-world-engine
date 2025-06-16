@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# @dev_only
 """
 交互式 MyPy 错误修复指南
 根据错误类型提供具体的修复建议

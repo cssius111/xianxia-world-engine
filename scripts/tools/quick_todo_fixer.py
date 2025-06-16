@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# @dev_only
 """
 快速TODO修复器 - 自动修复最关键的TODO项
 """

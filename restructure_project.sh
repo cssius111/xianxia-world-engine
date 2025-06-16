@@ -1,4 +1,5 @@
 #!/bin/bash
+# @dev_only
 
 # 项目结构重组脚本（Shell版本）
 # - 保留 run_web_ui_optimized.py 为主入口
