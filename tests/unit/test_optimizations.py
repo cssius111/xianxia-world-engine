@@ -30,14 +30,14 @@ def test_imports():
         from xwe.core.game_core import GameCore
         print("✅ GameCore 导入成功")
         
-        return True
+        assert True
         
     except ImportError as e:
         print(f"❌ 模块导入失败: {e}")
-        return False
+        assert False
     except Exception as e:
         print(f"❌ 其他导入错误: {e}")
-        return False
+        assert False
 
 def test_item_system():
     """测试物品系统功能"""
@@ -79,11 +79,11 @@ def test_item_system():
         assert stones == 50
         print(f"✅ 移除物品功能正常: 剩余{stones}个")
         
-        return True
+        assert True
         
     except Exception as e:
         print(f"❌ 物品系统测试失败: {e}")
-        return False
+        assert False
 
 def test_system_manager():
     """测试系统管理器功能"""
@@ -120,11 +120,11 @@ def test_system_manager():
         assert player_system['name'] == '九转修炼系统'
         print("✅ 系统信息获取正常")
         
-        return True
+        assert True
         
     except Exception as e:
         print(f"❌ 系统管理器测试失败: {e}")
-        return False
+        assert False
 
 def test_game_config():
     """测试游戏配置"""
@@ -148,11 +148,11 @@ def test_game_config():
         assert config.max_npcs_in_memory > 0
         print(f"✅ 性能配置正常: 缓存{config.cache_size}, NPC限制{config.max_npcs_in_memory}")
         
-        return True
+        assert True
         
     except Exception as e:
         print(f"❌ 游戏配置测试失败: {e}")
-        return False
+        assert False
 
 def test_game_core_integration():
     """测试游戏核心集成"""
@@ -182,11 +182,11 @@ def test_game_core_integration():
         else:
             print("⚠️  灵石获取可能仍使用硬编码")
         
-        return True
+        assert True
         
     except Exception as e:
         print(f"❌ 游戏核心集成测试失败: {e}")
-        return False
+        assert False
 
 def test_game_startup():
     """测试游戏启动（不进入交互模式）"""
@@ -219,11 +219,11 @@ def test_game_startup():
         assert output[0] == "测试输出"
         print("✅ 输出系统正常")
         
-        return True
+        assert True
         
     except Exception as e:
         print(f"❌ 游戏启动测试失败: {e}")
-        return False
+        assert False
 
 def run_full_test():
     """运行完整测试"""
