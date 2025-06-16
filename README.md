@@ -80,6 +80,11 @@
 python run_game.py
 ```
 
+如需启用开发者模式，可在启动脚本中指定 `--mode dev`：
+```bash
+python main_menu.py --mode dev
+```
+
 更多启动脚本和说明请参阅 [docs/STARTERS.md](docs/STARTERS.md)。
 
 ### 安装步骤

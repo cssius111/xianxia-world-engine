@@ -31,9 +31,9 @@ except Exception:  # pragma: no cover - optional dependency
     CultivationSystem = None  # type: ignore
 
 
-def create_enhanced_game(log_file: str = "game_log.html") -> GameCore:
+def create_enhanced_game(log_file: str = "game_log.html", *, game_mode: str = "player") -> GameCore:
     """Create a ``GameCore`` instance with enhanced output and optional systems."""
-    game = GameCore()
+    game = GameCore(game_mode=game_mode)
 
     # Integrate enhanced HTML output
     html_logger = HtmlGameLogger(log_file)
