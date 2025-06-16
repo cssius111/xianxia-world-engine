@@ -24,7 +24,7 @@ from .combat import CombatSystem, CombatState, CombatAction, CombatActionType
 from .ai import AIController
 from .command_parser import CommandParser, CommandType, ParsedCommand
 from .nlp import NLPProcessor, NLPConfig
-from ..world import WorldMap, LocationManager, EventSystem, AreaType
+from ..world import WorldMap, LocationManager, EventSystem, AreaType, TimeSystem
 # from ..npc import NPCManager, DialogueSystem, TradingSystem  # 移到使用时导入，避免循环依赖
 from .roll_system import CharacterRoller  # 导入Roll系统
 
@@ -44,8 +44,12 @@ class GameState:
     player: Optional[Character] = None
     current_location: str = "qingyun_city"
     current_combat: Optional[str] = None
+
+    game_time: float = 0.0  # 游戏时间（小时）
+    active_hours: float = 0.0  # 连续活动时长
     game_time: int = 0  # 游戏时间（回合数）
     game_mode: str = "player"  # 游戏模式：player 或 dev
+
     flags: Dict[str, Any] = field(default_factory=dict)
     npcs: Dict[str, Character] = field(default_factory=dict)
     game_mode: str = "player"
@@ -57,7 +61,11 @@ class GameState:
             'current_location': self.current_location,
             'current_combat': self.current_combat,
             'game_time': self.game_time,
+
+            'active_hours': self.active_hours,
+
             'game_mode': self.game_mode,
+
             'flags': self.flags,
             'npcs': {npc_id: npc.to_dict() for npc_id, npc in self.npcs.items()},
             'game_mode': self.game_mode
@@ -73,8 +81,13 @@ class GameState:
 
         state.current_location = data.get('current_location', 'qingyun_city')
         state.current_combat = data.get('current_combat')
+
+        state.game_time = data.get('game_time', 0.0)
+        state.active_hours = data.get('active_hours', 0.0)
+
         state.game_time = data.get('game_time', 0)
         state.game_mode = data.get('game_mode', 'player')
+
         state.flags = data.get('flags', {})
         if 'npcs' in data:
             state.npcs = {nid: Character.from_dict(nc) for nid, nc in data['npcs'].items()}
@@ -130,6 +143,7 @@ class GameCore:
         self.world_map = WorldMap()
         self.location_manager = LocationManager(self.world_map)
         self.event_system = EventSystem()
+        self.time_system = TimeSystem()
         
         # 初始化NPC系统
         # 局部导入避免循环依赖
@@ -591,9 +605,7 @@ class GameCore:
             self._process_combat_command_v2(cmd_type, params)
         else:
             self._process_normal_command_v2(cmd_type, params)
-        
-        # 更新游戏时间
-        self.game_state.game_time += 1
+
     
     def _build_command_context(self) -> Dict[str, Any]:
         """构建命令上下文"""
@@ -626,8 +638,12 @@ class GameCore:
         ]
         if npcs_here:
             context['nearby_npcs'] = npcs_here
-        
+
         return context
+
+    def _advance_time(self, action: str, modifiers: Optional[Dict[str, str]] = None) -> None:
+        """Advance in-game time using the TimeSystem."""
+        self.time_system.advance_time(action, self.game_state, modifiers)
     
     def _process_normal_command(self, command: ParsedCommand) -> None:
         """处理非战斗状态的命令"""
@@ -1628,9 +1644,10 @@ class GameCore:
             
         elif cmd_type == 'map':
             self._show_map()
-            
+
         elif cmd_type == 'cultivate':
             self._do_cultivate()
+            self._advance_time('cultivate_basic')
             
         elif cmd_type == 'attack':
             if params.get('target'):
@@ -1640,16 +1657,19 @@ class GameCore:
                 
         elif cmd_type == 'explore':
             self._do_explore()
+            self._advance_time('explore_area')
             
         elif cmd_type == 'move':
             if params.get('location'):
                 self._do_move(params['location'])
+                self._advance_time('move_location')
             else:
                 self.output("要去哪里？")
             
         elif cmd_type == 'talk':
             if params.get('target'):
                 self._do_talk(params['target'])
+                self._advance_time('npc_conversation')
             else:
                 self.output("要和谁说话？")
             
