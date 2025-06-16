@@ -8,9 +8,11 @@
 from .world_map import WorldMap, Area, Region, AreaType
 from .location_manager import LocationManager
 from .event_system import EventSystem, WorldEvent
+from .time_system import TimeSystem
 
 __all__ = [
     'WorldMap', 'Area', 'Region', 'AreaType',
     'LocationManager',
-    'EventSystem', 'WorldEvent'
+    'EventSystem', 'WorldEvent',
+    'TimeSystem'
 ]
