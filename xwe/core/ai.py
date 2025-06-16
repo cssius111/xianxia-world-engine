@@ -11,9 +11,9 @@ from enum import Enum
 import random
 import logging
 
-from .character import Character
-from .combat import CombatState, CombatAction, CombatActionType
-from .skills import SkillSystem, TargetType
+from xwe.core.character import Character
+from xwe.core.combat import CombatState, CombatAction, CombatActionType
+from xwe.core.skills import SkillSystem, TargetType
 
 logger = logging.getLogger(__name__)
 

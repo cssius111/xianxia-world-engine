@@ -9,8 +9,8 @@ from dataclasses import dataclass, field
 import re
 import logging
 
-from . import ServiceBase, ServiceContainer
-from ..events import GameEvent, publish_event
+from xwe.services import ServiceBase, ServiceContainer
+from xwe.events import GameEvent, publish_event
 
 
 @dataclass

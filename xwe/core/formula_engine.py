@@ -9,7 +9,7 @@ import math
 import random
 from typing import Any, Callable, Dict, Optional, Union
 import logging
-from .data_manager import DM
+from xwe.core.data_manager import DM
 
 logger = logging.getLogger(__name__)
 

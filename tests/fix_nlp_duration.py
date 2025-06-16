@@ -4,22 +4,16 @@
 Fixes the duration extraction for cultivate commands
 """
 
-import os
 from typing import Any
 import re
-import sys
-from pathlib import Path
 
 # Add project to path
-PROJECT_ROOT = Path(__file__).parent.parent
-sys.path.insert(0, str(PROJECT_ROOT))
 
 def apply_nlp_duration_fix():
     """Apply the duration extraction fix to NLP processor"""
     print("🔧 Applying NLP Duration Fix")
     print("━" * 60)
     
-    nlp_file = PROJECT_ROOT / "xwe" / "core" / "nlp" / "nlp_processor.py"
     
     if not nlp_file.exists():
         print(f"❌ NLP processor file not found: {nlp_file}")

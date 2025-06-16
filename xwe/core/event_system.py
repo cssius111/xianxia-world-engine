@@ -7,9 +7,9 @@ import random
 import logging
 from typing import Any, Callable, Dict, List, Optional
 from datetime import datetime
-from .data_manager import DM
-from .formula_engine import formula_engine, evaluate_expression
-from ..features.deepseek_client import DeepSeekClient
+from xwe.core.data_manager import DM
+from xwe.core.formula_engine import formula_engine, evaluate_expression
+from xwe.features.deepseek_client import DeepSeekClient
 
 logger = logging.getLogger(__name__)
 

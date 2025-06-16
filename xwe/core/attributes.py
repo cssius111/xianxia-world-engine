@@ -3,7 +3,7 @@ from typing import Any, Dict, List, Optional
 from enum import Enum
 import logging
 
-from ..engine.expression import ExpressionParser
+from xwe.engine.expression import ExpressionParser
 
 logger = logging.getLogger(__name__)
 

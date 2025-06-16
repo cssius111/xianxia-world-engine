@@ -9,8 +9,8 @@ import random
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional
 
-from .roll_data import ROLL_DATA
-from .roll_utils import (
+from xwe.core.roll_data import ROLL_DATA
+from xwe.core.roll_utils import (
     weighted_random_choice, 
     random_select_elements,
     random_attribute_value,

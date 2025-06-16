@@ -5,17 +5,17 @@ from typing import Any
 """
 
 # 核心服务接口
-from .game_service import IGameService, GameState, CommandResult
-from .player_service import IPlayerService, PlayerData, PlayerStatus
-from .save_service import ISaveService, SaveInfo, SaveData, SaveType
-from .world_service import IWorldService, Location, LocationType, Weather, TimeOfDay, WorldEvent, ExplorationResult
-from .combat_service import ICombatService, CombatState, Combatant, CombatAction, CombatResult, CombatType, ActionType, DamageType
-from .cultivation_service import ICultivationService, CultivationRealm, CultivationType, SpiritualRoot, CultivationTechnique, CultivationResult, BreakthroughInfo, Tribulation
+from xwe.services.game_service import IGameService, GameState, CommandResult
+from xwe.services.player_service import IPlayerService, PlayerData, PlayerStatus
+from xwe.services.save_service import ISaveService, SaveInfo, SaveData, SaveType
+from xwe.services.world_service import IWorldService, Location, LocationType, Weather, TimeOfDay, WorldEvent, ExplorationResult
+from xwe.services.combat_service import ICombatService, CombatState, Combatant, CombatAction, CombatResult, CombatType, ActionType, DamageType
+from xwe.services.cultivation_service import ICultivationService, CultivationRealm, CultivationType, SpiritualRoot, CultivationTechnique, CultivationResult, BreakthroughInfo, Tribulation
 
 # 已在主services目录的接口
-from ..command_engine import ICommandEngine, CommandContext, CommandResult as CmdResult, ICommandHandler
-from ..event_dispatcher import IEventDispatcher, EventStatistics
-from ..log_service import ILogService, LogEntry, LogFilter, LogLevel
+from xwe.command_engine import ICommandEngine, CommandContext, CommandResult as CmdResult, ICommandHandler
+from xwe.event_dispatcher import IEventDispatcher, EventStatistics
+from xwe.log_service import ILogService, LogEntry, LogFilter, LogLevel
 
 # 导出所有接口
 __all__ = [

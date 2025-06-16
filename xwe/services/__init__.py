@@ -305,15 +305,15 @@ def register_services(container: ServiceContainer) -> None:
     注册所有服务
     这个函数应该在应用启动时调用
     """
-    from .game_service import GameService, IGameService
-    from .player_service import PlayerService, IPlayerService
-    from .combat_service import CombatService, ICombatService
-    from .save_service import SaveService, ISaveService
-    from .world_service import WorldService, IWorldService
-    from .cultivation_service import CultivationService, ICultivationService
-    from .command_engine import CommandEngine, ICommandEngine
-    from .event_dispatcher import EventDispatcher, IEventDispatcher
-    from .log_service import LogService, ILogService
+    from xwe.services.game_service import GameService, IGameService
+    from xwe.services.player_service import PlayerService, IPlayerService
+    from xwe.services.combat_service import CombatService, ICombatService
+    from xwe.services.save_service import SaveService, ISaveService
+    from xwe.services.world_service import WorldService, IWorldService
+    from xwe.services.cultivation_service import CultivationService, ICultivationService
+    from xwe.services.command_engine import CommandEngine, ICommandEngine
+    from xwe.services.event_dispatcher import EventDispatcher, IEventDispatcher
+    from xwe.services.log_service import LogService, ILogService
     
     # 注册核心服务
     container.register(IGameService, GameService, ServiceLifetime.SINGLETON)
@@ -330,15 +330,15 @@ def register_services(container: ServiceContainer) -> None:
 
 
 # 对外暴露的接口类型，方便统一导入
-from .game_service import IGameService
-from .player_service import IPlayerService
-from .combat_service import ICombatService
-from .save_service import ISaveService
-from .world_service import IWorldService
-from .cultivation_service import ICultivationService
-from .command_engine import ICommandEngine
-from .event_dispatcher import IEventDispatcher
-from .log_service import ILogService
+from xwe.services.game_service import IGameService
+from xwe.services.player_service import IPlayerService
+from xwe.services.combat_service import ICombatService
+from xwe.services.save_service import ISaveService
+from xwe.services.world_service import IWorldService
+from xwe.services.cultivation_service import ICultivationService
+from xwe.services.command_engine import ICommandEngine
+from xwe.services.event_dispatcher import IEventDispatcher
+from xwe.services.log_service import ILogService
 
 __all__ = [
     "ServiceLifetime",

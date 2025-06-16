@@ -8,8 +8,8 @@ from typing import Any, Dict, List, Optional
 from dataclasses import dataclass, field
 import time
 
-from . import ServiceBase, ServiceContainer
-from ..events import EventBus, GameEvent
+from xwe.services import ServiceBase, ServiceContainer
+from xwe.events import EventBus, GameEvent
 
 
 @dataclass
@@ -100,9 +100,9 @@ class GameService(ServiceBase[IGameService], IGameService):
     def _do_initialize(self) -> None:
         """初始化服务"""
         # 延迟导入避免循环依赖
-        from .player_service import IPlayerService
-        from .world_service import IWorldService
-        from .combat_service import ICombatService
+        from xwe.services.player_service import IPlayerService
+        from xwe.services.world_service import IWorldService
+        from xwe.services.combat_service import ICombatService
         
         # 获取依赖的服务
         self._player_service = self.get_service(IPlayerService)
@@ -359,7 +359,7 @@ class GameService(ServiceBase[IGameService], IGameService):
             )
             
         # 执行修炼
-        from .cultivation_service import ICultivationService
+        from xwe.services.cultivation_service import ICultivationService
         cultivation_service = self.get_service(ICultivationService)
         
         result = cultivation_service.cultivate()
@@ -413,7 +413,7 @@ class GameService(ServiceBase[IGameService], IGameService):
         
     def save_game(self, save_name: str) -> bool:
         """保存游戏"""
-        from .save_service import ISaveService
+        from xwe.services.save_service import ISaveService
         save_service = self.get_service(ISaveService)
         
         save_data = {
@@ -430,7 +430,7 @@ class GameService(ServiceBase[IGameService], IGameService):
         
     def load_game(self, save_id: str) -> bool:
         """加载游戏"""
-        from .save_service import ISaveService
+        from xwe.services.save_service import ISaveService
         save_service = self.get_service(ISaveService)
         
         save_data = save_service.load_save(save_id)

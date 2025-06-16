@@ -4,12 +4,7 @@
 直接测试Roll功能，无需复杂的格式化
 """
 
-import sys
-from pathlib import Path
 
-# 添加项目路径
-project_root = Path(__file__).parent.parent
-sys.path.insert(0, str(project_root))
 
 from xwe.core.roll_system import CharacterRoller
 import time

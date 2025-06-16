@@ -8,8 +8,8 @@ import logging
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Tuple
 from enum import Enum
-from .data_manager import DM
-from .formula_engine import formula_engine, calculate, evaluate_expression
+from xwe.core.data_manager import DM
+from xwe.core.formula_engine import formula_engine, calculate, evaluate_expression
 
 logger = logging.getLogger(__name__)
 
@@ -182,7 +182,7 @@ class CombatSystemV3:
         
         # 应用境界压制
         if hasattr(attacker, "realm") and hasattr(defender, "realm"):
-            from .cultivation_system import cultivation_system
+            from xwe.core.cultivation_system import cultivation_system
             suppression = cultivation_system.get_realm_suppression(attacker.realm, defender.realm)
             damage *= (1 + suppression)
             result["details"]["realm_suppression"] = suppression

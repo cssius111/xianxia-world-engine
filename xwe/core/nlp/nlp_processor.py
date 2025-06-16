@@ -10,7 +10,7 @@ import logging
 from typing import Any, Dict, Optional
 from dataclasses import dataclass
 
-from ..command_parser import ParsedCommand, CommandType
+from xwe.core.command_parser import ParsedCommand, CommandType
 
 logger = logging.getLogger(__name__)
 

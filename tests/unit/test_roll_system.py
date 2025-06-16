@@ -9,9 +9,6 @@ import json
 from typing import Dict, Any
 
 # 添加项目根目录到 Python 路径
-import sys
-import os
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))))
 
 from xwe.core.roll_system import CharacterRoller, RollResult, ROLL_DATA
 from xwe.core.roll_system.roll_utils import weighted_random_choice, random_select_elements

@@ -6,9 +6,6 @@ import unittest
 import os
 from unittest.mock import patch, MagicMock
 
-import sys
-from pathlib import Path
-sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from xwe.core.nlp.nlp_processor import NLPProcessor, NLPConfig
 from xwe.core.command_parser import CommandType

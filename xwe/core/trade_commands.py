@@ -7,8 +7,8 @@
 
 from typing import Any, Dict, List, Optional, Tuple
 import logging
-from .trade_system import TradeSystem, Shopkeeper, MarketStall, BlackMarket
-from .character import Character
+from xwe.core.trade_system import TradeSystem, Shopkeeper, MarketStall, BlackMarket
+from xwe.core.character import Character
 
 logger = logging.getLogger(__name__)
 

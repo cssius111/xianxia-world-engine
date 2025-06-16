@@ -4,13 +4,9 @@ NLP系统自检脚本
 快速验证NLP功能是否正常
 """
 
-import sys
 from typing import Any
-from pathlib import Path
 
 # 添加项目路径
-PROJECT_ROOT = Path(__file__).parent.parent
-sys.path.insert(0, str(PROJECT_ROOT))
 
 def test_nlp_basic():
     """基础NLP测试"""

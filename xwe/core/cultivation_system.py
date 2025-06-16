@@ -7,8 +7,8 @@ import random
 import logging
 from typing import Any, Dict, List, Optional, Tuple
 from datetime import datetime
-from .data_manager import DM
-from .formula_engine import formula_engine, calculate
+from xwe.core.data_manager import DM
+from xwe.core.formula_engine import formula_engine, calculate
 
 logger = logging.getLogger(__name__)
 
