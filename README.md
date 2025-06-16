@@ -31,8 +31,8 @@
 ### 废弃入口说明
 以下入口文件已归档至 `archive/deprecated/entrypoints/`：
 - `main.py` - 原命令行入口
-- `run_game.py` - 原游戏运行脚本
-- `run_web_ui.py` - 原Web UI入口
+- `run_game.py` - 已被 `entrypoints/run_web_ui_optimized.py` 取代
+- `run_web_ui.py` - 已被 `entrypoints/run_web_ui_optimized.py` 取代
 - 其他旧版入口文件
 
 ---
@@ -78,8 +78,8 @@
 
 ### 一键启动
 ```bash
-# 推荐方式：自动修复并启动
-python run_game.py
+# 推荐方式：启动优化版 Web UI
+python entrypoints/run_web_ui_optimized.py
 ```
 
 如需启用开发者模式，可在启动脚本中指定 `--mode dev`：
@@ -276,6 +276,16 @@ python -m pytest tests/unit/
 
 如需使用真实 LLM 进行测试，可在 `.env` 中填入 API 密钥，并将
 `LLM_PROVIDER` 设置为实际提供商。
+
+## 🗄️ 维护脚本
+
+项目提供 `scripts/tools/auto_archive.py` 用于定期归档备份和日志，保持主目录整洁：
+
+```bash
+python scripts/tools/auto_archive.py
+```
+
+脚本会将 `backup_*` 目录、`logs/` 和 `output/` 中的文件移动到 `_archive/`。
 
 ## 📚 API文档
 
