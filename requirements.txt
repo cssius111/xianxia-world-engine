@@ -18,3 +18,5 @@ pyyaml >= 6.0    # 用于YAML格式MOD支持
 python-dotenv>=1.0.0  # 用于加载 .env 配置
 flask-swagger-ui>=4.12.0
 
+
+radon>=6.0.1
