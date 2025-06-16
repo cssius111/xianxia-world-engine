@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# @dev_only
 """
 修仙世界引擎 - 第1阶段重构应用脚本
 自动应用前端重构的所有更改
@@ -48,9 +49,9 @@ class RefactorApplier:
             
     def update_flask_config(self):
         """更新Flask配置文件"""
-        config_file = self.project_root / "run_web_ui_optimized.py"
+        config_file = self.project_root / "entrypoints" / "run_web_ui_optimized.py"
         if not config_file.exists():
-            self.log_action("未找到 run_web_ui_optimized.py", "⚠️")
+            self.log_action("未找到 entrypoints/run_web_ui_optimized.py", "⚠️")
             return
             
         self.backup_file(config_file)
@@ -133,7 +134,7 @@ class RefactorApplier:
 
 2. **测试运行**
    ```bash
-   python run_web_ui_optimized.py
+   python entrypoints/run_web_ui_optimized.py
    ```
 
 3. **验证功能**

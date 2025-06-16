@@ -48,4 +48,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:5001/api/v1/system/health || exit 1
 
 # 启动命令
-CMD ["python", "run_web_ui_optimized.py"]
+CMD ["python", "entrypoints/run_web_ui_optimized.py"]

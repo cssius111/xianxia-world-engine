@@ -1,4 +1,5 @@
 #!/bin/bash
+# @dev_only
 # deploy_optimizations.sh
 # 仙侠世界引擎优化部署脚本
 

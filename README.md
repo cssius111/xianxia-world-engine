@@ -6,10 +6,11 @@
 ## 项目结构说明（重构于 2025-06-12）
 
 ### 主入口
-- `run_web_ui_optimized.py` - **主入口文件**，运行 Flask Web UI
+- `entrypoints/run_web_ui_optimized.py` - **主入口文件**，运行 Flask Web UI
 
 ### 目录结构
 - `xwe/` - 核心游戏引擎模块
+- `xwe/data/restructured/` - 统一的数据模板目录
 - `templates/` - Flask 模板文件
 - `static/` - 静态资源文件
 - `scripts/` - 辅助脚本和示例代码
@@ -47,6 +48,7 @@
 - [开发指南](#开发指南)
 - [API文档](#api文档)
 - [贡献指南](#贡献指南)
+- [维护脚本](#维护脚本)
 - [世界观概要](#世界观概要)
 
 ## 🌟 项目特色
@@ -255,6 +257,10 @@ python scripts/init_features.py
 - 服务层接口统一由 `xwe.services` 导出，可直接 `from xwe.services import IGameService`
 
 ### 运行测试
+在执行下列测试命令之前，请先安装依赖：
+```bash
+pip install -r requirements.txt
+```
 ```bash
 # 运行所有测试（默认使用 mock 模式）
 export LLM_PROVIDER=mock
@@ -331,6 +337,26 @@ export OPENAI_API_KEY="your-key"
 - 添加适当的注释和文档
 - 为新功能编写测试
 - 保持模块化设计
+
+## 🛠️ 维护笔记
+
+- 定期清理根目录，确保旧的 `backup_*/` 目录移动到 `archive/backups/`，保持主目录整洁。
+## 🛠️ 维护脚本
+
+项目提供 `scripts/tools/auto_archive.py`，用于清理旧版入口文件。
+运行以下命令会自动检测 `run_web_ui.py`、`run_web_ui_enhanced.py`、
+`run_game.py`、`main.py` 等脚本，并将它们移动到 `archive/deprecated/entrypoints/`：
+
+```bash
+python scripts/tools/auto_archive.py
+```
+
+通过 `--dry-run` 参数可预览将执行的操作：
+
+```bash
+python scripts/tools/auto_archive.py --dry-run
+```
+
 
 ## 📊 数据收集
 

@@ -3,7 +3,7 @@
 from flask import Blueprint, jsonify, session
 
 from xwe.features.intelligence_system import intelligence_system
-import run_web_ui_optimized
+from entrypoints import run_web_ui_optimized
 
 bp = Blueprint("intel", __name__)
 

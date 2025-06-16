@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# @dev_only
 # play_demo.py
 """
 游戏演示程序

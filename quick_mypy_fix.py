@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# @dev_only
 """
 快速修复 MyPy 常见错误的脚本
 """

@@ -36,6 +36,13 @@ python main_v3.py
 python run_enhanced_v3.py
 ```
 
+### 4. 运行测试
+在开始测试前，请安装依赖：
+```bash
+pip install -r requirements.txt
+pytest tests/ -v
+```
+
 ## 📚 核心概念速览
 
 ### 表达式系统

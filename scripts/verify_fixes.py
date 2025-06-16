@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# @dev_only
 """
 验证游戏平衡性修复和UI优化
 """

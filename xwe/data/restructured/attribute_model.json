@@ -193,11 +193,33 @@
     }
   },
   "attribute_categories": {
-    "physical": ["strength", "agility", "constitution"],
-    "mental": ["intelligence", "willpower", "charisma"],
-    "cultivation": ["spiritual_power", "comprehension", "spiritual_sense", "luck"],
-    "combat": ["attack_power", "defense", "speed", "critical_rate", "critical_damage"],
-    "resource": ["max_health", "max_mana"]
+    "physical": [
+      "strength",
+      "agility",
+      "constitution"
+    ],
+    "mental": [
+      "intelligence",
+      "willpower",
+      "charisma"
+    ],
+    "cultivation": [
+      "spiritual_power",
+      "comprehension",
+      "spiritual_sense",
+      "luck"
+    ],
+    "combat": [
+      "attack_power",
+      "defense",
+      "speed",
+      "critical_rate",
+      "critical_damage"
+    ],
+    "resource": [
+      "max_health",
+      "max_mana"
+    ]
   },
   "growth_modifiers": {
     "soft_cap": {
@@ -210,7 +232,11 @@
       "description": "属性硬上限，无法超越",
       "primary_attributes": 999,
       "derived_attributes": 9999,
-      "exceptions": ["realm_breakthrough", "special_bloodline", "divine_blessing"]
+      "exceptions": [
+        "realm_breakthrough",
+        "special_bloodline",
+        "divine_blessing"
+      ]
     }
   },
   "temporary_modifiers": {
@@ -231,11 +257,671 @@
         "unique": true
       }
     },
-    "duration_types": ["instant", "short", "medium", "long", "permanent"],
-    "sources": ["skill", "item", "environment", "event", "cultivation"]
+    "duration_types": [
+      "instant",
+      "short",
+      "medium",
+      "long",
+      "permanent"
+    ],
+    "sources": [
+      "skill",
+      "item",
+      "environment",
+      "event",
+      "cultivation"
+    ]
   },
   "_custom_tags": [
     "extendable_attributes",
     "moddable_formulas"
-  ]
+  ],
+  "attribute_milestones": {
+    "description": "属性达到特定数值时的额外效果",
+    "strength": {
+      "50": {
+        "effect": "破坏力+10%",
+        "description": "力达千钧"
+      },
+      "100": {
+        "effect": "无视5%防御",
+        "description": "力破万法"
+      },
+      "200": {
+        "effect": "攻击附带震荡",
+        "description": "山崩地裂"
+      }
+    },
+    "agility": {
+      "50": {
+        "effect": "闪避+5%",
+        "description": "身轻如燕"
+      },
+      "100": {
+        "effect": "残影效果",
+        "description": "形如鬼魅"
+      },
+      "200": {
+        "effect": "瞬间移动",
+        "description": "缩地成寸"
+      }
+    },
+    "constitution": {
+      "50": {
+        "effect": "生命恢复+20%",
+        "description": "体健如牛"
+      },
+      "100": {
+        "effect": "免疫轻微异常",
+        "description": "金刚不坏"
+      },
+      "200": {
+        "effect": "濒死复活",
+        "description": "不死之躯"
+      }
+    }
+  },
+  "growth_curves": {
+    "linear": "base + level * rate",
+    "logarithmic": "base + log(level + 1) * multiplier",
+    "exponential": "base * pow(growth_base, level)",
+    "sigmoid": "max / (1 + exp(-steepness * (level - midpoint)))",
+    "stepped": "thresholds[floor(level / step_size)] * base"
+  },
+  "attribute_relationships": {
+    "complementary_pairs": [
+      {
+        "attributes": [
+          "strength",
+          "constitution"
+        ],
+        "synergy": "physical_prowess",
+        "bonus": {
+          "operation": "*",
+          "operands": [
+            {
+              "function": "min",
+              "inputs": [
+                "strength",
+                "constitution"
+              ]
+            },
+            {
+              "constant": 0.1
+            }
+          ]
+        }
+      },
+      {
+        "attributes": [
+          "intelligence",
+          "willpower"
+        ],
+        "synergy": "mental_fortitude",
+        "bonus": {
+          "operation": "*",
+          "operands": [
+            {
+              "function": "min",
+              "inputs": [
+                "intelligence",
+                "willpower"
+              ]
+            },
+            {
+              "constant": 0.15
+            }
+          ]
+        }
+      }
+    ],
+    "conflicting_pairs": [
+      {
+        "attributes": [
+          "brute_force",
+          "finesse"
+        ],
+        "conflict": "opposing_approaches",
+        "penalty": "当两者差距过大时效率降低"
+      }
+    ],
+    "scaling_relationships": [
+      {
+        "primary": "cultivation_realm",
+        "affected": [
+          "spiritual_power",
+          "max_health",
+          "max_mana"
+        ],
+        "scaling_type": "exponential"
+      },
+      {
+        "primary": "age",
+        "affected": [
+          "wisdom",
+          "experience"
+        ],
+        "scaling_type": "logarithmic",
+        "peak_age": 1000,
+        "decline_after": 2000
+      }
+    ]
+  },
+  "attribute_caps": {
+    "soft_caps": {
+      "description": "超过此值后增长效率递减",
+      "strength": 50,
+      "agility": 50,
+      "constitution": 50,
+      "intelligence": 50,
+      "willpower": 50,
+      "charisma": 50
+    },
+    "hard_caps": {
+      "description": "无法超越的绝对上限",
+      "strength": 100,
+      "agility": 100,
+      "constitution": 100,
+      "intelligence": 100,
+      "willpower": 100,
+      "charisma": 100
+    },
+    "breakthrough_thresholds": {
+      "description": "突破境界时的属性要求",
+      "筑基期": {
+        "spiritual_power": 100,
+        "comprehension": 0.5
+      },
+      "金丹期": {
+        "spiritual_power": 500,
+        "comprehension": 0.7
+      },
+      "元婴期": {
+        "spiritual_power": 2000,
+        "comprehension": 0.9
+      }
+    }
+  },
+  "_spec_version": "1.0.0",
+  "_checksum": "0000000000000000000000000000000000000000000000000000000000000000",
+  "_generated_at": "2025-01-09T00:00:00Z",
+  "progressive_stage": {
+    "cultivation_realm": {
+      "stages": [
+        {
+          "id": "QI_GATHERING",
+          "order": 0,
+          "exp_required": 100,
+          "break_success_pct": 0.95,
+          "fail_penalty": {
+            "hp": -10,
+            "meridian_damage": 0.05
+          },
+          "base_stat_multiplier": 1.0,
+          "副作用权重": 0.02
+        },
+        {
+          "id": "FOUNDATION_BUILDING",
+          "order": 1,
+          "exp_required": 1000,
+          "break_success_pct": 0.8,
+          "fail_penalty": {
+            "hp": -30,
+            "meridian_damage": 0.1
+          },
+          "base_stat_multiplier": 2.0,
+          "副作用权重": 0.05
+        },
+        {
+          "id": "GOLDEN_CORE",
+          "order": 2,
+          "exp_required": 10000,
+          "break_success_pct": 0.6,
+          "fail_penalty": {
+            "hp": -100,
+            "meridian_damage": 0.2
+          },
+          "base_stat_multiplier": 5.0,
+          "副作用权重": 0.1
+        },
+        {
+          "id": "NASCENT_SOUL",
+          "order": 3,
+          "exp_required": 100000,
+          "break_success_pct": 0.4,
+          "fail_penalty": {
+            "hp": -500,
+            "meridian_damage": 0.3
+          },
+          "base_stat_multiplier": 10.0,
+          "副作用权重": 0.2
+        },
+        {
+          "id": "SOUL_TRANSFORMATION",
+          "order": 4,
+          "exp_required": 1000000,
+          "break_success_pct": 0.2,
+          "fail_penalty": {
+            "hp": -2000,
+            "meridian_damage": 0.5
+          },
+          "base_stat_multiplier": 20.0,
+          "副作用权重": 0.3
+        },
+        {
+          "id": "VOID_REFINEMENT",
+          "order": 5,
+          "exp_required": 10000000,
+          "break_success_pct": 0.1,
+          "fail_penalty": {
+            "hp": -10000,
+            "meridian_damage": 0.7
+          },
+          "base_stat_multiplier": 50.0,
+          "副作用权重": 0.4
+        },
+        {
+          "id": "BODY_INTEGRATION",
+          "order": 6,
+          "exp_required": 100000000,
+          "break_success_pct": 0.05,
+          "fail_penalty": {
+            "hp": -50000,
+            "meridian_damage": 0.9
+          },
+          "base_stat_multiplier": 100.0,
+          "副作用权重": 0.5
+        },
+        {
+          "id": "ASCENSION",
+          "order": 7,
+          "exp_required": 1000000000,
+          "break_success_pct": 0.01,
+          "fail_penalty": {
+            "hp": -999999,
+            "meridian_damage": 1.0
+          },
+          "base_stat_multiplier": 1000.0,
+          "副作用权重": 0.8
+        }
+      ],
+      "break_formula": "success = rng() < break_success_pct * talent_factor / 副作用权重"
+    }
+  },
+  "categorical": {
+    "destiny_grade": {
+      "values": [
+        "MORTAL",
+        "BLESSED",
+        "CHOSEN",
+        "HEAVEN_DEFYING",
+        "TRANSCENDENT"
+      ],
+      "weights": [
+        0.7,
+        0.2,
+        0.08,
+        0.019,
+        0.001
+      ],
+      "stat_modifiers": [
+        1.0,
+        1.2,
+        1.5,
+        2.0,
+        5.0
+      ]
+    },
+    "spiritual_root": {
+      "single_roots": [
+        "METAL",
+        "WOOD",
+        "WATER",
+        "FIRE",
+        "EARTH"
+      ],
+      "dual_roots": [
+        "METAL_WOOD",
+        "WOOD_WATER",
+        "WATER_FIRE",
+        "FIRE_EARTH",
+        "EARTH_METAL"
+      ],
+      "triple_roots": [
+        "MWW",
+        "WWF",
+        "WFE",
+        "FEM",
+        "EMW"
+      ],
+      "quad_roots": [
+        "MWWF",
+        "WWFE",
+        "WFEM",
+        "FEMW",
+        "EMWW"
+      ],
+      "penta_root": [
+        "MWWFE"
+      ],
+      "quality_tiers": [
+        "WASTE",
+        "POOR",
+        "AVERAGE",
+        "GOOD",
+        "EXCELLENT",
+        "HEAVENLY"
+      ],
+      "tier_weights": [
+        0.3,
+        0.3,
+        0.25,
+        0.1,
+        0.049,
+        0.001
+      ]
+    },
+    "race": {
+      "types": [
+        "HUMAN",
+        "DEMON",
+        "BEAST",
+        "SPIRIT",
+        "HYBRID"
+      ],
+      "base_modifiers": {
+        "HUMAN": {
+          "int": 1.1,
+          "wis": 1.1,
+          "str": 1.0,
+          "agi": 1.0
+        },
+        "DEMON": {
+          "int": 0.9,
+          "wis": 0.8,
+          "str": 1.3,
+          "agi": 1.1
+        },
+        "BEAST": {
+          "int": 0.7,
+          "wis": 0.9,
+          "str": 1.5,
+          "agi": 1.3
+        },
+        "SPIRIT": {
+          "int": 1.5,
+          "wis": 1.3,
+          "str": 0.6,
+          "agi": 0.9
+        },
+        "HYBRID": {
+          "int": 1.0,
+          "wis": 1.0,
+          "str": 1.1,
+          "agi": 1.1
+        }
+      }
+    }
+  },
+  "numeric_scale": {
+    "primary_stats": {
+      "strength": {
+        "min": 1,
+        "max": 999,
+        "soft_cap": 100,
+        "hard_cap": 999
+      },
+      "agility": {
+        "min": 1,
+        "max": 999,
+        "soft_cap": 100,
+        "hard_cap": 999
+      },
+      "constitution": {
+        "min": 1,
+        "max": 999,
+        "soft_cap": 100,
+        "hard_cap": 999
+      },
+      "intelligence": {
+        "min": 1,
+        "max": 999,
+        "soft_cap": 100,
+        "hard_cap": 999
+      },
+      "willpower": {
+        "min": 1,
+        "max": 999,
+        "soft_cap": 100,
+        "hard_cap": 999
+      },
+      "charisma": {
+        "min": 1,
+        "max": 999,
+        "soft_cap": 100,
+        "hard_cap": 999
+      }
+    },
+    "cultivation_stats": {
+      "spiritual_power": {
+        "min": 0,
+        "max": 999999,
+        "regen_rate": 0.1
+      },
+      "comprehension": {
+        "min": 0.1,
+        "max": 10.0,
+        "default": 1.0
+      },
+      "spiritual_sense": {
+        "min": 1,
+        "max": 9999,
+        "growth": "log2(realm_level * 10 + willpower * 2)"
+      },
+      "karma": {
+        "min": -9999,
+        "max": 9999,
+        "default": 0
+      }
+    },
+    "derived_stats": {
+      "hp": "constitution * 15 + realm_level * 100",
+      "mp": "spiritual_power * 3 + intelligence * 10",
+      "atk": "strength * 2 + weapon_atk + skill_bonus",
+      "def": "constitution * 1 + armor_def + skill_bonus",
+      "spd": "agility * 3 + movement_bonus",
+      "crit_rate": "0.05 + luck * 0.001 + skill_crit",
+      "crit_dmg": "1.5 + strength * 0.001",
+      "evasion": "agility * 0.02 + skill_evasion",
+      "accuracy": "1.0 - (target_evasion - agility * 0.5) / 100"
+    }
+  },
+  "effect_dict": {
+    "status_effects": {
+      "走火入魔": {
+        "duration": 300,
+        "stat_modifiers": {
+          "atk": 2.0,
+          "def": 0.5,
+          "accuracy": 0.7
+        },
+        "tick_damage": "max_hp * 0.02",
+        "can_stack": false,
+        "remove_conditions": [
+          "心魔丹",
+          "高僧净化",
+          "time_expire"
+        ]
+      },
+      "灵根共鸣": {
+        "duration": 600,
+        "stat_modifiers": {
+          "spiritual_power": 1.5,
+          "mp_regen": 2.0
+        },
+        "tick_heal": "max_mp * 0.05",
+        "can_stack": false,
+        "trigger_conditions": [
+          "multi_element_skill",
+          "formation_resonance"
+        ]
+      },
+      "天劫余威": {
+        "duration": 86400,
+        "stat_modifiers": {
+          "all_stats": 0.5,
+          "exp_gain": 0.3
+        },
+        "special_effects": [
+          "lightning_attract",
+          "breakthrough_blocked"
+        ],
+        "can_stack": false,
+        "remove_conditions": [
+          "special_pill",
+          "time_expire"
+        ]
+      },
+      "顿悟": {
+        "duration": 1800,
+        "stat_modifiers": {
+          "comprehension": 10.0,
+          "skill_exp": 5.0
+        },
+        "special_effects": [
+          "instant_skill_level",
+          "breakthrough_chance_up"
+        ],
+        "can_stack": false,
+        "trigger_rarity": 0.001
+      }
+    }
+  },
+  "flag": {
+    "system_flags": {
+      "IS_BOSS": {
+        "hp_multiplier": 10.0,
+        "reward_multiplier": 5.0
+      },
+      "IS_ELITE": {
+        "hp_multiplier": 3.0,
+        "reward_multiplier": 2.0
+      },
+      "PLOT_IMMUNE": {
+        "cannot_die": true,
+        "special_dialogue": true
+      },
+      "MERCHANT": {
+        "shop_enabled": true,
+        "price_modifier": 1.0
+      },
+      "QUEST_GIVER": {
+        "quest_pool": true,
+        "affection_matters": true
+      }
+    },
+    "combat_flags": {
+      "FLYING": {
+        "melee_evasion": 0.5,
+        "ranged_vulnerability": 1.2
+      },
+      "ETHEREAL": {
+        "physical_immunity": 0.9,
+        "magic_vulnerability": 1.5
+      },
+      "BERSERK": {
+        "atk_bonus": 2.0,
+        "def_penalty": 0.5,
+        "no_flee": true
+      },
+      "DEFENSIVE": {
+        "def_bonus": 2.0,
+        "atk_penalty": 0.5,
+        "counter_chance": 0.3
+      }
+    },
+    "special_flags": {
+      "REINCARNATOR": {
+        "exp_multiplier": 2.0,
+        "skill_retention": 0.5
+      },
+      "HEAVEN_BLESSED": {
+        "luck_bonus": 100,
+        "tribulation_reduction": 0.5
+      },
+      "DEMON_TAINTED": {
+        "dark_affinity": 2.0,
+        "npc_hostility": 1.5
+      },
+      "FORMATION_MASTER": {
+        "formation_power": 2.0,
+        "array_breaking": 1.5
+      }
+    }
+  },
+  "compatibility_matrix": {
+    "element_relations": [
+      [
+        1.0,
+        0.8,
+        1.2,
+        0.5,
+        1.1
+      ],
+      [
+        1.2,
+        1.0,
+        0.8,
+        1.1,
+        0.5
+      ],
+      [
+        0.8,
+        1.2,
+        1.0,
+        0.5,
+        1.1
+      ],
+      [
+        1.1,
+        0.5,
+        1.2,
+        1.0,
+        0.8
+      ],
+      [
+        0.5,
+        1.1,
+        0.8,
+        1.2,
+        1.0
+      ]
+    ],
+    "/* row=attacker_element, col=defender_element, order: Metal,Wood,Water,Fire,Earth */": null
+  },
+  "power_level_formula": "log2(str + agi + con + int + wil) * realm_multiplier * sqrt(cultivation_years)",
+  "breakthrough_formula": "success = (base_chance * comprehension * preparation_bonus) / (1 + tribulation_difficulty) > random()",
+  "talent_awakening": {
+    "trigger_conditions": [
+      "realm_breakthrough",
+      "life_death_crisis",
+      "special_encounter",
+      "bloodline_activation"
+    ],
+    "awakening_chance": "0.001 * luck * crisis_severity * bloodline_purity",
+    "talent_types": [
+      "COMBAT",
+      "SUPPORT",
+      "CRAFTING",
+      "SPECIAL",
+      "LEGENDARY"
+    ],
+    "talent_weights": [
+      0.4,
+      0.3,
+      0.2,
+      0.09,
+      0.01
+    ]
+  }
 }

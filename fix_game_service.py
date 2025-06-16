@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# @dev_only
 """
 手动修复 game_service.py 的示例脚本
 展示如何精确修复特定文件的错误
