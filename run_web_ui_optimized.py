@@ -25,7 +25,7 @@ from xwe.features.ai_personalization import AIPersonalization
 from xwe.features.community_system import CommunitySystem
 from xwe.features.technical_ops import TechnicalOps
 from api import register_api
-from routes import lore, character
+from routes import lore, character, intel
 
 
 app = Flask(__name__, static_folder='static', template_folder='templates_enhanced')
@@ -35,6 +35,7 @@ register_api(app)
 # 注册路由蓝图
 app.register_blueprint(lore.bp)
 app.register_blueprint(character.bp)
+app.register_blueprint(intel.bp)
 
 # 全局游戏实例管理
 game_instances = {}
@@ -43,7 +44,8 @@ def get_game_instance(session_id):
     """获取或创建游戏实例"""
     if session_id not in game_instances:
         # 创建新游戏实例
-        game = create_enhanced_game()
+        game_mode = os.getenv("GAME_MODE", "player")
+        game = create_enhanced_game(game_mode=game_mode)
         
         # 初始化各系统
         # CultivationSystem 构造函数不接受游戏实例参数

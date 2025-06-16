@@ -6,6 +6,7 @@
 from flask import Blueprint, jsonify, request, session, current_app
 from xwe.core.character import Character, CharacterType
 from xwe.core.attributes import CharacterAttributes
+from xwe.features.random_player_panel import RandomPlayerPanel
 
 bp = Blueprint("character", __name__)
 
@@ -84,6 +85,10 @@ def create_character():
         import run_web_ui_optimized
         instance = run_web_ui_optimized.get_game_instance(session['session_id'])
         game = instance['game']
+
+        # 根据当前模式加载角色面板配置
+        game_mode = session.get('game_mode', 'player')
+        panel = RandomPlayerPanel(game_mode=game_mode)
         
         # 创建角色属性
         attrs = CharacterAttributes()
@@ -96,7 +101,7 @@ def create_character():
         attrs.max_cultivation = 100
         
         # 根据Roll的属性点分配计算实际属性
-        roll_attrs = data['attributes']
+        roll_attrs = panel.sanitize_attributes(data['attributes'])
         
         # 根骨影响生命值和防御
         constitution = roll_attrs.get('constitution', 5)
