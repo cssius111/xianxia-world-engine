@@ -8,7 +8,7 @@ from pathlib import Path
 from dataclasses import dataclass
 from typing import List, Dict, Any, Optional
 
-from .intelligence_system import IntelligenceSystem, NewsItem
+from .intelligence_system import IntelligenceSystem, IntelItem
 
 
 @dataclass(order=True)
@@ -76,10 +76,11 @@ class TimelineManager:
                 event["_triggered"] = True
                 triggered.append(event)
                 if self.intelligence_system:
-                    news = NewsItem(
+                    news = IntelItem(
                         id=event.get("event_id", ""),
                         title=event.get("name", ""),
                         content=event.get("description", ""),
+                        ttl=86400,
                         raw_event=event,
                     )
                     self.intelligence_system.add_global_news(news)
