@@ -90,6 +90,7 @@ python restructure_project.py --project-root /path/to/xianxia_world_engine
 ### README 更新
 - 自动在 README.md 中添加项目结构说明
 - 标注 `run_web_ui_optimized.py` 为主入口
+- 统一模板文件需在 `meta` 中加入 `schema_version` 字段
 
 ## 注意事项
 
