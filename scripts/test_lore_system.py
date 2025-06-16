@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# @dev_only
 """
 仙侠世界引导系统 - 快速测试脚本
 用于测试新手引导流程

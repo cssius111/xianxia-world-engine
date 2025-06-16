@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# @dev_only
 """
 初始化所有新功能
 """

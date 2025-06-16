@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# @dev_only
 """
 批量修复 xianxia_world_engine 项目的 MyPy 类型错误
 """

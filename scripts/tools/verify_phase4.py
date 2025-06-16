@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# @dev_only
 """
 第4阶段功能验证脚本
 验证所有新增功能是否正常工作

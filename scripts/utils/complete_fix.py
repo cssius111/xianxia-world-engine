@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# @dev_only
 """完整的修复和验证脚本 - 一键修复所有问题"""
 
 import os

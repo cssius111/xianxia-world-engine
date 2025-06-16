@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# @dev_only
 """
 自动化测试脚本
 """

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# @dev_only
 """
 修仙世界引擎 V2 - 完整测试脚本
 测试新的引导系统和所有功能

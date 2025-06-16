@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# @dev_only
 """最简单的启动脚本 - 直接运行游戏"""
 
 import os

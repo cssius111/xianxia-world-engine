@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# @dev_only
 """
 展示如何在主游戏中使用修复后的系统和增强的UI
 """

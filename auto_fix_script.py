@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# @dev_only
 """自动生成的 MyPy 错误修复脚本"""
 
 import re

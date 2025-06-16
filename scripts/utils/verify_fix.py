@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# @dev_only
 """快速验证修复是否成功"""
 
 import sys

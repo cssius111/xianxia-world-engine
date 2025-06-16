@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# @dev_only
 """
 函数重构分析器 - 分析超长函数并提供重构建议
 """

@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# @dev_only
 """
 快速检查项目状态
 显示当前修复情况
