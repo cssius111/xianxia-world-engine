@@ -287,6 +287,14 @@ python scripts/tools/auto_archive.py
 
 脚本会将 `backup_*` 目录、`logs/` 和 `output/` 中的文件移动到 `_archive/`。
 
+若在重构或移动模块后需要批量更新文件中的引用，可运行：
+
+```bash
+python scripts/tools/update_imports.py --apply
+```
+
+该脚本会根据预设规则（如 `auto_archive.py` 路径以及相对导入）替换项目中文件内容。
+
 ## 📚 API文档
 
 ### NLP API v2.0
