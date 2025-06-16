@@ -100,9 +100,9 @@ class GameService(ServiceBase[IGameService], IGameService):
     def _do_initialize(self) -> None:
         """初始化服务"""
         # 延迟导入避免循环依赖
-        from xwe.services.player_service import IPlayerService
-        from xwe.services.world_service import IWorldService
-        from xwe.services.combat_service import ICombatService
+        from xwe.services.interfaces.player_service import IPlayerService
+        from xwe.services.interfaces.world_service import IWorldService
+        from xwe.services.interfaces.combat_service import ICombatService
         
         # 获取依赖的服务
         self._player_service = self.get_service(IPlayerService)
