@@ -167,6 +167,21 @@
             </div>
         </div>
     </div>
+
+    <!-- 情报面板 -->
+    <div id="intelPanel" class="game-panel" style="display: none;">
+        <div class="panel-header">
+            <h3>情报</h3>
+            <button class="panel-close" onclick="GamePanels.closePanel('intelPanel')">&times;</button>
+        </div>
+        <div class="panel-body">
+            <div class="intel-tabs">
+                <button id="intelTabWorld" onclick="GamePanels.switchIntelTab('world')">世界</button>
+                <button id="intelTabPersonal" onclick="GamePanels.switchIntelTab('personal')">个人</button>
+            </div>
+            <div class="intel-list" id="intelList"></div>
+        </div>
+    </div>
     
     <!-- 保存加载面板 -->
     <div id="saveLoadPanel" class="game-panel" style="display: none;">
@@ -526,6 +541,32 @@
     color: #e0e0e0;
 }
 
+/* 情报面板样式 */
+.intel-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+.intel-tabs button {
+    flex: 1;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.4);
+    border: none;
+    color: #ccc;
+    cursor: pointer;
+}
+.intel-tabs button.active {
+    background: rgba(107, 139, 125, 0.4);
+}
+.intel-item {
+    padding: 10px;
+    border-bottom: 1px solid rgba(107, 139, 125, 0.2);
+    cursor: pointer;
+}
+.intel-item:hover {
+    background: rgba(107, 139, 125, 0.1);
+}
+
 /* 保存加载样式 */
 .save-load-buttons {
     display: flex;
@@ -687,6 +728,9 @@ const GamePanels = {
             case 'questsPanel':
                 this.loadQuestsData();
                 break;
+            case 'intelPanel':
+                this.loadIntelData();
+                break;
         }
     },
     
@@ -698,6 +742,7 @@ const GamePanels = {
     showExplore() { this.showPanel('explorePanel'); },
     showMap() { this.showPanel('mapPanel'); },
     showQuests() { this.showPanel('questsPanel'); },
+    showIntel() { this.showPanel('intelPanel'); },
     showSaveLoad() { this.showPanel('saveLoadPanel'); },
     showHelp() { this.showPanel('helpPanel'); },
     
@@ -861,6 +906,41 @@ const GamePanels = {
             `;
             list.appendChild(item);
         });
+    },
+
+    /**
+     * 加载情报数据
+     */
+    async loadIntelData(tab = 'world') {
+        try {
+            const resp = await fetch('/api/intel');
+            const data = await resp.json();
+            const list = document.getElementById('intelList');
+            list.innerHTML = '';
+            const items = tab === 'world' ? data.global : data.personal;
+            items.forEach(i => {
+                const div = document.createElement('div');
+                div.className = 'intel-item';
+                div.textContent = i.title;
+                div.onclick = () => GamePanels.showIntelDetail(i);
+                list.appendChild(div);
+            });
+            document.getElementById('intelTabWorld').classList.toggle('active', tab === 'world');
+            document.getElementById('intelTabPersonal').classList.toggle('active', tab === 'personal');
+        } catch (e) {
+            console.error('加载情报失败', e);
+        }
+    },
+
+    switchIntelTab(tab) {
+        this.loadIntelData(tab);
+    },
+
+    showIntelDetail(item) {
+        alert(item.content);
+        if (item.interactable_task_id) {
+            this.showQuests();
+        }
     },
     
     /**

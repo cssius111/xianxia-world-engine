@@ -48,6 +48,7 @@ class GameState:
     game_mode: str = "player"  # 游戏模式：player 或 dev
     flags: Dict[str, Any] = field(default_factory=dict)
     npcs: Dict[str, Character] = field(default_factory=dict)
+    game_mode: str = "player"
     
     def to_dict(self) -> Dict[str, Any]:
         """转换为可序列化的字典"""
@@ -58,7 +59,8 @@ class GameState:
             'game_time': self.game_time,
             'game_mode': self.game_mode,
             'flags': self.flags,
-            'npcs': {npc_id: npc.to_dict() for npc_id, npc in self.npcs.items()}
+            'npcs': {npc_id: npc.to_dict() for npc_id, npc in self.npcs.items()},
+            'game_mode': self.game_mode
         }
     
     @classmethod
@@ -76,6 +78,8 @@ class GameState:
         state.flags = data.get('flags', {})
         if 'npcs' in data:
             state.npcs = {nid: Character.from_dict(nc) for nid, nc in data['npcs'].items()}
+
+        state.game_mode = data.get('game_mode', 'player')
 
         return state
 
@@ -145,7 +149,10 @@ class GameCore:
         self.immersive_event_system = ImmersiveEventSystem(self.output)
         
         # 游戏状态
+
         self.game_state = GameState(game_mode=game_mode)
+        self.game_state = GameState()
+        self.game_state.game_mode = game_mode
         self.game_mode = game_mode
         self.running = False
         
@@ -196,6 +203,12 @@ class GameCore:
             self._character_creation_flow(player_name)
     def _character_creation_flow(self, player_name: str) -> None:
         """角色创建流程 - 使用Roll系统"""
+        if self.game_state.game_mode != "player":
+            roll_result = self.character_roller.roll()
+            self._display_roll_result(roll_result)
+            self.game_state.player = self._create_player_from_roll(player_name, roll_result)
+            self._finalize_character_creation()
+            return
         self.output("=== 开局Roll ===")
         self.output("你可以无限次重置角色面板，直到获得满意的属性。")
         self.output("每次Roll都会随机生成：灵根、命格、天赋、系统等。")
