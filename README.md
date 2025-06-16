@@ -328,6 +328,9 @@ export OPENAI_API_KEY="your-key"
 - 为新功能编写测试
 - 保持模块化设计
 
+## 🛠️ 维护笔记
+
+- 定期清理根目录，确保旧的 `backup_*/` 目录移动到 `archive/backups/`，保持主目录整洁。
 ## 🛠️ 维护脚本
 
 项目提供 `scripts/tools/auto_archive.py`，用于清理旧版入口文件。
@@ -343,6 +346,7 @@ python scripts/tools/auto_archive.py
 ```bash
 python scripts/tools/auto_archive.py --dry-run
 ```
+
 
 ## 📊 数据收集
 

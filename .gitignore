@@ -29,6 +29,7 @@ build/
 
 # Game saves
 saves/*.json
+saves/backups/
 
 # macOS
 .DS_Store
