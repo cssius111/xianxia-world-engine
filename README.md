@@ -255,6 +255,10 @@ python scripts/init_features.py
 - 服务层接口统一由 `xwe.services` 导出，可直接 `from xwe.services import IGameService`
 
 ### 运行测试
+在执行下列测试命令之前，请先安装依赖：
+```bash
+pip install -r requirements.txt
+```
 ```bash
 # 运行所有测试（默认使用 mock 模式）
 export LLM_PROVIDER=mock
