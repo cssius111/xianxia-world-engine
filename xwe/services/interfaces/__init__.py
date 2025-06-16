@@ -6,16 +6,31 @@ from typing import Any
 
 # 核心服务接口
 from xwe.services.game_service import IGameService, GameState, CommandResult
-from xwe.services.player_service import IPlayerService, PlayerData, PlayerStatus
-from xwe.services.save_service import ISaveService, SaveInfo, SaveData, SaveType
-from xwe.services.world_service import IWorldService, Location, LocationType, Weather, TimeOfDay, WorldEvent, ExplorationResult
-from xwe.services.combat_service import ICombatService, CombatState, Combatant, CombatAction, CombatResult, CombatType, ActionType, DamageType
-from xwe.services.cultivation_service import ICultivationService, CultivationRealm, CultivationType, SpiritualRoot, CultivationTechnique, CultivationResult, BreakthroughInfo, Tribulation
+from xwe.services.interfaces.player_service import IPlayerService, PlayerData
+from xwe.services.save_service import ISaveService
+from xwe.services.interfaces.save_service import SaveInfo, SaveData, SaveType
+from xwe.services.interfaces.world_service import IWorldService
+from xwe.services.interfaces.combat_service import ICombatService
+from xwe.services.interfaces.cultivation_service import (
+    ICultivationService,
+    CultivationRealm,
+    CultivationType,
+    SpiritualRoot,
+    CultivationTechnique,
+    CultivationResult,
+    BreakthroughInfo,
+    Tribulation,
+)
 
 # 已在主services目录的接口
-from xwe.command_engine import ICommandEngine, CommandContext, CommandResult as CmdResult, ICommandHandler
-from xwe.event_dispatcher import IEventDispatcher, EventStatistics
-from xwe.log_service import ILogService, LogEntry, LogFilter, LogLevel
+from xwe.services.command_engine import (
+    ICommandEngine,
+    CommandContext,
+    CommandResult as CmdResult,
+    ICommandHandler,
+)
+from xwe.services.event_dispatcher import IEventDispatcher, EventStatistics
+from xwe.services.log_service import ILogService, LogEntry, LogFilter, LogLevel
 
 # 导出所有接口
 __all__ = [
@@ -27,7 +42,6 @@ __all__ = [
     # Player Service
     'IPlayerService',
     'PlayerData',
-    'PlayerStatus',
     
     # Save Service
     'ISaveService',
@@ -37,22 +51,9 @@ __all__ = [
     
     # World Service
     'IWorldService',
-    'Location',
-    'LocationType',
-    'Weather',
-    'TimeOfDay',
-    'WorldEvent',
-    'ExplorationResult',
     
     # Combat Service
     'ICombatService',
-    'CombatState',
-    'Combatant',
-    'CombatAction',
-    'CombatResult',
-    'CombatType',
-    'ActionType',
-    'DamageType',
     
     # Cultivation Service
     'ICultivationService',

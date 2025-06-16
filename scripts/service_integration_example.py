@@ -13,7 +13,7 @@ from xwe.services import (
     get_service_container
 )
 from xwe.services.game_service import IGameService
-from xwe.services.player_service import IPlayerService
+from xwe.services.interfaces.player_service import IPlayerService
 
 
 def create_app_with_services() -> Flask:

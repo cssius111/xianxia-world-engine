@@ -306,10 +306,13 @@ def register_services(container: ServiceContainer) -> None:
     这个函数应该在应用启动时调用
     """
     from xwe.services.game_service import GameService, IGameService
-    from xwe.services.player_service import PlayerService, IPlayerService
-    from xwe.services.combat_service import CombatService, ICombatService
+    from xwe.services.player_service import PlayerService
+    from xwe.services.combat_service import CombatService
     from xwe.services.save_service import SaveService, ISaveService
-    from xwe.services.world_service import WorldService, IWorldService
+    from xwe.services.world_service import WorldService
+    from xwe.services.interfaces.player_service import IPlayerService
+    from xwe.services.interfaces.world_service import IWorldService
+    from xwe.services.interfaces.combat_service import ICombatService
     from xwe.services.cultivation_service import CultivationService, ICultivationService
     from xwe.services.command_engine import CommandEngine, ICommandEngine
     from xwe.services.event_dispatcher import EventDispatcher, IEventDispatcher
@@ -331,10 +334,10 @@ def register_services(container: ServiceContainer) -> None:
 
 # 对外暴露的接口类型，方便统一导入
 from xwe.services.game_service import IGameService
-from xwe.services.player_service import IPlayerService
-from xwe.services.combat_service import ICombatService
+from xwe.services.interfaces.player_service import IPlayerService
+from xwe.services.interfaces.combat_service import ICombatService
 from xwe.services.save_service import ISaveService
-from xwe.services.world_service import IWorldService
+from xwe.services.interfaces.world_service import IWorldService
 from xwe.services.cultivation_service import ICultivationService
 from xwe.services.command_engine import ICommandEngine
 from xwe.services.event_dispatcher import IEventDispatcher
