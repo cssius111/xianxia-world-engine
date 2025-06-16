@@ -8,7 +8,7 @@ load_dotenv()
 提供自然语言理解和命令转换功能。
 """
 
-from xwe.core.nlp_processor import NLPProcessor, NLPConfig
-from xwe.core.llm_client import LLMClient
+from xwe.core.nlp.nlp_processor import NLPProcessor, NLPConfig
+from xwe.core.nlp.llm_client import LLMClient
 
 __all__ = ['NLPProcessor', 'NLPConfig', 'LLMClient']
