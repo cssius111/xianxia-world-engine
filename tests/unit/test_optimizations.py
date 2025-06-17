@@ -3,6 +3,8 @@
 游戏功能测试脚本 - 验证优化修复效果
 """
 
+from xwe.core.system_manager import system_manager
+
 
 # 添加项目路径
 
