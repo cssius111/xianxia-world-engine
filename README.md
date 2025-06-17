@@ -64,6 +64,9 @@ pip install -r requirements.txt
 pytest tests/
 ```
 
+> **注意**：物品ID建议统一使用複数形式，例如 `spirit_stones`，旧写法
+> `spirit_stone` 仍被兼容。
+
 ### 创建自定义游戏
 ```python
 from xwe.core.orchestrator import GameConfig, GameOrchestrator
