@@ -47,12 +47,10 @@ class GameState:
 
     game_time: float = 0.0  # 游戏时间（小时）
     active_hours: float = 0.0  # 连续活动时长
-    game_time: int = 0  # 游戏时间（回合数）
     game_mode: str = "player"  # 游戏模式：player 或 dev
 
     flags: Dict[str, Any] = field(default_factory=dict)
     npcs: Dict[str, Character] = field(default_factory=dict)
-    game_mode: str = "player"
     
     def to_dict(self) -> Dict[str, Any]:
         """转换为可序列化的字典"""
@@ -61,14 +59,10 @@ class GameState:
             'current_location': self.current_location,
             'current_combat': self.current_combat,
             'game_time': self.game_time,
-
             'active_hours': self.active_hours,
-
             'game_mode': self.game_mode,
-
             'flags': self.flags,
             'npcs': {npc_id: npc.to_dict() for npc_id, npc in self.npcs.items()},
-            'game_mode': self.game_mode
         }
     
     @classmethod
@@ -84,15 +78,11 @@ class GameState:
 
         state.game_time = data.get('game_time', 0.0)
         state.active_hours = data.get('active_hours', 0.0)
-
-        state.game_time = data.get('game_time', 0)
         state.game_mode = data.get('game_mode', 'player')
 
         state.flags = data.get('flags', {})
         if 'npcs' in data:
             state.npcs = {nid: Character.from_dict(nc) for nid, nc in data['npcs'].items()}
-
-        state.game_mode = data.get('game_mode', 'player')
 
         return state
 

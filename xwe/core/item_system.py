@@ -27,7 +27,8 @@ class ItemSystem:
     def get_spirit_stones(self, player_id: str) -> int:
         """获取玩家的灵石数量"""
         inventory = self.player_inventories.get(player_id, {})
-        return inventory.get('spirit_stones', 0)
+        # 兼容不同写法的灵石ID
+        return inventory.get('spirit_stone', inventory.get('spirit_stones', 0))
     
     def add_item(self, player_id: str, item_id: str, quantity: int = 1) -> bool:
         """添加物品到玩家背包"""

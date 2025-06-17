@@ -11,10 +11,12 @@ def test_imports():
     print("🔍 测试模块导入...")
     
     try:
+        from xwe.core.system_manager import system_manager
         # 测试新创建的系统模块
         from xwe.core.item_system import item_system, Item, ItemSystem
         print("✅ item_system 导入成功")
         
+        from xwe.core.system_manager import system_manager, SystemManager
         print("✅ system_manager 导入成功")
         
         from xwe.core.confirmation_manager import confirmation_manager, ConfirmationManager
@@ -88,9 +90,10 @@ def test_item_system():
 def test_system_manager():
     """测试系统管理器功能"""
     print("\n⚙️ 测试系统管理器...")
-    
+
     try:
-        
+        from xwe.core.system_manager import system_manager
+
         # 测试修炼系统激活
         test_system = {
             'name': '九转修炼系统',
