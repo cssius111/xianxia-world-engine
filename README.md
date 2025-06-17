@@ -1,409 +1,150 @@
-# 修仙世界引擎 (XianXia World Engine) v3.0
+# 仙侠世界引擎 (Xianxia World Engine)
 
-> 一个基于Python的AI驱动修仙游戏引擎，支持自然语言交互、动态剧情生成和丰富的游戏系统。
+一个模块化、可扩展的文字冒险游戏引擎，专为仙侠题材游戏设计。
 
+## 🎮 快速开始
 
-## 项目结构说明（重构于 2025-06-12）
-
-### 主入口
-- `entrypoints/run_web_ui_optimized.py` - **主入口文件**，运行 Flask Web UI
-
-### 目录结构
-- `xwe/` - 核心游戏引擎模块
-- `xwe/data/restructured/` - 统一的数据模板目录
-- `templates/` - Flask 模板文件
-- `static/` - 静态资源文件
-- `scripts/` - 辅助脚本和示例代码
-  - `tools/` - 项目工具脚本
-- `tests/` - 测试文件
-  - `unit/` - 单元测试
-  - `web_ui/` - Web UI 相关测试
-- `docs/` - 项目文档
-  - `guides/` - 使用指南
-  - `progress/` - 开发进度记录
-- `archive/` - 归档文件
-  - `deprecated/entrypoints/` - 废弃的入口文件
-  - `backups/` - 备份文件
-- `output/` - 输出文件（HTML报告等）
-- `plugins/` - 插件系统
-- `mods/` - 游戏模组
-
-### 废弃入口说明
-以下入口文件已归档至 `archive/deprecated/entrypoints/`：
-- `main.py` - 原命令行入口
-- `run_game.py` - 已被 `entrypoints/run_web_ui_optimized.py` 取代
-- `run_web_ui.py` - 已被 `entrypoints/run_web_ui_optimized.py` 取代
-- 其他旧版入口文件
-
----
-
-
-## 📑 目录
-
-- [项目特色](#项目特色)
-- [快速开始](#快速开始)
-- [游戏特性](#游戏特性)
-- [核心功能](#核心功能)
-- [技术架构](#技术架构)
-- [开发指南](#开发指南)
-- [API文档](#api文档)
-- [贡献指南](#贡献指南)
-- [维护脚本](#维护脚本)
-- [世界观概要](#世界观概要)
-
-## 🌟 项目特色
-
-### 核心亮点
-- **AI驱动的自然语言交互**: 集成DeepSeek API，理解复杂的中文指令
-- **开局Roll系统**: 无限重置角色属性，追求完美开局
-- **动态游戏世界**: 随机事件、动态数据、真实的修炼体验
-- **完整游戏系统**: 战斗、技能、探索、NPC交互、对话系统
-- **模块化架构**: 清晰的代码结构，易于扩展和维护
-
-### 3.0版本新增
-- 🐉 中国龙ASCII艺术和彩色输出
-- 📊 智能状态显示与渐进式成就系统
-- ⚙️ 命令优先级和智能命令处理
-- 🌟 开局事件及沉浸式剧情系统
-- 📦 MOD生态与内容热更新
-- 🤖 AI个性化推荐与社区反馈
-- 🛠️ 自动存档和性能监控
-
-## 🚀 快速开始
-
-### 环境要求
-- Python 3.8+
-- pip（Python包管理器）
-- requests 库（已包含在 `requirements.txt` 中）
-
-### 一键启动
+### 运行游戏
 ```bash
-# 推荐方式：启动优化版 Web UI
-python entrypoints/run_web_ui_optimized.py
+python run_game.py
 ```
 
-如需启用开发者模式，可在启动脚本中指定 `--mode dev`：
-```bash
-python main_menu.py --mode dev
+### 基本命令
+```
+新游戏 张三      # 创建新角色
+继续            # 加载最新存档
+帮助            # 查看所有命令
+退出            # 退出游戏
 ```
 
-更多启动脚本和说明请参阅 [docs/STARTERS.md](docs/STARTERS.md)。
+## 🏗️ 项目结构
 
-启动主菜单示例：
-```bash
-python main_menu.py --mode player  # 默认玩家模式
-python main_menu.py --mode dev     # 开发者模式
-```
-
-### 安装步骤
-```bash
-# 1. 克隆项目
-git clone <repository-url>
-cd xianxia_world_engine
-
-# 2. 安装依赖
-pip install -r requirements.txt  # 包含 jsonschema 等核心库及 Web UI 依赖
-
-# 3. 配置API（可选，用于AI功能）
-cp .env.example .env  # 复制示例配置文件
-# 然后编辑 `.env` 填入相应的 API 密钥
-```
-
-## 🎮 游戏特性
-
-### 开局Roll系统
-- 🎲 无限重置角色属性直到满意
-- 🌟 11种命格、12种天赋、10种系统、7种身份
-- 💎 完整灵根体系（单灵根到五灵根）
-- 📊 综合评分系统（D级-SSS级）
-
-### 核心玩法
-- **修炼系统**: 从聚气期到合体期的完整境界体系
-- **战斗系统**: 回合制战斗，支持技能、防御、逃跑
-- **探索系统**: 发现新地点、触发随机事件
-- **NPC交互**: 对话、交易、关系系统
-- **成就系统**: 6大类14种成就，持续的目标和奖励
-
-### 游戏命令
-
-#### 基础命令
-- `状态` - 查看角色信息
-- `技能` - 查看技能列表
-- `地图` - 查看当前位置
-- `探索` - 探索当前区域
-- `修炼` - 进行修炼
-- `帮助` - 显示所有命令
-
-#### 自然语言支持
-游戏支持自然语言输入，例如：
-- "我想去坊市看看"
-- "用剑气斩攻击那个妖兽"
-- "和王老板聊聊天"
-- "我要修炼一会儿"
-
-#### 3.0新增命令
-- `反馈：[内容]` - 提交游戏反馈
-- `社区` - 查看社区链接
-- `系统状态` - 查看系统信息
-
-## 🏗️ 核心功能
-
-### 1️⃣ 基础玩家体验
-- **智能命令系统**: 模糊匹配、自然语言理解、快捷键支持
-- **友善错误引导**: 输错命令时提供智能建议
-- **上下文感知**: 根据当前场景提供相关提示
-
-### 2️⃣ 沉浸式叙事
-- **开局事件系统**: 5种精心设计的开局（神秘长老、家族传承等）
-- **天赋逆转机制**: 废材逆袭、诅咒化福等特殊转折
-- **成就系统**: 战斗、修炼、探索、社交等多维度成就
-
-### 3️⃣ 内容生态
-- **MOD系统**: 完整的MOD加载器，支持热更新
-- **内容类型**: NPC、物品、技能、地点、事件、任务、对话、怪物
-- **MOD工具**: 一键创建MOD模板，统一内容管理
-
-### 4️⃣ AI个性化
-- **玩家风格识别**: 8种玩家风格（战士型、探索型、社交型等）
-- **动态内容推荐**: 根据行为分析推送个性化内容
-- **自适应难度**: 根据玩家水平调整游戏难度
-
-### 5️⃣ 社区系统
-- **游戏内反馈**: 使用`反馈：[内容]`命令
-- **自动分类**: Bug、建议、表扬、问题、投诉
-- **社区链接**: Discord、论坛、Wiki、GitHub
-
-### 6️⃣ 技术运营
-- **自动存档**: 每5分钟或20个命令自动保存
-- **性能监控**: CPU和内存使用监控
-- **崩溃保护**: 自动恢复和错误日志
-
-### 7️⃣ 视觉增强
-- **彩色输出**: 16种颜色支持
-- **ASCII艺术**: 10种图案（剑、山、龙等）
-- **文字效果**: 打字机、淡入淡出、进度条
-
-## 📂 技术架构
-
-### 项目结构
 ```
 xianxia_world_engine/
-├── xwe/                # 游戏引擎核心
-│   ├── core/          # 核心系统
-│   ├── world/         # 世界系统
-│   ├── npc/           # NPC系统
-│   ├── features/      # 3.0功能模块
-│   ├── engine/        # 表达式引擎
-│   └── data/          # 游戏数据
-├── scripts/           # 运行脚本
-├── archive/          # 旧版脚本与备份
-├── tests/             # 测试套件
-├── mods/              # MOD目录
-├── saves/             # 存档目录
-├── docs/              # 项目文档
-└── main.py           # 游戏入口
-```
-旧版脚本和备份文件已统一放入 `archive/` 目录，保持主目录整洁。
-
-### 核心模块说明
-
-#### core/ - 核心系统
-- `character.py` - 角色属性和状态管理
-- `combat.py` - 战斗系统实现
-- `skills.py` - 技能系统和效果
-- `ai.py` - NPC AI决策
-- `nlp/` - 自然语言处理模块
-- `roll_system/` - 开局Roll系统
-
-#### world/ - 世界系统
-- `world_map.py` - 地图和区域管理
-- `event_system.py` - 事件触发和处理
-- `location_manager.py` - 位置和移动管理
-
-#### npc/ - NPC系统
-- `dialogue_system.py` - 对话树和分支
-- `npc_manager.py` - NPC档案和行为
-- `trading_system.py` - 交易系统
-
-#### features/ - 3.0功能模块
-- `player_experience.py` - 玩家体验增强
-- `narrative_system.py` - 叙事系统
-- `content_ecosystem.py` - 内容生态
-- `ai_personalization.py` - AI个性化
-- `community_system.py` - 社区系统
-- `technical_ops.py` - 技术运营
-- `visual_enhancement.py` - 视觉增强
-## 世界观概要
-
-本项目采用多位面修仙设定，详细介绍请参见 [docs/WORLD_OVERVIEW.md](docs/WORLD_OVERVIEW.md)。
-
-
-## 🛠️ 开发指南
-
-### 添加新MOD
-1. 运行MOD初始化脚本
-```bash
-python scripts/init_features.py
+├── xwe/                    # 核心代码
+│   ├── core/              # 核心模块
+│   │   ├── state/         # 状态管理
+│   │   ├── output/        # 输出系统
+│   │   ├── command/       # 命令处理
+│   │   └── orchestrator.py # 游戏协调器
+│   ├── features/          # 游戏功能
+│   └── data/             # 游戏数据
+├── examples/             # 示例代码
+├── tests/               # 测试套件
+├── docs/                # 文档
+└── run_game.py         # 快速启动脚本
 ```
 
-2. 在`mods/your_mod/`下添加内容
-3. 游戏会自动加载新MOD
+## 🚀 特性
 
-### 扩展功能
-每个功能模块都可扩展：
-- 新玩家风格：编辑`ai_personalization.py`
-- 新成就：编辑`narrative_system.py`
-- 新视觉效果：编辑`visual_enhancement.py`
-- 服务层接口统一由 `xwe.services` 导出，可直接 `from xwe.services import IGameService`
+### 核心功能
+- ✅ 模块化架构，易于扩展
+- ✅ 多通道输出（控制台、文件、HTML）
+- ✅ 自然语言命令处理
+- ✅ 事件驱动的状态管理
+- ✅ 自动保存和加载
+- ✅ 丰富的游戏命令
 
-### 运行测试
-在执行下列测试命令之前，请先安装依赖：
+### 技术特点
+- 🐍 Python 3.8+ 
+- 📝 完整的类型注解
+- ⚡ 异步支持
+- 🧪 全面的单元测试
+- 📚 详细的文档
+
+## 💻 开发指南
+
+### 安装依赖
 ```bash
 pip install -r requirements.txt
 ```
+
+### 运行测试
 ```bash
-# 运行所有测试（默认使用 mock 模式）
-export LLM_PROVIDER=mock
-python tests/run_all_tests.py
-
-# 测试特定功能
-python test_features.py
-python test_optimizations.py
-
-# 运行单元测试
-python -m pytest tests/unit/
+pytest tests/
 ```
 
-如需使用真实 LLM 进行测试，可在 `.env` 中填入 API 密钥，并将
-`LLM_PROVIDER` 设置为实际提供商。
-
-## 🗄️ 维护脚本
-
-项目提供 `scripts/tools/auto_archive.py` 用于定期归档备份和日志，保持主目录整洁：
-
-```bash
-python scripts/tools/auto_archive.py
-```
-
-脚本会将 `backup_*` 目录、`logs/` 和 `output/` 中的文件移动到 `_archive/`。
-
-若在重构或移动模块后需要批量更新文件中的引用，可运行：
-
-```bash
-python scripts/tools/update_imports.py --apply
-```
-
-该脚本会根据预设规则（如 `auto_archive.py` 路径以及相对导入）替换项目中文件内容。
-
-## 📚 API文档
-
-### NLP API v2.0
+### 创建自定义游戏
 ```python
-from xwe.core.nlp import NLPProcessor
+from xwe.core.orchestrator import GameConfig, GameOrchestrator
 
-nlp = NLPProcessor()
-result = nlp.parse(user_input, context=None)
+# 配置游戏
+config = GameConfig(
+    game_name="我的仙侠世界",
+    enable_html=True,
+    auto_save_enabled=True
+)
+
+# 创建并运行游戏
+game = GameOrchestrator(config)
+game.run_sync()
 ```
 
-**参数说明**:
-- `user_input` (str): 用户输入的自然语言文本
-- `context` (dict): 游戏上下文信息
+### 添加新命令
+```python
+from xwe.core.command import CommandHandler, CommandResult
 
-**返回值**: `ParsedCommand`对象
-- `command_type`: 命令类型
-- `target`: 目标（如果有）
-- `parameters`: 额外参数
-- `confidence`: 置信度（0-1）
+class CustomHandler(CommandHandler):
+    def can_handle(self, context):
+        return context.raw_input.startswith("自定义")
+    
+    def handle(self, context):
+        context.output_manager.info("执行自定义命令")
+        return CommandResult.success()
 
-### 配置LLM API
-```bash
-# DeepSeek API
-export DEEPSEEK_API_KEY="your-key"
-
-# OpenAI API
-export OPENAI_API_KEY="your-key"
+# 注册处理器
+game.command_processor.register_handler(CustomHandler())
 ```
 
-## 🤝 贡献指南
+## 📖 文档
 
-### 贡献流程
-1. Fork项目
-2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 创建Pull Request
+详细文档请查看 `docs/` 目录：
+- [架构设计](docs/architecture/modular_design.md)
+- [API文档](docs/api/)
+- [迁移指南](docs/migration/)
+- [示例代码](examples/)
 
-### 贡献重点
-- 新的MOD内容
-- 更多开局事件
-- 新的成就设计
-- 视觉效果改进
-- Bug修复
+## 🎯 游戏玩法
 
-### 代码规范
-- 遵循PEP 8编码规范
-- 添加适当的注释和文档
-- 为新功能编写测试
-- 保持模块化设计
+### 基础命令
+- **移动**：`去 <地点>`
+- **探索**：`探索`
+- **战斗**：`攻击`、`防御`、`逃跑`
+- **修炼**：`修炼`、`突破`
+- **交互**：`和 <NPC> 说话`、`交易`
+- **物品**：`背包`、`使用 <物品>`
+- **信息**：`状态`、`地图`、`技能`
 
-## 🛠️ 维护笔记
+### 游戏目标
+在仙侠世界中修炼成仙，经历各种冒险，提升境界，最终达到飞升。
 
-- 定期清理根目录，确保旧的 `backup_*/` 目录移动到 `archive/backups/`，保持主目录整洁。
-## 🛠️ 维护脚本
+## 🛠️ 配置选项
 
-项目提供 `scripts/tools/auto_archive.py`，用于清理旧版入口文件。
-运行以下命令会自动检测 `run_web_ui.py`、`run_web_ui_enhanced.py`、
-`run_game.py`、`main.py` 等脚本，并将它们移动到 `archive/deprecated/entrypoints/`：
-
-```bash
-python scripts/tools/auto_archive.py
+创建 `game_config.json`：
+```json
+{
+    "game_name": "仙侠世界",
+    "game_mode": "player",
+    "enable_console": true,
+    "enable_html": true,
+    "console_colored": true,
+    "auto_save_enabled": true,
+    "auto_save_interval": 300.0
+}
 ```
 
-通过 `--dry-run` 参数可预览将执行的操作：
+## 🤝 贡献
 
-```bash
-python scripts/tools/auto_archive.py --dry-run
-```
-
-
-## 📊 数据收集
-
-游戏会本地收集以下数据用于改进体验：
-- 玩家行为模式
-- 热门功能使用
-- 错误和崩溃信息
-- 性能数据
-
-*注：所有数据仅存储在本地，不会上传到任何服务器*
-
-## ❓ 常见问题
-
-**Q: 游戏启动失败？**
-A: 检查Python版本（需要3.8+）和依赖安装
-
-**Q: AI功能不工作？**
-A: 需要在.env文件中设置API密钥
-
-**Q: 如何关闭彩色输出？**
-A: 在设置中关闭视觉增强
-
-**Q: MOD不加载？**
-A: 检查MOD目录结构和mod.json格式
+欢迎贡献代码、报告问题或提出建议！
 
 ## 📄 许可证
 
-MIT License - 详见 [LICENSE](LICENSE) 文件
+MIT License
 
 ## 🙏 致谢
 
-- 感谢所有贡献者
-- 特别感谢DeepSeek提供的API支持
-- 社区玩家的宝贵反馈
+感谢所有为这个项目做出贡献的人。
 
 ---
 
-**项目状态**: 活跃开发中 | **版本**: 3.0.0 | **最后更新**: 2025-06-04
-
-如有问题或建议，欢迎提交Issue或联系开发者。
-
-祝您在修仙世界中获得精彩的体验！🗡️✨
+**享受你的仙侠之旅！** 🗡️✨
