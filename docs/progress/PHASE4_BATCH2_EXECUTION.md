@@ -51,7 +51,7 @@
 - [x] 整理 game_core.py TODO 清单
 - [x] 创建执行日志模板
 - [x] 创建 MyPy 类型错误批量修复脚本
-- [x] 运行 fix_mypy_errors.py（修复94个文件，455处错误）
+- [x] 运行 scripts/fix_mypy_errors.py（修复94个文件，455处错误）
 - [x] 分析剩余的425个复杂类型错误
 - [x] 创建手动修复指南
 - [ ] 安装 Flask-JWT-Extended
@@ -70,8 +70,8 @@
 ```bash
 # 新增文件
 - docs/progress/PHASE4_BATCH2_EXECUTION.md
-- analyze_mypy.py (MyPy错误分析工具)
-- fix_mypy_errors.py (批量修复脚本)
+- scripts/analyze_mypy.py (MyPy错误分析工具)
+- scripts/fix_mypy_errors.py (批量修复脚本)
 - MYPY_FIX_GUIDE.md (修复指南)
 - MYPY_MANUAL_FIX_GUIDE.md (手动修复指南)
 - docs/AI_COLLABORATION_TEMPLATE.md (AI协作模板)

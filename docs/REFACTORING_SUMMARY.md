@@ -174,7 +174,7 @@ processor.register_handler(CustomHandler())
 ### 快速开始
 ```bash
 # 直接运行游戏
-python run_game.py
+poetry run run-game
 
 # 或者在代码中
 from xwe.core.orchestrator import run_game
