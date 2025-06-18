@@ -4,7 +4,7 @@
 
 | 脚本 | 说明 |
 | ---- | ---- |
-| `python run_game.py` | 自动修复并启动游戏（推荐） |
+| `poetry run run-game` | 自动修复并启动游戏（推荐） |
 | `python main_menu.py` | 启动主菜单，可加 `--mode dev` 进入开发者模式 |
 | `python main_menu.py [--mode dev]` | 启动主菜单，可选择玩家或开发者模式 |
 | `python main.py` | 直接运行命令行版本游戏 |

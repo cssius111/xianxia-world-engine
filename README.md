@@ -6,7 +6,7 @@
 
 ### 运行游戏
 ```bash
-python run_game.py
+poetry run run-game
 ```
 
 ### 基本命令
@@ -32,7 +32,7 @@ xianxia_world_engine/
 ├── examples/             # 示例代码
 ├── tests/               # 测试套件
 ├── docs/                # 文档
-└── run_game.py         # 快速启动脚本
+└── scripts/run_game.py         # 快速启动脚本
 ```
 
 ## 🚀 特性

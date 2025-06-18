@@ -109,3 +109,8 @@ pytest-asyncio = "^0.23"
 black = "^24.0"
 ruff = "^0.2"
 pre-commit = "^3.6"
+
+[tool.poetry.scripts]
+run-game = "scripts.run_game:main"
+analyze-mypy = "scripts.analyze_mypy:main"
+fix-mypy-errors = "scripts.fix_mypy_errors:main"
