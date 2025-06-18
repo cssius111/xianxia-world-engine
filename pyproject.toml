@@ -1,0 +1,111 @@
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+# Per-module options for gradual adoption
+[[tool.mypy.overrides]]
+module = "xwe_v2.*"
+strict = true
+
+[[tool.mypy.overrides]]
+module = "xwe.*"
+ignore_errors = true  # Legacy code can have errors
+
+[tool.black]
+line-length = 100
+target-version = ['py312']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # Directories
+  \.eggs
+  | \.git
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+  | archive
+  | backup_*
+)/
+'''
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q --strict-markers"
+testpaths = [
+    "tests",
+]
+pythonpath = [
+    ".",
+]
+
+[tool.coverage.run]
+source = ["xwe_v2"]
+omit = [
+    "*/tests/*",
+    "*/__init__.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if __name__ == .__main__.:",
+    "raise AssertionError",
+    "raise NotImplementedError",
+]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "xianxia-world-engine-v2"
+version = "2.0.0-alpha"
+description = "A clean architecture implementation of Xianxia World Engine"
+authors = ["XWE Team"]
+readme = "README.md"
+packages = [{include = "xwe_v2"}]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pydantic = "^2.0"
+typer = "^0.9.0"
+fastapi = "^0.110.0"
+uvicorn = "^0.27.0"
+httpx = "^0.26.0"
+sqlalchemy = "^2.0"
+alembic = "^1.13.0"
+redis = "^5.0"
+structlog = "^24.0"
+opentelemetry-api = "^1.22.0"
+opentelemetry-sdk = "^1.22.0"
+jsonschema = "^4.24.0"
+python-dotenv = "^1.1.0"
+requests = "^2.32.4"
+psutil = "^7.0.0"
+pyyaml = "^6.0.2"
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.8"
+pytest = "^8.0"
+pytest-cov = "^4.1"
+pytest-asyncio = "^0.23"
+black = "^24.0"
+ruff = "^0.2"
+pre-commit = "^3.6"
