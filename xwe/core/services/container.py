@@ -155,7 +155,6 @@ class ServiceContainer:
                 continue
                 
             # 特殊处理：如果参数名是 'container' 或縮寫 'c'，注入容器本身
-            if param_name in {'container', 'c'}:
 
             # 特殊处理：如果参数名是 'container' 或常见别名，则注入容器本身
             if param_name in ('container', 'c'):
