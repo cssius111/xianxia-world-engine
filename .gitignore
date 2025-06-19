@@ -37,3 +37,4 @@ saves/backups/
 # Temporary files
 *.tmp
 *.log
+*.whl
