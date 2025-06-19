@@ -9,8 +9,7 @@ import tempfile
 from pathlib import Path
 from datetime import datetime
 from queue import Queue
-import time
-from unittest.mock import Mock, patch, MagicMock
+from unittest.mock import Mock, patch
 
 from xwe.core.output import (
     OutputManager,
@@ -544,8 +543,6 @@ class TestOutputManager:
         mock_channel = Mock(spec=ConsoleChannel)
         mock_channel.name = "test"
         manager.add_channel(mock_channel)
-        
-        outputs = []
         
         def output_messages(start, count):
             for i in range(count):

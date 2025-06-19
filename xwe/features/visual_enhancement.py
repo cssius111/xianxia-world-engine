@@ -7,9 +7,7 @@
 
 import time
 import sys
-import random
-from typing import Any, Callable, Dict, List, Optional
-from enum import Enum
+from typing import List, Optional
 
 class Color:
     """ANSI颜色代码"""

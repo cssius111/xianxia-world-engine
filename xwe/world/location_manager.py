@@ -10,7 +10,7 @@ from typing import Any, Dict, List, Optional, Set, Tuple
 from dataclasses import dataclass, field
 import random
 
-from .world_map import WorldMap, Area, AreaType
+from .world_map import WorldMap, AreaType
 
 logger = logging.getLogger(__name__)
 
@@ -344,6 +344,6 @@ class LocationManager:
                 if connected.is_discovered:
                     description += f"\n- {connected.name} ({connected.type.value})"
                 else:
-                    description += f"\n- 未知区域"
+                    description += "\n- 未知区域"
         
         return description
