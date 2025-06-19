@@ -16,7 +16,7 @@ class TestV2Infrastructure:
     
     def test_v2_directory_structure_exists(self):
         """Verify all v2 directories are created."""
-        project_root = Path(__file__).parent.parent.parent
+        project_root = Path(__file__).resolve().parent.parent.parent.parent
         v2_root = project_root / "xwe_v2"
         
         expected_dirs = [
@@ -40,7 +40,7 @@ class TestV2Infrastructure:
     
     def test_v2_init_files_exist(self):
         """Verify all __init__.py files are in place."""
-        project_root = Path(__file__).parent.parent.parent
+        project_root = Path(__file__).resolve().parent.parent.parent.parent
         v2_root = project_root / "xwe_v2"
         
         init_locations = [
@@ -132,7 +132,7 @@ class TestArchiveScript:
     
     def test_archive_script_exists(self):
         """Verify the archive script is created."""
-        project_root = Path(__file__).parent.parent.parent
+        project_root = Path(__file__).resolve().parent.parent.parent.parent
         script_path = project_root / "scripts" / "archive_legacy.py"
         
         assert script_path.exists(), "Archive script does not exist"
@@ -150,7 +150,7 @@ class TestProjectConfiguration:
     
     def test_pyproject_toml_exists(self):
         """Verify pyproject.toml is properly configured."""
-        project_root = Path(__file__).parent.parent.parent
+        project_root = Path(__file__).resolve().parent.parent.parent.parent
         pyproject_path = project_root / "pyproject.toml"
         
         assert pyproject_path.exists(), "pyproject.toml does not exist"

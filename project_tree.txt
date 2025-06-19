@@ -5,7 +5,7 @@
 │   ├── quick_start.py
 │   └── requestsNotDeepSeek.py
 ├── analytics
-├── analyze_mypy.py
+├── scripts/analyze_mypy.py
 ├── api
 │   ├── __init__.py
 │   ├── errors.py
@@ -235,7 +235,7 @@
 ├── feedback
 │   └── feedback.db
 ├── fix_game_service.py
-├── fix_mypy_errors.py
+├── scripts/fix_mypy_errors.py
 ├── fix_mypy_errors.sh
 ├── game_config.py
 ├── game_log.html

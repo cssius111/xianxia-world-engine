@@ -8,7 +8,8 @@ from pathlib import Path
 import sys
 
 # 添加项目路径
-project_root = Path(__file__).parent
+# 当前文件位于 scripts/ 目录下，项目根目录为上一级
+project_root = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(project_root))
 
 from xwe.core.orchestrator import GameConfig, GameMode, run_game

@@ -48,7 +48,7 @@ AI辅助: 80% | 模块: xwe/core, xwe/services
 
 AI协作详情:
 - 使用场景: 分析项目中的类型错误模式并生成修复脚本
-- 生成内容: fix_mypy_errors.py 自动修复脚本
+- 生成内容: scripts/fix_mypy_errors.py 自动修复脚本
 - 人工修改: 调整了部分复杂类型的推断逻辑
 
 测试状态:

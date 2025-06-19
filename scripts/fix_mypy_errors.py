@@ -170,7 +170,8 @@ def fix_python_file(file_path: Path) -> Tuple[bool, List[str]]:
 
 def main():
     """主函数"""
-    project_root = Path("/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine")
+    # 项目根目录位于 scripts/ 的上一级
+    project_root = Path(__file__).resolve().parent.parent
     xwe_dir = project_root / "xwe"
     
     if not xwe_dir.exists():
