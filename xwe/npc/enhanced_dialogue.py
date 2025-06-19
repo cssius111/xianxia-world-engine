@@ -9,11 +9,10 @@ import logging
 from typing import Any, Dict, List, Optional, Tuple
 from dataclasses import dataclass, field
 import random
-import re
 
-from .dialogue_system import DialogueSystem, DialogueNode, DialogueTree, DialogueNodeType
+from .dialogue_system import DialogueSystem, DialogueNode, DialogueNodeType
 from .emotion_system import EmotionSystem, EmotionType
-from .memory_system import MemorySystem, MemoryType
+from .memory_system import MemorySystem
 from ..core.nlp.nlp_processor import NLPProcessor
 
 logger = logging.getLogger(__name__)
@@ -154,7 +153,6 @@ class DialogueGenerator:
                          intent: Optional[str] = None) -> str:
         """生成响应"""
         # 基于情感状态调整语气
-        emotion_factor = context.emotion_intensity
         relationship_factor = (context.relationship + 100) / 200  # 归一化到0-1
         
         # 识别话题
@@ -341,14 +339,13 @@ class EnhancedDialogueSystem:
         
         # 使用NLP理解意图
         intent = None
-        entities: Dict[str, Any] = {}
         
         if self.nlp_processor:
             try:
                 nlp_result = self.nlp_processor.parse(input_text)
                 intent = nlp_result.get("intent")
-                entities = nlp_result.get("entities", {})
-            except:
+                _ = nlp_result.get("entities", {})
+            except Exception:
                 logger.warning("NLP处理失败，使用关键词匹配")
         
         # 如果没有NLP或处理失败，使用简单的关键词匹配

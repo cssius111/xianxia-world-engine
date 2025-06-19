@@ -14,7 +14,7 @@
 
 ### 1. 环境要求
 
-- Python 3.8+
+- Python 3.11+
 - requests 库（已包含在 `requirements.txt` 中）
 
 ### 2. 安装依赖
