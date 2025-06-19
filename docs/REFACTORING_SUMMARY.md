@@ -288,4 +288,4 @@ processor.register_handler(MeditateHandler())
 *重构完成于 2024年*  
 *总代码量：~10,000行*  
 *架构设计：模块化、事件驱动、插件式*  
-*技术栈：Python 3.8+、类型注解、异步支持*
+*技术栈：Python 3.11+、类型注解、异步支持*
