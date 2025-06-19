@@ -38,3 +38,9 @@ saves/backups/
 *.tmp
 *.log
 *.whl
+
+# 🔒 Auto-generated files
+__pycache__/
+*.pyc
+*.save
+*.log
