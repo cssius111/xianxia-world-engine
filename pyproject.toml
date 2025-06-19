@@ -80,7 +80,14 @@ version = "2.0.0-alpha"
 description = "A clean architecture implementation of Xianxia World Engine"
 authors = ["XWE Team"]
 readme = "README.md"
-packages = [{include = "xwe_v2"}]
+packages = [
+    { include = "xwe", from = "src" },
+    { include = "xwe_v2", from = "src" },
+    { include = "api", from = "src" },
+    { include = "core", from = "src" },
+    { include = "mods", from = "src" },
+    { include = "plugins", from = "src" },
+]
 
 [tool.poetry.dependencies]
 python = "^3.12"

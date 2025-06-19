@@ -7,7 +7,11 @@ Controls the gradual migration from v1 to v2.
 import os
 from enum import Enum
 from typing import Optional
-from pydantic import BaseSettings, Field
+try:
+    from pydantic import BaseSettings, Field  # pydantic < 2.4
+except Exception:  # pragma: no cover - compatibility for pydantic>=2.4
+    from pydantic import Field
+    from pydantic_settings import BaseSettings
 
 class MigrationPhase(str, Enum):
     """Current migration phase."""

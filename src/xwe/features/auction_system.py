@@ -101,18 +101,20 @@ class AuctionSystem:
     def _load_auction_data(self) -> None:
         """加载拍卖行数据"""
         try:
+            base_path = Path(__file__).resolve().parent.parent / "data" / "auction"
+
             # 加载拍卖配置
-            config_path = Path("xwe/data/auction/auction_config.json")
+            config_path = base_path / "auction_config.json"
             with open(config_path, 'r', encoding='utf-8') as f:
                 self.config = json.load(f)['auction_house_config']
-            
+
             # 加载拍卖物品
-            items_path = Path("xwe/data/auction/auction_items.json")
+            items_path = base_path / "auction_items.json"
             with open(items_path, 'r', encoding='utf-8') as f:
                 self.auction_items = json.load(f)['auction_items']
-            
+
             # 加载NPC数据
-            npcs_path = Path("xwe/data/auction/auction_npcs.json")
+            npcs_path = base_path / "auction_npcs.json"
             with open(npcs_path, 'r', encoding='utf-8') as f:
                 npc_data = json.load(f)
                 self.auctioneer = npc_data['auctioneer']
