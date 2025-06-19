@@ -4,8 +4,11 @@
 """
 
 import os
+from pathlib import Path
 
 # Add project to path
+
+env_file = Path('.env')
 
 def check_status():
     """Quick status check"""

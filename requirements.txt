@@ -6,6 +6,8 @@ Flask>=2.0.0
 requests>=2.31.0  # 用于调用LLM API
 psutil>=5.9.0     # 用于系统监控和性能分析
 jsonschema>=4.0.0 # 用于配置数据验证
+pydantic>=2.0  # 用于配置模型
+pydantic-settings>=2.0  # BaseSettings 兼容
 
 # Python版本要求
 # Python >= 3.8
