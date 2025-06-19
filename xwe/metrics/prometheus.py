@@ -5,11 +5,10 @@ Prometheus指标导出器
 
 import time
 import threading
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any, Dict, List, Optional
 from dataclasses import dataclass, field
 from enum import Enum
 from collections import defaultdict
-import json
 
 
 class MetricType(Enum):
@@ -133,7 +132,7 @@ class PrometheusMetrics:
                 raise ValueError(f"Metric {name} is not a counter")
                 
             if labels:
-                label_values = tuple(labels.get(l, "") for l in self._metrics[name].labels)
+                label_values = tuple(labels.get(label, "") for label in self._metrics[name].labels)
                 
                 # 检查标签基数
                 if label_values not in self._labels_values[name]:
@@ -157,7 +156,7 @@ class PrometheusMetrics:
                 raise ValueError(f"Metric {name} is not a gauge")
                 
             if labels:
-                label_values = tuple(labels.get(l, "") for l in self._metrics[name].labels)
+                label_values = tuple(labels.get(label, "") for label in self._metrics[name].labels)
                 self._labels_values[name][label_values] = value
             else:
                 self._values[name] = value
@@ -172,7 +171,7 @@ class PrometheusMetrics:
                 raise ValueError(f"Metric {name} is not a histogram")
                 
             if labels:
-                label_values = tuple(labels.get(l, "") for l in self._metrics[name].labels)
+                label_values = tuple(labels.get(label, "") for label in self._metrics[name].labels)
                 key = f"{name}:{label_values}"
             else:
                 key = name
