@@ -7,6 +7,10 @@ class Attribute:
     name: str
     value: int
 
+    def __init__(self, name: str, value: int = 0):
+        self.name = name
+        self.value = value
+
 
 @dataclass
 class Character:

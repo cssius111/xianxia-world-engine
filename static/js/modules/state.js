@@ -17,22 +17,22 @@ export class StateManager {
             isUserInteracting: false,
             lastUpdateTime: 0
         };
-        
+
         // 订阅者列表
         this.subscribers = [];
     }
-    
+
     // 获取状态
     getState() {
         return this.state;
     }
-    
+
     // 更新状态
     setState(updates) {
         this.state = { ...this.state, ...updates };
         this.notify();
     }
-    
+
     // 订阅状态变化
     subscribe(callback) {
         this.subscribers.push(callback);
@@ -40,12 +40,12 @@ export class StateManager {
             this.subscribers = this.subscribers.filter(cb => cb !== callback);
         };
     }
-    
+
     // 通知所有订阅者
     notify() {
         this.subscribers.forEach(callback => callback(this.state));
     }
-    
+
     // 特定状态操作
     addCommandToHistory(command) {
         if (this.state.commandHistory[this.state.commandHistory.length - 1] !== command) {
@@ -57,17 +57,17 @@ export class StateManager {
         this.state.historyIndex = this.state.commandHistory.length;
         this.notify();
     }
-    
+
     incrementCommandCount() {
         this.state.commandCount++;
         this.notify();
     }
-    
+
     setUserInteracting(value) {
         this.state.isUserInteracting = value;
         this.notify();
     }
-    
+
     unlockAchievement() {
         this.state.achievementUnlocked++;
         this.notify();

@@ -16,7 +16,7 @@
       }
     },
     {
-      "id": "fallen_nobility", 
+      "id": "fallen_nobility",
       "name": "没落世家",
       "description": "曾经辉煌的修真世家，如今只剩残破传承",
       "effects": {
@@ -32,7 +32,7 @@
     },
     {
       "id": "mysterious_origin",
-      "name": "神秘来历", 
+      "name": "神秘来历",
       "description": "身世成谜，似乎隐藏着惊天秘密",
       "effects": {
         "attributes": {
@@ -75,7 +75,7 @@
       }
     }
   ],
-  
+
   "spiritual_roots": [
     {
       "id": "single_root",
@@ -90,7 +90,7 @@
     },
     {
       "id": "dual_root",
-      "name": "双灵根", 
+      "name": "双灵根",
       "description": "较为罕见，修炼速度优秀",
       "types": ["金木", "水火", "土金", "木土", "火金"],
       "effects": {
@@ -102,7 +102,7 @@
     {
       "id": "mixed_root",
       "name": "杂灵根",
-      "description": "最为常见，修炼缓慢但根基稳固", 
+      "description": "最为常见，修炼缓慢但根基稳固",
       "types": ["五行杂灵根"],
       "effects": {
         "cultivation_speed": 0.8,
@@ -123,7 +123,7 @@
       }
     }
   ],
-  
+
   "personality_traits": [
     {
       "id": "kind",
@@ -136,7 +136,7 @@
       }
     },
     {
-      "id": "cold", 
+      "id": "cold",
       "name": "冷漠",
       "description": "不近人情，专注修炼",
       "effects": {
@@ -157,7 +157,7 @@
     },
     {
       "id": "cautious",
-      "name": "谨慎", 
+      "name": "谨慎",
       "description": "三思而行，趋利避害",
       "effects": {
         "danger_perception": 0.3,
@@ -178,7 +178,7 @@
     {
       "id": "scholarly",
       "name": "博学",
-      "description": "饱读诗书，触类旁通", 
+      "description": "饱读诗书，触类旁通",
       "effects": {
         "comprehension": 0.3,
         "technique_learning": 0.2,
@@ -186,7 +186,7 @@
       }
     }
   ],
-  
+
   "initial_talents": [
     {
       "id": "sword_heart",
@@ -213,7 +213,7 @@
     {
       "id": "body_refinement",
       "name": "炼体天赋",
-      "description": "肉身强横，适合体修之道", 
+      "description": "肉身强横，适合体修之道",
       "effects": {
         "physical_resistance": 0.3,
         "body_tempering_efficiency": 0.4,
@@ -233,7 +233,7 @@
       "unlock_skills": ["阵法入门", "破阵之眼"]
     },
     {
-      "id": "beast_affinity", 
+      "id": "beast_affinity",
       "name": "兽缘",
       "description": "天生受灵兽喜爱",
       "effects": {
@@ -254,14 +254,14 @@
       "unlock_skills": []
     }
   ],
-  
+
   "creation_weights": {
     "origins": [25, 20, 10, 25, 20],
     "spiritual_roots": [5, 15, 70, 10],
     "personality_max_selection": 2,
     "talents": [5, 10, 10, 10, 10, 55]
   },
-  
+
   "mode_config": {
     "dev": {
       "show_all_options": true,

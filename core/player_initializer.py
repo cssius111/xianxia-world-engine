@@ -39,7 +39,7 @@ def start_with_roll(game_mode: str) -> None:
         print(character.display())
 
         choice = input("\n使用这个角色开始游戏吗？(y/n): ").strip().lower()
-        if choice == 'y':
+        if choice == "y":
             print("\n正在准备游戏...")
             print("（提示：Roll系统已集成到主游戏中）")
 
@@ -60,4 +60,3 @@ def start_with_roll(game_mode: str) -> None:
             for line in output:
                 print(line)
             break
-

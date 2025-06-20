@@ -1,4 +1,4 @@
-from xwe.core.nlp import NLPProcessor, NLPConfig
+from xwe.core.nlp import NLPConfig, NLPProcessor
 
 
 def test_nlp_parsing():

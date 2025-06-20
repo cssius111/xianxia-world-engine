@@ -2,7 +2,7 @@
 API错误定义和处理
 """
 
-from typing import Optional, Dict, Any, List
+from typing import Any, Dict, List, Optional
 
 
 class APIError(Exception):

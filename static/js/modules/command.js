@@ -4,7 +4,7 @@ export class CommandHandler {
         this.stateManager = stateManager;
         this.apiClient = apiClient;
         this.logManager = logManager;
-        
+
         // 可用命令列表
         this.availableCommands = [
             { cmd: '状态', desc: '查看角色状态', shortcut: 's' },
@@ -25,7 +25,7 @@ export class CommandHandler {
             { cmd: '退出', desc: '退出游戏', shortcut: null }
         ];
     }
-    
+
     // 发送命令
     async sendCommand(command) {
         const input = document.getElementById('command-input');
@@ -34,12 +34,12 @@ export class CommandHandler {
             await this.executeCommand();
         }
     }
-    
+
     // 执行命令
     async executeCommand() {
         const input = document.getElementById('command-input');
         const command = input.value.trim();
-        
+
         if (!command) return;
 
         // 标记用户正在交互
@@ -57,29 +57,29 @@ export class CommandHandler {
         // 创建玩家命令日志组
         this.logManager.startLogGroup('玩家指令');
         this.logManager.addLog('msg-player', `➤ ${command}`);
-        
+
         // 增加命令计数
         this.stateManager.incrementCommandCount();
-        
+
         try {
             // 发送到服务器
             await this.apiClient.sendCommand(command);
-            
+
             // 清空输入
             input.value = '';
             input.focus();
-            
+
             // 延迟一下再完成日志组，让响应有时间加入
             setTimeout(() => {
                 this.logManager.finishLogGroup();
             }, 100);
-            
+
             // 更新状态和日志
             await this.updateGameState();
-            
+
             // 检查教程进度
             this.checkTutorialProgress(command);
-            
+
         } catch (error) {
             console.error('执行命令失败:', error);
             this.logManager.startLogGroup('系统错误');
@@ -92,21 +92,21 @@ export class CommandHandler {
             }, 1000);
         }
     }
-    
+
     // 更新游戏状态
     async updateGameState() {
         const [logData, statusData] = await Promise.all([
             this.apiClient.fetchLog(),
             this.apiClient.fetchStatus()
         ]);
-        
+
         // 更新日志
         this.updateLogs(logData);
-        
+
         // 更新状态
         this.updateStatus(statusData);
     }
-    
+
     // 更新日志显示
     updateLogs(data) {
         // 完成当前日志组
@@ -114,11 +114,11 @@ export class CommandHandler {
 
         // 清空并重建日志
         this.logManager.clearLogs();
-        
+
         // 将日志按类型分组
         let groupType = null;
         let groupLogs = [];
-        
+
         data.logs.forEach((text, index) => {
             // 判断日志类型
             let type = 'general';
@@ -129,7 +129,7 @@ export class CommandHandler {
             else if (text.startsWith('[提示]')) type = 'tip';
             else if (text.startsWith('【警告】')) type = 'warning';
             else if (text.startsWith('➤')) type = 'player';
-            
+
             // 如果类型改变或达到5条，创建新组
             if (type !== groupType || groupLogs.length >= 5) {
                 if (groupLogs.length > 0) {
@@ -141,20 +141,20 @@ export class CommandHandler {
                 groupLogs.push(text);
             }
         });
-        
+
         // 处理最后一组
         if (groupLogs.length > 0) {
             this.logManager.createLogGroupFromLogs(groupType, groupLogs);
         }
     }
-    
+
     // 更新状态显示
     updateStatus(data) {
         const p = data.player;
         if (!p) return;
 
         const attrs = p.attributes;
-        
+
         // 安全地更新元素内容
         const updateElement = (id, value) => {
             const element = document.getElementById(id);
@@ -168,7 +168,7 @@ export class CommandHandler {
         const curHealth = Math.max(0, Math.min(attrs.current_health || 0, attrs.max_health || 0));
         const curMana = Math.max(0, Math.min(attrs.current_mana || 0, attrs.max_mana || 0));
         const curQi = Math.max(0, Math.min(attrs.current_stamina || 0, attrs.max_stamina || 0));
-        
+
         updateElement('health', `${curHealth} / ${attrs.max_health || 0}`);
         updateElement('mana', `${curMana} / ${attrs.max_mana || 0}`);
         updateElement('qi', `${curQi} / ${attrs.max_stamina || 0}`);
@@ -179,7 +179,7 @@ export class CommandHandler {
         const deffects = p.extra_data && p.extra_data.destiny ? p.extra_data.destiny.effects || {} : {};
         const atkBonus = deffects.attack || 0;
         const defBonus = deffects.defense || 0;
-        
+
         updateElement('attack-bonus', atkBonus ? `(${atkBonus>=0?'+':''}${atkBonus})` : '');
         updateElement('defense-bonus', defBonus ? `(${defBonus>=0?'+':''}${defBonus})` : '');
 
@@ -202,7 +202,7 @@ export class CommandHandler {
             }
         }
     }
-    
+
     // 更新进度条
     updateProgressBar(id, current, max) {
         const bar = document.getElementById(id);
@@ -211,12 +211,12 @@ export class CommandHandler {
             bar.style.width = `${percent}%`;
         }
     }
-    
+
     // 检查教程进度
     checkTutorialProgress(command) {
         const state = this.stateManager.getState();
         const cmd = command.toLowerCase();
-        
+
         if (state.isNewPlayer) {
             if (state.tutorialStep === 2 && (cmd === '状态' || cmd === 's')) {
                 setTimeout(() => {
@@ -238,31 +238,31 @@ export class CommandHandler {
                     this.logManager.addLog('msg-tip', '[提示] 探索可以发现各种机缘和事件。你已经掌握了基本操作，祝你修仙之路一帆风顺！');
                     this.logManager.addLog('msg-tip', '[提示] 提示：按Tab键可以显示命令提示，使用方向键可以浏览历史命令。');
                     this.logManager.finishLogGroup();
-                    this.stateManager.setState({ 
+                    this.stateManager.setState({
                         tutorialStep: 5,
-                        isNewPlayer: false 
+                        isNewPlayer: false
                     });
-                    
+
                     // 解锁第一个成就
                     this.showAchievement('初入江湖', '完成新手教程');
                 }, 2000);
             }
         }
     }
-    
+
     // 显示成就
     showAchievement(title, desc) {
         this.logManager.showAchievement(title, desc);
         this.stateManager.unlockAchievement();
         this.updateAchievementDisplay();
     }
-    
+
     // 更新成就显示
     updateAchievementDisplay() {
         const state = this.stateManager.getState();
         const countElement = document.getElementById('achievement-count');
         const pointsElement = document.getElementById('achievement-points');
-        
+
         if (countElement) {
             countElement.textContent = `${state.achievementUnlocked}/${state.achievementTotal}`;
         }

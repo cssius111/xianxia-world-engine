@@ -27,7 +27,7 @@
     },
     {
       "event_id": "blood_moon_tide",
-      "name": "血月潮汐", 
+      "name": "血月潮汐",
       "trigger_date": "Y+0 M+2 D+15",
       "duration_days": 1,
       "min_realm": null,
@@ -62,7 +62,7 @@
     {
       "event_id": "secret_realm_open",
       "name": "千年秘境开启",
-      "trigger_date": "Y+0 M+6 D+0", 
+      "trigger_date": "Y+0 M+6 D+0",
       "duration_days": 30,
       "min_realm": "炼气期九层",
       "max_realm": "筑基期",
@@ -75,7 +75,7 @@
       },
       "possible_rewards": [
         "结丹契机",
-        "上古功法", 
+        "上古功法",
         "本命法宝",
         "天品灵药"
       ],
@@ -201,7 +201,7 @@
       }
     },
     {
-      "event_id": "enlightenment_conference", 
+      "event_id": "enlightenment_conference",
       "name": "论道大会",
       "trigger_date": "Y+1 M+3 D+1",
       "duration_days": 7,
@@ -212,13 +212,13 @@
       "possible_gains": [
         "功法进阶",
         "神通领悟",
-        "瓶颈突破", 
+        "瓶颈突破",
         "道友结交"
       ],
       "enlightenment_chance": 0.3
     }
   ],
-  
+
   "timeline_config": {
     "date_format": "Y+{years} M+{months} D+{days}",
     "check_interval": 86400,

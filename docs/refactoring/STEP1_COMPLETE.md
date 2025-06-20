@@ -103,7 +103,7 @@ class GameCoreAdapter:
     """适配器，将旧的GameCore接口映射到新架构"""
     def __init__(self, container: ServiceContainer):
         self.container = container
-        
+
     def process_command(self, input_text: str):
         # 委托给新的CommandProcessor
         processor = self.container.get('command_processor')

@@ -447,7 +447,7 @@
           "calculation": {"operation": "/", "operands": ["current_health", "max_health"]}
         },
         {
-          "name": "mana_ratio", 
+          "name": "mana_ratio",
           "weight": 0.2,
           "calculation": {"operation": "/", "operands": ["current_mana", "max_mana"]}
         },
@@ -491,7 +491,7 @@
     },
     "targeting_constraints": {
       "line_of_sight": true,
-      "range_limitations": "skill_dependent", 
+      "range_limitations": "skill_dependent",
       "friendly_fire": "skill_dependent",
       "stealth_detection": "perception_vs_stealth"
     }

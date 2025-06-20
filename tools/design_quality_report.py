@@ -8,7 +8,6 @@ from typing import Dict, Tuple
 
 from radon.metrics import mi_visit
 
-
 BASE_DIR = Path(__file__).resolve().parents[1]
 PROJECT_PACKAGE = "xwe"
 

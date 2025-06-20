@@ -90,7 +90,7 @@ from xwe.core.command import CommandHandler, CommandResult
 class CustomHandler(CommandHandler):
     def can_handle(self, context):
         return context.raw_input.startswith("自定义")
-    
+
     def handle(self, context):
         context.output_manager.info("执行自定义命令")
         return CommandResult.success()

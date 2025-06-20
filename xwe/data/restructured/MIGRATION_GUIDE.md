@@ -22,37 +22,37 @@ class DataMigrator:
         self.old_path = Path(old_data_path)
         self.new_path = Path(new_data_path)
         self.backup_path = self.old_path.parent / f"backup_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
-        
+
     def backup_old_data(self):
         """备份旧数据"""
         print(f"备份旧数据到: {self.backup_path}")
         shutil.copytree(self.old_path, self.backup_path)
-        
+
     def migrate_attributes(self):
         """迁移属性数据"""
         print("迁移属性数据...")
-        
+
         # 读取旧的属性文件
         old_attribute = self._load_json(self.old_path / "attribute/attribute_model.json")
         old_base = self._load_json(self.old_path / "attribute/base.json")
-        
+
         # 已经是新格式，检查是否需要更新
         new_attribute = self._load_json(self.new_path / "attribute_model.json")
-        
+
         # 合并额外的属性定义
         if old_base:
             # 将base.json中的内容合并到新的attribute_model中
             pass
-            
+
         print("✓ 属性数据迁移完成")
-        
+
     def migrate_cultivation(self):
         """迁移修炼境界数据"""
         print("迁移境界数据...")
-        
+
         old_cultivation = self._load_json(self.old_path / "attribute/cultivation.json")
         new_cultivation = self._load_json(self.new_path / "cultivation_realm.json")
-        
+
         # 旧数据格式较简单，需要扩展
         if old_cultivation and "realms" in old_cultivation:
             # 扩展每个境界的详细信息
@@ -60,34 +60,34 @@ class DataMigrator:
                 # 在新数据中找到对应的境界并确保信息完整
                 realm_id = old_realm["id"]
                 # 新数据已经包含完整信息
-                
+
         print("✓ 境界数据迁移完成")
-        
+
     def migrate_combat(self):
         """迁移战斗系统数据"""
         print("迁移战斗系统...")
-        
+
         # 检查多个版本的战斗系统文件
         combat_files = [
             "combat/combat_system.json",
             "combat/combat_system_v2.json",
             "combat/combat_system_optimized.json"
         ]
-        
+
         # 使用最新版本
         latest_combat = None
         for file in combat_files:
             data = self._load_json(self.old_path / file)
             if data:
                 latest_combat = data
-                
+
         # 新的战斗系统已经是重构后的格式
         print("✓ 战斗系统迁移完成")
-        
+
     def migrate_items(self):
         """迁移物品数据"""
         print("迁移物品数据...")
-        
+
         # 旧版可能有分散的物品文件
         items_path = self.old_path / "items"
         if items_path.exists():
@@ -98,44 +98,44 @@ class DataMigrator:
                     all_items.extend(items)
                 elif isinstance(items, dict) and "items" in items:
                     all_items.extend(items["items"])
-                    
+
             # 转换为新格式
             # 新格式已经包含了示例物品
-            
+
         print("✓ 物品数据迁移完成")
-        
+
     def migrate_npcs(self):
         """迁移NPC数据"""
         print("迁移NPC数据...")
-        
+
         # 检查NPC相关文件
         npc_files = [
             "npc/npcs.json",
             "npc/dialogues.json",
             "templates/npc.json"
         ]
-        
+
         for file in npc_files:
             data = self._load_json(self.old_path / file)
             if data:
                 # 处理NPC数据
                 pass
-                
+
         print("✓ NPC数据迁移完成")
-        
+
     def create_formula_library(self):
         """创建公式库"""
         print("整理公式库...")
-        
+
         # 公式库已经在新数据中创建
         # 这里可以扫描所有文件中的公式并验证
-        
+
         print("✓ 公式库创建完成")
-        
+
     def validate_migration(self):
         """验证迁移结果"""
         print("\n验证迁移结果...")
-        
+
         required_files = [
             "attribute_model.json",
             "cultivation_realm.json",
@@ -148,7 +148,7 @@ class DataMigrator:
             "formula_library.json",
             "system_config.json"
         ]
-        
+
         all_valid = True
         for file in required_files:
             file_path = self.new_path / file
@@ -164,7 +164,7 @@ class DataMigrator:
             else:
                 print(f"✗ {file} - 文件不存在")
                 all_valid = False
-                
+
         # 验证Schema文件
         print("\n验证Schema文件...")
         for file in required_files:
@@ -174,9 +174,9 @@ class DataMigrator:
                 print(f"✓ {schema_file}")
             else:
                 print(f"✗ {schema_file} - Schema文件不存在")
-                
+
         return all_valid
-        
+
     def _load_json(self, path):
         """加载JSON文件"""
         try:
@@ -184,16 +184,16 @@ class DataMigrator:
                 return json.load(f)
         except (FileNotFoundError, json.JSONDecodeError):
             return None
-            
+
     def run(self):
         """执行迁移"""
         print("开始数据迁移...")
         print(f"源路径: {self.old_path}")
         print(f"目标路径: {self.new_path}")
-        
+
         # 1. 备份
         self.backup_old_data()
-        
+
         # 2. 迁移各个模块
         self.migrate_attributes()
         self.migrate_cultivation()
@@ -201,13 +201,13 @@ class DataMigrator:
         self.migrate_items()
         self.migrate_npcs()
         self.create_formula_library()
-        
+
         # 3. 验证
         if self.validate_migration():
             print("\n✅ 数据迁移成功完成！")
         else:
             print("\n⚠️ 数据迁移完成，但存在一些问题需要手动检查")
-            
+
         print(f"\n旧数据已备份至: {self.backup_path}")
         print("建议手动检查迁移后的数据确保正确性")
 

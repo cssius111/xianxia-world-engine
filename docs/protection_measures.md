@@ -102,7 +102,7 @@ if config.FLASK_ENV == 'production':
 # Level 1: 服务级别（< 10个值）
 service = ["game", "auth", "storage"]
 
-# Level 2: 操作类型（< 50个值）  
+# Level 2: 操作类型（< 50个值）
 operation = ["create", "read", "update", "delete"]
 
 # Level 3: 状态码（< 10个值）
@@ -118,15 +118,15 @@ status = ["200", "400", "500"]
 
 ```python
 # 标准字段
-logger.info("Operation completed", 
+logger.info("Operation completed",
     # 必需字段
     operation="user_login",
     duration_ms=150,
-    
+
     # 可选但推荐
     user_id="12345",
     trace_id=request.trace_id,
-    
+
     # 元数据
     metadata={
         "ip": "192.168.1.1",
@@ -160,7 +160,7 @@ groups:
           severity: warning
         annotations:
           summary: "错误率超过5%"
-          
+
       # 响应时间告警
       - alert: SlowResponse
         expr: histogram_quantile(0.95, http_request_duration_seconds) > 1
@@ -169,7 +169,7 @@ groups:
           severity: warning
         annotations:
           summary: "P95响应时间超过1秒"
-          
+
       # 内存使用告警
       - alert: HighMemoryUsage
         expr: memory_usage_bytes / memory_limit_bytes > 0.9
@@ -249,7 +249,7 @@ services:
 class MetricsAggregator:
     def __init__(self):
         self._buckets = defaultdict(lambda: defaultdict(float))
-        
+
     def record(self, metric, value, timestamp):
         # 按分钟聚合
         bucket = timestamp // 60
@@ -264,7 +264,7 @@ class BatchLogger:
     def __init__(self, batch_size=100):
         self._buffer = []
         self._batch_size = batch_size
-        
+
     def log(self, entry):
         self._buffer.append(entry)
         if len(self._buffer) >= self._batch_size:
@@ -308,7 +308,7 @@ def get_player_stats(player_id: str):
 2. **速率限制**
    ```python
    from flask_limiter import Limiter
-   
+
    limiter = Limiter(
        app,
        key_func=get_remote_address,
@@ -320,7 +320,7 @@ def get_player_stats(player_id: str):
    ```python
    from flask import request
    from jsonschema import validate
-   
+
    schema = {
        "type": "object",
        "properties": {
@@ -332,7 +332,7 @@ def get_player_stats(player_id: str):
 
 ---
 
-更新日期：2025-06-12  
+更新日期：2025-06-12
 版本：1.0.1
 
 根据实际运行情况持续更新此文档。

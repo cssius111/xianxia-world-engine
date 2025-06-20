@@ -70,11 +70,11 @@
         if (gameState.currentLogGroup) {
             finishLogGroup();
         }
-        
+
         const log = document.getElementById('narrative-log');
         const group = document.createElement('div');
         group.className = 'log-group';
-        
+
         if (title) {
             const header = document.createElement('div');
             header.className = 'log-group-header';
@@ -82,10 +82,10 @@
             header.textContent = `${title} - ${timestamp}`;
             group.appendChild(header);
         }
-        
+
         log.appendChild(group);
         gameState.currentLogGroup = group;
-        
+
         // 设置定时器，超过3秒自动结束日志组
         clearTimeout(gameState.logGroupTimer);
         gameState.logGroupTimer = setTimeout(() => {
@@ -105,13 +105,13 @@
         if (!gameState.currentLogGroup) {
             startLogGroup();
         }
-        
+
         const entry = document.createElement('div');
         entry.className = `log-entry ${className}`;
         entry.textContent = text;
-        
+
         gameState.currentLogGroup.appendChild(entry);
-        
+
         // 延迟滚动，等待动画开始
         setTimeout(() => {
             const log = document.getElementById('narrative-log');
@@ -124,12 +124,12 @@
     function addHtmlLog(html) {
         const log = document.getElementById('narrative-log');
         if (!log) return;
-        
+
         const entry = document.createElement('div');
         entry.innerHTML = html;
-        
+
         log.appendChild(entry);
-        
+
         setTimeout(() => {
             log.scrollTop = log.scrollHeight;
         }, 100);
@@ -138,10 +138,10 @@
     function createLogGroupFromLogs(type, logs) {
         const log = document.getElementById('narrative-log');
         if (!log) return;
-        
+
         const group = document.createElement('div');
         group.className = 'log-group';
-        
+
         // 根据类型添加标题
         const titles = {
             'system': '系统消息',
@@ -152,14 +152,14 @@
             'warning': '重要警告',
             'player': '玩家行动'
         };
-        
+
         if (titles[type]) {
             const header = document.createElement('div');
             header.className = 'log-group-header';
             header.textContent = titles[type];
             group.appendChild(header);
         }
-        
+
         // 添加日志条目
         logs.forEach(text => {
             let className = 'log-entry';
@@ -176,7 +176,7 @@
             entry.textContent = text;
             group.appendChild(entry);
         });
-        
+
         log.appendChild(group);
     }
 
@@ -188,17 +188,17 @@
                 <div style="font-size: 13px; margin-top: 5px; color: #ccc;">${desc}</div>
             </div>
         `;
-        
+
         const log = document.getElementById('narrative-log');
         if (!log) return;
-        
+
         const achievement = document.createElement('div');
         achievement.innerHTML = achievementHtml;
         log.appendChild(achievement.firstElementChild);
-        
+
         gameState.achievementUnlocked++;
         updateAchievementDisplay();
-        
+
         setTimeout(() => {
             log.scrollTop = log.scrollHeight;
         }, 100);
@@ -207,7 +207,7 @@
     function updateAchievementDisplay() {
         const countElement = document.getElementById('achievement-count');
         const pointsElement = document.getElementById('achievement-points');
-        
+
         if (countElement) {
             countElement.textContent = `${gameState.achievementUnlocked}/${gameState.achievementTotal}`;
         }
@@ -227,7 +227,7 @@
                 addLog('msg-event', '【剧情】你出生在青云山下的一个普通村落。十六岁那年，一位游方道人路过，发现你有修炼资质，便传授了一卷《基础吐纳诀》。从此，你踏上了修仙之路……');
                 addLog('msg-tip tutorial-highlight', '[提示] 你可以输入"修炼"、"背包"、"探索"等指令开始游戏。试试输入"状态"查看你的角色信息。');
                 finishLogGroup();
-                
+
                 // Roll角色事件
                 triggerRollEvent();
                 gameState.tutorialStep = 1;
@@ -259,7 +259,7 @@
 
     function checkTutorialProgress(command) {
         const cmd = command.toLowerCase();
-        
+
         if (gameState.isNewPlayer) {
             if (gameState.tutorialStep === 2 && (cmd === '状态' || cmd === 's')) {
                 setTimeout(() => {
@@ -283,7 +283,7 @@
                     finishLogGroup();
                     gameState.tutorialStep = 5;
                     gameState.isNewPlayer = false;
-                    
+
                     // 解锁第一个成就
                     showAchievement('初入江湖', '完成新手教程');
                 }, 2000);
@@ -303,7 +303,7 @@
     async function executeCommand() {
         const input = document.getElementById('command-input');
         const command = input.value.trim();
-        
+
         if (!command) return;
 
         // 标记用户正在交互
@@ -327,10 +327,10 @@
         // 创建玩家命令日志组
         startLogGroup('玩家指令');
         addLog('msg-player', `➤ ${command}`);
-        
+
         // 增加命令计数
         gameState.commandCount++;
-        
+
         try {
             // 发送到服务器
             await fetch('/command', {
@@ -338,23 +338,23 @@
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({command})
             });
-            
+
             // 清空输入
             input.value = '';
             input.focus();
-            
+
             // 延迟一下再完成日志组，让响应有时间加入
             setTimeout(() => {
                 finishLogGroup();
             }, 100);
-            
+
             // 更新状态和日志
             await fetchLog();
             await fetchStatus();
-            
+
             // 检查教程进度
             checkTutorialProgress(command);
-            
+
         } catch (error) {
             console.error('执行命令失败:', error);
             startLogGroup('系统错误');
@@ -373,13 +373,13 @@
         try {
             const res = await fetch('/status');
             if (!res.ok) throw new Error('获取状态失败');
-            
+
             const data = await res.json();
             const p = data.player;
             if (!p) return;
 
             const attrs = p.attributes;
-            
+
             updateElement('player-name', p.name || '无名侠客');
             updateElement('realm', attrs.realm_name || '炼气一层');
             updateElement('cultivation', `(${attrs.cultivation_level || 0} / ${attrs.max_cultivation || 100})`);
@@ -387,7 +387,7 @@
             const curHealth = Math.max(0, Math.min(attrs.current_health || 0, attrs.max_health || 0));
             const curMana = Math.max(0, Math.min(attrs.current_mana || 0, attrs.max_mana || 0));
             const curQi = Math.max(0, Math.min(attrs.current_stamina || 0, attrs.max_stamina || 0));
-            
+
             updateElement('health', `${curHealth} / ${attrs.max_health || 0}`);
             updateElement('mana', `${curMana} / ${attrs.max_mana || 0}`);
             updateElement('qi', `${curQi} / ${attrs.max_stamina || 0}`);
@@ -398,7 +398,7 @@
             const deffects = p.extra_data && p.extra_data.destiny ? p.extra_data.destiny.effects || {} : {};
             const atkBonus = deffects.attack || 0;
             const defBonus = deffects.defense || 0;
-            
+
             updateElement('attack-bonus', atkBonus ? `(${atkBonus>=0?'+':''}${atkBonus})` : '');
             updateElement('defense-bonus', defBonus ? `(${defBonus>=0?'+':''}${defBonus})` : '');
 
@@ -420,7 +420,7 @@
                     finishLogGroup();
                 }
             }
-            
+
         } catch (error) {
             console.error('获取状态失败:', error);
         }
@@ -430,7 +430,7 @@
         try {
             const res = await fetch('/log');
             if (!res.ok) throw new Error('获取日志失败');
-            
+
             const data = await res.json();
             const log = document.getElementById('narrative-log');
             if (!log) return;
@@ -440,11 +440,11 @@
 
             // 清空并重建日志
             log.innerHTML = '';
-            
+
             // 将日志按类型分组
             let groupType = null;
             let groupLogs = [];
-            
+
             data.logs.forEach((text, index) => {
                 // 判断日志类型
                 let type = 'general';
@@ -455,7 +455,7 @@
                 else if (text.startsWith('[提示]')) type = 'tip';
                 else if (text.startsWith('【警告】')) type = 'warning';
                 else if (text.startsWith('➤')) type = 'player';
-                
+
                 // 如果类型改变或达到5条，创建新组
                 if (type !== groupType || groupLogs.length >= 5) {
                     if (groupLogs.length > 0) {
@@ -467,14 +467,14 @@
                     groupLogs.push(text);
                 }
             });
-            
+
             // 处理最后一组
             if (groupLogs.length > 0) {
                 createLogGroupFromLogs(groupType, groupLogs);
             }
 
             log.scrollTop = log.scrollHeight;
-            
+
         } catch (error) {
             console.error('获取日志失败:', error);
         }
@@ -510,12 +510,12 @@
     function showAutoComplete() {
         const input = document.getElementById('command-input');
         const autocomplete = document.getElementById('autocomplete');
-        
+
         if (!input || !autocomplete) return;
-        
+
         const value = input.value.toLowerCase().trim();
         autocomplete.innerHTML = '';
-        
+
         if (value.length === 0) {
             // 显示常用命令
             const commonCmds = ['状态', '修炼', '探索', '背包', '帮助'];
@@ -527,16 +527,16 @@
             });
         } else {
             // 匹配命令
-            const matches = availableCommands.filter(cmd => 
+            const matches = availableCommands.filter(cmd =>
                 cmd.cmd.toLowerCase().includes(value) ||
                 cmd.desc.toLowerCase().includes(value)
             );
-            
+
             matches.slice(0, 8).forEach(cmd => {
                 addAutoCompleteItem(cmd.cmd, cmd.desc);
             });
         }
-        
+
         if (autocomplete.children.length > 0) {
             autocomplete.style.display = 'block';
         } else {
@@ -547,7 +547,7 @@
     function addAutoCompleteItem(command, desc) {
         const autocomplete = document.getElementById('autocomplete');
         if (!autocomplete) return;
-        
+
         const item = document.createElement('div');
         item.className = 'autocomplete-item';
         item.dataset.command = command;
@@ -567,7 +567,7 @@
     function handleKeyDown(event) {
         const input = event.target;
         const autocomplete = document.getElementById('autocomplete');
-        
+
         // Tab键 - 显示/选择自动完成
         if (event.key === 'Tab') {
             event.preventDefault();
@@ -621,7 +621,7 @@
                 return;
             }
         }
-        
+
         // 输入时更新自动完成
         if (!['Tab', 'Enter', 'Escape', 'ArrowUp', 'ArrowDown'].includes(event.key)) {
             showAutoComplete();
@@ -632,7 +632,7 @@
     function showTooltip(element, text) {
         const tooltip = document.getElementById('tooltip');
         if (!tooltip || !element) return;
-        
+
         const rect = element.getBoundingClientRect();
         tooltip.textContent = text;
         tooltip.style.left = rect.left + 'px';
@@ -652,11 +652,11 @@
         const choices = ['剑修之路', '体修之路', '法修之路'];
         startLogGroup('命运选择');
         addLog('msg-player', `➤ 选择：${choices[choiceIndex]}`);
-        
+
         // 移除事件容器
         const eventContainers = document.querySelectorAll('.event-container');
         eventContainers.forEach(container => container.style.display = 'none');
-        
+
         // 发送选择到服务器
         try {
             await fetch('/command', {
@@ -664,14 +664,14 @@
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({command: `选择 ${choiceIndex + 1}`})
             });
-            
+
             // 刷新状态和日志
             await fetchLog();
             await fetchStatus();
         } catch (error) {
             console.error('发送选择失败:', error);
         }
-        
+
         if (gameState.tutorialStep === 1) {
             setTimeout(() => {
                 addLog('msg-tip', '[提示] 很好！你已经选择了自己的道路。现在试试输入"状态"查看你的角色信息。');
@@ -689,22 +689,22 @@
         const input = document.getElementById('command-input');
         if (input) {
             input.focus();
-            
+
             // 绑定事件
             input.addEventListener('keydown', handleKeyDown);
             input.addEventListener('keyup', handleKeyUp);
         }
-        
+
         // 初始化教程
         initTutorial();
-        
+
         // 获取初始状态
         fetchStatus();
         updateAchievementDisplay();
-        
+
         // 智能刷新 - 只在需要时检查更新，频率降低
         setInterval(checkUpdates, 5000);
-        
+
         // 定期随机事件 - 降低频率
         setInterval(() => {
             if (Math.random() < 0.05 && !gameState.isNewPlayer && !gameState.isUserInteracting) {
@@ -721,7 +721,7 @@
                 finishLogGroup();
             }
         }, 60000);
-        
+
         // 点击空白处隐藏自动完成
         document.addEventListener('click', (e) => {
             if (!e.target.matches('.command-input')) {
@@ -731,7 +731,7 @@
                 }
             }
         });
-        
+
         // 快捷键提示
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('mouseenter', function() {
@@ -742,7 +742,7 @@
             });
             link.addEventListener('mouseleave', hideTooltip);
         });
-        
+
         // 防止页面滑动时消失
         document.addEventListener('touchmove', function(e) {
             // 只允许在可滚动区域内滑动
@@ -764,7 +764,7 @@
 
     // 页面加载完成
     window.addEventListener('load', init);
-    
+
     // 页面可见性变化时的处理
     document.addEventListener('visibilitychange', function() {
         if (document.visibilityState === 'visible') {

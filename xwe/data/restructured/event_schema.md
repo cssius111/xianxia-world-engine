@@ -44,7 +44,7 @@
 
 支持的属性：
 - `strength`: 力量
-- `agility`: 敏捷  
+- `agility`: 敏捷
 - `intelligence`: 智力
 - `vitality`: 体质
 - `luck`: 幸运
@@ -58,7 +58,7 @@
 
 ```json
 {
-  "type": "boolean_flag", 
+  "type": "boolean_flag",
   "payload": {
     "action": "set|clear",
     "flags": [
@@ -125,7 +125,7 @@
 - 天气变化影响
 - 灵气潮汐
 
-### 固定事件 (fixed) 
+### 固定事件 (fixed)
 - 主线剧情节点
 - 宗门定期活动
 - 节日庆典
@@ -146,7 +146,7 @@ final_weight = base_weight * location_modifier * time_modifier * player_modifier
 
 修正因子：
 - `location_modifier`: 地点相关性 (0.1 - 2.0)
-- `time_modifier`: 时间相关性 (0.5 - 1.5)  
+- `time_modifier`: 时间相关性 (0.5 - 1.5)
 - `player_modifier`: 玩家属性影响 (0.8 - 1.2)
 
 ## DeepSeek API 集成

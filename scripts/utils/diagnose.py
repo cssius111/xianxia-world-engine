@@ -3,8 +3,8 @@
 """修仙世界引擎 - 错误诊断工具"""
 
 import os
-import sys
 import subprocess
+import sys
 
 print("=== 修仙世界引擎 - 错误诊断 ===\n")
 
@@ -34,7 +34,7 @@ key_files = [
     "xwe/engine/__init__.py",
     "xwe/npc/__init__.py",
     "xwe/world/__init__.py",
-    "main.py"
+    "main.py",
 ]
 
 all_files_exist = True
@@ -63,7 +63,7 @@ for name, import_stmt in import_tests:
         import_success = False
 
 # 5. 诊断结果
-print("\n" + "="*50)
+print("\n" + "=" * 50)
 print("诊断结果：")
 
 if all_files_exist and import_success:
@@ -79,11 +79,11 @@ else:
     print("2. 运行修复脚本: python complete_fix.py")
     print("3. 如果问题持续，查看 FIX_NOTES.md")
 
-print("\n" + "="*50)
+print("\n" + "=" * 50)
 
 # 询问是否运行修复
 if not (all_files_exist and import_success):
     response = input("\n是否立即运行修复脚本？(y/n): ")
-    if response.lower() == 'y':
+    if response.lower() == "y":
         print("\n运行修复脚本...")
         subprocess.run([sys.executable, "complete_fix.py"])

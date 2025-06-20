@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from xwe.features.timeline_manager import TimelineManager
 from xwe.features.intelligence_system import IntelligenceSystem
+from xwe.features.timeline_manager import TimelineManager
 
 
 def test_events_trigger_by_date():

@@ -16,24 +16,24 @@ XWE表达式解析器模块
     >>> print(result)  # 14.0
 """
 
-from .parser import ExpressionParser
 from .exceptions import (
-    ExpressionError,
-    TokenizationError,
-    ParseError,
     EvaluationError,
+    ExpressionError,
+    FunctionError,
+    ParseError,
+    TokenizationError,
     ValidationError,
-    FunctionError
 )
+from .parser import ExpressionParser
 
 __all__ = [
-    'ExpressionParser',
-    'ExpressionError',
-    'TokenizationError',
-    'ParseError',
-    'EvaluationError',
-    'ValidationError',
-    'FunctionError'
+    "ExpressionParser",
+    "ExpressionError",
+    "TokenizationError",
+    "ParseError",
+    "EvaluationError",
+    "ValidationError",
+    "FunctionError",
 ]
 
-__version__ = '2.0.0'
+__version__ = "2.0.0"

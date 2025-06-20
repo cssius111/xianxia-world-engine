@@ -257,7 +257,7 @@
       "transformation_rules": [
         {
           "from": "ROMANTIC_BOND",
-          "to": "SWORN_ENEMY", 
+          "to": "SWORN_ENEMY",
           "trigger": "情变成仇"
         },
         {
@@ -278,7 +278,7 @@
         "examples": ["三十而立，必有大劫", "北方求道，南方成仙"]
       },
       {
-        "id": "SECTARIAN_PROPHECY", 
+        "id": "SECTARIAN_PROPHECY",
         "name": "宗门预言",
         "scope": "整个宗门的兴衰预示",
         "accuracy": 0.6,

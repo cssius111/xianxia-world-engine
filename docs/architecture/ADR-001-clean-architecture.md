@@ -20,7 +20,7 @@ We need a more structured approach to manage complexity as the project grows.
 We will adopt Clean Architecture principles for the V2 rewrite, with the following layers:
 
 1. **Domain Layer**: Core business entities and logic with zero external dependencies
-2. **Application Layer**: Use cases and business orchestration 
+2. **Application Layer**: Use cases and business orchestration
 3. **Infrastructure Layer**: External concerns (database, files, APIs)
 4. **Presentation Layer**: User interfaces (CLI, Web, API)
 
@@ -35,7 +35,7 @@ Dependencies flow inward only: Presentation → Application → Domain ← Infra
 - Better understanding of system boundaries
 - Supports gradual migration via Strangler Fig pattern
 
-### Negative  
+### Negative
 - More boilerplate code initially
 - Learning curve for team members
 - Need to maintain two systems during migration

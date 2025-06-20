@@ -63,16 +63,16 @@ xwe/data/auction/
 def npc_bid_decision(npc, item, current_price):
     # 价值评估
     perceived_value = item.base_value * (1 + random(-0.2, 0.2))
-    
+
     # 性格影响
     if npc.type == "aggressive":
         perceived_value *= 1.3
     elif npc.type == "conservative":
         perceived_value *= 0.9
-    
+
     # 财富限制
     max_affordable = npc.wealth * 0.3  # 最多用30%财富
-    
+
     # 决策
     if current_price < min(perceived_value, max_affordable):
         return True, calculate_bid_amount(...)

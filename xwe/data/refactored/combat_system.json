@@ -42,7 +42,7 @@
   "hit_rate": "max(0.05, min(0.95, 1 - (target_evasion - (agi * 0.01 + accuracy_bonus))))",
   "combat_phases": [
     "INIT",
-    "BUFF_APPLICATION", 
+    "BUFF_APPLICATION",
     "ACTION_DECLARATION",
     "ACTION_RESOLUTION",
     "DAMAGE_CALCULATION",

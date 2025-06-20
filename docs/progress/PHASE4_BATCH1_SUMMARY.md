@@ -10,7 +10,7 @@
   - 线程安全，支持元数据和异常堆栈跟踪
   - 🆕 支持trace_id跟踪
   - 🆕 异常信息使用`error.stack`字段
-  
+
 - **文件**: `xwe/metrics/prometheus.py`
   - 完整的Prometheus指标收集器实现
   - 支持Counter、Gauge、Histogram三种指标类型
@@ -143,7 +143,7 @@ REFACTOR_PROGRESS.md (+125行)
    # 本地开发
    export ENABLE_DEV_API=true
    python run_web_ui_optimized.py
-   
+
    # 或使用Docker
    docker-compose up -d
    ```

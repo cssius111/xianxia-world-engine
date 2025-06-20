@@ -10,7 +10,7 @@ const commandHandler = new CommandHandler(stateManager, apiClient, logManager);
 // 初始化教程
 function initTutorial() {
     const state = stateManager.getState();
-    
+
     if (state.isNewPlayer && state.tutorialStep === 0) {
         setTimeout(() => {
             hideLoading();
@@ -20,7 +20,7 @@ function initTutorial() {
             logManager.addLog('msg-event', '【剧情】你出生在青云山下的一个普通村落。十六岁那年，一位游方道人路过，发现你有修炼资质，便传授了一卷《基础吐纳诀》。从此，你踏上了修仙之路……');
             logManager.addLog('msg-tip tutorial-highlight', '[提示] 你可以输入"修炼"、"背包"、"探索"等指令开始游戏。试试输入"状态"查看你的角色信息。');
             logManager.finishLogGroup();
-            
+
             // Roll角色事件
             triggerRollEvent();
             stateManager.setState({ tutorialStep: 1 });
@@ -64,21 +64,21 @@ async function makeEventChoice(choiceIndex) {
     const choices = ['剑修之路', '体修之路', '法修之路'];
     logManager.startLogGroup('命运选择');
     logManager.addLog('msg-player', `➤ 选择：${choices[choiceIndex]}`);
-    
+
     // 移除事件容器
     const eventContainers = document.querySelectorAll('.event-container');
     eventContainers.forEach(container => container.style.display = 'none');
-    
+
     // 发送选择到服务器
     try {
         await apiClient.sendCommand(`选择 ${choiceIndex + 1}`);
-        
+
         // 刷新状态和日志
         await commandHandler.updateGameState();
     } catch (error) {
         console.error('发送选择失败:', error);
     }
-    
+
     const state = stateManager.getState();
     if (state.tutorialStep === 1) {
         setTimeout(() => {
@@ -94,10 +94,10 @@ async function makeEventChoice(choiceIndex) {
 // 智能刷新
 async function checkUpdates() {
     const state = stateManager.getState();
-    
+
     // 如果用户正在交互，跳过自动刷新
     if (state.isUserInteracting) return;
-    
+
     try {
         const data = await apiClient.checkNeedRefresh();
         if (data.refresh && data.last_update > state.lastUpdateTime) {
@@ -116,13 +116,13 @@ class AutoComplete {
         this.input = document.getElementById('command-input');
         this.autocomplete = document.getElementById('autocomplete');
     }
-    
+
     show() {
         if (!this.input || !this.autocomplete) return;
-        
+
         const value = this.input.value.toLowerCase().trim();
         this.autocomplete.innerHTML = '';
-        
+
         if (value.length === 0) {
             // 显示常用命令
             const commonCmds = ['状态', '修炼', '探索', '背包', '帮助'];
@@ -134,26 +134,26 @@ class AutoComplete {
             });
         } else {
             // 匹配命令
-            const matches = this.commandHandler.availableCommands.filter(cmd => 
+            const matches = this.commandHandler.availableCommands.filter(cmd =>
                 cmd.cmd.toLowerCase().includes(value) ||
                 cmd.desc.toLowerCase().includes(value)
             );
-            
+
             matches.slice(0, 8).forEach(cmd => {
                 this.addItem(cmd.cmd, cmd.desc);
             });
         }
-        
+
         if (this.autocomplete.children.length > 0) {
             this.autocomplete.style.display = 'block';
         } else {
             this.autocomplete.style.display = 'none';
         }
     }
-    
+
     addItem(command, desc) {
         if (!this.autocomplete) return;
-        
+
         const item = document.createElement('div');
         item.className = 'autocomplete-item';
         item.dataset.command = command;
@@ -167,7 +167,7 @@ class AutoComplete {
         };
         this.autocomplete.appendChild(item);
     }
-    
+
     hide() {
         if (this.autocomplete) {
             this.autocomplete.style.display = 'none';
@@ -181,7 +181,7 @@ const autoComplete = new AutoComplete(commandHandler);
 function handleKeyDown(event) {
     const input = event.target;
     const state = stateManager.getState();
-    
+
     // Tab键 - 显示/选择自动完成
     if (event.key === 'Tab') {
         event.preventDefault();
@@ -234,7 +234,7 @@ function handleKeyUp(event) {
             return;
         }
     }
-    
+
     // 输入时更新自动完成
     if (!['Tab', 'Enter', 'Escape', 'ArrowUp', 'ArrowDown'].includes(event.key)) {
         autoComplete.show();
@@ -245,7 +245,7 @@ function handleKeyUp(event) {
 function showTooltip(element, text) {
     const tooltip = document.getElementById('tooltip');
     if (!tooltip || !element) return;
-    
+
     const rect = element.getBoundingClientRect();
     tooltip.textContent = text;
     tooltip.style.left = rect.left + 'px';
@@ -266,22 +266,22 @@ function init() {
     const input = document.getElementById('command-input');
     if (input) {
         input.focus();
-        
+
         // 绑定事件
         input.addEventListener('keydown', handleKeyDown);
         input.addEventListener('keyup', handleKeyUp);
     }
-    
+
     // 初始化教程
     initTutorial();
-    
+
     // 获取初始状态
     commandHandler.updateStatus();
     commandHandler.updateAchievementDisplay();
-    
+
     // 智能刷新
     setInterval(checkUpdates, 5000);
-    
+
     // 定期随机事件
     setInterval(() => {
         const state = stateManager.getState();
@@ -299,14 +299,14 @@ function init() {
             logManager.finishLogGroup();
         }
     }, 60000);
-    
+
     // 点击空白处隐藏自动完成
     document.addEventListener('click', (e) => {
         if (!e.target.matches('.command-input')) {
             autoComplete.hide();
         }
     });
-    
+
     // 快捷键提示
     document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('mouseenter', function() {
@@ -317,7 +317,7 @@ function init() {
         });
         link.addEventListener('mouseleave', hideTooltip);
     });
-    
+
     // 防止页面滑动时消失
     document.addEventListener('touchmove', function(e) {
         // 只允许在可滚动区域内滑动

@@ -1,4 +1,5 @@
 from typing import Any
+
 # engine/expression/exceptions.py
 """
 表达式解析器异常定义模块
@@ -22,7 +23,7 @@ class ExpressionError(Exception):
             lines = [
                 f"表达式错误: {self.message}",
                 f"表达式: {self.expression}",
-                f"        {' ' * self.position}^"
+                f"        {' ' * self.position}^",
             ]
             return "\n".join(lines)
         return f"表达式错误: {self.message}"
@@ -30,24 +31,29 @@ class ExpressionError(Exception):
 
 class TokenizationError(ExpressionError):
     """词法分析错误"""
+
     pass
 
 
 class ParseError(ExpressionError):
     """语法分析错误"""
+
     pass
 
 
 class EvaluationError(ExpressionError):
     """求值错误"""
+
     pass
 
 
 class ValidationError(ExpressionError):
     """验证错误"""
+
     pass
 
 
 class FunctionError(ExpressionError):
     """函数调用错误"""
+
     pass

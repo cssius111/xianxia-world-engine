@@ -6,7 +6,7 @@
     <title>修仙世界引擎</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700&display=swap');
-        
+
         * {
             margin: 0;
             padding: 0;
@@ -34,7 +34,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: 
+            background:
                 radial-gradient(circle at 20% 50%, rgba(255,255,255,0.01) 0%, transparent 50%),
                 radial-gradient(circle at 80% 80%, rgba(255,255,255,0.01) 0%, transparent 50%),
                 radial-gradient(circle at 40% 20%, rgba(255,255,255,0.01) 0%, transparent 50%);
@@ -178,7 +178,7 @@
 
 
 
- 
+
         /* .title-card, .msg-system, .msg-event, .msg-combat, .msg-player are
            legacy styles kept for compatibility but currently unused */
         .title-card {
@@ -187,7 +187,7 @@
             font-weight: 500;
             margin: 16px 0;
         }
- 
+
         @keyframes fadeIn {
             to {
                 opacity: 1;
@@ -322,7 +322,7 @@
             color: #d8d8d8;
         }
 
- 
+
         .modal-close {
             background: #3a3a3a;
             color: #ccc;
@@ -337,29 +337,29 @@
             background: #555;
         }
 
- 
+
         .modal-content table {
             width: 100%;
             border-collapse: collapse;
         }
 
- 
+
         .grid-table th,
         .grid-table td {
             width: 25%;
         }
 
- 
+
         .modal-content th,
         .modal-content td {
             text-align: left;
             padding: 6px 8px;
         }
- 
+
         .grid-table {
             width: 100%;
         }
- 
+
 
         /* 响应式适配 */
         @media (max-width: 768px) {
@@ -367,11 +367,11 @@
                 width: 220px;
                 padding: 20px 15px;
             }
-            
+
             .narrative-log {
                 padding: 30px 40px;
             }
-            
+
             .header h1 {
                 font-size: 20px;
                 letter-spacing: 4px;
@@ -393,7 +393,7 @@
         <!-- 左侧状态栏 -->
         <div class="sidebar">
             <h2>角色状态</h2>
-            
+
             <div class="status-block">
                 <div class="status-line">
                     <span class="status-label">境界</span>
@@ -441,7 +441,7 @@
                 <a class="nav-link" onclick="showSkillsModal()">查看功法</a>
                 <a class="nav-link" onclick="sendCommand('修炼')">开始修炼</a>
                 <a class="nav-link" onclick="sendCommand('帮助')">帮助文档</a>
- 
+
             </div>
         </div>
         <!-- 中央叙事区域 -->
@@ -462,7 +462,7 @@
                autocomplete="off">
         <button class="command-submit" onclick="executeCommand()" title="发送指令并刷新界面">执行</button>
     </div>
- 
+
     <!-- 状态弹窗 -->
     <div class="modal" id="status-modal">
         <div class="modal-content" onclick="event.stopPropagation();">
@@ -511,13 +511,13 @@
             if (!p) return;
             const attrs = p.attributes;
             document.getElementById('realm').textContent = `${attrs.realm_name}（${p.realm_percent || 0}%）`;
- 
+
             const healthCurrent = Math.min(attrs.current_health, attrs.max_health);
             document.getElementById('health').textContent = `${healthCurrent} / ${attrs.max_health}`;
- 
+
             document.getElementById('cultivation').textContent = `${attrs.cultivation_level}`;
             document.getElementById('health').textContent = `${attrs.current_health} / ${attrs.max_health}`;
- 
+
             const manaCurrent = Math.min(attrs.current_mana, attrs.max_mana);
             document.getElementById('mana').textContent = `${manaCurrent} / ${attrs.max_mana}`;
             document.getElementById('attack').textContent = attrs.attack_power.toFixed(0);

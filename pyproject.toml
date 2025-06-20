@@ -114,3 +114,6 @@ pre-commit = "^3.6"
 run-game = "scripts.run_game:main"
 analyze-mypy = "scripts.analyze_mypy:main"
 fix-mypy-errors = "scripts.fix_mypy_errors:main"
+
+[tool.isort]
+profile = "black"

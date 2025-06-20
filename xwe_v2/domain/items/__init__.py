@@ -1,0 +1,1 @@
+"""Items domain module."""

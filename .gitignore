@@ -4,9 +4,24 @@ __pycache__/
 *$py.class
 *.so
 .Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
 
-# Environment
-.env
+# Virtual Environment
+.venv/
 venv/
 ENV/
 env/
@@ -16,25 +31,44 @@ env/
 .idea/
 *.swp
 *.swo
+*~
+.project
+.pydevproject
 
 # Testing
 .pytest_cache/
+.mypy_cache/
 .coverage
 htmlcov/
+.tox/
+.cache
+nosetests.xml
+coverage.xml
+*.cover
 
-# Distribution
-dist/
-build/
-*.egg-info/
+# Logs
+logs/
+*.log
+log/
 
-# Game saves
-saves/*.json
-saves/backups/
+# Output files
+output/
+*.html
+!templates/*.html
+!templates_enhanced/*.html
 
-# macOS
+# OS
 .DS_Store
+Thumbs.db
+desktop.ini
+
+# Project specific
+migration_reports/
+project_analysis_report.json
+game_log.html
 
 # Temporary files
 *.tmp
-*.log
-*.whl
+*.bak
+*.swp
+*~

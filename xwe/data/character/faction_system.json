@@ -11,7 +11,7 @@
       "disadvantages": ["规矩束缚", "等级森严", "创新不足"]
     },
     "demonic_sects": {
-      "description": "魔道宗门", 
+      "description": "魔道宗门",
       "characteristics": ["弱肉强食", "快速提升", "手段不择"],
       "advantages": ["实力增长快", "少有束缚", "战斗力强"],
       "disadvantages": ["内部残杀", "声名狼藉", "易走火入魔"]
@@ -155,7 +155,7 @@
     {
       "id": "WANDERER_UNION",
       "name": "散修联盟",
-      "type": "neutral_forces", 
+      "type": "neutral_forces",
       "rank": "松散联盟",
       "founded": "灵元纪3000年",
       "location": "各地聚集点",
@@ -215,7 +215,7 @@
       },
       "friendly": {
         "value": 60,
-        "description": "友好关系", 
+        "description": "友好关系",
         "effects": ["贸易优惠", "互不侵犯", "适度合作"]
       },
       "neutral": {

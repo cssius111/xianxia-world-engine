@@ -177,8 +177,8 @@ python test_auction_system.py
 
 ---
 
-**版本**: 1.0.0  
-**作者**: XianXia World Engine Team  
+**版本**: 1.0.0
+**作者**: XianXia World Engine Team
 **更新日期**: 2025-06-04
 
 祝您在拍卖行中满载而归！💎✨

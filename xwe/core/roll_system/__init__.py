@@ -7,4 +7,4 @@
 from xwe.core.roll_system.character_roller import CharacterRoller, RollResult
 from xwe.core.roll_system.roll_data import ROLL_DATA
 
-__all__ = ['CharacterRoller', 'RollResult', 'ROLL_DATA']
+__all__ = ["CharacterRoller", "RollResult", "ROLL_DATA"]

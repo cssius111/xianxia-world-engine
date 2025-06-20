@@ -1,4 +1,5 @@
 from typing import Any
+
 # examples/expression_examples.py
 """
 表达式解析器使用示例
@@ -6,7 +7,7 @@ from typing import Any
 展示ExpressionParser的各种使用场景。
 """
 
-from engine.expression import ExpressionParser, ExpressionError
+from engine.expression import ExpressionError, ExpressionParser
 
 
 def basic_examples() -> None:
@@ -32,12 +33,7 @@ def variable_examples() -> None:
     parser = ExpressionParser()
 
     # 角色属性计算
-    character = {
-        "level": 10,
-        "strength": 50,
-        "agility": 30,
-        "intelligence": 25
-    }
+    character = {"level": 10, "strength": 50, "agility": 30, "intelligence": 25}
 
     # 物理攻击力 = 力量 * 2 + 等级 * 5
     phys_attack = parser.evaluate("strength * 2 + level * 5", character)
@@ -73,10 +69,7 @@ def function_examples() -> None:
 
     # 条件函数
     context = {"health": 30, "max_health": 100}
-    is_low_health = parser.evaluate(
-        "ifelse(health < max_health * 0.3, 1, 0)",
-        context
-    )
+    is_low_health = parser.evaluate("ifelse(health < max_health * 0.3, 1, 0)", context)
     print(f"\n低血量状态: {'是' if is_low_health else '否'}")
 
 
@@ -92,14 +85,10 @@ def game_formula_examples() -> None:
         "skill_multiplier": 1.5,
         "critical_rate": 0.3,
         "critical_damage": 2.0,
-        "is_critical": 0  # 这次攻击是否暴击
+        "is_critical": 0,  # 这次攻击是否暴击
     }
 
-    defender = {
-        "defense": 40,
-        "armor": 20,
-        "damage_reduction": 0.1
-    }
+    defender = {"defense": 40, "armor": 20, "damage_reduction": 0.1}
 
     # 合并上下文
     combat_context = {**attacker, **defender}
@@ -111,8 +100,8 @@ def game_formula_examples() -> None:
 
     # 考虑防御的伤害
     actual_damage_formula = """
-        max(1, 
-            (base_attack + weapon_damage) * skill_multiplier 
+        max(1,
+            (base_attack + weapon_damage) * skill_multiplier
             - (defense + armor)
         ) * (1 - damage_reduction)
     """
@@ -122,8 +111,8 @@ def game_formula_examples() -> None:
     # 暴击伤害
     combat_context["is_critical"] = 1
     crit_damage_formula = """
-        max(1, 
-            (base_attack + weapon_damage) * skill_multiplier 
+        max(1,
+            (base_attack + weapon_damage) * skill_multiplier
             * ifelse(is_critical, critical_damage, 1)
             - (defense + armor)
         ) * (1 - damage_reduction)
@@ -144,8 +133,7 @@ def custom_function_examples() -> None:
         """计算属性加成后的值"""
         return base * (1 + bonus_percent / 100)
 
-    parser.register_function("attr_bonus", attribute_bonus, 2,
-                             "计算百分比加成后的属性值")
+    parser.register_function("attr_bonus", attribute_bonus, 2, "计算百分比加成后的属性值")
 
     # 2. 伤害减免函数
     def damage_mitigation(damage, defense, reduction_percent) -> Any:
@@ -154,8 +142,7 @@ def custom_function_examples() -> None:
         mitigated = max(1, mitigated)  # 最小伤害为1
         return mitigated * (1 - reduction_percent / 100)
 
-    parser.register_function("mitigate", damage_mitigation, 3,
-                             "计算防御和减免后的伤害")
+    parser.register_function("mitigate", damage_mitigation, 3, "计算防御和减免后的伤害")
 
     # 使用自定义函数
     print("基础攻击力 100，装备加成 50%:")
@@ -223,11 +210,7 @@ def debug_mode_example() -> None:
     # 启用调试模式
     debug_parser = ExpressionParser(debug=True)
 
-    context = {
-        "base_damage": 100,
-        "multiplier": 1.5,
-        "bonus": 20
-    }
+    context = {"base_damage": 100, "multiplier": 1.5, "bonus": 20}
 
     print("计算: base_damage * multiplier + bonus")
     result = debug_parser.evaluate("base_damage * multiplier + bonus", context)

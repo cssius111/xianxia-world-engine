@@ -198,11 +198,11 @@ from xwe.services import ServiceBase
 
 class MyPlayerService(ServiceBase[IPlayerService], IPlayerService):
     """玩家服务实现"""
-    
+
     def create_player(self, name: str, **attributes) -> str:
         # 实现创建玩家逻辑
         pass
-        
+
     # ... 实现其他接口方法
 ```
 
@@ -263,6 +263,6 @@ player_id = player_service.create_player("测试玩家")
 
 ---
 
-**版本**: 1.0.0  
-**最后更新**: 2025-06-11  
+**版本**: 1.0.0
+**最后更新**: 2025-06-11
 **作者**: 修仙世界引擎开发团队
