@@ -1,4 +1,3 @@
-
 from xwe.core.game_core import GameCore
 
 

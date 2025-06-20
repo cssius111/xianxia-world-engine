@@ -20,17 +20,17 @@ class IPlugin(ABC):
     @property
     @abstractmethod
     def name(self) -> str: pass
-    
+
     @property
     @abstractmethod
     def version(self) -> str: pass
-    
+
     @abstractmethod
     def on_load(self, container: ServiceContainer): pass
-    
+
     @abstractmethod
     def on_enable(self): pass
-    
+
     @abstractmethod
     def on_disable(self): pass
 
@@ -40,7 +40,7 @@ class PluginManager:
     def discover_plugins(self) -> List[IPlugin]:
         """从指定目录/包发现插件"""
         pass
-        
+
     def load_plugin(self, plugin_path: str) -> IPlugin:
         """动态加载插件"""
         pass

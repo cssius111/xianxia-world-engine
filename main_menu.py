@@ -1,21 +1,21 @@
 #!/usr/bin/env python
 """修仙世界引擎 - 主菜单"""
 
+import argparse
 import sys
 from pathlib import Path
-import argparse
 
 # 添加项目路径
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
+from core.player_initializer import start_new_game, start_with_roll
 from ui.main_menu_display import (
     clear_screen,
     show_main_menu,
-    test_roll_system,
-    test_nlp_system,
     show_settings,
+    test_nlp_system,
+    test_roll_system,
 )
-from core.player_initializer import start_new_game, start_with_roll
 
 
 def main() -> None:
@@ -29,20 +29,20 @@ def main() -> None:
         clear_screen()
         choice = show_main_menu()
 
-        if choice == '1':
+        if choice == "1":
             start_new_game(game_mode)
-        elif choice == '2':
+        elif choice == "2":
             start_with_roll(game_mode)
-        elif choice == '3':
+        elif choice == "3":
             test_roll_system()
-        elif choice == '4':
+        elif choice == "4":
             test_nlp_system()
-        elif choice == '5':
+        elif choice == "5":
             print("\n继续游戏功能开发中...")
             input("按Enter返回主菜单...")
-        elif choice == '6':
+        elif choice == "6":
             show_settings()
-        elif choice == '7':
+        elif choice == "7":
             print("\n感谢游玩，再见！")
             break
         else:
@@ -52,4 +52,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

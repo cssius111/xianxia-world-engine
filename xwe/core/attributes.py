@@ -1,7 +1,7 @@
-from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional
-from enum import Enum
 import logging
+from dataclasses import dataclass, field
+from enum import Enum
+from typing import Any, Dict, List, Optional
 
 from xwe.engine.expression import ExpressionParser
 
@@ -51,6 +51,7 @@ class CharacterAttributes:
 
     管理角色的所有属性值和计算衍生属性。
     """
+
     # 基础属性
     strength: float = 10
     constitution: float = 10
@@ -140,7 +141,9 @@ class CharacterAttributes:
         self.max_mana = self.intelligence * 8 + self.spiritual_root_purity * 2
         self.max_stamina = self.constitution * 5 + self.strength * 3
         self.attack_power = self.strength * 2 + self.cultivation_level * 5
-        self.spell_power = self.intelligence * 2 + self.spiritual_root_purity * 0.5 + self.cultivation_level * 3
+        self.spell_power = (
+            self.intelligence * 2 + self.spiritual_root_purity * 0.5 + self.cultivation_level * 3
+        )
         self.defense = self.constitution * 1.5 + self.cultivation_level * 2
         self.magic_resistance = self.willpower * 2
         self.speed = self.agility * 1.5
@@ -150,7 +153,11 @@ class CharacterAttributes:
         self.critical_damage = 150 + self.strength * 0.5
 
     def to_dict(self) -> Dict[str, Any]:
-        result = {field: getattr(self, field) for field in self.__annotations__ if field != "extra_attributes"}
+        result = {
+            field: getattr(self, field)
+            for field in self.__annotations__
+            if field != "extra_attributes"
+        }
         result.update(self.extra_attributes)
         return result
 
@@ -170,7 +177,9 @@ class AttributeSystem:
         self.parser = expression_parser
         self.modifiers: Dict[str, List[Dict[str, Any]]] = {}
 
-    def calculate_final_attribute(self, character_attrs: CharacterAttributes, attr_name: str) -> float:
+    def calculate_final_attribute(
+        self, character_attrs: CharacterAttributes, attr_name: str
+    ) -> float:
         base_value = character_attrs.get(attr_name)
         if attr_name in self.modifiers:
             for modifier in self.modifiers[attr_name]:
@@ -190,7 +199,9 @@ class AttributeSystem:
 
     def remove_modifier(self, attr_name: str, modifier_id: str) -> None:
         if attr_name in self.modifiers:
-            self.modifiers[attr_name] = [m for m in self.modifiers[attr_name] if m.get("id") != modifier_id]
+            self.modifiers[attr_name] = [
+                m for m in self.modifiers[attr_name] if m.get("id") != modifier_id
+            ]
 
     def clear_modifiers(self, attr_name: Optional[str] = None) -> None:
         if attr_name:

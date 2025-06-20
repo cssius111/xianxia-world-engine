@@ -32,7 +32,7 @@ body::before {
     left: 0;
     right: 0;
     bottom: 0;
-    background: 
+    background:
         radial-gradient(circle at 20% 50%, rgba(255,255,255,0.01) 0%, transparent 50%),
         radial-gradient(circle at 80% 80%, rgba(255,255,255,0.01) 0%, transparent 50%),
         radial-gradient(circle at 40% 20%, rgba(255,255,255,0.01) 0%, transparent 50%);
@@ -621,16 +621,16 @@ body::before {
     body {
         font-size: 13px;
     }
-    
+
     .sidebar {
         width: 240px;
         padding: 20px 15px;
     }
-    
+
     .narrative-log {
         padding: 20px 30px;
     }
-    
+
     .header h1 {
         font-size: 20px;
         letter-spacing: 4px;
@@ -639,7 +639,7 @@ body::before {
     .quick-commands {
         display: none;
     }
-    
+
     .command-section {
         padding: 12px 20px 15px;
     }

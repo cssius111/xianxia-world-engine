@@ -6,7 +6,7 @@
     <title>修仙世界引擎</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700&display=swap');
-        
+
         * {
             margin: 0;
             padding: 0;
@@ -34,7 +34,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: 
+            background:
                 radial-gradient(circle at 20% 50%, rgba(255,255,255,0.01) 0%, transparent 50%),
                 radial-gradient(circle at 80% 80%, rgba(255,255,255,0.01) 0%, transparent 50%),
                 radial-gradient(circle at 40% 20%, rgba(255,255,255,0.01) 0%, transparent 50%);
@@ -292,11 +292,11 @@
                 width: 220px;
                 padding: 20px 15px;
             }
-            
+
             .narrative-log {
                 padding: 30px 40px;
             }
-            
+
             .header h1 {
                 font-size: 20px;
                 letter-spacing: 4px;
@@ -317,7 +317,7 @@
         <!-- 左侧状态栏 -->
         <div class="sidebar">
             <h2>角色状态</h2>
-            
+
             <div class="status-block">
                 <div class="status-line">
                     <span class="status-label">境界</span>
@@ -381,10 +381,10 @@
 
     <!-- 底部指令区 -->
     <div class="command-section">
-        <input type="text" 
-               class="command-input" 
-               id="command-input" 
-               placeholder="输入命令，如：探索、攻击妖兽、使用回元丹……" 
+        <input type="text"
+               class="command-input"
+               id="command-input"
+               placeholder="输入命令，如：探索、攻击妖兽、使用回元丹……"
                onkeypress="handleKeyPress(event)"
                autocomplete="off">
         <button class="command-submit" onclick="executeCommand()" title="发送指令并刷新界面">执行</button>
@@ -416,15 +416,15 @@
         function executeCommand() {
             const input = document.getElementById('command-input');
             const command = input.value.trim();
-            
+
             if (!command) return;
 
             // 添加玩家命令到日志
             addLog('msg-player', `➤ ${command}`);
-            
+
             // 处理命令
             processCommand(command);
-            
+
             // 清空输入
             input.value = '';
             input.focus();
@@ -433,7 +433,7 @@
         // 处理命令
         function processCommand(command) {
             const cmd = command.toLowerCase();
-            
+
             if (cmd === '状态' || cmd.includes('查看状态')) {
                 addLog('msg-system', '【系统】你的修炼状态如下：');
                 addLog('msg-system', `【系统】境界：${gameState.realm}`);
@@ -448,7 +448,7 @@
                     gameState.cultivation.current += gained;
                     addLog('msg-reward', `【奖励】获得 ${gained} 修为。`);
                     updateStatus();
-                    
+
                     // 随机事件
                     if (Math.random() < 0.2) {
                         addLog('msg-event', '【剧情】修炼中，你隐约感到丹田中有一丝异动，似乎快要突破了……');
@@ -467,7 +467,7 @@
                 addLog('msg-combat', `【战斗】你对"${target}"施展《赤炎掌》。`);
                 const damage = gameState.attack + Math.floor(Math.random() * 10);
                 addLog('msg-combat', `【战斗】造成 ${damage} 点伤害！`);
-                
+
                 setTimeout(() => {
                     const hurt = Math.floor(Math.random() * 15) + 5;
                     gameState.health.current = Math.max(0, gameState.health.current - hurt);
@@ -513,9 +513,9 @@
             const entry = document.createElement('div');
             entry.className = `log-entry ${type}`;
             entry.textContent = text;
-            
+
             log.appendChild(entry);
-            
+
             // 延迟滚动，等待动画开始
             setTimeout(() => {
                 log.scrollTop = log.scrollHeight;
@@ -526,13 +526,13 @@
         function updateStatus() {
             // 更新修为
             document.getElementById('cultivation').textContent = `${gameState.cultivation.current} / ${gameState.cultivation.max}`;
-            
+
             // 更新气血值
             document.getElementById('health').textContent = `${gameState.health.current} / ${gameState.health.max}`;
 
             // 更新灵力值
             document.getElementById('mana').textContent = `${gameState.mana.current} / ${gameState.mana.max}`;
-            
+
             // 检查突破
             if (gameState.cultivation.current >= gameState.cultivation.max) {
                 breakthrough();
@@ -547,15 +547,15 @@
                 '筑基初期', '筑基中期', '筑基后期',
                 '金丹初期', '金丹中期', '金丹后期'
             ];
-            
+
             const currentIndex = realms.indexOf(gameState.realm);
             if (currentIndex < realms.length - 1) {
                 gameState.realm = realms[currentIndex + 1];
                 gameState.cultivation.current = 0;
                 gameState.cultivation.max = Math.floor(gameState.cultivation.max * 1.5);
-                
+
                 document.getElementById('realm').textContent = gameState.realm;
-                
+
                 addLog('msg-event', `【剧情】天地震动，灵气漩涡在你头顶形成。一道金光从天而降，你成功突破到了${gameState.realm}！`);
             }
         }
@@ -571,7 +571,7 @@
         function updateBuffDisplay() {
             const buffList = document.getElementById('buff-list');
             buffList.innerHTML = '';
-            
+
             if (gameState.buffs.length === 0) {
                 const item = document.createElement('div');
                 item.className = 'status-list-item';
@@ -591,7 +591,7 @@
         function updateSpecialStatusDisplay() {
             const statusList = document.getElementById('special-status');
             statusList.innerHTML = '';
-            
+
             if (gameState.specialStatus.length === 0) {
                 const item = document.createElement('div');
                 item.className = 'status-list-item';
@@ -610,7 +610,7 @@
         // 初始化
         window.onload = function() {
             document.getElementById('command-input').focus();
-            
+
             // 定期随机事件
             setInterval(() => {
                 if (Math.random() < 0.1) {

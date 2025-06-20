@@ -8,18 +8,18 @@
 
 # 添加项目路径
 
-import unittest
 import math
+import unittest
 from unittest.mock import patch
 
 from xwe.engine.expression import (
-    ExpressionParser,
-    ExpressionError,
-    TokenizationError,
-    ParseError,
     EvaluationError,
+    ExpressionError,
+    ExpressionParser,
+    FunctionError,
+    ParseError,
+    TokenizationError,
     ValidationError,
-    FunctionError
 )
 
 
@@ -92,11 +92,7 @@ class TestExpressionParser(unittest.TestCase):
 
     def test_complex_variable_names(self):
         """测试复杂变量名"""
-        context = {
-            "base_damage": 100,
-            "skill_mult_1": 1.5,
-            "enemy_defense": 30
-        }
+        context = {"base_damage": 100, "skill_mult_1": 1.5, "enemy_defense": 30}
         expr = "base_damage * skill_mult_1 - enemy_defense"
         self.assertAlmostEqual(self.parser.evaluate(expr, context), 120.0)
 
@@ -170,13 +166,7 @@ class TestExpressionParser(unittest.TestCase):
 
     def test_game_damage_formula(self):
         """测试游戏伤害公式"""
-        context = {
-            "base_atk": 100,
-            "skill_mult": 1.5,
-            "crit": 1,
-            "crit_dmg": 2.0,
-            "enemy_def": 30
-        }
+        context = {"base_atk": 100, "skill_mult": 1.5, "crit": 1, "crit_dmg": 2.0, "enemy_def": 30}
 
         # 基础伤害公式
         formula = "base_atk * skill_mult - enemy_def"
@@ -252,12 +242,11 @@ class TestExpressionParser(unittest.TestCase):
             "max(a, b, c)",
             "sqrt(x) + abs(y)",
             "(a + b) * (c - d)",
-            "ifelse(x > 0, x, -x)"
+            "ifelse(x > 0, x, -x)",
         ]
 
         for expr in valid_expressions:
-            self.assertTrue(self.parser.validate(expr),
-                            f"Expression '{expr}' should be valid")
+            self.assertTrue(self.parser.validate(expr), f"Expression '{expr}' should be valid")
 
     def test_validate_invalid_expressions(self):
         """测试非法表达式验证"""
@@ -273,8 +262,7 @@ class TestExpressionParser(unittest.TestCase):
         ]
 
         for expr in invalid_expressions:
-            self.assertFalse(self.parser.validate(expr),
-                             f"Expression '{expr}' should be invalid")
+            self.assertFalse(self.parser.validate(expr), f"Expression '{expr}' should be invalid")
 
     def test_validate_with_error(self):
         """测试带错误信息的验证"""
@@ -297,9 +285,7 @@ class TestExpressionParser(unittest.TestCase):
         self.assertAlmostEqual(self.parser.evaluate("double(5)"), 10.0)
 
         # 注册可变参数函数
-        self.parser.register_function("avg",
-                                      lambda *args: sum(args) / len(args) if args else 0,
-                                      -1)
+        self.parser.register_function("avg", lambda *args: sum(args) / len(args) if args else 0, -1)
         self.assertAlmostEqual(self.parser.evaluate("avg(1, 2, 3, 4, 5)"), 3.0)
 
     def test_register_function_errors(self):
@@ -337,7 +323,7 @@ class TestExpressionParser(unittest.TestCase):
     def test_debug_mode(self):
         """测试调试模式"""
         # 在调试模式下应该有日志输出
-        with patch('xwe.engine.expression.parser.logger') as mock_logger:
+        with patch("xwe.engine.expression.parser.logger") as mock_logger:
             debug_parser = ExpressionParser(debug=True)
             debug_parser.evaluate("2 + 3")
 
@@ -384,8 +370,7 @@ class TestExpressionParser(unittest.TestCase):
         avg_time = elapsed / iterations * 1000  # 毫秒
 
         # 确保性能在合理范围内
-        self.assertLess(avg_time, 5.0,
-                        f"平均求值时间过长: {avg_time:.3f}ms")
+        self.assertLess(avg_time, 5.0, f"平均求值时间过长: {avg_time:.3f}ms")
 
         print(f"\n性能测试: 平均求值时间 {avg_time:.3f}ms")
 

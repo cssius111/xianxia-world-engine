@@ -19,7 +19,7 @@
       "flags": ["childhood_injury=true", "cautious_nature=true"],
       "tags": ["童年", "负面", "成长"]
     },
-    
+
     {
       "id": "evt_spirit_spring",
       "name": "灵泉奇遇",
@@ -84,7 +84,7 @@
         "min_luck": 5
       }
     },
-    
+
     {
       "id": "evt_demonic_temptation",
       "name": "魔道诱惑",
@@ -176,7 +176,7 @@
       },
       "chain_events": ["demon_sect_revenge", "righteous_reward"]
     },
-    
+
     {
       "id": "evt_ancient_inheritance",
       "name": "上古传承",
@@ -256,7 +256,7 @@
         "min_level": 30
       }
     },
-    
+
     {
       "id": "evt_sect_conspiracy",
       "name": "宗门阴谋",
@@ -330,7 +330,7 @@
         "min_position": "inner_disciple"
       }
     },
-    
+
     {
       "id": "evt_time_anomaly",
       "name": "时空裂缝",
@@ -381,7 +381,7 @@
         }
       ]
     },
-    
+
     {
       "id": "evt_dao_companion",
       "name": "道侣缘分",
@@ -438,7 +438,7 @@
         "no_flags": ["has_dao_companion"]
       }
     },
-    
+
     {
       "id": "evt_tribulation_help",
       "name": "渡劫相助",
@@ -500,7 +500,7 @@
         "friend_breakthrough_ready": true
       }
     },
-    
+
     {
       "id": "evt_past_life_memory",
       "name": "前世记忆",
@@ -532,7 +532,7 @@
         "special_condition": "near_death_experience"
       }
     },
-    
+
     {
       "id": "evt_heavenly_dao_test",
       "name": "天道考验",
@@ -600,17 +600,17 @@
       }
     }
   ],
-  
+
   "event_pools": {
     "early_game": [
-      "evt_childhood_injury", 
-      "evt_village_help", 
+      "evt_childhood_injury",
+      "evt_village_help",
       "evt_find_herbs",
       "evt_bandit_encounter"
     ],
     "mid_game": [
       "evt_spirit_spring",
-      "evt_elder_guidance", 
+      "evt_elder_guidance",
       "evt_beast_friend",
       "evt_treasure_map",
       "evt_sect_conspiracy"
@@ -639,7 +639,7 @@
       "evt_time_anomaly"
     ]
   },
-  
+
   "dynamic_event_modifiers": {
     "karma_influence": {
       "high_karma": {
@@ -688,7 +688,7 @@
       }
     }
   },
-  
+
   "special_trigger_conditions": {
     "near_death": {
       "health_percentage": 0.1,
@@ -707,12 +707,12 @@
       "triggers": ["saint_transformation", "demon_transformation"]
     }
   },
-  
+
   "event_chain_definitions": {
     "demon_path": {
       "stages": [
         "first_temptation",
-        "power_corruption", 
+        "power_corruption",
         "moral_struggle",
         "final_choice"
       ],

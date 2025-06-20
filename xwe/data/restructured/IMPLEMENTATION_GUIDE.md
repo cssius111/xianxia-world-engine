@@ -47,19 +47,19 @@ python main_menu.py --mode player
    # 伪代码示例
    def create_character(mode='player'):
        config = load_json('character_creation_config.json')
-       
+
        # 根据模式调整选项
        if mode == 'dev':
            options = config['origins'] + config['hidden_origins']
        else:
            options = config['origins']
-           
+
        # 展示选择界面
        selected_origin = ui.select("选择出身", options)
        selected_root = ui.select("选择灵根", config['spiritual_roots'])
        selected_traits = ui.multi_select("选择性格", config['personality_traits'], max=2)
        selected_talent = ui.select("选择天赋", config['initial_talents'])
-       
+
        return Character(origin, root, traits, talent)
    ```
 
@@ -67,16 +67,16 @@ python main_menu.py --mode player
    ```python
    # 与现有 character_roller.py 集成
    from xwe.core.roll_system.character_roller import CharacterRoller
-   
+
    def random_with_constraints(constraints):
        roller = CharacterRoller()
        result = roller.roll()
-       
+
        # 应用创建配置的约束
        if constraints.get('origin'):
            result.identity = constraints['origin']
        # ... 其他约束应用
-       
+
        return result
    ```
 
@@ -89,7 +89,7 @@ class EventProcessor:
     def __init__(self):
         self.local_events = load_json('local_events.json')
         self.deepseek_client = DeepSeekClient()
-        
+
     def generate_event(self, context):
         try:
             # 优先尝试 DeepSeek API
@@ -98,14 +98,14 @@ class EventProcessor:
         except (TimeoutError, APIError):
             # 降级到本地事件库
             return self.get_local_event(context)
-            
+
     def apply_event(self, event, game_state):
         effect = event['effect']
-        
+
         if effect['type'] == 'stat_delta':
             for stat, delta in effect['payload'].items():
                 game_state.player.stats[stat] += delta
-                
+
         elif effect['type'] == 'boolean_flag':
             action = effect['payload']['action']
             flags = effect['payload']['flags']
@@ -113,11 +113,11 @@ class EventProcessor:
                 game_state.flags.update(flags)
             else:
                 game_state.flags.difference_update(flags)
-                
+
         elif effect['type'] == 'item_reward':
             for item in effect['payload']['items']:
                 game_state.inventory.add(item['id'], item['count'])
-                
+
         # 记录到事件日志
         game_state.event_log.append({
             'timestamp': datetime.now(),
@@ -131,13 +131,13 @@ class EventProcessor:
 class DeepSeekClient:
     def generate_event(self, context, timeout=5):
         prompt = self._build_prompt(context)
-        
+
         response = requests.post(
             self.api_url,
             json={'prompt': prompt, 'max_tokens': 500},
             timeout=timeout
         )
-        
+
         event = self._parse_response(response.json())
         return self._validate_schema(event)
 ```
@@ -156,7 +156,7 @@ class NewsItem:
         self.ttl = data['ttl']  # Time to live
         self.created_at = datetime.now()
         self.relevance_level = data['relevance_level']
-        
+
     def is_expired(self):
         return (datetime.now() - self.created_at).seconds > self.ttl
 
@@ -164,11 +164,11 @@ class IntelligenceSystem:
     def __init__(self):
         self.global_news = []  # 全服共享
         self.personal_intel = {}  # 按玩家ID存储
-        
+
     def add_global_news(self, news_item):
         self.global_news.append(news_item)
         self._cleanup_expired()
-        
+
     def add_personal_intel(self, player_id, intel):
         if player_id not in self.personal_intel:
             self.personal_intel[player_id] = []
@@ -183,7 +183,7 @@ class NewsPanel {
     constructor() {
         this.currentTab = 'global';
     }
-    
+
     render() {
         return `
         <div class="news-panel">
@@ -197,7 +197,7 @@ class NewsPanel {
         </div>
         `;
     }
-    
+
     onNewsClick(newsId) {
         // 显示详情弹窗
         const news = this.getNewsById(newsId);
@@ -218,19 +218,19 @@ class TimelineManager:
     def __init__(self):
         self.events = load_json('timeline_events.json')
         self.current_date = GameDate(year=0, month=0, day=0)
-        
+
     def advance_time(self, hours):
         self.current_date.add_hours(hours)
         triggered_events = self.check_triggers()
         return triggered_events
-        
+
     def check_triggers(self):
         triggered = []
         for event in self.events['timeline_events']:
             if self.is_triggered(event):
                 triggered.append(event)
         return triggered
-        
+
     def is_triggered(self, event):
         event_date = self.parse_date(event['trigger_date'])
         if self.current_date >= event_date:
@@ -255,10 +255,10 @@ def push_timeline_event(event):
         'ttl': event.get('duration_days', 1) * 86400,
         'relevance_level': 10
     }
-    
+
     # 推送到情报系统
     intelligence_system.add_global_news(NewsItem(news))
-    
+
     # 触发游戏内效果
     if 'global_effects' in event:
         apply_global_effects(event['global_effects'])
@@ -275,31 +275,31 @@ class TimeSystem:
     def __init__(self):
         with open('time_rules.yaml', 'r') as f:
             self.rules = yaml.safe_load(f)
-            
+
     def get_time_cost(self, action, modifiers=None):
         base_cost = self.rules['default_time_cost'].get(
-            action, 
+            action,
             self.rules['deepseek_integration']['fallback_behavior']['default_cost']
         )
-        
+
         if modifiers:
             for mod_type, mod_value in modifiers.items():
                 if mod_type in self.rules['time_modifiers']:
                     base_cost *= self.rules['time_modifiers'][mod_type].get(mod_value, 1.0)
-                    
+
         return base_cost
-        
+
     def process_action(self, action, game_state):
         time_cost = self.get_time_cost(action, game_state.get_modifiers())
-        
+
         # 应用疲劳系统
         if self.rules['special_rules']['fatigue_system']['enabled']:
             if game_state.active_hours > self.rules['special_rules']['fatigue_system']['threshold_hours']:
                 time_cost *= self.rules['special_rules']['fatigue_system']['penalty_multiplier']
-                
+
         # 推进时间
         timeline_manager.advance_time(time_cost)
-        
+
         return time_cost
 ```
 
@@ -316,7 +316,7 @@ class ExtendedGameState:
         self.personal_intel = []
         self.timeline_progress = {}
         self.game_mode = 'player'
-        
+
     def save(self):
         data = {
             'base': self.base.to_dict(),
@@ -339,7 +339,7 @@ def test_game_modes():
     game_dev = GameEngine(mode='dev')
     assert game_dev.can_use_gm_commands() == True
     assert len(game_dev.get_character_options()) > 10
-    
+
     # 测试玩家模式
     game_player = GameEngine(mode='player')
     assert game_player.can_use_gm_commands() == False
@@ -347,11 +347,11 @@ def test_game_modes():
 
 def test_event_system():
     processor = EventProcessor()
-    
+
     # 测试本地事件
     event = processor.get_local_event({'level': 5})
     assert event['id'] in ['evt_village_help', 'evt_find_herbs']
-    
+
     # 测试事件应用
     game_state = MockGameState()
     processor.apply_event(event, game_state)
@@ -359,7 +359,7 @@ def test_event_system():
 
 def test_timeline():
     timeline = TimelineManager()
-    
+
     # 测试时间推进
     timeline.advance_time(24 * 30)  # 推进30天
     events = timeline.check_triggers()
@@ -387,7 +387,7 @@ def test_timeline():
 
 - [x] 创建所需的JSON/YAML配置文件
 - [ ] 扩展现有 GameState 类
-- [ ] 实现 EventProcessor 类  
+- [ ] 实现 EventProcessor 类
 - [ ] 实现 IntelligenceSystem 类
 - [ ] 实现 TimelineManager 类
 - [ ] 集成前端 UI 组件

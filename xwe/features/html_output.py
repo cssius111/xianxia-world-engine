@@ -37,9 +37,7 @@ class HtmlGameLogger:
             }
         self._write_html()
 
-    def add_log(
-        self, text: str, category: str = "system", is_continuation: bool = False
-    ):
+    def add_log(self, text: str, category: str = "system", is_continuation: bool = False):
         """添加日志，支持续行"""
         if is_continuation and self.logs:
             # 如果是续行，将文本添加到上一条日志
@@ -58,9 +56,7 @@ class HtmlGameLogger:
             f.write(html)
 
     def _generate_html(self) -> str:
-        status_lines = [
-            f"<li><strong>{k}</strong>: {v}</li>" for k, v in self.status.items()
-        ]
+        status_lines = [f"<li><strong>{k}</strong>: {v}</li>" for k, v in self.status.items()]
         status_html = "\n".join(status_lines)
         # 将连续的多行输出组合在一起
         log_blocks = []
@@ -69,14 +65,10 @@ class HtmlGameLogger:
             if "\n" in text:
                 # 多行文本放在一个块内
                 escaped_text = self._escape(text).replace("\n", "<br>")
-                log_blocks.append(
-                    f"<div class='log-block {category}'>{escaped_text}</div>"
-                )
+                log_blocks.append(f"<div class='log-block {category}'>{escaped_text}</div>")
             else:
                 # 单行文本
-                log_blocks.append(
-                    f"<p class='log-line {category}'>{self._escape(text)}</p>"
-                )
+                log_blocks.append(f"<p class='log-line {category}'>{self._escape(text)}</p>")
 
         log_html = "\n".join(log_blocks)
         return f"""<!DOCTYPE html>

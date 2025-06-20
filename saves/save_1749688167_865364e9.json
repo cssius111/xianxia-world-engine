@@ -1,0 +1,45 @@
+{
+  "id": "save_1749688167_865364e9",
+  "name": "测试存档",
+  "created_at": 1749688167.139113,
+  "modified_at": 1749688167.139113,
+  "version": "1.0.0",
+  "data": {
+    "game_state": {
+      "game_time": 0.0004119873046875,
+      "current_location": "天南镇",
+      "in_combat": false
+    },
+    "player": {
+      "id": "7d59da01-ff1a-4cbb-b146-fa4176d1dc49",
+      "name": "张三丰",
+      "level": 1,
+      "experience": 23,
+      "realm": "炼气期",
+      "health": 100,
+      "max_health": 100,
+      "mana": 50,
+      "max_mana": 50,
+      "attack": 10,
+      "defense": 5,
+      "speed": 10,
+      "spiritual_root": "普通",
+      "talent": "平凡",
+      "fate": "普通",
+      "skills": [],
+      "inventory": {},
+      "equipment": {},
+      "total_battles": 0,
+      "victories": 0,
+      "defeats": 0,
+      "created_at": 1749688167.13871
+    },
+    "world": {
+      "discovered_locations": [
+        "青云山",
+        "天南镇"
+      ],
+      "custom_data": {}
+    }
+  }
+}

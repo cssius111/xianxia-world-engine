@@ -32,7 +32,7 @@ echo "🔧 2. 集成已创建的基础系统..."
 # 检查物品系统是否正确创建
 if [ -f "xwe/core/item_system.py" ]; then
     echo "✅ 物品系统已创建"
-    
+
     # 提供集成建议
     echo "💡 建议在 game_core.py 中添加以下导入:"
     echo "from .item_system import item_system"

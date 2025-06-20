@@ -5,7 +5,7 @@
   },
   "profession_categories": {
     "combat": "战斗类职业",
-    "support": "辅助类职业", 
+    "support": "辅助类职业",
     "crafting": "制作类职业",
     "special": "特殊类职业",
     "hidden": "隐藏类职业",
@@ -60,7 +60,7 @@
       "advancement": ["法童", "法徒", "法师", "法宗", "大法师", "法仙"]
     },
     {
-      "id": "BODY_CULTIVATOR", 
+      "id": "BODY_CULTIVATOR",
       "name": "体修",
       "category": "combat",
       "description": "淬炼肉身，以强悍体魄抗衡天地",
@@ -223,7 +223,7 @@
       "description": "技能组合优势",
       "examples": [
         "剑修 + 法修 = 法剑双修",
-        "丹修 + 御兽 = 兽丹专家", 
+        "丹修 + 御兽 = 兽丹专家",
         "体修 + 阵法 = 阵体合一",
         "多职业 = 全能修士"
       ]

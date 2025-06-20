@@ -4,11 +4,11 @@ from __future__ import annotations
 
 import json
 import re
-from pathlib import Path
 from dataclasses import dataclass
-from typing import List, Dict, Any, Optional
+from pathlib import Path
+from typing import Any, Dict, List, Optional
 
-from xwe.features.intelligence_system import IntelligenceSystem, IntelItem
+from xwe.features.intelligence_system import IntelItem, IntelligenceSystem
 
 
 @dataclass(order=True)
@@ -23,7 +23,11 @@ class GameDate:
     MONTHS_PER_YEAR = 12
 
     def to_days(self) -> int:
-        return self.year * self.MONTHS_PER_YEAR * self.DAYS_PER_MONTH + self.month * self.DAYS_PER_MONTH + self.day
+        return (
+            self.year * self.MONTHS_PER_YEAR * self.DAYS_PER_MONTH
+            + self.month * self.DAYS_PER_MONTH
+            + self.day
+        )
 
     @classmethod
     def from_days(cls, total: int) -> "GameDate":
@@ -53,11 +57,18 @@ class GameDate:
 class TimelineManager:
     """Load timeline events and advance in-game time."""
 
-    def __init__(self,
-                 events_path: Optional[Path] = None,
-                 intelligence_system: Optional[IntelligenceSystem] = None) -> None:
+    def __init__(
+        self,
+        events_path: Optional[Path] = None,
+        intelligence_system: Optional[IntelligenceSystem] = None,
+    ) -> None:
         if events_path is None:
-            events_path = Path(__file__).resolve().parents[1] / "data" / "restructured" / "timeline_events.json"
+            events_path = (
+                Path(__file__).resolve().parents[1]
+                / "data"
+                / "restructured"
+                / "timeline_events.json"
+            )
         with open(events_path, "r", encoding="utf-8") as f:
             data = json.load(f)
         self.events: List[Dict[str, Any]] = data.get("timeline_events", [])

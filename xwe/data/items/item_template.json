@@ -1,6 +1,6 @@
 {
   "meta": {
-    "version": "1.0.0", 
+    "version": "1.0.0",
     "description": "玄苍界物品系统，包含装备、丹药、法宝、材料等所有物品模板"
   },
   "item_grades": [
@@ -19,7 +19,7 @@
       "description": "初级修士的入门装备"
     },
     {
-      "id": "YELLOW_MID", 
+      "id": "YELLOW_MID",
       "name": "黄阶中品",
       "color": "#FFD700",
       "tier": 2,
@@ -27,7 +27,7 @@
     },
     {
       "id": "YELLOW_HIGH",
-      "name": "黄阶上品", 
+      "name": "黄阶上品",
       "color": "#FFA500",
       "tier": 3,
       "description": "聚气期顶尖装备"
@@ -42,7 +42,7 @@
     {
       "id": "MYSTIC_MID",
       "name": "玄阶中品",
-      "color": "#0000FF", 
+      "color": "#0000FF",
       "tier": 5,
       "description": "筑基期精品装备"
     },
@@ -76,7 +76,7 @@
     },
     {
       "id": "HEAVEN_LOW",
-      "name": "天阶下品", 
+      "name": "天阶下品",
       "color": "#DC143C",
       "tier": 10,
       "description": "元婴期修士装备"
@@ -124,7 +124,7 @@
         },
         {
           "name": "雷霆斩",
-          "grade": "MYSTIC_HIGH", 
+          "grade": "MYSTIC_HIGH",
           "special": "雷电附加伤害",
           "description": "蕴含雷电之力的神兵，攻击时电光闪烁"
         }
@@ -151,7 +151,7 @@
     },
     {
       "type": "STAFF",
-      "name": "法杖类", 
+      "name": "法杖类",
       "base_stats": {
         "attack_power": 0.7,
         "spell_power": 1.4,
@@ -231,7 +231,7 @@
               "success_rate": 0.9
             },
             {
-              "grade": "YELLOW_MID", 
+              "grade": "YELLOW_MID",
               "name": "二品聚气丹",
               "effect_multiplier": 1.2,
               "success_rate": 0.95
@@ -257,7 +257,7 @@
             },
             {
               "grade": "EARTH_LOW",
-              "name": "结丹破境丹", 
+              "name": "结丹破境丹",
               "target_realm": "金丹期",
               "success_bonus": 0.15
             }
@@ -396,7 +396,7 @@
       "effects": {
         "无绑定": "可自由交易",
         "拾取绑定": "拾取后无法交易",
-        "装备绑定": "装备后无法交易", 
+        "装备绑定": "装备后无法交易",
         "血契绑定": "滴血认主，生死与共"
       }
     },
@@ -409,7 +409,7 @@
           "levels": [1, 2, 3, 4, 5]
         },
         {
-          "name": "坚固", 
+          "name": "坚固",
           "effect": "减少损耗速度",
           "levels": [1, 2, 3, 4, 5]
         },
@@ -446,7 +446,7 @@
       {
         "name": "炼丹师",
         "description": "炼制丹药的专业",
-        "skill_levels": ["学徒", "熟练", "专家", "大师", "宗师"],  
+        "skill_levels": ["学徒", "熟练", "专家", "大师", "宗师"],
         "crafting_materials": ["草药", "辅料", "丹火"],
         "success_factors": ["丹方完整度", "火候控制", "药材年份"]
       }

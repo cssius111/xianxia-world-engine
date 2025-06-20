@@ -36,7 +36,7 @@ xwe/core/command/
 
 ##### 战斗命令
 - AttackHandler - 攻击
-- DefendHandler - 防御  
+- DefendHandler - 防御
 - FleeHandler - 逃跑
 - UseSkillHandler - 使用技能
 
@@ -115,23 +115,23 @@ class GameCore:
         # 初始化依赖
         self.state_manager = GameStateManager()
         self.output_manager = OutputManager()
-        
+
         # 创建命令处理器
         self.command_processor = CommandProcessor(
             self.state_manager,
             self.output_manager
         )
-        
+
         # 注册处理器
         self._register_handlers()
-        
+
         # 添加中间件
         self._setup_middleware()
-    
+
     def process_input(self, user_input: str):
         """处理用户输入"""
         result = self.command_processor.process_command(user_input)
-        
+
         if result.data.get('should_quit'):
             self.running = False
 ```
@@ -152,11 +152,11 @@ class CommandType(Enum):
 class MeditateHandler(CommandHandler):
     def __init__(self):
         super().__init__("meditate", [CommandType.MEDITATE])
-    
+
     def can_handle(self, context):
         # 检查是否可以处理
         return context.game_context != GameContext.COMBAT
-    
+
     def handle(self, context):
         # 实现命令逻辑
         context.output_manager.narrative("你开始冥想...")
@@ -175,13 +175,13 @@ class CustomMiddleware(Middleware):
     async def process(self, context, next_handler):
         # 前处理
         print(f"Before: {context.raw_input}")
-        
+
         # 调用下一个处理器
         result = await next_handler()
-        
+
         # 后处理
         print(f"After: {result.success}")
-        
+
         return result
 
 processor.add_middleware(CustomMiddleware())
@@ -263,10 +263,10 @@ if result.success:
 while game_running:
     user_input = input("> ")
     result = processor.process_command(user_input)
-    
+
     if result.data.get('should_quit'):
         break
-        
+
     if result.data.get('redirect'):
         # 处理命令重定向
         processor.process_command(result.data['redirect'])

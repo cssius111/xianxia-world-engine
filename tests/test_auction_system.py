@@ -1,4 +1,5 @@
 import pytest
+
 from xwe.core.character import Character, CharacterType
 from xwe.features.auction_system import auction_system
 

@@ -155,7 +155,7 @@
       },
       "schedule": {
         "06:00": "morning_meditation",
-        "08:00": "teach_disciples", 
+        "08:00": "teach_disciples",
         "12:00": "pill_refinement",
         "15:00": "sect_affairs",
         "18:00": "evening_cultivation",

@@ -1,0 +1,33 @@
+{
+  "name": "无名修士",
+  "level": 19,
+  "realm": "炼气期二层",
+  "exp": 169177.7573531351,
+  "next_level_exp": 221683,
+  "attributes": {
+    "strength": 53,
+    "agility": 54,
+    "intelligence": 65,
+    "vitality": 18,
+    "luck": 58
+  },
+  "resources": {
+    "spiritual_power": 0,
+    "max_spiritual_power": 318,
+    "health": 100,
+    "max_health": 434,
+    "stamina": 0,
+    "max_stamina": 243
+  },
+  "cultivation": {
+    "total_days": 385,
+    "breakthrough_count": 1,
+    "cultivation_speed": 1.3760576568573226,
+    "enlightenment_chance": 0.012100000000000001
+  },
+  "inventory": [],
+  "skills": [],
+  "achievements": [],
+  "created_at": "2025-05-30T21:39:02.962887",
+  "last_save": "2025-05-31T00:37:13.772550"
+}

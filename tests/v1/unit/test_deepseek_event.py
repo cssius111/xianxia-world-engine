@@ -1,5 +1,5 @@
 import json
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
 from xwe.core.event_system import EventSystemV3
 
@@ -14,7 +14,7 @@ def _mock_event():
         "effect": {"type": "stat_delta", "payload": {"luck": 1}},
         "conditions": {},
         "weight": 1,
-        "flags": []
+        "flags": [],
     }
 
 

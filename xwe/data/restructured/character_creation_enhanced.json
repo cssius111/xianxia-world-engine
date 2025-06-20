@@ -21,7 +21,7 @@
       "unlock_condition": "always"
     },
     {
-      "id": "fallen_nobility", 
+      "id": "fallen_nobility",
       "name": "没落世家",
       "description": "曾经辉煌的修真世家，如今只剩残破传承。血脉中仍有一丝不凡。",
       "story": "你的家族曾是一方豪强，可惜在百年前的大变中衰落。你继承了一些残缺的传承...",
@@ -42,7 +42,7 @@
     },
     {
       "id": "mysterious_origin",
-      "name": "神秘来历", 
+      "name": "神秘来历",
       "description": "身世成谜，似乎隐藏着惊天秘密。命运的齿轮已经开始转动。",
       "story": "你不记得自己的过去，只有一块神秘玉佩和模糊的记忆碎片...",
       "effects": {
@@ -200,7 +200,7 @@
       "unlock_condition": "achievement"
     }
   ],
-  
+
   "spiritual_roots": [
     {
       "id": "single_root",
@@ -317,7 +317,7 @@
       "unlock_condition": "hidden_quest"
     }
   ],
-  
+
   "personality_traits": [
     {
       "id": "kind",
@@ -485,7 +485,7 @@
       "incompatible": ["forgiving", "peaceful"]
     }
   ],
-  
+
   "initial_talents": [
     {
       "id": "sword_heart",
@@ -688,7 +688,7 @@
       "special_requirements": "无"
     }
   ],
-  
+
   "creation_weights": {
     "origins": {
       "peasant_family": 30,
@@ -728,7 +728,7 @@
       "none": 35
     }
   },
-  
+
   "synergy_bonuses": {
     "origin_root_synergy": [
       {
@@ -738,7 +738,7 @@
         "effects": {"all_stats": 5, "special_event_rate": 2.0}
       },
       {
-        "origin": "martial_family", 
+        "origin": "martial_family",
         "root": "single_root",
         "bonus": "武道通神",
         "effects": {"combat_power": 1.5, "martial_enlightenment": true}
@@ -748,7 +748,7 @@
       {
         "personality": ["ambitious", "cunning"],
         "talent": "divine_calculation",
-        "bonus": "谋定后动", 
+        "bonus": "谋定后动",
         "effects": {"scheme_success": 0.8, "power_grab": true}
       },
       {
@@ -773,7 +773,7 @@
       }
     ]
   },
-  
+
   "mode_config": {
     "dev": {
       "show_all_options": true,
@@ -796,7 +796,7 @@
       "achievement_unlocks": true
     }
   },
-  
+
   "random_generation_rules": {
     "stat_generation": {
       "method": "point_buy",

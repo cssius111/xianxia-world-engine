@@ -186,7 +186,7 @@
   "statistics_tracking": {
     "combat_stats": {
       "total_damage_dealt": "by_character",
-      "total_damage_taken": "by_character", 
+      "total_damage_taken": "by_character",
       "skills_used": "count_by_skill",
       "status_effects_applied": "count_by_effect",
       "critical_hits": "count_and_percentage",

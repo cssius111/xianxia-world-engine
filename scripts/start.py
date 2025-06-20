@@ -9,16 +9,17 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 try:
-    from xwe.core.game_core import GameCore
     from xwe.core import GameCore  # 备用导入方式
-    
+    from xwe.core.game_core import GameCore
+
     print("=== 修仙世界引擎 ===")
     print("正在启动游戏...\n")
-    
+
     # 直接运行主程序
     import main
+
     main.main()
-    
+
 except Exception as e:
     print(f"启动失败: {e}")
     print("\n请运行以下命令修复问题：")

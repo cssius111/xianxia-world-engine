@@ -115,7 +115,7 @@ class ExpressionParser:
         self.config = load_json(config_path)
         self.operators = self.config['expression_types']
         self.functions = self.config['built_in_functions']
-    
+
     def evaluate(self, expression, context):
         if isinstance(expression, dict):
             if 'operation' in expression:
@@ -132,7 +132,7 @@ class CombatSystem:
         self.config = load_json('combat_system_v2.json')
         self.parser = ExpressionParser('expression_parser.json')
         self.skills = load_json('skills.json')
-    
+
     def calculate_damage(self, attacker, defender, skill_id):
         skill = self.skills['skills'][skill_id]
         context = self.build_combat_context(attacker, defender, skill)
@@ -145,7 +145,7 @@ class CombatSystem:
 class FormationSystem:
     def __init__(self):
         self.formations = load_json('formations.json')
-    
+
     def activate_formation(self, formation_id, participants):
         formation = self.formations['formations'][formation_id]
         if self.validate_requirements(formation, participants):

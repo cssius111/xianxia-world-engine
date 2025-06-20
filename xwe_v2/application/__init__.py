@@ -1,17 +1,41 @@
 """
-Application Layer - Use Cases and Business Logic Orchestration
+XWE V2 Application Layer
 
-This layer contains:
-- Use Cases: Application-specific business rules
-- DTOs: Data Transfer Objects for communication
-- Application Services: Orchestrate domain objects
-- Command/Query Handlers: CQRS pattern implementation
-- Application Events: Application-level events
-
-Dependencies: Domain layer only
+This layer contains use cases, commands, queries, and application services.
+It orchestrates the domain layer to implement business logic.
 """
 
-# Application services will be imported here
-# from .services import *
-# from .commands import *
-# from .queries import *
+__all__ = [
+    # Services
+    "GameService",
+    # Commands
+    "Command",
+    # Events
+    "Event",
+    "EventBus",
+]
+
+
+# Placeholder exports until properly implemented
+class GameService:
+    """Main game service."""
+
+    pass
+
+
+class Command:
+    """Base command class."""
+
+    pass
+
+
+class Event:
+    """Base event class."""
+
+    pass
+
+
+class EventBus:
+    """Event bus for publishing domain events."""
+
+    pass

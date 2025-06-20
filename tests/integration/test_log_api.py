@@ -1,7 +1,7 @@
 """API 日志接口集成测试"""
 
 from entrypoints.run_web_ui_optimized import app
-from xwe.services import register_services, get_service_container, ILogService
+from xwe.services import ILogService, get_service_container, register_services
 
 
 def test_log_endpoint():
@@ -10,17 +10,17 @@ def test_log_endpoint():
     register_services(get_service_container())
 
     with app.test_client() as client:
-        resp = client.get('/api/v1/game/log')
+        resp = client.get("/api/v1/game/log")
         assert resp.status_code == 200
 
         data = resp.get_json()
-        assert data['success'] is True
-        logs = data['data']['logs']
+        assert data["success"] is True
+        logs = data["data"]["logs"]
         assert isinstance(logs, list)
         assert logs, "日志列表应包含至少一条记录"
 
         for entry in logs:
-            for key in ['id', 'timestamp', 'level', 'category', 'message']:
+            for key in ["id", "timestamp", "level", "category", "message"]:
                 assert key in entry, f"缺少字段: {key}"
 
 
@@ -35,12 +35,12 @@ def test_log_filter_by_level():
     log_service.log_error("error msg", category="test")
 
     with app.test_client() as client:
-        resp = client.get('/api/v1/game/log?level=error')
+        resp = client.get("/api/v1/game/log?level=error")
         assert resp.status_code == 200
 
         data = resp.get_json()
-        assert data['success'] is True
-        logs = data['data']['logs']
+        assert data["success"] is True
+        logs = data["data"]["logs"]
 
         assert len(logs) == 1
-        assert all(entry['level'] == 'error' for entry in logs)
+        assert all(entry["level"] == "error" for entry in logs)

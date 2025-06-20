@@ -46,39 +46,39 @@ def main():
     """主函数"""
     # 显示演示命令
     show_demo_commands()
-    
+
     # 创建游戏实例
     game = GameCore()
-    
+
     # 开始新游戏
     player_name = input("请输入你的角色名（直接回车使用默认）: ").strip()
     if not player_name:
         player_name = "演示侠客"
-    
+
     game.start_new_game(player_name)
-    
+
     print("\n提示：你现在在青云城，这是一个安全的主城。")
     print("可以使用 '地图' 命令查看附近的区域。")
     print("使用 '探索' 命令可能会发现有趣的事物！\n")
-    
+
     # 主游戏循环
     while game.is_running():
         # 显示游戏输出
         output = game.get_output()
         for line in output:
             print(line)
-        
+
         # 获取玩家输入
         try:
             command = input("\n> ").strip()
-            
-            if command.lower() in ['quit', 'exit', '退出']:
+
+            if command.lower() in ["quit", "exit", "退出"]:
                 print("\n感谢游玩演示版本！")
                 break
             else:
                 # 处理命令
                 game.process_command(command)
-                
+
         except KeyboardInterrupt:
             print("\n\n游戏中断")
             break

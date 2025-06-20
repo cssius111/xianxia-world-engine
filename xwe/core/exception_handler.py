@@ -4,33 +4,35 @@
 
 import logging
 import traceback
-from typing import Any, Callable, Optional
 from functools import wraps
+from typing import Any, Callable, Optional
 
 logger = logging.getLogger(__name__)
 
 
 class GameException(Exception):
     """游戏相关异常基类"""
+
     pass
 
 
 class APIException(GameException):
     """API调用异常"""
+
     pass
 
 
 class ConfigurationException(GameException):
     """配置异常"""
+
     pass
 
 
 def handle_exceptions(
-    default_return: Optional[Any] = None,
-    raise_on_error: bool = False,
-    log_error: bool = True
+    default_return: Optional[Any] = None, raise_on_error: bool = False, log_error: bool = True
 ):
     """异常处理装饰器"""
+
     def decorator(func: Callable) -> Callable:
         @wraps(func)
         def wrapper(*args, **kwargs) -> Any:
@@ -42,13 +44,14 @@ def handle_exceptions(
                         f"函数 {func.__name__} 执行出错: {e}\n"
                         f"错误详情: {traceback.format_exc()}"
                     )
-                
+
                 if raise_on_error:
                     raise
-                
+
                 return default_return
-        
+
         return wrapper
+
     return decorator
 
 
@@ -75,7 +78,7 @@ def safe_file_operation(func: Callable, *args, **kwargs) -> tuple[bool, Any]:
 def handle_game_exception(exception: Exception, context: str = "") -> str:
     """处理游戏异常并返回用户友好的错误信息"""
     logger.error(f"游戏异常[{context}]: {exception}")
-    
+
     if isinstance(exception, APIException):
         return "网络连接或API调用出现问题，请稍后重试。"
     elif isinstance(exception, ConfigurationException):

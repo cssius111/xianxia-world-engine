@@ -5,7 +5,7 @@
   },
   "talent_categories": {
     "combat": "战斗类天赋",
-    "crafting": "制作类天赋", 
+    "crafting": "制作类天赋",
     "support": "辅助类天赋",
     "special": "特殊类天赋",
     "rare": "稀有类天赋",
@@ -61,7 +61,7 @@
       "id": "IRON_BONES",
       "name": "铁骨铜皮",
       "type": "体修",
-      "category": "combat", 
+      "category": "combat",
       "rarity": "common",
       "description": "天生筋骨强健，体修效率+15%，物理抗性+20%",
       "effects": {
@@ -185,7 +185,7 @@
       "id": "SOCIAL_BUTTERFLY",
       "name": "八面玲珑",
       "type": "社交",
-      "category": "support", 
+      "category": "support",
       "rarity": "uncommon",
       "description": "社交能力出众，好感度获得+30%，信息收集+25%",
       "effects": {
@@ -330,7 +330,7 @@
       "id": "FATE_DEFIER",
       "name": "逆命者",
       "type": "传说",
-      "category": "legendary", 
+      "category": "legendary",
       "rarity": "legendary",
       "description": "天生逆天体质，可改写自身命运，免疫预言和诅咒",
       "effects": {

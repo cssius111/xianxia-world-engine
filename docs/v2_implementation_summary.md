@@ -159,7 +159,7 @@ python entrypoints/run_web_ui_optimized.py
 
 ### 自定义配置
 
-- 开发者密码：`welcome_modal_v2.html` 
+- 开发者密码：`welcome_modal_v2.html`
 - 角色属性：`routes/character.py`
 - 世界介绍：`world_intro.html`
 

@@ -7,8 +7,8 @@
 """
 
 import json
-from pathlib import Path
 import shutil
+from pathlib import Path
 
 
 def is_json_empty(path: Path) -> bool:

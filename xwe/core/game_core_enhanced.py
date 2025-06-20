@@ -1,8 +1,8 @@
 """Enhanced game core helpers."""
 
 from xwe.core.game_core import GameCore
-from xwe.features.html_output import HtmlGameLogger
 from xwe.features.enhanced_output import EnhancedGameOutput
+from xwe.features.html_output import HtmlGameLogger
 
 # 可选系统
 try:

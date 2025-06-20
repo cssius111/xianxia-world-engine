@@ -63,7 +63,7 @@ xwe/world/
 "去天南坊市" → 移动到天南坊市
 "前往荒野" → 移动到荒野入口
 
-# 探索命令  
+# 探索命令
 "探索" → 探索当前区域
 
 # 地图命令
@@ -189,7 +189,7 @@ print(result.display())
 class DialogueSystem:
     def start_dialogue(self, npc_id):
         """开始对话"""
-    
+
     def process_choice(self, choice_id):
         """处理对话选项"""
 ```
@@ -203,7 +203,7 @@ class DialogueSystem:
 class Inventory:
     def add_item(self, item_id, quantity):
         """添加物品"""
-    
+
     def use_item(self, item_id):
         """使用物品"""
 ```

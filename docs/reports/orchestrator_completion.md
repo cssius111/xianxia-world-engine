@@ -239,7 +239,7 @@ GameOrchestrator 成功实现了对三大核心模块的整合，提供了：
 
 现在四大核心模块都已完成：
 1. ✅ GameStateManager
-2. ✅ OutputManager  
+2. ✅ OutputManager
 3. ✅ CommandProcessor
 4. ✅ GameOrchestrator
 

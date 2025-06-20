@@ -89,7 +89,7 @@ class MyCustomModule(GameModule):
     def initialize(self, engine, config):
         super().initialize(engine, config)
         # 初始化逻辑
-        
+
     def handle_event(self, event):
         if event.type == 'my_custom_event':
             # 处理事件
@@ -188,22 +188,22 @@ def handle_cultivate(player, args):
     # 检查是否可以修炼
     if player.is_in_combat:
         return "无法在战斗中修炼！"
-        
+
     # 计算修炼收益
     exp_gain = engine.expressions.evaluate(
         config['cultivation']['exp_formula']['expression'],
         context={'player': player.attributes}
     )
-    
+
     # 应用收益
     player.add_experience(exp_gain)
-    
+
     # 触发事件
     engine.events.emit('cultivation_completed', {
         'player_id': player.id,
         'exp_gained': exp_gain
     })
-    
+
     return f"修炼完成，获得 {exp_gain} 点经验！"
 ```
 
@@ -215,7 +215,7 @@ class CautiousAI(AIBehavior):
     def decide_action(self, entity, combat_state):
         # 健康值低于30%时优先治疗或逃跑
         health_ratio = entity.health / entity.max_health
-        
+
         if health_ratio < 0.3:
             # 检查是否有治疗技能
             heal_skills = [s for s in entity.skills if s.type == 'heal']
@@ -223,13 +223,13 @@ class CautiousAI(AIBehavior):
                 return UseSkillAction(heal_skills[0], entity)
             else:
                 return FleeAction()
-                
+
         # 否则正常攻击
         enemies = combat_state.get_enemies(entity)
         if enemies:
             weakest = min(enemies, key=lambda e: e.health)
             return AttackAction(weakest)
-            
+
         return DefendAction()
 
 # 注册AI行为

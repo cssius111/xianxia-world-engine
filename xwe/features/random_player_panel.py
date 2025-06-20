@@ -3,8 +3,9 @@ import random
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-
-CONFIG_PATH = Path(__file__).resolve().parents[1] / "data" / "restructured" / "character_creation_config.json"
+CONFIG_PATH = (
+    Path(__file__).resolve().parents[1] / "data" / "restructured" / "character_creation_config.json"
+)
 
 
 class RandomPlayerPanel:
@@ -81,5 +82,3 @@ class RandomPlayerPanel:
                 value = self.max_stat_value
             clean[k] = value
         return clean
-
-

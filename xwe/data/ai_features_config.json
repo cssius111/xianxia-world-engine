@@ -24,7 +24,7 @@
       "emotion_system": true,
       "dialogue_styles": [
         "formal",
-        "casual", 
+        "casual",
         "ancient",
         "mysterious"
       ]

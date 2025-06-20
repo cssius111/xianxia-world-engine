@@ -77,7 +77,7 @@ self.state_manager.start_combat(combat_id)
 # 检查是否在战斗中
 if self.state_manager.is_in_combat():
     # 战斗逻辑
-    
+
 # 或使用上下文
 if self.state_manager.get_current_context() == GameContext.COMBAT:
     # 战斗逻辑
@@ -164,11 +164,11 @@ def _do_talk(self, target_name: str):
     if self.game_state.flags.get('in_dialogue', False):
         self.output("你正在与其他人对话。")
         return
-    
+
     # 开始对话
     self.game_state.flags['in_dialogue'] = True
     self.game_state.flags['dialogue_npc'] = target_name
-    
+
 def _end_dialogue(self):
     # 清除对话状态
     if 'in_dialogue' in self.game_state.flags:
@@ -184,22 +184,22 @@ def _do_talk(self, target_name: str):
     if self.state_manager.is_in_context(GameContext.DIALOGUE):
         self.output("你正在与其他人对话。")
         return
-    
+
     # 开始对话
     self.state_manager.push_context(GameContext.DIALOGUE, {
         'npc_id': target_name,
         'start_time': datetime.now()
     })
-    
+
 def _end_dialogue(self):
     # 结束对话
     if self.state_manager.get_current_context() == GameContext.DIALOGUE:
         context_data = self.state_manager.get_context_data()
         dialogue_duration = datetime.now() - context_data['start_time']
-        
+
         # 可以记录对话时长等统计信息
         self.state_manager.update_statistics('dialogue_time', dialogue_duration.total_seconds())
-        
+
         self.state_manager.pop_context()
 ```
 
@@ -210,10 +210,10 @@ def _end_dialogue(self):
 def _start_combat(self, target_name: str):
     combat_id = f"combat_{self.game_state.game_time}"
     combat_state = self.combat_system.create_combat(combat_id)
-    
+
     # 设置当前战斗
     self.game_state.current_combat = combat_id
-    
+
 def _end_combat(self, combat_state: CombatState, fled: bool = False):
     # 清理战斗状态
     self.combat_system.end_combat(self.game_state.current_combat)
@@ -225,10 +225,10 @@ def _end_combat(self, combat_state: CombatState, fled: bool = False):
 def _start_combat(self, target_name: str):
     combat_id = f"combat_{self.state_manager.state.game_time}"
     combat_state = self.combat_system.create_combat(combat_id)
-    
+
     # 使用状态管理器开始战斗
     self.state_manager.start_combat(combat_id)
-    
+
 def _end_combat(self, combat_state: CombatState, fled: bool = False):
     result = {
         'fled': fled,
@@ -236,10 +236,10 @@ def _end_combat(self, combat_state: CombatState, fled: bool = False):
         'duration': combat_state.round_count,
         'exp_gained': self._calculate_exp_reward(combat_state)
     }
-    
+
     # 使用状态管理器结束战斗
     self.state_manager.end_combat(result)
-    
+
     # 清理战斗系统
     self.combat_system.end_combat(combat_state.id)
 ```
@@ -252,7 +252,7 @@ def process_command(self, input_text: str):
     # 在处理命令前创建快照（用于撤销功能）
     if input_text.lower() not in ['undo', 'help', 'save', 'load']:
         self.state_manager.create_snapshot()
-    
+
     # 处理撤销命令
     if input_text.lower() == 'undo':
         if self.state_manager.restore_snapshot():
@@ -260,7 +260,7 @@ def process_command(self, input_text: str):
         else:
             self.output("无法撤销。")
         return
-    
+
     # 正常处理命令...
 ```
 
@@ -275,49 +275,49 @@ class GameCore:
     def __init__(self):
         # 初始化事件系统
         self.event_bus = EventBus()
-        
+
         # 初始化状态管理器
         self.state_manager = GameStateManager(self.event_bus)
-        
+
         # 向后兼容
         @property
         def game_state(self):
             return self.state_manager.state
-        
+
         # 设置状态监听器
         self._setup_state_listeners()
-        
+
     def _setup_state_listeners(self):
         """设置状态监听器"""
         # 监听位置变化
         self.state_manager.add_listener('location_changed', self._on_location_changed)
-        
+
         # 监听战斗开始/结束
         self.state_manager.add_listener('combat_started', self._on_combat_started)
         self.state_manager.add_listener('combat_ended', self._on_combat_ended)
-        
+
         # 监听成就解锁
         self.state_manager.add_listener('achievement_unlocked', self._on_achievement_unlocked)
-        
+
     def _on_location_changed(self, data):
         """处理位置变化"""
         # 更新地图显示
         # 检查区域事件
         # 等等...
-        
+
     def _on_combat_started(self, data):
         """处理战斗开始"""
         # 播放战斗音乐
         # 显示战斗UI
         # 等等...
-        
+
     def _on_combat_ended(self, data):
         """处理战斗结束"""
         # 显示战斗结果
         # 发放奖励
         # 更新统计
         # 等等...
-        
+
     def _on_achievement_unlocked(self, data):
         """处理成就解锁"""
         achievement_id = data['achievement']

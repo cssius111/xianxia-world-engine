@@ -1,7 +1,7 @@
-import os
 import json
-import re
 import logging
+import os
+import re
 from typing import Any, Dict, Optional
 
 import requests  # type: ignore[import-untyped]
@@ -12,7 +12,9 @@ logger = logging.getLogger(__name__)
 class DeepSeekClient:
     """简单封装 DeepSeek 事件生成 API"""
 
-    def __init__(self, api_key: Optional[str] = None, api_base: str = "https://api.deepseek.com/v1") -> None:
+    def __init__(
+        self, api_key: Optional[str] = None, api_base: str = "https://api.deepseek.com/v1"
+    ) -> None:
         self.api_key = api_key or os.getenv("DEEPSEEK_API_KEY", "")
         self.api_base = api_base.rstrip("/")
 

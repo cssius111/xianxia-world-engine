@@ -5,21 +5,28 @@
 提供安全的数学表达式解析和求值功能。
 """
 
-import re
 import logging
 import operator
+import re
 from typing import Any, Callable, Dict, List, Optional, Union
 
-from .tokenizer import Tokenizer, Token, TokenType
 from .ast_nodes import (
-    ASTNode, NumberNode, VariableNode,
-    BinaryOpNode, UnaryOpNode, FunctionCallNode
+    ASTNode,
+    BinaryOpNode,
+    FunctionCallNode,
+    NumberNode,
+    UnaryOpNode,
+    VariableNode,
+)
+from .exceptions import (
+    EvaluationError,
+    ExpressionError,
+    ParseError,
+    TokenizationError,
+    ValidationError,
 )
 from .functions import create_builtin_functions
-from .exceptions import (
-    ExpressionError, ParseError, EvaluationError,
-    ValidationError, TokenizationError
-)
+from .tokenizer import Token, Tokenizer, TokenType
 
 # 配置日志
 logger = logging.getLogger(__name__)
@@ -45,62 +52,18 @@ class ExpressionParser:
     # 运算符定义
     OPERATORS = {
         # 比较运算符（最低优先级）
-        '<': {
-            'precedence': 0,
-            'associativity': 'left',
-            'func': lambda a, b: float(a < b)
-        },
-        '>': {
-            'precedence': 0,
-            'associativity': 'left',
-            'func': lambda a, b: float(a > b)
-        },
-        '<=': {
-            'precedence': 0,
-            'associativity': 'left',
-            'func': lambda a, b: float(a <= b)
-        },
-        '>=': {
-            'precedence': 0,
-            'associativity': 'left',
-            'func': lambda a, b: float(a >= b)
-        },
-        '==': {
-            'precedence': 0,
-            'associativity': 'left',
-            'func': lambda a, b: float(a == b)
-        },
-        '!=': {
-            'precedence': 0,
-            'associativity': 'left',
-            'func': lambda a, b: float(a != b)
-        },
+        "<": {"precedence": 0, "associativity": "left", "func": lambda a, b: float(a < b)},
+        ">": {"precedence": 0, "associativity": "left", "func": lambda a, b: float(a > b)},
+        "<=": {"precedence": 0, "associativity": "left", "func": lambda a, b: float(a <= b)},
+        ">=": {"precedence": 0, "associativity": "left", "func": lambda a, b: float(a >= b)},
+        "==": {"precedence": 0, "associativity": "left", "func": lambda a, b: float(a == b)},
+        "!=": {"precedence": 0, "associativity": "left", "func": lambda a, b: float(a != b)},
         # 算术运算符
-        '+': {
-            'precedence': 1,
-            'associativity': 'left',
-            'func': operator.add
-        },
-        '-': {
-            'precedence': 1,
-            'associativity': 'left',
-            'func': operator.sub
-        },
-        '*': {
-            'precedence': 2,
-            'associativity': 'left',
-            'func': operator.mul
-        },
-        '/': {
-            'precedence': 2,
-            'associativity': 'left',
-            'func': operator.truediv
-        },
-        '^': {
-            'precedence': 3,
-            'associativity': 'right',
-            'func': operator.pow
-        },
+        "+": {"precedence": 1, "associativity": "left", "func": operator.add},
+        "-": {"precedence": 1, "associativity": "left", "func": operator.sub},
+        "*": {"precedence": 2, "associativity": "left", "func": operator.mul},
+        "/": {"precedence": 2, "associativity": "left", "func": operator.truediv},
+        "^": {"precedence": 3, "associativity": "right", "func": operator.pow},
     }
 
     def __init__(self, debug: bool = False) -> None:
@@ -122,13 +85,14 @@ class ExpressionParser:
         if debug:
             logger.setLevel(logging.DEBUG)
             handler = logging.StreamHandler()
-            handler.setFormatter(logging.Formatter(
-                '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-            ))
+            handler.setFormatter(
+                logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+            )
             logger.addHandler(handler)
 
-    def register_function(self, name: str, func: Callable,
-                          arg_count: int = -1, description: str = ""):
+    def register_function(
+        self, name: str, func: Callable, arg_count: int = -1, description: str = ""
+    ):
         """
         注册自定义函数
 
@@ -155,11 +119,7 @@ class ExpressionParser:
         if name in self._custom_functions:
             raise ValueError(f"函数已存在: {name}")
 
-        self._custom_functions[name] = {
-            'func': func,
-            'args': arg_count,
-            'description': description
-        }
+        self._custom_functions[name] = {"func": func, "args": arg_count, "description": description}
 
         if self.debug:
             logger.debug(f"注册自定义函数: {name} (参数数: {arg_count})")
@@ -214,9 +174,7 @@ class ExpressionParser:
             if self.current < len(self.tokens) - 1:  # -1 是因为EOF
                 token = self.tokens[self.current]
                 raise ParseError(
-                    f"意外的token: {token.value}",
-                    position=token.position,
-                    expression=expression
+                    f"意外的token: {token.value}", position=token.position, expression=expression
                 )
 
             if self.debug:
@@ -288,16 +246,11 @@ class ExpressionParser:
                     paren_count -= 1
                     if paren_count < 0:
                         raise ValidationError(
-                            "右括号多于左括号",
-                            position=token.position,
-                            expression=expression
+                            "右括号多于左括号", position=token.position, expression=expression
                         )
 
             if paren_count > 0:
-                raise ValidationError(
-                    f"缺少 {paren_count} 个右括号",
-                    expression=expression
-                )
+                raise ValidationError(f"缺少 {paren_count} 个右括号", expression=expression)
 
             # 检查连续运算符
             for i in range(len(tokens) - 1):  # 跳过EOF
@@ -308,28 +261,30 @@ class ExpressionParser:
                     if next_token.type == TokenType.OPERATOR:
                         # 特殊处理：不允许+/-后面跟+/-（如 "2 ++ 3"）
                         # 但允许其他运算符后跟+/-作为一元运算符（如 "2 * -3"）
-                        if token.value in ['+', '-'] and next_token.value in ['+', '-']:
+                        if token.value in ["+", "-"] and next_token.value in ["+", "-"]:
                             # ++ +- -+ -- 都不允许
                             raise ValidationError(
                                 f"连续的运算符: {token.value}{next_token.value}",
                                 position=token.position,
-                                expression=expression
+                                expression=expression,
                             )
-                        elif next_token.value in ['+', '-']:
+                        elif next_token.value in ["+", "-"]:
                             # 其他运算符后可以跟+/-作为一元运算符
                             # 检查位置是否合法
                             if i == 0:  # 表达式开始
                                 continue
                             prev_token = tokens[i - 1]
-                            if prev_token.type in [TokenType.LPAREN, TokenType.COMMA] or \
-                               (prev_token.type == TokenType.OPERATOR and prev_token.value not in ['+', '-']):
+                            if prev_token.type in [TokenType.LPAREN, TokenType.COMMA] or (
+                                prev_token.type == TokenType.OPERATOR
+                                and prev_token.value not in ["+", "-"]
+                            ):
                                 # 合法的一元运算符位置
                                 continue
                         # 其他情况都是非法的连续运算符
                         raise ValidationError(
                             f"连续的运算符: {token.value}{next_token.value}",
                             position=token.position,
-                            expression=expression
+                            expression=expression,
                         )
 
             # 检查函数调用
@@ -340,7 +295,7 @@ class ExpressionParser:
                         raise ValidationError(
                             f"函数 '{token.value}' 后需要括号",
                             position=token.position,
-                            expression=expression
+                            expression=expression,
                         )
 
             # 尝试构建AST（使用空上下文）
@@ -351,23 +306,25 @@ class ExpressionParser:
 
         except ExpressionError as e:
             # 转换为验证错误
-            raise ValidationError(str(e), e.position if hasattr(e, 'position') else None, expression)
+            raise ValidationError(
+                str(e), e.position if hasattr(e, "position") else None, expression
+            )
         except Exception as e:
             raise ValidationError(f"表达式格式错误: {str(e)}", expression=expression)
 
     def _contains_dangerous_patterns(self, expression: str) -> bool:
         """检查表达式是否包含危险模式"""
         dangerous_patterns = [
-            r'__[a-zA-Z]+__',  # 双下划线方法
-            r'import\s+',  # import语句
-            r'exec\s*\(',  # exec函数
-            r'eval\s*\(',  # eval函数
-            r'compile\s*\(',  # compile函数
-            r'open\s*\(',  # 文件操作
-            r'os\.',  # os模块
-            r'sys\.',  # sys模块
-            r'globals\s*\(',  # globals函数
-            r'locals\s*\(',  # locals函数
+            r"__[a-zA-Z]+__",  # 双下划线方法
+            r"import\s+",  # import语句
+            r"exec\s*\(",  # exec函数
+            r"eval\s*\(",  # eval函数
+            r"compile\s*\(",  # compile函数
+            r"open\s*\(",  # 文件操作
+            r"os\.",  # os模块
+            r"sys\.",  # sys模块
+            r"globals\s*\(",  # globals函数
+            r"locals\s*\(",  # locals函数
         ]
 
         for pattern in dangerous_patterns:
@@ -395,27 +352,27 @@ class ExpressionParser:
                 break
 
             op_info = self.OPERATORS[token.value]
-            if op_info['precedence'] < min_precedence:
+            if op_info["precedence"] < min_precedence:
                 break
 
             # 消费运算符
             op_token = self._advance()
 
             # 根据结合性决定右侧最小优先级
-            if op_info['associativity'] == 'right':
-                next_min_prec = op_info['precedence']
+            if op_info["associativity"] == "right":
+                next_min_prec = op_info["precedence"]
             else:
-                next_min_prec = op_info['precedence'] + 1
+                next_min_prec = op_info["precedence"] + 1
 
             # 检查是否为不允许的连续运算符
             # 不允许+/-后面直接跟+/-
-            if op_token.value in ['+', '-']:
+            if op_token.value in ["+", "-"]:
                 peek_token = self._peek()
-                if peek_token.type == TokenType.OPERATOR and peek_token.value in ['+', '-']:
+                if peek_token.type == TokenType.OPERATOR and peek_token.value in ["+", "-"]:
                     raise ParseError(
                         f"连续的运算符: {op_token.value}{peek_token.value}",
                         position=op_token.position,
-                        expression=self.expression
+                        expression=self.expression,
                     )
 
             # 解析右侧
@@ -431,7 +388,7 @@ class ExpressionParser:
         token = self._peek()
 
         # 处理一元运算符
-        if token.type == TokenType.OPERATOR and token.value in ['+', '-']:
+        if token.type == TokenType.OPERATOR and token.value in ["+", "-"]:
             self._advance()
             operand = self._parse_unary()
             return UnaryOpNode(token.value, operand)
@@ -459,9 +416,7 @@ class ExpressionParser:
 
         else:
             raise ParseError(
-                f"意外的token: {token.value}",
-                position=token.position,
-                expression=self.expression
+                f"意外的token: {token.value}", position=token.position, expression=self.expression
             )
 
     def _parse_function_call(self, func_name: str) -> FunctionCallNode:
@@ -488,7 +443,7 @@ class ExpressionParser:
                 raise ParseError(
                     f"函数参数之间需要逗号，但得到: {token.value}",
                     position=token.position,
-                    expression=self.expression
+                    expression=self.expression,
                 )
 
         self._consume(TokenType.RPAREN, "期望右括号 ')'")
@@ -516,5 +471,5 @@ class ExpressionParser:
             raise ParseError(
                 f"{error_message}，但得到: {token.value}",
                 position=token.position,
-                expression=self.expression
+                expression=self.expression,
             )

@@ -105,15 +105,15 @@ AI协作详情:
 - [ ] 文档已更新
 
 ## 🔍 影响分析
-**影响模块**: 
+**影响模块**:
 - `xwe/core/*`
 - `xwe/services/*`
 
-**破坏性变更**: 
+**破坏性变更**:
 - [ ] 是
 - [ ] 否
 
-**需要迁移**: 
+**需要迁移**:
 - [ ] 是
 - [ ] 否
 
@@ -151,7 +151,7 @@ class Character:
     attributes: CharacterAttributes
     skills: List[Skill]
     equipment: Dict[str, Item]
-    
+
 需求: 添加一个方法计算综合战斗力
 公式: 基础属性 * 1.5 + 技能加成 + 装备加成
 """
@@ -175,7 +175,7 @@ class Character:
 ```
 任务: 修复文件 [filename] 的 mypy 类型错误
 上下文: [粘贴 mypy 错误输出]
-约束: 
+约束:
 - 保持向后兼容
 - 使用 Union 而不是 |
 - 确保所有函数有返回类型

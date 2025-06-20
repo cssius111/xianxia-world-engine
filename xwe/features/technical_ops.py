@@ -6,13 +6,13 @@
 - 性能监控
 """
 
-import os
-import json
-import time
-import shutil
 import gzip
 import hashlib
+import json
+import os
+import shutil
 import threading
+import time
 import traceback
 
 try:
@@ -53,14 +53,14 @@ except Exception:  # pragma: no cover - fallback when psutil not available
             return 1
 
 
+import base64
 import logging
+import pickle
 import platform
-from typing import Any, Callable, Dict, List, Optional
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
-import pickle
-import base64
+from typing import Any, Callable, Dict, List, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -316,15 +316,11 @@ class SaveManager:
         """清理旧存档"""
         # 获取该玩家的所有存档
         player_saves = [
-            s
-            for s in self.list_saves(player_name)
-            if s["metadata"].get("save_type") == save_type
+            s for s in self.list_saves(player_name) if s["metadata"].get("save_type") == save_type
         ]
 
         # 确定要保留的数量
-        max_saves = (
-            self.max_auto_saves if save_type == "auto" else self.max_saves_per_player
-        )
+        max_saves = self.max_auto_saves if save_type == "auto" else self.max_saves_per_player
 
         # 删除多余的存档
         if len(player_saves) > max_saves:
@@ -341,9 +337,7 @@ class SaveManager:
         try:
             # 使用base64编码导出
             save_data = save_game.to_dict()
-            encoded_data = base64.b64encode(
-                json.dumps(save_data).encode("utf-8")
-            ).decode("utf-8")
+            encoded_data = base64.b64encode(json.dumps(save_data).encode("utf-8")).decode("utf-8")
 
             with open(export_path, "w") as f:
                 f.write(f"XIANXIA_SAVE_V1\n{encoded_data}")
@@ -480,7 +474,7 @@ class ErrorHandler:
         crash_file = self.crash_dir / f"crash_{timestamp}.txt"
 
         report = f"""# 崩溃报告
-        
+
 时间: {datetime.fromtimestamp(error_log.timestamp)}
 错误ID: {error_log.error_id}
 错误类型: {error_log.error_type}
@@ -512,9 +506,7 @@ class ErrorHandler:
             "error_types": dict(self.error_counts),
             "recent_errors": [
                 {
-                    "time": datetime.fromtimestamp(e.timestamp).strftime(
-                        "%Y-%m-%d %H:%M:%S"
-                    ),
+                    "time": datetime.fromtimestamp(e.timestamp).strftime("%Y-%m-%d %H:%M:%S"),
                     "type": e.error_type,
                     "msg": e.error_msg[:100],
                     "severity": e.severity,
@@ -850,9 +842,7 @@ class TechnicalOpsSystem:
         self.backup_manager._perform_backup()
         self._last_backup_time = current
 
-    def create_game_save(
-        self, game_state: Dict[str, Any], save_type: str = "manual"
-    ) -> str:
+    def create_game_save(self, game_state: Dict[str, Any], save_type: str = "manual") -> str:
         """创建游戏存档"""
         player_name = game_state.get("player", {}).get("name", "unknown")
         save_game = self.save_manager.create_save(player_name, game_state, save_type)
@@ -924,9 +914,7 @@ def integrate_technical_features(game_core) -> None:
         # 每20个命令自动存档一次
         if command_count % 20 == 0 and game_core.game_state.player:
             try:
-                save_id = tech_ops_system.create_game_save(
-                    game_core.game_state.to_dict(), "auto"
-                )
+                save_id = tech_ops_system.create_game_save(game_core.game_state.to_dict(), "auto")
                 logger.debug(f"自动存档: {save_id}")
             except Exception as e:
                 logger.error(f"自动存档失败: {e}")
@@ -951,16 +939,12 @@ def integrate_technical_features(game_core) -> None:
             game_core.output("不用担心，你的进度已自动保存。")
 
     # 添加存档相关命令
-    original_save_command = (
-        game_core._save_game if hasattr(game_core, "_save_game") else None
-    )
+    original_save_command = game_core._save_game if hasattr(game_core, "_save_game") else None
 
     def enhanced_save_game() -> None:
         """增强的保存游戏"""
         if game_core.game_state.player:
-            save_id = tech_ops_system.create_game_save(
-                game_core.game_state.to_dict(), "manual"
-            )
+            save_id = tech_ops_system.create_game_save(game_core.game_state.to_dict(), "manual")
             game_core.output(f"游戏已保存 (存档ID: {save_id})")
         else:
             game_core.output("没有可保存的游戏进度")

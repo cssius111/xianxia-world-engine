@@ -1,7 +1,14 @@
 import json
-from xwe.world.event_system import EventSystem, EventChoice, EventType, WorldEvent
-from xwe.world.event_system import EventCondition, EventTrigger
+
 from xwe.core.inventory import Inventory
+from xwe.world.event_system import (
+    EventChoice,
+    EventCondition,
+    EventSystem,
+    EventTrigger,
+    EventType,
+    WorldEvent,
+)
 
 
 def test_choice_item_requirement():
@@ -54,4 +61,3 @@ def test_random_item_reward(tmp_path):
     assert res["success"] is True
     assert inv.get_used_slots() == 1
     assert "obtained_item" in res
-

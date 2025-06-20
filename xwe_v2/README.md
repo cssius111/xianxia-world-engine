@@ -115,7 +115,7 @@ class Character:
     id: str
     name: str
     cultivation_level: int
-    
+
     def can_breakthrough(self) -> bool:
         """Domain logic for breakthrough eligibility."""
         return self.cultivation_level % 10 == 9
@@ -131,7 +131,7 @@ from xwe_v2.application.interfaces import ICharacterRepository
 class BreakthroughCommand:
     def __init__(self, repo: ICharacterRepository):
         self.repo = repo
-    
+
     async def execute(self, character_id: str) -> Character:
         character = await self.repo.get(character_id)
         if character.can_breakthrough():
@@ -151,7 +151,7 @@ class JsonCharacterRepository(ICharacterRepository):
     async def get(self, id: str) -> Character:
         # Load from JSON file
         pass
-    
+
     async def save(self, character: Character) -> None:
         # Save to JSON file
         pass

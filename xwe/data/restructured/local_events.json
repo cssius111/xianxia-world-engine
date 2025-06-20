@@ -87,7 +87,7 @@
       "id": "evt_elder_guidance",
       "name": "高人指点",
       "description": "偶遇云游高人，获其指点修炼之道，茅塞顿开！",
-      "type": "random", 
+      "type": "random",
       "category": "cultivation",
       "weight": 30,
       "effect": {
@@ -151,7 +151,7 @@
       "name": "功法顿悟",
       "description": "在修炼中突然福至心灵，对功法有了更深的理解！",
       "type": "random",
-      "category": "cultivation", 
+      "category": "cultivation",
       "weight": 60,
       "effect": {
         "type": "stat_delta",
@@ -210,7 +210,7 @@
       "tags": ["危险", "心魔", "修炼"]
     }
   ],
-  
+
   "event_pools": {
     "early_game": ["evt_childhood_injury", "evt_village_help", "evt_find_herbs"],
     "mid_game": ["evt_bandit_encounter", "evt_elder_guidance", "evt_spirit_stone_mine"],
@@ -218,13 +218,13 @@
     "cultivation": ["evt_elder_guidance", "evt_technique_insight", "evt_heart_demon"],
     "social": ["evt_village_help", "evt_beast_friend"]
   },
-  
+
   "fallback_config": {
     "use_pools": true,
     "default_pool": "early_game",
     "level_based_pools": {
       "1-5": "early_game",
-      "6-15": "mid_game", 
+      "6-15": "mid_game",
       "16+": "all"
     },
     "category_override": {

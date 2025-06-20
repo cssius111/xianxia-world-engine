@@ -3,17 +3,18 @@
 LLM集成模板 - 为后续接入DeepSeek/OpenAI做准备
 """
 
+
 class LLMIntegrationTemplate:
     """LLM集成模板类"""
-    
+
     def __init__(self, api_key=None, provider="deepseek") -> None:
         self.api_key = api_key
         self.provider = provider
-        
+
     def parse_with_llm(self, text: str, context=None) -> dict:
         """
         使用LLM解析文本
-        
+
         注意：返回格式必须与简单规则解析保持一致！
         """
         # TODO: 实现实际的LLM调用
@@ -21,14 +22,10 @@ class LLMIntegrationTemplate:
         # 2. 调用API
         # 3. 解析返回结果
         # 4. 转换为标准格式
-        
+
         # 临时返回
-        return {
-            "action": "unknown",
-            "detail": "LLM集成待实现",
-            "confidence": 0.0
-        }
-    
+        return {"action": "unknown", "detail": "LLM集成待实现", "confidence": 0.0}
+
     def build_prompt(self, text: str, context=None) -> str:
         """构建LLM提示词"""
         prompt = f"""将下面的自然语言转换为游戏命令。

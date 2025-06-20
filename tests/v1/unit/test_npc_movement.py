@@ -1,6 +1,7 @@
 import pytest
-from xwe.npc import DialogueSystem, NPCManager, NPCProfile, NPCBehavior
-from xwe.world import WorldMap, Area, Region
+
+from xwe.npc import DialogueSystem, NPCBehavior, NPCManager, NPCProfile
+from xwe.world import Area, Region, WorldMap
 from xwe.world.world_map import DEFAULT_MAP_DATA
 
 

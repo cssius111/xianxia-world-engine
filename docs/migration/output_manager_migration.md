@@ -52,7 +52,7 @@ class GameCore:
         self.output_manager = OutputManager()
         # 添加需要的输出通道
         self.output_manager.add_channel(ConsoleChannel())
-        
+
     def output(self, text: str) -> None:
         # 保持向后兼容
         self.output_manager.system(text)
@@ -121,12 +121,12 @@ def _show_combat_result(self, result):
         "你发起了攻击！",
         f"对 {target.name} 造成了 {damage} 点伤害"
     ]
-    
+
     if target.is_alive:
         actions.append(f"{target.name} 剩余生命: {target.health}")
     else:
         actions.append(f"{target.name} 被击败了！")
-    
+
     self.output_manager.combat_sequence(actions)
 ```
 
@@ -179,7 +179,7 @@ def _display_dialogue_node(self, node, npc_name: str):
         self.output(f"\n{speaker}：{node.text}")
     else:
         self.output(f"\n{node.text}")
-    
+
     if node.type.value == 'choice':
         self.output("\n请选择：")
         for i, choice in enumerate(choices, 1):
@@ -192,18 +192,18 @@ def _display_dialogue_node(self, node, npc_name: str):
     # 创建对话上下文
     ctx_id = f"dialogue_{node.id}"
     self.output_manager.create_context(ctx_id, "dialogue")
-    
+
     # 输出对话
     if speaker:
         self.output_manager.dialogue(speaker, node.text, context_id=ctx_id)
     else:
         self.output_manager.narrative(node.text, context_id=ctx_id)
-    
+
     # 输出选项
     if node.type.value == 'choice':
         options = [choice.text for choice in choices]
         self.output_manager.menu(options, "请选择", context_id=ctx_id)
-    
+
     # 结束上下文
     self.output_manager.end_context(ctx_id)
 ```
@@ -215,7 +215,7 @@ def _display_dialogue_node(self, node, npc_name: str):
 def _do_explore(self):
     self.output("你仔细探索周围的环境...")
     self.output("")
-    
+
     if result['discovered_features']:
         self.output("你发现了一些特殊地点：")
         for feature in result['discovered_features']:
@@ -228,19 +228,19 @@ def _do_explore(self):
 def _do_explore(self):
     # 使用批处理模式优化多行输出
     self.output_manager.enable_batch_mode()
-    
+
     self.output_manager.narrative("你仔细探索周围的环境...")
-    
+
     if result['discovered_features']:
         self.output_manager.system("你发现了一些特殊地点：")
-        
+
         # 使用表格格式化
         features_data = [
             {"发现": feature, "类型": self._get_feature_type(feature)}
             for feature in result['discovered_features']
         ]
         self.output_manager.output_table(features_data)
-    
+
     # 刷新批处理
     self.output_manager.disable_batch_mode()
 ```
@@ -263,7 +263,7 @@ try:
 except Exception as e:
     # 错误会以高优先级输出到所有通道
     self.output_manager.error(f"发生错误: {e}")
-    
+
     # 调试信息只在开发模式显示
     if self.game_mode == 'dev':
         import traceback
@@ -282,18 +282,18 @@ class AudioChannel(OutputChannel):
     def __init__(self):
         super().__init__("audio")
         self.tts_engine = init_tts()  # 初始化TTS引擎
-    
+
     def write(self, message: OutputMessage):
         if not self.should_output(message):
             return
-        
+
         # 只播报重要消息
         if message.priority >= MessagePriority.HIGH:
             if message.type == MessageType.ACHIEVEMENT:
                 self.tts_engine.speak(f"恭喜！{message.content}")
             elif message.type == MessageType.ERROR:
                 self.tts_engine.speak(f"警告！{message.content}")
-    
+
     def flush(self):
         self.tts_engine.flush_queue()
 
@@ -323,18 +323,18 @@ output_manager.add_channel(combat_log)
 def complete_quest(self, quest_id):
     ctx_id = f"quest_complete_{quest_id}"
     self.output_manager.create_context(ctx_id, "quest")
-    
+
     # 所有相关输出都使用同一个上下文
     self.output_manager.achievement(
         f"任务完成：{quest.name}",
         context_id=ctx_id
     )
-    
+
     self.output_manager.success(
         "获得奖励：",
         context_id=ctx_id
     )
-    
+
     rewards_data = [
         {"物品": item, "数量": count}
         for item, count in quest.rewards.items()
@@ -343,12 +343,12 @@ def complete_quest(self, quest_id):
         rewards_data,
         context_id=ctx_id
     )
-    
+
     self.output_manager.narrative(
         quest.completion_text,
         context_id=ctx_id
     )
-    
+
     self.output_manager.end_context(ctx_id)
 ```
 
@@ -381,11 +381,11 @@ def get_messages():
    ```python
    # 在大量输出前启用
    output_manager.enable_batch_mode(100)
-   
+
    # 批量输出
    for item in large_list:
        output_manager.info(f"处理: {item}")
-   
+
    # 完成后禁用
    output_manager.disable_batch_mode()
    ```

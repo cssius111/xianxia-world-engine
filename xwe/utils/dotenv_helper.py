@@ -1,5 +1,6 @@
 from typing import Optional
 
+
 def load_dotenv(dotenv_path: Optional[str] = None) -> None:
     """Load environment variables from a .env file using ``python-dotenv``."""
     try:

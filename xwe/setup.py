@@ -3,7 +3,7 @@
 XWE 表达式解析器安装配置
 """
 
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
@@ -37,5 +37,5 @@ setup(
             "flake8>=6.0",
             "mypy>=1.0",
         ]
-    }
+    },
 )

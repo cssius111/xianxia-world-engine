@@ -1,5 +1,3 @@
-
-
 from xwe.core.character import Character, CharacterType
 
 

@@ -502,20 +502,20 @@ class EventFallbackSystem:
         self.local_events = load_json('local_events.json')
         self.event_history = []
         self.player_preferences = {}
-        
+
     def get_fallback_event(self, context):
         # 1. 尝试找到最相关的本地事件
         relevant_events = self.filter_by_context(context)
-        
+
         # 2. 避免重复
         fresh_events = self.remove_recent(relevant_events)
-        
+
         # 3. 根据玩家偏好调整权重
         weighted_events = self.apply_preferences(fresh_events)
-        
+
         # 4. 动态调整参数
         selected = self.select_and_customize(weighted_events, context)
-        
+
         return selected
 ```
 

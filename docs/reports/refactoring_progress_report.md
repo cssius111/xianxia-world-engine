@@ -100,7 +100,7 @@ command_processor.add_middleware(ValidationMiddleware())
 while running:
     user_input = input("> ")
     result = command_processor.process_command(user_input)
-    
+
     if result.data.get('should_quit'):
         break
 ```
@@ -125,7 +125,7 @@ class GameCore:
     def __init__(self):
         # 保留原有代码
         self._init_original()
-        
+
         # 添加新模块
         self.state_manager_new = GameStateManager()
         self.output_manager_new = OutputManager()
@@ -133,7 +133,7 @@ class GameCore:
             self.state_manager_new,
             self.output_manager_new
         )
-        
+
     def output(self, text):
         # 同时使用新旧输出
         self.output_buffer.append(text)

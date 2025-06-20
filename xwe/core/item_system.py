@@ -4,13 +4,14 @@
 统一使用 ``spirit_stones`` 作为灵石的物品ID，兼容旧写法 ``spirit_stone``。
 """
 
-from typing import Any, Dict, List, Optional
 from dataclasses import dataclass, field
+from typing import Any, Dict, List, Optional
 
 
 @dataclass
 class Item:
     """物品基础类"""
+
     id: str
     name: str
     description: str
@@ -27,8 +28,8 @@ class ItemSystem:
         self.player_inventories: Dict[str, Dict[str, int]] = {}
         # 物品ID别名映射，便于兼容历史写法
         self.item_id_aliases = {
-            'spirit_stone': 'spirit_stones',
-            'spirit_stones': 'spirit_stones',
+            "spirit_stone": "spirit_stones",
+            "spirit_stones": "spirit_stones",
         }
 
     def _resolve_item_id(self, item_id: str) -> str:
@@ -40,12 +41,10 @@ class ItemSystem:
         inventory = self.player_inventories.get(player_id, {})
 
         # 兼容不同写法的灵石ID
-        return inventory.get('spirit_stone', inventory.get('spirit_stones', 0))
-    
+        return inventory.get("spirit_stone", inventory.get("spirit_stones", 0))
 
         # 兼容早期存档中的 "spirit_stone" 字段
-        return inventory.get('spirit_stones', 0) + inventory.get('spirit_stone', 0)
-
+        return inventory.get("spirit_stones", 0) + inventory.get("spirit_stone", 0)
 
     def add_item(self, player_id: str, item_id: str, quantity: int = 1) -> bool:
         """添加物品到玩家背包"""

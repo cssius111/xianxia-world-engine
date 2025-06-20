@@ -6,19 +6,20 @@
 - 剧情分支
 """
 
-import random
 import json
+import logging
+import random
 import time
-from typing import Any, Callable, Dict, List, Optional
 from dataclasses import dataclass, field
 from enum import Enum
-import logging
+from typing import Any, Callable, Dict, List, Optional
 
 logger = logging.getLogger(__name__)
 
 
 class EventType(Enum):
     """事件类型"""
+
     OPENING = "opening"  # 开局事件
     RANDOM = "random"  # 随机事件
     STORY = "story"  # 剧情事件
@@ -28,6 +29,7 @@ class EventType(Enum):
 
 class TalentReversal(Enum):
     """天赋逆转类型"""
+
     WASTE_TO_GENIUS = "waste_to_genius"  # 废材逆袭
     CURSE_TO_BLESSING = "curse_to_blessing"  # 诅咒化福
     ORDINARY_TO_SPECIAL = "ordinary_to_special"  # 平凡觉醒
@@ -38,6 +40,7 @@ class TalentReversal(Enum):
 @dataclass
 class StoryEvent:
     """剧情事件"""
+
     id: str
     name: str
     description: str
@@ -47,7 +50,7 @@ class StoryEvent:
     effects: Dict[str, Any] = field(default_factory=dict)
     weight: int = 10  # 权重，用于随机选择
     one_time: bool = True  # 是否一次性事件
-    
+
     def check_requirements(self, player_data: Dict[str, Any]) -> bool:
         """检查事件要求"""
         for key, value in self.requirements.items():
@@ -65,6 +68,7 @@ class StoryEvent:
 @dataclass
 class Achievement:
     """成就"""
+
     id: str
     name: str
     description: str
@@ -74,7 +78,7 @@ class Achievement:
     icon: str = "🏆"
     requirements: Dict[str, Any] = field(default_factory=dict)
     rewards: Dict[str, Any] = field(default_factory=dict)
-    
+
     def check_completion(self, player_stats: Dict[str, Any]) -> bool:
         """检查成就是否完成"""
         for key, value in self.requirements.items():
@@ -93,7 +97,7 @@ class Achievement:
 
 class OpeningEventGenerator:
     """开局事件生成器"""
-    
+
     def __init__(self) -> None:
         self.opening_events = [
             StoryEvent(
@@ -105,19 +109,19 @@ class OpeningEventGenerator:
                     {
                         "text": "上前询问",
                         "effects": {"talent": "慧眼识珠", "item": "神秘玉佩"},
-                        "next_text": "长老微笑着递给你一块玉佩：'有缘人，这是你的机缘。'"
+                        "next_text": "长老微笑着递给你一块玉佩：'有缘人，这是你的机缘。'",
                     },
                     {
                         "text": "绕道而行",
                         "effects": {"attribute": {"luck": -1}},
-                        "next_text": "你错过了一个改变命运的机会..."
+                        "next_text": "你错过了一个改变命运的机会...",
                     },
                     {
                         "text": "偷偷观察",
                         "effects": {"skill": "敛息术"},
-                        "next_text": "你学会了隐藏气息的技巧。"
-                    }
-                ]
+                        "next_text": "你学会了隐藏气息的技巧。",
+                    },
+                ],
             ),
             StoryEvent(
                 id="family_heritage",
@@ -128,14 +132,14 @@ class OpeningEventGenerator:
                     {
                         "text": "立即翻阅",
                         "effects": {"skill": "家传功法", "attribute": {"comprehension": 2}},
-                        "next_text": "原来这是失传已久的家族功法！"
+                        "next_text": "原来这是失传已久的家族功法！",
                     },
                     {
                         "text": "小心收好",
                         "effects": {"item": "神秘古籍", "attribute": {"luck": 1}},
-                        "next_text": "你决定找个安全的地方再研究。"
-                    }
-                ]
+                        "next_text": "你决定找个安全的地方再研究。",
+                    },
+                ],
             ),
             StoryEvent(
                 id="heavenly_disaster",
@@ -146,14 +150,14 @@ class OpeningEventGenerator:
                     {
                         "text": "拼命抵抗",
                         "effects": {"talent": "雷电之体", "attribute": {"constitution": 3}},
-                        "next_text": "你竟然在雷劫中觉醒了特殊体质！"
+                        "next_text": "你竟然在雷劫中觉醒了特殊体质！",
                     },
                     {
                         "text": "顺其自然",
                         "effects": {"talent": "天道庇护", "attribute": {"luck": 5}},
-                        "next_text": "雷电似乎在改造你的身体..."
-                    }
-                ]
+                        "next_text": "雷电似乎在改造你的身体...",
+                    },
+                ],
             ),
             StoryEvent(
                 id="system_awakening",
@@ -164,14 +168,14 @@ class OpeningEventGenerator:
                     {
                         "text": "接受系统",
                         "effects": {"system": "修仙辅助系统", "daily_reward": True},
-                        "next_text": "【叮！修仙辅助系统绑定成功！】"
+                        "next_text": "【叮！修仙辅助系统绑定成功！】",
                     },
                     {
                         "text": "拒绝系统",
                         "effects": {"talent": "道心坚定", "attribute": {"willpower": 10}},
-                        "next_text": "你选择了依靠自己的力量！"
-                    }
-                ]
+                        "next_text": "你选择了依靠自己的力量！",
+                    },
+                ],
             ),
             StoryEvent(
                 id="past_life_memory",
@@ -182,27 +186,23 @@ class OpeningEventGenerator:
                     {
                         "text": "接受记忆",
                         "effects": {"talent": "转世仙人", "skills": ["仙人指路", "前世秘法"]},
-                        "next_text": "原来你前世是一位大能！"
+                        "next_text": "原来你前世是一位大能！",
                     },
                     {
                         "text": "抗拒记忆",
                         "effects": {"talent": "今生无悔", "attribute": {"willpower": 5}},
-                        "next_text": "你选择活在当下！"
-                    }
-                ]
-            )
+                        "next_text": "你选择活在当下！",
+                    },
+                ],
+            ),
         ]
-        
+
         self.talent_reversals = {
             TalentReversal.WASTE_TO_GENIUS: {
                 "name": "废材逆袭",
                 "description": "所有人都说你是废物，但你不信命！",
                 "trigger_condition": lambda p: p.get("talent_level", 0) < 3,
-                "effects": {
-                    "talent_boost": 10,
-                    "special_skill": "逆天改命",
-                    "title": "逆袭者"
-                }
+                "effects": {"talent_boost": 10, "special_skill": "逆天改命", "title": "逆袭者"},
             },
             TalentReversal.CURSE_TO_BLESSING: {
                 "name": "诅咒化福",
@@ -211,36 +211,31 @@ class OpeningEventGenerator:
                 "effects": {
                     "remove_debuffs": True,
                     "special_talent": "诅咒免疫",
-                    "attribute": {"all": 2}
-                }
+                    "attribute": {"all": 2},
+                },
             },
             TalentReversal.ORDINARY_TO_SPECIAL: {
                 "name": "平凡觉醒",
                 "description": "平凡的你，在生死关头觉醒了隐藏的力量！",
                 "trigger_condition": lambda p: p.get("health_percent", 1.0) < 0.1,
-                "effects": {
-                    "awakening": True,
-                    "hidden_bloodline": True,
-                    "full_heal": True
-                }
-            }
+                "effects": {"awakening": True, "hidden_bloodline": True, "full_heal": True},
+            },
         }
-    
+
     def generate_opening_event(self, player_data: Dict[str, Any]) -> Optional[StoryEvent]:
         """生成开局事件"""
         # 根据玩家数据筛选合适的事件
         available_events = [
-            event for event in self.opening_events
-            if event.check_requirements(player_data)
+            event for event in self.opening_events if event.check_requirements(player_data)
         ]
-        
+
         if not available_events:
             return None
-        
+
         # 根据权重随机选择
         weights = [event.weight for event in available_events]
         return random.choices(available_events, weights=weights)[0]
-    
+
     def check_talent_reversal(self, player_data: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         """检查是否触发天赋逆转"""
         for reversal_type, reversal_data in self.talent_reversals.items():
@@ -249,20 +244,20 @@ class OpeningEventGenerator:
                     "type": reversal_type,
                     "name": reversal_data["name"],
                     "description": reversal_data["description"],
-                    "effects": reversal_data["effects"]
+                    "effects": reversal_data["effects"],
                 }
         return None
 
 
 class AchievementSystem:
     """成就系统"""
-    
+
     def __init__(self) -> None:
         self.achievements = self._init_achievements()
         self.unlocked_achievements = set()
         self.achievement_points = 0
         self.achievement_callbacks = []
-        
+
     def _init_achievements(self) -> Dict[str, Achievement]:
         """初始化成就列表"""
         achievements = [
@@ -275,7 +270,7 @@ class AchievementSystem:
                 points=10,
                 icon="⚔️",
                 requirements={"kills": 1},
-                rewards={"exp": 100, "title": "初出茅庐"}
+                rewards={"exp": 100, "title": "初出茅庐"},
             ),
             Achievement(
                 id="monster_slayer",
@@ -285,7 +280,7 @@ class AchievementSystem:
                 points=50,
                 icon="🗡️",
                 requirements={"kills": 100},
-                rewards={"exp": 1000, "item": "妖兽精血"}
+                rewards={"exp": 1000, "item": "妖兽精血"},
             ),
             Achievement(
                 id="undefeated",
@@ -295,9 +290,8 @@ class AchievementSystem:
                 points=100,
                 icon="👑",
                 requirements={"win_streak": 50},
-                rewards={"title": "不败战神", "skill": "战神领域"}
+                rewards={"title": "不败战神", "skill": "战神领域"},
             ),
-            
             # 修炼成就
             Achievement(
                 id="cultivation_beginner",
@@ -307,7 +301,7 @@ class AchievementSystem:
                 points=10,
                 icon="🧘",
                 requirements={"cultivation_count": 1},
-                rewards={"exp": 50}
+                rewards={"exp": 50},
             ),
             Achievement(
                 id="breakthrough_master",
@@ -317,7 +311,7 @@ class AchievementSystem:
                 points=50,
                 icon="💫",
                 requirements={"breakthrough_count": 10},
-                rewards={"item": "破境丹", "title": "突破大师"}
+                rewards={"item": "破境丹", "title": "突破大师"},
             ),
             Achievement(
                 id="meditation_master",
@@ -327,9 +321,8 @@ class AchievementSystem:
                 points=30,
                 icon="🏮",
                 requirements={"cultivation_time": 360000},  # 秒
-                rewards={"attribute": {"comprehension": 5}}
+                rewards={"attribute": {"comprehension": 5}},
             ),
-            
             # 探索成就
             Achievement(
                 id="explorer",
@@ -339,7 +332,7 @@ class AchievementSystem:
                 points=20,
                 icon="🗺️",
                 requirements={"explored_areas": 10},
-                rewards={"item": "探索者地图", "skill": "寻宝术"}
+                rewards={"item": "探索者地图", "skill": "寻宝术"},
             ),
             Achievement(
                 id="treasure_hunter",
@@ -349,9 +342,8 @@ class AchievementSystem:
                 points=40,
                 icon="💎",
                 requirements={"treasures_found": 50},
-                rewards={"title": "寻宝大师", "luck": 5}
+                rewards={"title": "寻宝大师", "luck": 5},
             ),
-            
             # 社交成就
             Achievement(
                 id="social_butterfly",
@@ -361,7 +353,7 @@ class AchievementSystem:
                 points=20,
                 icon="💬",
                 requirements={"npcs_talked": 20},
-                rewards={"charm": 3, "title": "交际花"}
+                rewards={"charm": 3, "title": "交际花"},
             ),
             Achievement(
                 id="merchant_friend",
@@ -371,9 +363,8 @@ class AchievementSystem:
                 points=30,
                 icon="💰",
                 requirements={"trades_completed": 100},
-                rewards={"merchant_discount": 0.1, "title": "贵宾"}
+                rewards={"merchant_discount": 0.1, "title": "贵宾"},
             ),
-            
             # 收集成就
             Achievement(
                 id="collector",
@@ -383,7 +374,7 @@ class AchievementSystem:
                 points=30,
                 icon="📦",
                 requirements={"unique_items": 50},
-                rewards={"storage_expansion": 20}
+                rewards={"storage_expansion": 20},
             ),
             Achievement(
                 id="skill_master",
@@ -393,9 +384,8 @@ class AchievementSystem:
                 points=40,
                 icon="📚",
                 requirements={"skills_learned": 20},
-                rewards={"skill_points": 5, "title": "博学者"}
+                rewards={"skill_points": 5, "title": "博学者"},
             ),
-            
             # 特殊成就
             Achievement(
                 id="lucky_one",
@@ -406,7 +396,7 @@ class AchievementSystem:
                 icon="🍀",
                 hidden=True,
                 requirements={"lucky_events": 10},
-                rewards={"luck": 10, "title": "幸运儿"}
+                rewards={"luck": 10, "title": "幸运儿"},
             ),
             Achievement(
                 id="survivor",
@@ -416,50 +406,50 @@ class AchievementSystem:
                 points=40,
                 icon="💀",
                 requirements={"near_death_survivals": 10},
-                rewards={"talent": "不死之身", "constitution": 5}
-            )
+                rewards={"talent": "不死之身", "constitution": 5},
+            ),
         ]
-        
+
         return {ach.id: ach for ach in achievements}
-    
+
     def check_achievements(self, player_stats: Dict[str, Any]) -> List[Achievement]:
         """检查并解锁成就"""
         newly_unlocked = []
-        
+
         for ach_id, achievement in self.achievements.items():
             if ach_id not in self.unlocked_achievements:
                 if achievement.check_completion(player_stats):
                     self.unlock_achievement(achievement)
                     newly_unlocked.append(achievement)
-        
+
         return newly_unlocked
-    
+
     def unlock_achievement(self, achievement: Achievement) -> None:
         """解锁成就"""
         self.unlocked_achievements.add(achievement.id)
         self.achievement_points += achievement.points
-        
+
         # 触发回调
         for callback in self.achievement_callbacks:
             callback(achievement)
-        
+
         logger.info(f"成就解锁: {achievement.name}")
-    
+
     def get_achievement_progress(self, achievement_id: str, player_stats: Dict[str, Any]) -> float:
         """获取成就进度"""
         if achievement_id not in self.achievements:
             return 0.0
-        
+
         achievement = self.achievements[achievement_id]
         progress = 1.0
-        
+
         for key, required_value in achievement.requirements.items():
             current_value = player_stats.get(key, 0)
             if isinstance(current_value, (int, float)):
                 progress = min(progress, current_value / required_value)
-        
+
         return progress
-    
+
     def get_achievement_info(self) -> Dict[str, Any]:
         """获取成就信息"""
         return {
@@ -468,51 +458,57 @@ class AchievementSystem:
             "total_points": self.achievement_points,
             "categories": {
                 "combat": len([a for a in self.achievements.values() if a.category == "combat"]),
-                "cultivation": len([a for a in self.achievements.values() if a.category == "cultivation"]),
-                "exploration": len([a for a in self.achievements.values() if a.category == "exploration"]),
+                "cultivation": len(
+                    [a for a in self.achievements.values() if a.category == "cultivation"]
+                ),
+                "exploration": len(
+                    [a for a in self.achievements.values() if a.category == "exploration"]
+                ),
                 "social": len([a for a in self.achievements.values() if a.category == "social"]),
-                "collection": len([a for a in self.achievements.values() if a.category == "collection"]),
-                "special": len([a for a in self.achievements.values() if a.category == "special"])
-            }
+                "collection": len(
+                    [a for a in self.achievements.values() if a.category == "collection"]
+                ),
+                "special": len([a for a in self.achievements.values() if a.category == "special"]),
+            },
         }
 
 
 class StoryBranchManager:
     """剧情分支管理器"""
-    
+
     def __init__(self) -> None:
         self.story_flags = {}  # 剧情标记
         self.story_branches = {}  # 剧情分支
         self.current_branch = "main"  # 当前分支
         self.branch_history = []  # 分支历史
-        
+
     def set_flag(self, flag_name: str, value: Any = True) -> None:
         """设置剧情标记"""
         self.story_flags[flag_name] = value
         logger.debug(f"剧情标记设置: {flag_name} = {value}")
-    
+
     def get_flag(self, flag_name: str, default: Optional[Any] = None) -> Any:
         """获取剧情标记"""
         return self.story_flags.get(flag_name, default)
-    
+
     def check_conditions(self, conditions: Dict[str, Any]) -> bool:
         """检查条件是否满足"""
         for flag, expected_value in conditions.items():
             if self.get_flag(flag) != expected_value:
                 return False
         return True
-    
+
     def add_branch(self, branch_id: str, branch_data: Dict[str, Any]) -> None:
         """添加剧情分支"""
         self.story_branches[branch_id] = branch_data
-    
+
     def switch_branch(self, branch_id: str) -> None:
         """切换剧情分支"""
         if branch_id in self.story_branches:
             self.branch_history.append(self.current_branch)
             self.current_branch = branch_id
             logger.info(f"切换到剧情分支: {branch_id}")
-    
+
     def get_current_events(self) -> List[StoryEvent]:
         """获取当前分支的事件"""
         branch = self.story_branches.get(self.current_branch, {})
@@ -521,88 +517,82 @@ class StoryBranchManager:
 
 class NarrativeEventSystem:
     """叙事事件系统"""
-    
+
     def __init__(self) -> None:
         self.event_generator = OpeningEventGenerator()
         self.achievement_system = AchievementSystem()
         self.story_manager = StoryBranchManager()
-        
+
         # 事件历史
         self.event_history = []
         self.active_events = {}
-        
+
         # 事件回调
         self.event_callbacks = {
             EventType.OPENING: [],
             EventType.RANDOM: [],
             EventType.STORY: [],
             EventType.ACHIEVEMENT: [],
-            EventType.SPECIAL: []
+            EventType.SPECIAL: [],
         }
-    
+
     def register_callback(self, event_type: EventType, callback: Callable) -> None:
         """注册事件回调"""
         self.event_callbacks[event_type].append(callback)
-    
+
     def trigger_opening_event(self, player_data: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         """触发开局事件"""
         event = self.event_generator.generate_opening_event(player_data)
         if event:
-            self.event_history.append({
-                "event": event,
-                "timestamp": time.time(),
-                "player_choice": None
-            })
-            
+            self.event_history.append(
+                {"event": event, "timestamp": time.time(), "player_choice": None}
+            )
+
             # 触发回调
             for callback in self.event_callbacks[EventType.OPENING]:
                 callback(event)
-            
-            return {
-                "event": event,
-                "choices": event.choices,
-                "type": "opening"
-            }
+
+            return {"event": event, "choices": event.choices, "type": "opening"}
         return None
-    
+
     def process_event_choice(self, event_id: str, choice_index: int) -> Dict[str, Any]:
         """处理事件选择"""
         if event_id not in self.active_events:
             return {"success": False, "message": "事件不存在或已过期"}
-        
+
         event_data = self.active_events[event_id]
         event = event_data["event"]
-        
+
         if 0 <= choice_index < len(event.choices):
             choice = event.choices[choice_index]
-            
+
             # 记录选择
             for hist in self.event_history:
                 if hist["event"].id == event_id:
                     hist["player_choice"] = choice_index
                     break
-            
+
             # 应用效果
             effects = choice.get("effects", {})
             result_text = choice.get("next_text", "你做出了选择。")
-            
+
             # 设置剧情标记
             if "story_flags" in effects:
                 for flag, value in effects["story_flags"].items():
                     self.story_manager.set_flag(flag, value)
-            
+
             # 移除已处理的事件
             del self.active_events[event_id]
-            
+
             return {
                 "success": True,
                 "effects": effects,
                 "text": result_text,
-                "event_complete": True
+                "event_complete": True,
             }
-        
+
         return {"success": False, "message": "无效的选择"}
-    
+
     def check_talent_reversal(self, player_data: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         """检查天赋逆转"""
         reversal = self.event_generator.check_talent_reversal(player_data)
@@ -613,22 +603,20 @@ class NarrativeEventSystem:
                 name=reversal["name"],
                 description=reversal["description"],
                 event_type=EventType.SPECIAL,
-                effects=reversal["effects"]
+                effects=reversal["effects"],
             )
-            
-            self.event_history.append({
-                "event": special_event,
-                "timestamp": time.time(),
-                "type": "talent_reversal"
-            })
-            
+
+            self.event_history.append(
+                {"event": special_event, "timestamp": time.time(), "type": "talent_reversal"}
+            )
+
             return reversal
         return None
-    
+
     def update_achievements(self, player_stats: Dict[str, Any]) -> List[Achievement]:
         """更新成就"""
         newly_unlocked = self.achievement_system.check_achievements(player_stats)
-        
+
         for achievement in newly_unlocked:
             # 创建成就事件
             ach_event = StoryEvent(
@@ -636,46 +624,49 @@ class NarrativeEventSystem:
                 name=f"成就解锁：{achievement.name}",
                 description=achievement.description,
                 event_type=EventType.ACHIEVEMENT,
-                effects={"rewards": achievement.rewards}
+                effects={"rewards": achievement.rewards},
             )
-            
+
             # 触发成就回调
             for callback in self.event_callbacks[EventType.ACHIEVEMENT]:
                 callback(achievement)
-        
+
         return newly_unlocked
-    
+
     def get_narrative_summary(self) -> Dict[str, Any]:
         """获取叙事总结"""
         return {
             "total_events": len(self.event_history),
-            "opening_events": len([e for e in self.event_history if e["event"].event_type == EventType.OPENING]),
+            "opening_events": len(
+                [e for e in self.event_history if e["event"].event_type == EventType.OPENING]
+            ),
             "achievements_unlocked": len(self.achievement_system.unlocked_achievements),
             "achievement_points": self.achievement_system.achievement_points,
             "current_story_branch": self.story_manager.current_branch,
-            "story_flags": len(self.story_manager.story_flags)
+            "story_flags": len(self.story_manager.story_flags),
         }
 
 
 # 便捷接口
 narrative_system = NarrativeEventSystem()
 
+
 def create_immersive_opening(player_data: Dict[str, Any]) -> str:
     """创建沉浸式开场"""
     opening = narrative_system.trigger_opening_event(player_data)
     if opening:
         event = opening["event"]
-        
+
         text = f"\n{'='*60}\n"
         text += f"【{event.name}】\n\n"
         text += f"{event.description}\n\n"
-        
+
         for i, choice in enumerate(event.choices):
             text += f"{i+1}. {choice['text']}\n"
-        
+
         text += f"{'='*60}\n"
         return text
-    
+
     # 默认开场
     return """
 =====================================
@@ -692,22 +683,24 @@ def check_and_display_achievements(player_stats: Dict[str, Any]) -> List[str]:
     """检查并显示成就"""
     unlocked = narrative_system.update_achievements(player_stats)
     messages = []
-    
+
     for achievement in unlocked:
         msg = f"\n🏆 成就解锁：{achievement.name}\n"
         msg += f"   {achievement.description}\n"
         msg += f"   获得 {achievement.points} 成就点"
-        
+
         if achievement.rewards:
             msg += "\n   奖励："
             for reward_type, reward_value in achievement.rewards.items():
                 msg += f"\n   • {reward_type}: {reward_value}"
-        
+
         messages.append(msg)
 
     return messages
 
+
 # 兼容旧代码的别名
 class NarrativeSystem(NarrativeEventSystem):
     """`NarrativeEventSystem` 的别名，保持向后兼容"""
+
     pass

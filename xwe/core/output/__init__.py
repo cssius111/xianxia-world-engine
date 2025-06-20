@@ -5,31 +5,31 @@
 """
 
 from .output_manager import (
-    OutputManager,
-    OutputChannel,
     ConsoleChannel,
     FileChannel,
     HTMLChannel,
-    WebChannel,
-    OutputMessage,
-    MessageType,
     MessagePriority,
+    MessageType,
+    OutputChannel,
     OutputContext,
     OutputFormatter,
-    get_default_output_manager
+    OutputManager,
+    OutputMessage,
+    WebChannel,
+    get_default_output_manager,
 )
 
 __all__ = [
-    'OutputManager',
-    'OutputChannel',
-    'ConsoleChannel',
-    'FileChannel', 
-    'HTMLChannel',
-    'WebChannel',
-    'OutputMessage',
-    'MessageType',
-    'MessagePriority',
-    'OutputContext',
-    'OutputFormatter',
-    'get_default_output_manager'
+    "OutputManager",
+    "OutputChannel",
+    "ConsoleChannel",
+    "FileChannel",
+    "HTMLChannel",
+    "WebChannel",
+    "OutputMessage",
+    "MessageType",
+    "MessagePriority",
+    "OutputContext",
+    "OutputFormatter",
+    "get_default_output_manager",
 ]

@@ -1,5 +1,6 @@
 import pytest
-from xwe.core.nlp.nlp_processor import NLPProcessor, NLPConfig
+
+from xwe.core.nlp.nlp_processor import NLPConfig, NLPProcessor
 
 
 @pytest.fixture
@@ -14,13 +15,12 @@ def test_parse_plain_json(nlp):
 
 
 def test_parse_markdown_json(nlp):
-    raw = "```json\n{\"command\": \"STATUS\"}\n```"
+    raw = '```json\n{"command": "STATUS"}\n```'
     parsed = nlp._parse_deepseek_json(raw)
     assert parsed == {"command": "STATUS"}
 
 
 def test_parse_json_in_text(nlp):
-    raw = "response: {\"command\": \"FLEE\"}" \
-          " some trailing text"
+    raw = 'response: {"command": "FLEE"}' " some trailing text"
     parsed = nlp._parse_deepseek_json(raw)
     assert parsed == {"command": "FLEE"}

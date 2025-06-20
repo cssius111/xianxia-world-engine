@@ -63,9 +63,7 @@ class CombatService(ServiceBase[ICombatService], ICombatService):
 
         if random.random() > 0.5:
             self._in_combat = False
-            return CommandResult(
-                success=True, output="你成功逃离了战斗！", state_changed=True
-            )
+            return CommandResult(success=True, output="你成功逃离了战斗！", state_changed=True)
         else:
             return CommandResult(success=False, output="逃跑失败！")
 

@@ -1,13 +1,13 @@
-
 """Intelligence system for dispatching major news."""
 
 from dataclasses import dataclass
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
 
 @dataclass
 class NewsItem:
     """Simple news item."""
+
     id: str
     title: str
     content: str
@@ -25,6 +25,7 @@ class IntelligenceSystem:
 
     def get_global_news(self) -> List[NewsItem]:
         return list(self.global_news)
+
 
 """情报系统
 提供全球新闻和个人情报的管理接口"""

@@ -5,7 +5,7 @@
 按照Super-Datafication System Prompt的要求，已完成5个核心数据文件的重构：
 
 1. **attribute_model.json** - 属性字典系统
-2. **cultivation_realm.json** - 修炼境界体系  
+2. **cultivation_realm.json** - 修炼境界体系
 3. **spiritual_root.json** - 灵根系统
 4. **combat_system.json** - 战斗系统
 5. **event_template.json** - 事件模板系统
