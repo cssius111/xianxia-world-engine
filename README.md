@@ -1,4 +1,5 @@
 # 仙侠世界引擎 (Xianxia World Engine)
+[English README](README_EN.md)
 
 一个模块化、可扩展的文字冒险游戏引擎，专为仙侠题材游戏设计。
 
