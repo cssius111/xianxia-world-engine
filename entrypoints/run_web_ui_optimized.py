@@ -17,7 +17,7 @@ from routes import character, intel, lore
 from xwe.core.cultivation_system import CultivationSystem
 
 # 导入游戏核心
-from xwe.core.game_core_enhanced import create_enhanced_game
+from xwe.core.game_core import create_enhanced_game
 from xwe.features.ai_personalization import AIPersonalization
 from xwe.features.community_system import CommunitySystem
 from xwe.features.narrative_system import NarrativeSystem
