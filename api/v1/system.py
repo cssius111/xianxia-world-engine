@@ -4,7 +4,10 @@
 """
 
 import os
-from flask import Blueprint, jsonify, request
+import json
+import psutil
+from flask import Blueprint, jsonify, request, current_app
+from flask import session
 
 system_bp = Blueprint('system', __name__)
 
@@ -51,33 +54,44 @@ def get_settings():
 def update_settings():
     """更新系统设置"""
     data = request.get_json()
-    
-    # TODO: 实现设置保存逻辑
-    return jsonify({
-        "success": True,
-        "message": "设置已更新"
-    })
+    settings_file = 'game_settings.json'
+
+    try:
+        with open(settings_file, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+
+        current_app.config.update(data)
+        return jsonify({"success": True, "message": "设置已更新"})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
 
 
 @system_bp.route('/logs', methods=['GET'])
 def get_logs():
     """获取系统日志"""
-    # TODO: 实现日志系统
     limit = request.args.get('limit', 100, type=int)
-    
-    return jsonify({
-        "logs": [],
-        "total": 0
-    })
+    log_file = os.path.join(current_app.config.get('LOG_PATH', 'logs'), 'app.log')
+
+    logs = []
+    if os.path.exists(log_file):
+        with open(log_file, 'r', encoding='utf-8') as f:
+            lines = f.readlines()[-limit:]
+            logs = [line.strip() for line in lines]
+
+    return jsonify({"logs": logs, "total": len(logs)})
 
 
 @system_bp.route('/performance', methods=['GET'])
 def get_performance():
     """获取性能统计"""
-    # TODO: 实现性能监控
+    cpu_usage = psutil.cpu_percent(interval=0.1)
+    memory_usage = psutil.virtual_memory().percent
+
+    from entrypoints import run_web_ui_optimized
+
     return jsonify({
-        "cpu_usage": 0.1,
-        "memory_usage": 0.2,
-        "response_time": 50,
-        "active_sessions": 1
+        "cpu_usage": cpu_usage,
+        "memory_usage": memory_usage,
+        "response_time": 0,
+        "active_sessions": len(run_web_ui_optimized.game_instances)
     })

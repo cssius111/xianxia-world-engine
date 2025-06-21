@@ -3,8 +3,9 @@
 处理游戏主要功能的接口
 """
 
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, session
 from flask import current_app
+import time
 
 game_bp = Blueprint('game', __name__)
 
@@ -12,11 +13,23 @@ game_bp = Blueprint('game', __name__)
 @game_bp.route('/status', methods=['GET'])
 def get_game_status():
     """获取游戏状态"""
-    # TODO: 实现游戏状态获取逻辑
+    if 'session_id' not in session:
+        return jsonify({
+            "status": "idle",
+            "version": current_app.config.get("VERSION", "1.0.0"),
+            "players_online": 0,
+        })
+
+    from entrypoints import run_web_ui_optimized
+
+    instance = run_web_ui_optimized.get_game_instance(session['session_id'])
+    game = instance["game"]
+
     return jsonify({
         "status": "running",
-        "version": "1.0.0",
-        "players_online": 1
+        "version": current_app.config.get("VERSION", "1.0.0"),
+        "players_online": len(run_web_ui_optimized.game_instances),
+        "location": getattr(game.game_state, "current_location", None),
     })
 
 
@@ -25,8 +38,19 @@ def process_command():
     """处理游戏命令"""
     data = request.get_json()
     command = data.get('command', '')
-    
-    # TODO: 实现命令处理逻辑
+
+    if 'session_id' not in session:
+        return jsonify({"success": False, "error": "会话已过期"}), 401
+
+    from entrypoints import run_web_ui_optimized
+
+    instance = run_web_ui_optimized.get_game_instance(session['session_id'])
+    game = instance["game"]
+
+    game.process_command(command)
+    instance["need_refresh"] = True
+    instance["last_update"] = time.time()
+
     return jsonify({
         "success": True,
         "message": f"命令 '{command}' 已处理"
@@ -36,21 +60,53 @@ def process_command():
 @game_bp.route('/locations', methods=['GET'])
 def get_locations():
     """获取所有可用位置"""
-    # TODO: 从游戏世界获取位置列表
-    return jsonify({
-        "locations": [
-            {"id": "qingyun_city", "name": "青云城", "type": "city"},
-            {"id": "misty_forest", "name": "迷雾森林", "type": "forest"}
-        ]
-    })
+    if 'session_id' not in session:
+        return jsonify({"locations": []})
+
+    from entrypoints import run_web_ui_optimized
+
+    instance = run_web_ui_optimized.get_game_instance(session['session_id'])
+    game = instance["game"]
+
+    locations = []
+    world_map = getattr(game, 'world_map', None)
+    if world_map and hasattr(world_map, 'areas'):
+        for area_id, area in world_map.areas.items():
+            locations.append({
+                "id": area_id,
+                "name": getattr(area, 'name', area_id),
+                "type": getattr(area, 'type', 'unknown'),
+            })
+
+    return jsonify({"locations": locations})
 
 
 @game_bp.route('/time', methods=['GET'])
 def get_game_time():
     """获取游戏时间"""
-    # TODO: 实现游戏时间系统
+    if 'session_id' not in session:
+        return jsonify({"game_time": 0, "day": 0, "time_of_day": "unknown"})
+
+    from entrypoints import run_web_ui_optimized
+
+    instance = run_web_ui_optimized.get_game_instance(session['session_id'])
+    game = instance["game"]
+
+    game_time = getattr(game.game_state, 'game_time', 0.0)
+    day = int(game_time // 24) + 1
+    hour = int(game_time % 24)
+
+    if hour < 6:
+        tod = "night"
+    elif hour < 12:
+        tod = "morning"
+    elif hour < 18:
+        tod = "afternoon"
+    else:
+        tod = "evening"
+
     return jsonify({
-        "game_time": 0,
-        "day": 1,
-        "time_of_day": "morning"
+        "game_time": game_time,
+        "day": day,
+        "time_of_day": tod
     })

@@ -6,7 +6,8 @@
 import os
 import json
 from datetime import datetime
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, session, current_app
+from xwe.core.game_core import GameState
 
 save_bp = Blueprint('save', __name__)
 
@@ -54,13 +55,21 @@ def save_game():
     filename = f"{save_name}_{timestamp}.json"
     filepath = os.path.join(SAVE_DIR, filename)
     
-    # TODO: 获取实际游戏状态
+    if 'session_id' not in session:
+        return jsonify({"success": False, "error": "会话已过期"}), 401
+
+    from entrypoints import run_web_ui_optimized
+
+    instance = run_web_ui_optimized.get_game_instance(session['session_id'])
+    game = instance["game"]
+
+    player = game.game_state.player
     save_data = {
-        "version": "1.0.0",
+        "version": current_app.config.get("VERSION", "1.0.0"),
         "timestamp": timestamp,
-        "player_name": "测试玩家",
-        "level": 1,
-        "game_state": {}
+        "player_name": player.name if player else "未知",
+        "level": getattr(player.attributes, 'level', 1) if player else 1,
+        "game_state": game.game_state.to_dict(),
     }
     
     try:
@@ -93,8 +102,17 @@ def load_game(filename):
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
             save_data = json.load(f)
-        
-        # TODO: 恢复游戏状态
+        if 'session_id' not in session:
+            return jsonify({"success": False, "error": "会话已过期"}), 401
+
+        from entrypoints import run_web_ui_optimized
+
+        instance = run_web_ui_optimized.get_game_instance(session['session_id'])
+        game = instance["game"]
+
+        game.game_state = GameState.from_dict(save_data.get("game_state", {}))
+        instance["need_refresh"] = True
+
         return jsonify({
             "success": True,
             "message": "游戏已加载",
