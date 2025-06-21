@@ -145,11 +145,10 @@ class GameCore:
 
         # 初始化NPC系统
         # 局部导入避免循环依赖
-        from xwe.npc import DialogueSystem, NPCManager, TradingSystem
+        from xwe.npc import DialogueSystem, NPCManager
 
         self.dialogue_system = DialogueSystem()
         self.npc_manager = NPCManager(self.dialogue_system)
-        self.trading_system = TradingSystem()
 
         # 初始化Roll系统
         self.character_roller = CharacterRoller()
