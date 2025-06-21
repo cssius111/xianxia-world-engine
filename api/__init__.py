@@ -53,7 +53,10 @@ def register_api(app: Flask, url_prefix: str = "/api"):
         from xwe.config import config
 
         if config.ENABLE_DEV_API:
-            app.register_blueprint(dev_bp, url_prefix=f"{v1_prefix}/dev")
+            if dev_bp is not None:
+                app.register_blueprint(dev_bp, url_prefix=f"{v1_prefix}/dev")
+            else:
+                print("⚠️  dev_bp is None, skipping dev API registration")
     except Exception:
         pass
 
