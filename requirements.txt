@@ -20,6 +20,14 @@ aiofiles==23.1.0
 # 系统监控
 psutil==5.9.5
 
-# 日志
-# 其他工具
+# 日志和工具
 requests==2.31.0
+
+# AI/LLM 相关
+openai>=1.0.0  # 用于访问 DeepSeek API（兼容 OpenAI 格式）
+
+# 监控和性能
+prometheus-client>=0.19.0  # 性能监控
+
+# 缓存
+cachetools>=5.3.0  # 缓存工具

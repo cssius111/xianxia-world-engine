@@ -206,7 +206,8 @@ class AIPersonalization:
         
         return recommendations.get(style, ["继续探索游戏世界"])
 
-# ----- AUTO-STUB for missing imports -----
+# ----- AUTO-STUB and Additional Classes -----
+# 注意：ContentPreference 类已经在下面定义，不是存根！
 class AdaptiveGuideSystem:
     """AUTO-STUB：Phase-2 再完善"""
     def __init__(self):
@@ -219,7 +220,166 @@ class IntelligentNarrator:
     def narrate(self, *_, **__):
         return "（Stub）暂无智能旁白"
 
+
+
+class ContentPreference:
+    """
+    内容偏好管理
+    记录和分析玩家的内容偏好
+    """
+    
+    def __init__(self):
+        self.preferences = {
+            "story_type": "balanced",  # romantic, action, mystery, philosophical
+            "difficulty": "normal",    # easy, normal, hard, nightmare
+            "pacing": "moderate",      # slow, moderate, fast
+            "detail_level": "standard" # minimal, standard, detailed
+        }
+        
+        self.content_history = []
+        self.feedback_scores = {}
+    
+    def update_preference(self, category: str, value: str) -> None:
+        """更新偏好设置"""
+        if category in self.preferences:
+            self.preferences[category] = value
+    
+    def analyze_feedback(self, content_id: str, score: float) -> None:
+        """分析内容反馈"""
+        self.feedback_scores[content_id] = score
+        
+        # 根据反馈调整偏好
+        if score < 0.3:
+            # 负面反馈，考虑调整
+            pass
+        elif score > 0.8:
+            # 正面反馈，强化当前偏好
+            pass
+    
+    def get_content_filter(self) -> Dict[str, Any]:
+        """获取内容过滤器"""
+        return {
+            "story_types": [self.preferences["story_type"]],
+            "max_difficulty": self.preferences["difficulty"],
+            "pacing_speed": self.preferences["pacing"],
+            "detail_requirements": self.preferences["detail_level"]
+        }
+    
+    def recommend_content(self, available_content: List[Dict]) -> List[Dict]:
+        """推荐内容"""
+        # 基于偏好过滤和排序内容
+        filtered = []
+        for content in available_content:
+            if self._matches_preferences(content):
+                filtered.append(content)
+        
+        return sorted(filtered, key=lambda x: self._calculate_score(x), reverse=True)
+    
+    def _matches_preferences(self, content: Dict) -> bool:
+        """检查内容是否匹配偏好"""
+        return True  # 简化实现
+    
+    def _calculate_score(self, content: Dict) -> float:
+        """计算内容匹配分数"""
+        return 0.5  # 简化实现
+
+
 # -----------------------------------------
+
+
+class DynamicNPCBehavior:
+    """动态NPC行为系统"""
+    
+    def __init__(self):
+        self.npc_states = {}
+        self.behavior_patterns = {
+            "friendly": {"greeting": "友好地打招呼", "help_chance": 0.8},
+            "neutral": {"greeting": "淡淡地点头", "help_chance": 0.5},
+            "hostile": {"greeting": "警惕地看着你", "help_chance": 0.1}
+        }
+    
+    def get_npc_behavior(self, npc_id: str, player_reputation: float) -> Dict[str, Any]:
+        """根据玩家声望获取NPC行为"""
+        if player_reputation > 0.7:
+            return self.behavior_patterns["friendly"]
+        elif player_reputation < 0.3:
+            return self.behavior_patterns["hostile"]
+        else:
+            return self.behavior_patterns["neutral"]
+
+class PersonalizationEngine:
+    """个性化引擎"""
+    
+    def __init__(self):
+        self.ai_personalization = AIPersonalization()
+        self.content_preference = ContentPreference()
+        self.npc_behavior = DynamicNPCBehavior()
+    
+    def process_player_action(self, action: str, context: Dict[str, Any]):
+        """处理玩家行为"""
+        self.ai_personalization.analyze_player_action(action, context)
+    
+    def get_personalized_content(self, content_type: str) -> Any:
+        """获取个性化内容"""
+        return self.ai_personalization.get_adapted_content(content_type, 1.0)
+
+class PlayerProfile:
+    """玩家档案"""
+    
+    def __init__(self):
+        self.stats = {
+            "total_playtime": 0,
+            "battles_won": 0,
+            "quests_completed": 0,
+            "npcs_befriended": 0
+        }
+        self.achievements = []
+        self.preferences = {}
+
+class PlayerStyle:
+    """玩家风格枚举"""
+    AGGRESSIVE = "aggressive"
+    DEFENSIVE = "defensive"
+    EXPLORER = "explorer"
+    SOCIAL = "social"
+    BALANCED = "balanced"
+
+class PlayerStyleAnalyzer:
+    """玩家风格分析器"""
+    
+    def __init__(self):
+        self.action_history = []
+        self.current_style = PlayerStyle.BALANCED
+    
+    def analyze_style(self, recent_actions: List[str]) -> str:
+        """分析玩家风格"""
+        action_counts = {
+            PlayerStyle.AGGRESSIVE: 0,
+            PlayerStyle.DEFENSIVE: 0,
+            PlayerStyle.EXPLORER: 0,
+            PlayerStyle.SOCIAL: 0
+        }
+        
+        for action in recent_actions:
+            if action in ["attack", "fight"]:
+                action_counts[PlayerStyle.AGGRESSIVE] += 1
+            elif action in ["defend", "flee"]:
+                action_counts[PlayerStyle.DEFENSIVE] += 1
+            elif action in ["explore", "search"]:
+                action_counts[PlayerStyle.EXPLORER] += 1
+            elif action in ["talk", "trade"]:
+                action_counts[PlayerStyle.SOCIAL] += 1
+        
+        return max(action_counts, key=action_counts.get)
+
+def enhance_with_ai_features(game_instance):
+    """增强游戏实例的AI功能"""
+    # 这是一个辅助函数
+    return game_instance
+
+# 创建单例实例
+personalization_engine = PersonalizationEngine()
+
 # ---- register stub classes ----
-__all__.extend(["AdaptiveGuideSystem", "IntelligentNarrator"])
+__all__.extend(["AdaptiveGuideSystem", "IntelligentNarrator", "ContentPreference", "DynamicNPCBehavior", "PersonalizationEngine", "PlayerProfile", "PlayerStyle", "PlayerStyleAnalyzer", "enhance_with_ai_features", "personalization_engine"])
 # --------------------------------
