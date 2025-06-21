@@ -51,12 +51,9 @@ try:
 except ImportError:
     pass
 
-try:
-    from xwe.core.game_core_enhanced import create_enhanced_game
+from xwe.core.game_core import create_enhanced_game
 
-    _optional_modules["create_enhanced_game"] = create_enhanced_game
-except ImportError:
-    pass
+_optional_modules["create_enhanced_game"] = create_enhanced_game
 
 # 将可选模块添加到当前命名空间
 for name, module in _optional_modules.items():
