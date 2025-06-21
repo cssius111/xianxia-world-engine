@@ -1,0 +1,12 @@
+{
+  "api": "ImportError: cannot import name 'DeepSeek' from 'deepseek' (/Users/chenpinle/anaconda3/envs/playwright_env/lib/python3.12/site-packages/deepseek/__init__.py)",
+  "core.player_initializer": "ImportError: cannot import name 'DeepSeek' from 'deepseek' (/Users/chenpinle/anaconda3/envs/playwright_env/lib/python3.12/site-packages/deepseek/__init__.py)",
+  "entrypoints.run_web_ui_optimized": "ImportError: cannot import name 'DeepSeek' from 'deepseek' (/Users/chenpinle/anaconda3/envs/playwright_env/lib/python3.12/site-packages/deepseek/__init__.py)",
+  "main_menu": "ImportError: cannot import name 'DeepSeek' from 'deepseek' (/Users/chenpinle/anaconda3/envs/playwright_env/lib/python3.12/site-packages/deepseek/__init__.py)",
+  "routes.character": "ImportError: cannot import name 'ContentPreference' from 'xwe.features.ai_personalization' (/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/xwe/features/ai_personalization.py)",
+  "xwe.core": "ImportError: cannot import name 'DeepSeek' from 'deepseek' (/Users/chenpinle/anaconda3/envs/playwright_env/lib/python3.12/site-packages/deepseek/__init__.py)",
+  "xwe.engine.expression": "ModuleNotFoundError: No module named 'xwe.engine.expression.exceptions'",
+  "xwe.features": "ImportError: cannot import name 'ContentPreference' from 'xwe.features.ai_personalization' (/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/xwe/features/ai_personalization.py)",
+  "xwe.metrics": "ModuleNotFoundError: No module named 'xwe.metrics.prometheus'",
+  "xwe.services": "ImportError: cannot import name 'DeepSeek' from 'deepseek' (/Users/chenpinle/anaconda3/envs/playwright_env/lib/python3.12/site-packages/deepseek/__init__.py)"
+}

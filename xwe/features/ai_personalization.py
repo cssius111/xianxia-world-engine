@@ -1,3 +1,4 @@
+__all__ = []
 """
 AI个性化系统
 根据玩家行为调整游戏体验
@@ -204,3 +205,21 @@ class AIPersonalization:
         }
         
         return recommendations.get(style, ["继续探索游戏世界"])
+
+# ----- AUTO-STUB for missing imports -----
+class AdaptiveGuideSystem:
+    """AUTO-STUB：Phase-2 再完善"""
+    def __init__(self):
+        self.enabled = False
+    def guide(self, *_, **__):
+        return "（Stub）暂无智能指引"
+
+class IntelligentNarrator:
+    """AUTO-STUB：Phase-2 再完善"""
+    def narrate(self, *_, **__):
+        return "（Stub）暂无智能旁白"
+
+# -----------------------------------------
+# ---- register stub classes ----
+__all__.extend(["AdaptiveGuideSystem", "IntelligentNarrator"])
+# --------------------------------
