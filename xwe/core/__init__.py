@@ -8,10 +8,9 @@ from typing import Any, Dict
 from xwe.core.ai import AIController
 from xwe.core.attributes import AttributeSystem, CharacterAttributes
 from xwe.core.character import Character
-from xwe.core.combat import CombatSystem, combat_system
+from xwe.core.combat import CombatSystem
 from xwe.core.command_parser import CommandParser
 from xwe.core.data_loader import DataLoader
-from xwe.core.event_system import EventSystemV3 as EventSystem
 from xwe.core.game_core import GameCore
 from xwe.core.skills import Skill, SkillSystem
 from xwe.core.status import StatusEffect, StatusEffectManager
@@ -73,12 +72,10 @@ __all__ = [
     "StatusEffectManager",
     "CommandParser",
     "GameCore",
-    "EventSystem",
     "load_game_data",
     "get_config",
     "calculate",
     "evaluate_expression",
-    "combat_system",
 ] + list(
     _optional_modules.keys()
 )  # 动态添加可选模块

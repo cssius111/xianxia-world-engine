@@ -13,3 +13,10 @@
 ## 启动方式
 1. 控制台: python main_menu.py
 2. Web: python entrypoints/run_web_ui_optimized.py
+
+## 测试
+使用 [pytest](https://docs.pytest.org/) 运行单元测试：
+
+```bash
+pytest
+```
