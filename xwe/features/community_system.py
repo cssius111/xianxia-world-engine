@@ -5,6 +5,7 @@
 
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass, field
+from enum import Enum
 from datetime import datetime
 import json
 
@@ -18,6 +19,75 @@ class Message:
     content: str
     timestamp: datetime
     read: bool = False
+
+
+@dataclass
+class CommunityLink:
+    """社区链接"""
+    name: str
+    url: str
+
+
+class FeedbackType(Enum):
+    """反馈类型"""
+    BUG = "bug"
+    FEATURE = "feature"
+    OTHER = "other"
+
+
+class FeedbackPriority(Enum):
+    """反馈优先级"""
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
+
+
+@dataclass
+class Feedback:
+    """玩家反馈"""
+    player_id: str
+    content: str
+    feedback_type: FeedbackType = FeedbackType.OTHER
+    priority: FeedbackPriority = FeedbackPriority.LOW
+    timestamp: datetime = field(default_factory=datetime.now)
+
+
+class FeedbackCollector:
+    """收集玩家反馈"""
+
+    def __init__(self):
+        self.feedback_list: List[Feedback] = []
+
+    def add_feedback(self, feedback: Feedback) -> None:
+        self.feedback_list.append(feedback)
+
+    def export_feedback(self) -> List[Dict[str, Any]]:
+        return [f.__dict__ for f in self.feedback_list]
+
+
+class PlayerDataAnalytics:
+    """玩家数据分析工具"""
+
+    def analyze(self, player_data: Dict[str, Any]) -> Dict[str, Any]:
+        # 简化示例，返回统计信息
+        return {
+            "id": player_data.get("id"),
+            "level": player_data.get("level", 0),
+            "friends": len(player_data.get("friends", [])),
+        }
+
+
+class CommunityHub:
+    """社区中心，整合各类社区功能"""
+
+    def __init__(self, system: "CommunitySystem"):
+        self.system = system
+
+    def summary(self) -> Dict[str, Any]:
+        return {
+            "guilds": len(self.system.guilds),
+            "messages": sum(len(m) for m in self.system.messages.values()),
+        }
 
 
 @dataclass
@@ -306,3 +376,48 @@ class CommunitySystem:
             "blocked": self.block_lists.get(player_id, []),
             "unread_messages": len(self.get_unread_messages(player_id))
         }
+
+
+# 全局实例和辅助函数
+community_system = CommunitySystem()
+feedback_collector = FeedbackCollector()
+
+
+def integrate_community_features(game: Any) -> None:
+    """将社区系统整合到游戏对象"""
+    game.community_system = community_system
+
+
+def show_community() -> None:
+    """展示社区概况"""
+    hub = CommunityHub(community_system)
+    print(json.dumps(hub.summary(), ensure_ascii=False))
+
+
+def submit_feedback(player_id: str, content: str,
+                    feedback_type: FeedbackType = FeedbackType.OTHER,
+                    priority: FeedbackPriority = FeedbackPriority.LOW) -> None:
+    """提交玩家反馈"""
+    feedback = Feedback(
+        player_id=player_id,
+        content=content,
+        feedback_type=feedback_type,
+        priority=priority,
+    )
+    feedback_collector.add_feedback(feedback)
+
+
+__all__ = [
+    "CommunityHub",
+    "CommunityLink",
+    "CommunitySystem",
+    "Feedback",
+    "FeedbackCollector",
+    "FeedbackPriority",
+    "FeedbackType",
+    "PlayerDataAnalytics",
+    "community_system",
+    "integrate_community_features",
+    "show_community",
+    "submit_feedback",
+]
