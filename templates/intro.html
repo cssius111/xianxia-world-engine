@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>仙侠世界引擎 - 角色创建</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        .intro-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a0a 100%);
+        }
+        
+        .intro-text {
+            max-width: 800px;
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeIn 2s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .intro-text h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #ffd700;
+        }
+        
+        .intro-text p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #ccc;
+            margin-bottom: 15px;
+        }
+        
+        .character-form {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            animation: slideUp 1s ease-out 1s both;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            color: #ffd700;
+        }
+        
+        .form-group input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            font-size: 1em;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input[type="text"]:focus {
+            outline: none;
+            border-color: #ffd700;
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .character-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .character-type {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .character-type:hover {
+            border-color: #ffd700;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .character-type.selected {
+            border-color: #ffd700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+        
+        .character-type h3 {
+            margin: 0 0 5px 0;
+            color: #ffd700;
+        }
+        
+        .character-type p {
+            margin: 0;
+            font-size: 0.9em;
+            color: #aaa;
+        }
+        
+        .submit-button {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2em;
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            color: #000;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 30px;
+            font-weight: bold;
+        }
+        
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+        }
+        
+        .skip-button {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .skip-button:hover {
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="intro-container">
+        <div class="intro-text">
+            <h1>踏入仙途</h1>
+            <p>在这个充满灵气的世界中，每个人都有机会踏上修仙之路。</p>
+            <p>但天赋各异，命运不同。你将以何种身份开始这段旅程？</p>
+        </div>
+        
+        <form class="character-form" id="characterForm">
+            <div class="form-group">
+                <label for="name">角色姓名</label>
+                <input type="text" id="name" name="name" placeholder="请输入你的名字" required>
+            </div>
+            
+            <div class="form-group">
+                <label>选择初始身份</label>
+                <div class="character-types">
+                    <div class="character-type" data-type="sword">
+                        <h3>剑修</h3>
+                        <p>以剑入道，攻击犀利</p>
+                    </div>
+                    <div class="character-type" data-type="body">
+                        <h3>体修</h3>
+                        <p>炼体为主，防御惊人</p>
+                    </div>
+                    <div class="character-type" data-type="magic">
+                        <h3>法修</h3>
+                        <p>精通法术，灵力深厚</p>
+                    </div>
+                    <div class="character-type selected" data-type="random">
+                        <h3>随机</h3>
+                        <p>让命运决定</p>
+                    </div>
+                </div>
+            </div>
+            
+            <button type="submit" class="submit-button">开始修仙之旅</button>
+            
+            {% if dev_mode %}
+            <a href="/game?mode=dev" class="skip-button">跳过角色创建（开发模式）</a>
+            {% endif %}
+        </form>
+    </div>
+    
+    <script>
+        // 角色类型选择
+        const typeElements = document.querySelectorAll('.character-type');
+        let selectedType = 'random';
+        
+        typeElements.forEach(elem => {
+            elem.addEventListener('click', () => {
+                typeElements.forEach(e => e.classList.remove('selected'));
+                elem.classList.add('selected');
+                selectedType = elem.dataset.type;
+            });
+        });
+        
+        // 表单提交
+        document.getElementById('characterForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value || '无名侠客';
+            
+            try {
+                const response = await fetch('/create_character', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        type: selectedType
+                    })
+                });
+                
+                if (response.ok) {
+                    window.location.href = '/game';
+                }
+            } catch (error) {
+                console.error('创建角色失败:', error);
+                alert('创建角色失败，请重试');
+            }
+        });
+    </script>
+</body>
+</html>

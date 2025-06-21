@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>仙侠世界引擎 - 欢迎</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .welcome-container {
+            text-align: center;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 90%;
+        }
+        
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #00dbde, #fc00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(0, 219, 222, 0.5);
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            color: #aaa;
+            margin-bottom: 40px;
+        }
+        
+        .menu-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .menu-button {
+            display: inline-block;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            text-decoration: none;
+            color: #fff;
+            background: linear-gradient(45deg, #2196F3, #21CBF3);
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+            min-width: 200px;
+        }
+        
+        .menu-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(33, 150, 243, 0.5);
+        }
+        
+        .menu-button.secondary {
+            background: linear-gradient(45deg, #666, #888);
+            box-shadow: 0 4px 15px rgba(102, 102, 102, 0.3);
+        }
+        
+        .menu-button.dev {
+            background: linear-gradient(45deg, #ff6b6b, #ff8787);
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+        
+        .version {
+            margin-top: 40px;
+            color: #666;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="welcome-container">
+        <h1>仙侠世界引擎</h1>
+        <p class="subtitle">踏入修仙之路，书写属于你的传奇</p>
+        
+        <div class="menu-buttons">
+            <a href="/intro" class="menu-button">开始新游戏</a>
+            
+            {% if save_exists %}
+            <a href="/game?continue=true" class="menu-button secondary">继续游戏</a>
+            {% endif %}
+            
+            <a href="/intro?mode=dev" class="menu-button dev">开发者模式</a>
+        </div>
+        
+        <div class="version">
+            版本 v1.0.0
+        </div>
+    </div>
+</body>
+</html>

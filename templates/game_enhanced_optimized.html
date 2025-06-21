@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>仙侠世界引擎</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            overflow: hidden;
+        }
+        
+        .game-container {
+            display: grid;
+            grid-template-columns: 300px 1fr 300px;
+            grid-template-rows: 80px 1fr 200px;
+            height: 100vh;
+            gap: 1px;
+            background: #222;
+        }
+        
+        /* 顶部状态栏 */
+        .top-bar {
+            grid-column: 1 / -1;
+            background: linear-gradient(to bottom, #1a1a1a, #0f0f0f);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            border-bottom: 2px solid #333;
+        }
+        
+        .player-info {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+        
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .info-label {
+            font-size: 0.8em;
+            color: #888;
+        }
+        
+        .info-value {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #ffd700;
+        }
+        
+        /* 左侧面板 */
+        .left-panel {
+            background: #111;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .panel-title {
+            color: #ffd700;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .status-bar {
+            margin-bottom: 10px;
+        }
+        
+        .status-bar label {
+            display: block;
+            font-size: 0.9em;
+            margin-bottom: 3px;
+        }
+        
+        .bar {
+            width: 100%;
+            height: 20px;
+            background: #333;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .bar-fill {
+            height: 100%;
+            transition: width 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .bar-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, 
+                transparent 25%, 
+                rgba(255,255,255,0.1) 25%, 
+                rgba(255,255,255,0.1) 50%, 
+                transparent 50%, 
+                transparent 75%, 
+                rgba(255,255,255,0.1) 75%);
+            background-size: 20px 20px;
+            animation: barStripes 1s linear infinite;
+        }
+        
+        @keyframes barStripes {
+            0% { background-position: 0 0; }
+            100% { background-position: 20px 0; }
+        }
+        
+        .health-bar .bar-fill {
+            background: linear-gradient(to right, #c0392b, #e74c3c);
+        }
+        
+        .mana-bar .bar-fill {
+            background: linear-gradient(to right, #2980b9, #3498db);
+        }
+        
+        .stamina-bar .bar-fill {
+            background: linear-gradient(to right, #27ae60, #2ecc71);
+        }
+        
+        .bar-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 0.8em;
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+        }
+        
+        /* 主游戏区域 */
+        .main-content {
+            background: #0f0f0f;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .game-output {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+        
+        .game-output::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .game-output::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        
+        .game-output::-webkit-scrollbar-thumb {
+            background: #444;
+            border-radius: 4px;
+        }
+        
+        .output-line {
+            margin-bottom: 8px;
+            padding: 5px 10px;
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .output-line.system {
+            color: #f39c12;
+            font-style: italic;
+        }
+        
+        .output-line.combat {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        .output-line.reward {
+            color: #2ecc71;
+        }
+        
+        .output-line.dialogue {
+            color: #3498db;
+            border-left: 3px solid #3498db;
+            padding-left: 15px;
+        }
+        
+        /* 右侧面板 */
+        .right-panel {
+            background: #111;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .location-info {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 5px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .location-name {
+            font-size: 1.2em;
+            color: #ffd700;
+            margin-bottom: 5px;
+        }
+        
+        .location-desc {
+            font-size: 0.9em;
+            color: #aaa;
+        }
+        
+        .quick-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .quick-action {
+            padding: 10px;
+            background: #222;
+            border: 1px solid #444;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+            font-size: 0.9em;
+        }
+        
+        .quick-action:hover {
+            background: #333;
+            border-color: #ffd700;
+            transform: translateY(-2px);
+        }
+        
+        /* 命令输入区 */
+        .command-area {
+            background: #1a1a1a;
+            padding: 20px;
+            border-top: 2px solid #333;
+        }
+        
+        .command-input-wrapper {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        #commandInput {
+            flex: 1;
+            padding: 12px;
+            background: #0f0f0f;
+            border: 1px solid #333;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 1em;
+            font-family: inherit;
+        }
+        
+        #commandInput:focus {
+            outline: none;
+            border-color: #ffd700;
+        }
+        
+        .send-button {
+            padding: 12px 30px;
+            background: linear-gradient(45deg, #f39c12, #ffd700);
+            border: none;
+            border-radius: 5px;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .send-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        }
+        
+        .command-suggestions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .suggestion {
+            padding: 5px 10px;
+            background: #222;
+            border: 1px solid #444;
+            border-radius: 3px;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .suggestion:hover {
+            background: #333;
+            border-color: #666;
+        }
+        
+        /* 模态框 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #1a1a1a;
+            border: 2px solid #333;
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .modal-close:hover {
+            color: #fff;
+        }
+        
+        /* 加载动画 */
+        .loading {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2000;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid #333;
+            border-top-color: #ffd700;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* 开发模式标识 */
+        .dev-mode-badge {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: #e74c3c;
+            color: #fff;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <!-- 顶部状态栏 -->
+        <div class="top-bar">
+            <div class="player-info">
+                <div class="info-item">
+                    <span class="info-label">姓名</span>
+                    <span class="info-value" id="playerName">{{ player.name if player else '加载中...' }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">境界</span>
+                    <span class="info-value" id="playerRealm">{{ player.attributes.realm_name if player else '-' }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">等级</span>
+                    <span class="info-value" id="playerLevel">{{ player.attributes.cultivation_level if player else '0' }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">灵石</span>
+                    <span class="info-value" id="playerGold">0</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 左侧面板 -->
+        <div class="left-panel">
+            <h3 class="panel-title">角色状态</h3>
+            
+            <div class="status-bar health-bar">
+                <label>生命值</label>
+                <div class="bar">
+                    <div class="bar-fill" id="healthBar" style="width: 100%"></div>
+                    <span class="bar-text" id="healthText">100/100</span>
+                </div>
+            </div>
+            
+            <div class="status-bar mana-bar">
+                <label>灵力值</label>
+                <div class="bar">
+                    <div class="bar-fill" id="manaBar" style="width: 100%"></div>
+                    <span class="bar-text" id="manaText">50/50</span>
+                </div>
+            </div>
+            
+            <div class="status-bar stamina-bar">
+                <label>体力值</label>
+                <div class="bar">
+                    <div class="bar-fill" id="staminaBar" style="width: 100%"></div>
+                    <span class="bar-text" id="staminaText">100/100</span>
+                </div>
+            </div>
+            
+            <div class="quick-menu" style="margin-top: 30px;">
+                <h4 style="color: #ffd700; margin-bottom: 10px;">快捷菜单</h4>
+                <button class="quick-action" onclick="sendCommand('状态')" style="width: 100%; margin-bottom: 5px;">查看状态</button>
+                <button class="quick-action" onclick="sendCommand('背包')" style="width: 100%; margin-bottom: 5px;">背包</button>
+                <button class="quick-action" onclick="sendCommand('技能')" style="width: 100%; margin-bottom: 5px;">技能</button>
+                <button class="quick-action" onclick="sendCommand('地图')" style="width: 100%; margin-bottom: 5px;">地图</button>
+                <button class="quick-action" onclick="sendCommand('保存')" style="width: 100%; margin-bottom: 5px;">保存游戏</button>
+            </div>
+        </div>
+        
+        <!-- 主游戏区域 -->
+        <div class="main-content">
+            <div class="game-output" id="gameOutput">
+                <div class="output-line system">欢迎来到仙侠世界！</div>
+                <div class="output-line">正在初始化游戏...</div>
+            </div>
+        </div>
+        
+        <!-- 右侧面板 -->
+        <div class="right-panel">
+            <h3 class="panel-title">当前位置</h3>
+            
+            <div class="location-info">
+                <div class="location-name" id="locationName">{{ location }}</div>
+                <div class="location-desc" id="locationDesc">一个繁华的修仙城市</div>
+            </div>
+            
+            <h4 style="color: #ffd700; margin-bottom: 10px;">快速行动</h4>
+            <div class="quick-actions">
+                <button class="quick-action" onclick="sendCommand('探索')">探索</button>
+                <button class="quick-action" onclick="sendCommand('修炼')">修炼</button>
+                <button class="quick-action" onclick="sendCommand('对话')">对话</button>
+                <button class="quick-action" onclick="sendCommand('交易')">交易</button>
+            </div>
+            
+            <div class="buffs-panel" style="margin-top: 30px;">
+                <h4 style="color: #ffd700; margin-bottom: 10px;">状态效果</h4>
+                <div id="buffsContainer" style="font-size: 0.9em; color: #aaa;">
+                    暂无状态效果
+                </div>
+            </div>
+        </div>
+        
+        <!-- 命令输入区 -->
+        <div class="command-area">
+            <div class="command-input-wrapper">
+                <input type="text" id="commandInput" placeholder="输入命令..." autocomplete="off">
+                <button class="send-button" onclick="sendCommand()">发送</button>
+            </div>
+            
+            <div class="command-suggestions">
+                <span class="suggestion" onclick="setCommand('帮助')">帮助</span>
+                <span class="suggestion" onclick="setCommand('状态')">状态</span>
+                <span class="suggestion" onclick="setCommand('移动')">移动</span>
+                <span class="suggestion" onclick="setCommand('攻击')">攻击</span>
+                <span class="suggestion" onclick="setCommand('修炼')">修炼</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 加载动画 -->
+    <div class="loading" id="loading">
+        <div class="loading-spinner"></div>
+    </div>
+    
+    <!-- 开发模式标识 -->
+    {% if dev_mode %}
+    <div class="dev-mode-badge">开发模式</div>
+    {% endif %}
+    
+    <script>
+        let isProcessing = false;
+        let outputBuffer = [];
+        let lastLogCount = 0;
+        
+        // 发送命令
+        async function sendCommand(command) {
+            const input = document.getElementById('commandInput');
+            const cmd = command || input.value.trim();
+            
+            if (!cmd || isProcessing) return;
+            
+            isProcessing = true;
+            showLoading();
+            
+            // 显示玩家输入
+            addOutput(`> ${cmd}`, 'player-input');
+            
+            try {
+                const response = await fetch('/command', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ command: cmd })
+                });
+                
+                if (response.ok) {
+                    // 清空输入框
+                    if (!command) input.value = '';
+                    
+                    // 等待一下让服务器处理
+                    setTimeout(() => {
+                        updateGameState();
+                        updateLogs();
+                    }, 100);
+                }
+            } catch (error) {
+                console.error('命令发送失败:', error);
+                addOutput('命令发送失败，请重试', 'error');
+            } finally {
+                isProcessing = false;
+                hideLoading();
+            }
+        }
+        
+        // 设置命令
+        function setCommand(cmd) {
+            document.getElementById('commandInput').value = cmd;
+            document.getElementById('commandInput').focus();
+        }
+        
+        // 添加输出
+        function addOutput(text, className = '') {
+            const output = document.getElementById('gameOutput');
+            const line = document.createElement('div');
+            line.className = 'output-line ' + className;
+            line.textContent = text;
+            output.appendChild(line);
+            
+            // 滚动到底部
+            output.scrollTop = output.scrollHeight;
+            
+            // 限制输出行数
+            while (output.children.length > 100) {
+                output.removeChild(output.firstChild);
+            }
+        }
+        
+        // 更新游戏状态
+        async function updateGameState() {
+            try {
+                const response = await fetch('/status');
+                const data = await response.json();
+                
+                if (data.player) {
+                    // 更新玩家信息
+                    document.getElementById('playerName').textContent = data.player.name;
+                    document.getElementById('playerRealm').textContent = data.player.attributes.realm_name;
+                    document.getElementById('playerLevel').textContent = data.player.attributes.cultivation_level;
+                    
+                    // 更新状态条
+                    updateBar('health', 
+                        data.player.attributes.current_health, 
+                        data.player.attributes.max_health);
+                    updateBar('mana', 
+                        data.player.attributes.current_mana, 
+                        data.player.attributes.max_mana);
+                    updateBar('stamina', 
+                        data.player.attributes.current_stamina, 
+                        data.player.attributes.max_stamina);
+                }
+                
+                // 更新位置
+                if (data.location_name) {
+                    document.getElementById('locationName').textContent = data.location_name;
+                }
+                
+                // 更新金币
+                document.getElementById('playerGold').textContent = data.gold || 0;
+                
+            } catch (error) {
+                console.error('状态更新失败:', error);
+            }
+        }
+        
+        // 更新状态条
+        function updateBar(type, current, max) {
+            const bar = document.getElementById(type + 'Bar');
+            const text = document.getElementById(type + 'Text');
+            
+            const percentage = (current / max) * 100;
+            bar.style.width = percentage + '%';
+            text.textContent = `${Math.floor(current)}/${Math.floor(max)}`;
+        }
+        
+        // 更新日志
+        async function updateLogs() {
+            try {
+                const response = await fetch('/log');
+                const data = await response.json();
+                
+                if (data.logs && data.logs.length > lastLogCount) {
+                    const newLogs = data.logs.slice(lastLogCount);
+                    newLogs.forEach(log => {
+                        addOutput(log);
+                    });
+                    lastLogCount = data.logs.length;
+                }
+            } catch (error) {
+                console.error('日志更新失败:', error);
+            }
+        }
+        
+        // 显示/隐藏加载动画
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+        }
+        
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+        
+        // 自动保存
+        setInterval(async () => {
+            try {
+                await fetch('/save_game', { method: 'POST' });
+                console.log('自动保存成功');
+            } catch (error) {
+                console.error('自动保存失败:', error);
+            }
+        }, 300000); // 5分钟
+        
+        // 定期更新
+        setInterval(() => {
+            if (!isProcessing) {
+                updateGameState();
+                updateLogs();
+            }
+        }, 2000);
+        
+        // 回车发送命令
+        document.getElementById('commandInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendCommand();
+            }
+        });
+        
+        // 初始化
+        window.onload = () => {
+            updateGameState();
+            updateLogs();
+            
+            // 如果是新会话，显示欢迎信息
+            {% if is_new_session %}
+            setTimeout(() => {
+                sendCommand('帮助');
+            }, 1000);
+            {% endif %}
+        };
+    </script>
+</body>
+</html>
