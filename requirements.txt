@@ -21,7 +21,5 @@ aiofiles==23.1.0
 psutil==5.9.5
 
 # 日志
-logging==0.4.9.6
-
 # 其他工具
 requests==2.31.0
