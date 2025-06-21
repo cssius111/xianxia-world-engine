@@ -31,7 +31,7 @@ from xwe.core.immersive_event_system import (
 )
 from xwe.core.inventory import Inventory
 from xwe.core.item_system import item_system
-from xwe.core.nlp import NLPConfig, NLPProcessor
+from xwe.core.nlp import NLPProcessor
 
 # from xwe.npc import NPCManager, DialogueSystem, TradingSystem  # 移到使用时导入，避免循环依赖
 from xwe.core.roll_system import CharacterRoller  # 导入Roll系统
@@ -125,17 +125,8 @@ class GameCore:
         self.ai_controller = AIController(self.skill_system)
         self.command_parser = CommandParser()
 
-        # 初始化NLP处理器
-        # 从环境变量获取LLM提供者
-        llm_provider = os.getenv("LLM_PROVIDER", "deepseek")
-
-        nlp_config = NLPConfig(
-            enable_llm=True,
-            llm_provider=llm_provider,  # 使用真实的API
-            fallback_to_rules=True,
-            confidence_threshold=0.5,  # 降低阈值，让更多命令被识别
-        )
-        self.nlp_processor = NLPProcessor(self.command_parser, nlp_config)
+        # 初始化 NLP 处理器
+        self.nlp_processor = NLPProcessor()
 
         # 初始化世界系统
         self.world_map = WorldMap()
@@ -577,20 +568,8 @@ class GameCore:
         # 使用命令路由器（优先级系统）
         # 设置NLP处理器
         def nlp_handler(text, context) -> Any:
-            parsed = self.nlp_processor.parse(text, context)
-            return {
-                "command_type": (
-                    parsed.command_type.value
-                    if parsed.command_type != CommandType.UNKNOWN
-                    else "unknown"
-                ),
-                "parameters": {
-                    "target": parsed.target,
-                    "skill": parsed.parameters.get("skill"),
-                    "location": parsed.parameters.get("location"),
-                    **parsed.parameters,
-                },
-            }
+            analysis = self.nlp_processor.analyze(text)
+            return {"command_type": "unknown", "parameters": analysis}
 
         self.command_router.set_nlp_handler(nlp_handler)
 
@@ -608,9 +587,8 @@ class GameCore:
             self.output("我不太明白你的意思。")
             self.output("你可以说：")
             context = self._build_command_context()
-            suggestions = self.nlp_processor.get_suggestions("", context)
-            for suggestion in suggestions[:5]:
-                self.output(f"  - {suggestion}")
+            suggestion = self.nlp_processor.chat("给我一些指令建议:" + str(context))
+            self.output(suggestion)
             self.output("输入 '帮助' 查看所有命令。")
             return
 

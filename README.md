@@ -12,9 +12,11 @@
 
 - **Web界面**
 
-  ```bash
+ ```bash
   python entrypoints/run_web_ui_optimized.py
   ```
+
+运行前请复制 `.env.example` 为 `.env` 并填写 `DEEPSEEK_API_KEY`。
 
 ## 目录结构
 
