@@ -1,0 +1,70 @@
+"""
+核心服务模块
+提供依赖注入容器和接口定义
+"""
+
+from .container import CircularDependencyError, ServiceContainer, ServiceNotFoundError
+from .interfaces import (  # 数据模型接口; 系统接口; 游戏流程接口; 数据传输对象; 战斗相关; 技能相关; 事件相关
+    CombatActionType,
+    EventType,
+    IAttributes,
+    ICharacter,
+    ICombatAction,
+    ICombatResult,
+    ICombatState,
+    ICombatSystem,
+    ICommandHandler,
+    ICommandResult,
+    IDataLoader,
+    IEventResult,
+    IEventSystem,
+    IGameContext,
+    IGameOrchestrator,
+    IGameSystem,
+    IGameTime,
+    IInventory,
+    INPCManager,
+    IOutputChannel,
+    IOutputMessage,
+    ISaveSystem,
+    ISkill,
+    ISkillResult,
+    ISkillSystem,
+    ITimeSystem,
+    SkillTargetType,
+)
+
+__all__ = [
+    # 容器
+    "ServiceContainer",
+    "ServiceNotFoundError",
+    "CircularDependencyError",
+    # 接口
+    "ICharacter",
+    "IAttributes",
+    "IInventory",
+    "IGameSystem",
+    "ICombatSystem",
+    "ISkillSystem",
+    "INPCManager",
+    "IEventSystem",
+    "ITimeSystem",
+    "ISaveSystem",
+    "IDataLoader",
+    "ICommandHandler",
+    "IOutputChannel",
+    "IGameOrchestrator",
+    "ICommandResult",
+    "IGameContext",
+    "IOutputMessage",
+    "IGameTime",
+    "CombatActionType",
+    "ICombatAction",
+    "ICombatResult",
+    "ICombatState",
+    "SkillTargetType",
+    "ISkill",
+    "ISkillResult",
+    "EventType",
+    "IEventResult",
+]

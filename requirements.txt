@@ -1,0 +1,6 @@
+flask==2.3.2
+flask-cors==4.0.0
+python-dotenv==1.0.0
+pydantic==2.0.0
+sqlalchemy==2.0.0
+aiofiles==23.1.0
