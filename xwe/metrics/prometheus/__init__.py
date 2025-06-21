@@ -67,6 +67,22 @@ class PrometheusMetrics:
 
 # 全局指标管理器
 _metrics = PrometheusMetrics()
+metrics_registry = _metrics
+
+
+def time_histogram(name: str):
+    """装饰器：记录函数执行时间到仪表"""
+
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            start = time.time()
+            result = func(*args, **kwargs)
+            duration = time.time() - start
+            set_gauge(name, duration)
+            return result
+        return wrapper
+
+    return decorator
 
 def register_counter(name: str, description: str = "") -> Counter:
     """注册计数器（便捷函数）"""
@@ -109,5 +125,7 @@ __all__ = [
     "inc_counter",
     "set_gauge",
     "get_counter",
-    "get_gauge"
+    "get_gauge",
+    "metrics_registry",
+    "time_histogram",
 ]
