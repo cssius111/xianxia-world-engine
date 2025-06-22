@@ -19,11 +19,21 @@ from typing import Any
 
 # Check if we should use v2
 _USE_V2 = os.getenv("XWE_USE_V2", "").lower() in ("true", "1", "yes")
+_V2_AVAILABLE = False
 
 if _USE_V2:
-    # Redirect imports to v2
-    import xwe_v2
+    try:
+        # Redirect imports to v2
+        import xwe_v2
+        _V2_AVAILABLE = True
+    except ModuleNotFoundError:
+        warnings.warn(
+            "XWE_USE_V2 is set but xwe_v2 is not available. Falling back to v1.",
+            RuntimeWarning,
+            stacklevel=2,
+        )
 
+if _V2_AVAILABLE:
     # Copy v2 attributes to this namespace
     for attr in dir(xwe_v2):
         if not attr.startswith("_"):
@@ -43,7 +53,7 @@ class _XWEImportHook:
     """Import hook to redirect xwe.* imports to xwe_v2.* when v2 is enabled."""
 
     def find_module(self, fullname: str, path=None):
-        if _USE_V2 and fullname.startswith("xwe."):
+        if _USE_V2 and _V2_AVAILABLE and fullname.startswith("xwe."):
             return self
         return None
 
@@ -83,6 +93,6 @@ class _XWEImportHook:
             return importlib.import_module(fullname)
 
 
-# Install the import hook
-if _USE_V2:
+# Install the import hook only when v2 is available
+if _USE_V2 and _V2_AVAILABLE:
     sys.meta_path.insert(0, _XWEImportHook())
