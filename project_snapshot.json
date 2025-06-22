@@ -36,12 +36,12 @@
     ]
   },
   "routes.character": {
-    "error": "ImportError",
-    "message": "cannot import name 'CommunityHub' from 'xwe.features.community_system' (/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/xwe/features/community_system.py)",
+    "error": "ModuleNotFoundError",
+    "message": "No module named 'xwe.features.content_ecosystem'",
     "trace": [
-      "  File \"/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/xwe/features/__init__.py\", line 32, in <module>",
-      "    from xwe.features.community_system import (",
-      "ImportError: cannot import name 'CommunityHub' from 'xwe.features.community_system' (/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/xwe/features/community_system.py)"
+      "  File \"/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/xwe/features/__init__.py\", line 48, in <module>",
+      "    from xwe.features.content_ecosystem import (",
+      "ModuleNotFoundError: No module named 'xwe.features.content_ecosystem'"
     ]
   },
   "xwe.core": {
@@ -63,12 +63,12 @@
     ]
   },
   "xwe.features": {
-    "error": "ImportError",
-    "message": "cannot import name 'CommunityHub' from 'xwe.features.community_system' (/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/xwe/features/community_system.py)",
+    "error": "ModuleNotFoundError",
+    "message": "No module named 'xwe.features.content_ecosystem'",
     "trace": [
-      "  File \"/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/xwe/features/__init__.py\", line 32, in <module>",
-      "    from xwe.features.community_system import (",
-      "ImportError: cannot import name 'CommunityHub' from 'xwe.features.community_system' (/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/xwe/features/community_system.py)"
+      "  File \"/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/xwe/features/__init__.py\", line 48, in <module>",
+      "    from xwe.features.content_ecosystem import (",
+      "ModuleNotFoundError: No module named 'xwe.features.content_ecosystem'"
     ]
   },
   "xwe.metrics": {

@@ -1,4 +1,11 @@
 """
-游戏系统模块
-包含各种独立的游戏系统实现
+系统模块
 """
+
+# 导入各个子系统
+from . import combat
+from . import npc
+from . import persistence
+from . import time
+
+__all__ = ["combat", "npc", "persistence", "time"]

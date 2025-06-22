@@ -30,12 +30,12 @@ class FunctionError(ExpressionError):
     """函数错误"""
     pass
 
-class ValidationError(ExpressionError):
-    """验证错误"""
-    pass
-
 class TokenizationError(ExpressionError):
     """词法分析错误"""
+    pass
+
+class ValidationError(ExpressionError):
+    """验证错误"""
     pass
 
 __all__ = [
@@ -46,6 +46,6 @@ __all__ = [
     "TypeMismatchError",
     "FunctionNotFoundError",
     "FunctionError",
-    "ValidationError",
-    "TokenizationError"
+    "TokenizationError",
+    "ValidationError"
 ]

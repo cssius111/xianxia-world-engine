@@ -7,6 +7,7 @@ from typing import Dict, List, Optional, Any, Tuple
 from dataclasses import dataclass, field
 from enum import Enum
 import random
+from datetime import datetime
 
 
 class StoryPhase(Enum):
@@ -351,3 +352,236 @@ class NarrativeSystem:
         chosen_event = random.choices(events, weights=weights)[0]
         
         return chosen_event
+
+
+@dataclass
+class Achievement:
+    """成就"""
+    id: str
+    name: str
+    description: str
+    icon: str = "🏆"
+    points: int = 10
+    unlocked: bool = False
+    unlock_time: Optional[datetime] = None
+    hidden: bool = False
+    
+
+@dataclass
+class StoryEvent:
+    """故事事件"""
+    id: str
+    title: str
+    description: str
+    event_type: str
+    choices: List[Dict[str, Any]] = field(default_factory=list)
+    requirements: Dict[str, Any] = field(default_factory=dict)
+    effects: Dict[str, Any] = field(default_factory=dict)
+    
+
+class AchievementSystem:
+    """成就系统"""
+    
+    def __init__(self):
+        self.achievements: Dict[str, Achievement] = {}
+        self.player_achievements: Dict[str, List[str]] = {}
+        self._init_achievements()
+        
+    def _init_achievements(self):
+        """初始化成就列表"""
+        base_achievements = [
+            Achievement("first_cultivation", "初入修行", "第一次成功修炼"),
+            Achievement("first_combat", "初战告捷", "赢得第一场战斗"),
+            Achievement("first_quest", "任务达人", "完成第一个任务"),
+            Achievement("realm_breakthrough", "境界突破", "成功突破一个大境界", points=50),
+            Achievement("treasure_hunter", "寻宝者", "发现10件宝物", points=30),
+        ]
+        
+        for achievement in base_achievements:
+            self.achievements[achievement.id] = achievement
+            
+    def unlock_achievement(self, player_id: str, achievement_id: str) -> Optional[Achievement]:
+        """解锁成就"""
+        if achievement_id not in self.achievements:
+            return None
+            
+        achievement = self.achievements[achievement_id]
+        if achievement.unlocked:
+            return None
+            
+        achievement.unlocked = True
+        achievement.unlock_time = datetime.now()
+        
+        if player_id not in self.player_achievements:
+            self.player_achievements[player_id] = []
+        self.player_achievements[player_id].append(achievement_id)
+        
+        return achievement
+        
+    def get_player_achievements(self, player_id: str) -> List[Achievement]:
+        """获取玩家成就"""
+        achievement_ids = self.player_achievements.get(player_id, [])
+        return [self.achievements[aid] for aid in achievement_ids if aid in self.achievements]
+
+
+class NarrativeEventSystem:
+    """叙事事件系统"""
+    
+    def __init__(self):
+        self.events: Dict[str, StoryEvent] = {}
+        self.event_history: Dict[str, List[str]] = {}
+        self._init_events()
+        
+    def _init_events(self):
+        """初始化事件"""
+        events = [
+            StoryEvent(
+                "encounter_master",
+                "偶遇高人",
+                "你在山路上遇到一位仙风道骨的老者...",
+                "encounter",
+                choices=[
+                    {"text": "恭敬行礼", "effect": "positive"},
+                    {"text": "默默走过", "effect": "neutral"},
+                    {"text": "上前攀谈", "effect": "varies"}
+                ]
+            ),
+            StoryEvent(
+                "ancient_tomb",
+                "古墓惊魂",
+                "你发现了一座隐藏的古墓...",
+                "exploration",
+                requirements={"level": 10},
+                choices=[
+                    {"text": "深入探索", "effect": "danger"},
+                    {"text": "小心查看", "effect": "safe"},
+                    {"text": "离开此地", "effect": "none"}
+                ]
+            )
+        ]
+        
+        for event in events:
+            self.events[event.id] = event
+            
+    def trigger_event(self, event_id: str, player_id: str) -> Optional[StoryEvent]:
+        """触发事件"""
+        if event_id not in self.events:
+            return None
+            
+        event = self.events[event_id]
+        
+        if player_id not in self.event_history:
+            self.event_history[player_id] = []
+        self.event_history[player_id].append(event_id)
+        
+        return event
+
+
+class StoryBranchManager:
+    """故事分支管理器"""
+    
+    def __init__(self):
+        self.branches: Dict[str, Dict[str, Any]] = {}
+        self.player_branches: Dict[str, str] = {}
+        
+    def create_branch(self, branch_id: str, branch_data: Dict[str, Any]):
+        """创建故事分支"""
+        self.branches[branch_id] = branch_data
+        
+    def set_player_branch(self, player_id: str, branch_id: str):
+        """设置玩家当前分支"""
+        if branch_id in self.branches:
+            self.player_branches[player_id] = branch_id
+            
+    def get_player_branch(self, player_id: str) -> Optional[str]:
+        """获取玩家当前分支"""
+        return self.player_branches.get(player_id)
+
+
+class OpeningEventGenerator:
+    """开场事件生成器"""
+    
+    def __init__(self):
+        self.opening_templates = [
+            {
+                "id": "village_birth",
+                "title": "山村少年",
+                "description": "你出生在一个偏远的小山村，从小就对修仙充满向往...",
+                "starting_items": ["粗布衣衫", "干粮"],
+                "starting_stats": {"constitution": 1, "wisdom": 0}
+            },
+            {
+                "id": "noble_birth",
+                "title": "世家子弟",
+                "description": "你是修仙世家的后代，从小就接触修炼...",
+                "starting_items": ["精致法袍", "下品灵石x10"],
+                "starting_stats": {"constitution": 0, "wisdom": 1}
+            },
+            {
+                "id": "orphan_birth",
+                "title": "孤儿出身",
+                "description": "你是一个孤儿，在艰苦中磨练出坚强的意志...",
+                "starting_items": ["破旧衣物", "神秘玉佩"],
+                "starting_stats": {"constitution": 2, "wisdom": -1}
+            }
+        ]
+        
+    def generate_opening(self, choice: Optional[str] = None) -> Dict[str, Any]:
+        """生成开场"""
+        if choice and any(t["id"] == choice for t in self.opening_templates):
+            template = next(t for t in self.opening_templates if t["id"] == choice)
+        else:
+            template = random.choice(self.opening_templates)
+            
+        return template.copy()
+
+
+# 全局实例
+achievement_system = AchievementSystem()
+narrative_event_system = NarrativeEventSystem()
+story_branch_manager = StoryBranchManager()
+opening_generator = OpeningEventGenerator()
+
+
+def check_and_display_achievements(player_id: str, action: str, context: Dict[str, Any]) -> List[Achievement]:
+    """检查并显示成就"""
+    unlocked = []
+    
+    # 根据动作检查成就
+    if action == "first_cultivation" and context.get("success"):
+        achievement = achievement_system.unlock_achievement(player_id, "first_cultivation")
+        if achievement:
+            unlocked.append(achievement)
+            
+    elif action == "combat_victory" and context.get("first_time"):
+        achievement = achievement_system.unlock_achievement(player_id, "first_combat")
+        if achievement:
+            unlocked.append(achievement)
+            
+    elif action == "quest_complete" and context.get("first_time"):
+        achievement = achievement_system.unlock_achievement(player_id, "first_quest")
+        if achievement:
+            unlocked.append(achievement)
+            
+    return unlocked
+
+
+def create_immersive_opening(player_name: str, birth_choice: Optional[str] = None) -> Dict[str, Any]:
+    """创建沉浸式开场"""
+    opening = opening_generator.generate_opening(birth_choice)
+    
+    # 添加个性化内容
+    opening["personalized_intro"] = f"{player_name}，{opening['description']}"
+    
+    # 生成初始任务
+    opening["initial_quest"] = {
+        "name": "修仙之路的开始",
+        "description": "找到村中的老者，了解如何开始修炼",
+        "objectives": [{"type": "talk", "target": "村中老者"}]
+    }
+    
+    return opening
+
+
+# 全局叙事系统实例
+narrative_system = NarrativeSystem()
