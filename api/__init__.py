@@ -5,11 +5,16 @@ OpenAPI 文档生成器
 
 from flask import Flask, jsonify
 from flask_swagger_ui import get_swaggerui_blueprint
+import os
 
 from .middleware import register_middleware
 from .specs.openapi_generator import setup_swagger_ui as setup_openapi_ui
 from .v1 import game_bp, player_bp, save_bp, system_bp
-from .v1.dev import dev_bp
+
+if os.getenv("FLASK_ENV") == "development":
+    from .v1.dev import dev_bp
+else:
+    dev_bp = None
 
 # OpenAPI 规范主体结构
 openapi_spec = {
