@@ -50,7 +50,7 @@ def register_api(app: Flask, url_prefix: str = "/api"):
 
     # 可选：开发调试API
     try:
-        from xwe.config import config
+        from game_config import config
 
         if config.ENABLE_DEV_API:
             if dev_bp is not None:
