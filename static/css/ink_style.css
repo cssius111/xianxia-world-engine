@@ -436,3 +436,32 @@ body {
     0%, 100% { opacity: 0.3; }
     50% { opacity: 1; }
 }
+
+/* 默认状态条宽度 */
+.bar-fill {
+    width: 100%;
+}
+
+/* 快捷菜单及 Buff 栏样式 */
+.quick-menu {
+    margin-top: 30px;
+}
+
+.menu-title {
+    color: var(--accent-gold);
+    margin-bottom: 10px;
+}
+
+.quick-action {
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.buffs-panel {
+    margin-top: 30px;
+}
+
+#buffsContainer {
+    font-size: 0.9em;
+    color: #aaa;
+}

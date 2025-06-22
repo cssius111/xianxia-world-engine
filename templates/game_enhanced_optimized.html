@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>仙侠世界引擎</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ink_style.css') }}">
     <style>
         * {
             margin: 0;
@@ -429,7 +430,7 @@
             <div class="status-bar health-bar">
                 <label>生命值</label>
                 <div class="bar">
-                    <div class="bar-fill" id="healthBar" style="width: 100%"></div>
+                    <div class="bar-fill" id="healthBar"></div>
                     <span class="bar-text" id="healthText">100/100</span>
                 </div>
             </div>
@@ -437,7 +438,7 @@
             <div class="status-bar mana-bar">
                 <label>灵力值</label>
                 <div class="bar">
-                    <div class="bar-fill" id="manaBar" style="width: 100%"></div>
+                    <div class="bar-fill" id="manaBar"></div>
                     <span class="bar-text" id="manaText">50/50</span>
                 </div>
             </div>
@@ -445,18 +446,18 @@
             <div class="status-bar stamina-bar">
                 <label>体力值</label>
                 <div class="bar">
-                    <div class="bar-fill" id="staminaBar" style="width: 100%"></div>
+                    <div class="bar-fill" id="staminaBar"></div>
                     <span class="bar-text" id="staminaText">100/100</span>
                 </div>
             </div>
             
-            <div class="quick-menu" style="margin-top: 30px;">
-                <h4 style="color: #ffd700; margin-bottom: 10px;">快捷菜单</h4>
-                <button class="quick-action" onclick="sendCommand('状态')" style="width: 100%; margin-bottom: 5px;">查看状态</button>
-                <button class="quick-action" onclick="sendCommand('背包')" style="width: 100%; margin-bottom: 5px;">背包</button>
-                <button class="quick-action" onclick="sendCommand('技能')" style="width: 100%; margin-bottom: 5px;">技能</button>
-                <button class="quick-action" onclick="sendCommand('地图')" style="width: 100%; margin-bottom: 5px;">地图</button>
-                <button class="quick-action" onclick="sendCommand('保存')" style="width: 100%; margin-bottom: 5px;">保存游戏</button>
+            <div class="quick-menu">
+                <h4 class="menu-title">快捷菜单</h4>
+                <button class="quick-action" onclick="sendCommand('状态')">查看状态</button>
+                <button class="quick-action" onclick="sendCommand('背包')">背包</button>
+                <button class="quick-action" onclick="sendCommand('技能')">技能</button>
+                <button class="quick-action" onclick="sendCommand('地图')">地图</button>
+                <button class="quick-action" onclick="sendCommand('保存')">保存游戏</button>
             </div>
         </div>
         
@@ -477,7 +478,7 @@
                 <div class="location-desc" id="locationDesc">一个繁华的修仙城市</div>
             </div>
             
-            <h4 style="color: #ffd700; margin-bottom: 10px;">快速行动</h4>
+            <h4 class="menu-title">快速行动</h4>
             <div class="quick-actions">
                 <button class="quick-action" onclick="sendCommand('探索')">探索</button>
                 <button class="quick-action" onclick="sendCommand('修炼')">修炼</button>
@@ -485,9 +486,9 @@
                 <button class="quick-action" onclick="sendCommand('交易')">交易</button>
             </div>
             
-            <div class="buffs-panel" style="margin-top: 30px;">
-                <h4 style="color: #ffd700; margin-bottom: 10px;">状态效果</h4>
-                <div id="buffsContainer" style="font-size: 0.9em; color: #aaa;">
+            <div class="buffs-panel">
+                <h4 class="menu-title">状态效果</h4>
+                <div id="buffsContainer">
                     暂无状态效果
                 </div>
             </div>
