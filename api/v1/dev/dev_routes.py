@@ -6,11 +6,8 @@
 from flask import Blueprint, jsonify, request
 import os
 
+# 无论环境如何都先创建蓝图，随后再在外部判断是否导出
 dev_bp = Blueprint('dev', __name__)
-
-# 仅在开发模式下启用
-if os.getenv("FLASK_ENV") != "development":
-    dev_bp = None
 
 
 @dev_bp.route('/debug', methods=['GET'])
