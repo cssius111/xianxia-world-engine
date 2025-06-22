@@ -120,7 +120,7 @@ class GameCore:
         self.data_loader = DataLoader(data_path)
         self.parser = ExpressionParser()
         self.attribute_system = AttributeSystem(self.parser)
-        self.skill_system = SkillSystem(self.data_loader, self.parser)
+        self.skill_system = SkillSystem()
         self.combat_system = CombatSystem(self.skill_system, self.parser)
         self.ai_controller = AIController(self.skill_system)
         self.command_parser = CommandParser()
