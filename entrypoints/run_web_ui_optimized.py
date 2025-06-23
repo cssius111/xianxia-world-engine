@@ -1,16 +1,8 @@
-import json
 import os
-import sys
 import time
-from datetime import datetime
 from pathlib import Path
 
 from flask import Flask, jsonify, render_template, request, session, redirect, url_for
-
-# Ensure project root is available in sys.path when executing this script
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-if str(PROJECT_ROOT) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT))
 
 from api import register_api
 from routes import character, intel, lore
@@ -117,7 +109,7 @@ def cleanup_old_instances():
             instance = game_instances[session_id]
             if hasattr(instance["game"], "technical_ops"):
                 instance["game"].technical_ops.save_game(instance["game"].game_state)
-        except:
+        except Exception:
             pass
 
         del game_instances[session_id]
@@ -407,7 +399,7 @@ def load_modal(modal_name):
     # 尝试加载对应的模态框模板
     try:
         return render_template(f"modals/{modal_name}.html", player=player, game=game)
-    except:
+    except Exception:
         # 如果模板不存在，返回占位内容
         return f"<h3>{modal_name.title()}</h3><p>功能开发中...</p>"
 

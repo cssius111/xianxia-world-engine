@@ -1,5 +1,7 @@
 # 仙侠世界引擎 (XianXia World Engine)
 
+![CI](https://github.com/cssius111/xianxia-world-engine/actions/workflows/python-ci.yml/badge.svg)
+
 本项目是一个基于文本的仙侠世界模拟器，提供控制台和Web界面两种运行方式。核心功能位于`xwe`包中，`api`目录提供REST接口，`entrypoints`目录包含启动脚本。
 
 ## 安装与运行
