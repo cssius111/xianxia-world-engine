@@ -592,6 +592,73 @@ class XianxiaWebServer:
                 self.logger.error(f"加载模态框失败: {modal_name}, 错误: {e}")
                 return f"<h3>{modal_name.title()}</h3><p>功能暂时不可用，请稍后重试。</p>"
 
+        @self.app.route("/api/roll", methods=["POST"])
+        def api_roll():
+            """抽卡API"""
+            import sys
+            sys.path.append(str(Path(__file__).parent))
+            from scripts.gen_character import gen_random, gen_template, gen_from_prompt, save_character
+
+            data = request.get_json()
+            mode = data.get('mode', 'random')
+
+            if mode == 'random':
+                character = gen_random()
+            elif mode == 'template':
+                template_type = data.get('type', 'sword')
+                character = gen_template(template_type)
+            elif mode == 'custom':
+                prompt = data.get('prompt', '')
+                character = gen_from_prompt(prompt)
+            else:
+                character = gen_random()
+
+            save_character(character)
+
+            return jsonify({
+                "success": True,
+                "character": character
+            })
+
+        @self.app.route("/api/confirm_character", methods=["POST"])
+        def api_confirm_character():
+            """确认角色API"""
+            if "session_id" not in session:
+                session["session_id"] = str(time.time())
+
+            data = request.get_json()
+            character_data = data.get('character')
+
+            if not character_data:
+                return jsonify({"success": False, "error": "没有角色数据"})
+
+            instance = self.get_game_instance(session["session_id"])
+            game = instance["game"]
+
+            if game.game_state.player:
+                player = game.game_state.player
+                player.name = character_data.get('name', '无名侠客')
+
+                attrs = character_data.get('attributes', {})
+                player.attributes.attack_power = 5 + attrs.get('constitution', 5)
+                player.attributes.defense = 3 + attrs.get('willpower', 5)
+                player.attributes.max_health = 80 + attrs.get('constitution', 5) * 4
+                player.attributes.current_health = player.attributes.max_health
+                player.attributes.max_mana = 40 + attrs.get('comprehension', 5) * 2
+                player.attributes.current_mana = player.attributes.max_mana
+
+                player.extra_data = {
+                    'spiritual_root': character_data.get('spiritual_root', '无'),
+                    'raw_attributes': attrs,
+                    'generation_type': character_data.get('generation_type', 'unknown')
+                }
+
+                player.attributes.calculate_derived_attributes()
+
+            instance["need_refresh"] = True
+
+            return jsonify({"success": True})
+
         @self.app.route("/get_audio_list")
         def get_audio_list():
             """获取音频文件列表"""

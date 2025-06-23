@@ -16,7 +16,7 @@
     
     {% block extra_css %}{% endblock %}
 </head>
-<body>
+<body class="{{ body_class|default('') }}">
     {% block content %}{% endblock %}
     
     <!-- 基础 JavaScript -->
