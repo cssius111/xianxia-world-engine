@@ -51,7 +51,7 @@ def main():
     
     # 3. 运行导入测试
     if not run_command(
-        f"{sys.executable} scripts/test_imports.py",
+        f"{sys.executable} scripts/check_imports.py",
         "测试模块导入"
     ):
         print("⚠️ 导入测试失败")
