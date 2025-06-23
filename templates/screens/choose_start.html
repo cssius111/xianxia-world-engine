@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}选择开局{% endblock %}
+{% block body %}
+<div class="choose-start">
+  <h1>选择开局</h1>
+  <div class="options">
+    <a href="/start/random" class="btn-primary">随机天命</a>
+    <a href="/start/typical" class="btn-primary">典型开局</a>
+    <a href="/start/custom" class="btn-primary">自定义文字</a>
+  </div>
+</div>
+{% endblock %}

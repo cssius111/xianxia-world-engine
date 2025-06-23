@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}修仙世界{% endblock %}
+{% block body %}
+<div class="start-screen">
+  <h1>修仙世界</h1>
+  <p class="subtitle">凡人修仙，从此刻开始</p>
+  <div class="actions">
+    <a href="/choose" class="btn-primary">开始游戏</a>
+    <a href="/dev" class="btn-secondary">开发者模式</a>
+  </div>
+  <footer class="version">版本 {{ build_time if build_time else '' }}</footer>
+</div>
+{% endblock %}
