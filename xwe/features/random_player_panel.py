@@ -47,7 +47,7 @@ class RandomPlayerPanel:
             try:
                 value = int(value)
                 value = max(min_val, min(max_val, value))
-            except:
+            except Exception:
                 value = min_val
             sanitized[attr] = value
         return sanitized
