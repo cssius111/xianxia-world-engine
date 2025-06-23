@@ -21,40 +21,160 @@
     
     <style>
         /* 欢迎页面专用样式 */
-        .welcome-particles {
+        body {
+            background: #0a0a0a;
+            overflow: hidden;
+        }
+        
+        /* 水墨背景 */
+        .ink-background {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
+            background: radial-gradient(ellipse at center, rgba(20, 20, 20, 0) 0%, rgba(0, 0, 0, 0.8) 100%);
+            z-index: -2;
+        }
+        
+        /* 水墨纹理 */
+        .ink-texture {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.15;
+            background-image: 
+                repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.02) 35px, rgba(255,255,255,.02) 70px),
+                repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(255,255,255,.01) 35px, rgba(255,255,255,.01) 70px);
             z-index: -1;
         }
         
-        .particle {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: var(--brush-gold);
+        /* 流动的墨晕效果 */
+        .ink-flow {
+            position: fixed;
+            width: 300px;
+            height: 300px;
             border-radius: 50%;
-            opacity: 0;
-            animation: float 6s infinite ease-in-out;
+            background: radial-gradient(circle at center, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+            filter: blur(80px);
+            animation: inkFlow 20s infinite ease-in-out;
+            pointer-events: none;
         }
         
-        @keyframes float {
-            0%, 100% { opacity: 0; transform: translateY(100vh) rotate(0deg); }
-            50% { opacity: 0.8; transform: translateY(-100px) rotate(180deg); }
+        .ink-flow:nth-child(1) {
+            top: -150px;
+            left: -150px;
+            animation-delay: 0s;
+        }
+        
+        .ink-flow:nth-child(2) {
+            bottom: -150px;
+            right: -150px;
+            animation-delay: 7s;
+            animation-duration: 25s;
+        }
+        
+        .ink-flow:nth-child(3) {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 400px;
+            animation-delay: 14s;
+            animation-duration: 30s;
+            background: radial-gradient(circle at center, rgba(176, 176, 176, 0.05) 0%, transparent 70%);
+        }
+        
+        @keyframes inkFlow {
+            0%, 100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 0.3;
+            }
+            25% {
+                transform: scale(1.2) rotate(90deg);
+                opacity: 0.5;
+            }
+            50% {
+                transform: scale(0.8) rotate(180deg);
+                opacity: 0.4;
+            }
+            75% {
+                transform: scale(1.1) rotate(270deg);
+                opacity: 0.6;
+            }
+        }
+        
+        /* 主容器居中 */
+        .welcome-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 1;
+            width: 90%;
+            max-width: 600px;
+        }
+        
+        /* 标题样式 */
+        .welcome-title {
+            font-size: 4rem;
+            font-weight: 300;
+            color: var(--brush-gold);
+            margin-bottom: 20px;
+            letter-spacing: 0.5rem;
+            text-shadow: 
+                2px 2px 4px rgba(0, 0, 0, 0.8),
+                0 0 20px rgba(212, 175, 55, 0.3);
+            animation: titleFadeIn 2s ease-out;
+        }
+        
+        @keyframes titleFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+                filter: blur(10px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+                filter: blur(0);
+            }
         }
         
         .welcome-subtitle {
-            animation: fadeInUp 1s ease 0.5s both;
+            font-size: 1.2rem;
+            color: var(--ink-lighter);
+            margin-bottom: 60px;
+            opacity: 0;
+            animation: subtitleFadeIn 1.5s ease-out 0.5s forwards;
+            letter-spacing: 0.2rem;
         }
         
+        @keyframes subtitleFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 0.8;
+                transform: translateY(0);
+            }
+        }
+        
+        /* 按钮样式 */
         .welcome-actions {
-            animation: fadeInUp 1s ease 1s both;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            opacity: 0;
+            animation: actionsFadeIn 1.5s ease-out 1s forwards;
         }
         
-        @keyframes fadeInUp {
+        @keyframes actionsFadeIn {
             from {
                 opacity: 0;
                 transform: translateY(30px);
@@ -65,130 +185,146 @@
             }
         }
         
-        .save-status {
-            margin: 20px 0;
-            padding: 15px;
-            border-radius: 8px;
-            border: 2px solid var(--brush-gold);
-            background: rgba(212, 175, 55, 0.1);
+        .welcome-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: transparent;
+            color: var(--brush-gold);
+            text-decoration: none;
+            border: 1px solid var(--brush-gold);
+            border-radius: 0;
+            font-size: 1.1rem;
+            letter-spacing: 0.2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            min-width: 200px;
         }
         
+        .welcome-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .welcome-button:hover::before {
+            left: 100%;
+        }
+        
+        .welcome-button:hover {
+            background: rgba(212, 175, 55, 0.1);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .welcome-button.secondary {
+            color: var(--cloud-gray);
+            border-color: var(--cloud-gray);
+        }
+        
+        .welcome-button.secondary:hover {
+            background: rgba(176, 176, 176, 0.1);
+            box-shadow: 0 0 20px rgba(176, 176, 176, 0.3);
+        }
+        
+        /* 存档提示 */
+        .save-hint {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--ink-lighter);
+            font-size: 0.9rem;
+            opacity: 0.6;
+            letter-spacing: 0.1rem;
+        }
+        
+        /* 版本信息 */
         .version-info {
             position: fixed;
             bottom: 20px;
             right: 20px;
             color: var(--ink-lighter);
             font-size: 0.8rem;
+            opacity: 0.4;
+            text-align: right;
+            line-height: 1.5;
+        }
+        
+        /* 简化的提示 */
+        .subtle-hint {
+            color: var(--ink-lighter);
+            font-size: 0.9rem;
+            opacity: 0.6;
+            margin-top: 30px;
+            letter-spacing: 0.1rem;
         }
     </style>
 </head>
 <body>
-    <!-- 粒子背景效果 -->
-    <div class="welcome-particles" id="particles"></div>
+    <!-- 水墨背景层 -->
+    <div class="ink-background"></div>
+    <div class="ink-texture"></div>
+    
+    <!-- 流动的墨晕 -->
+    <div class="ink-flow"></div>
+    <div class="ink-flow"></div>
+    <div class="ink-flow"></div>
     
     <!-- 墨晕过渡效果 -->
     <div class="ink-transition" id="inkTransition"></div>
     
-    <!-- 欢迎页面内容 -->
+    <!-- 主内容 -->
     <div class="welcome-container">
-        <h1 class="welcome-title">修仙世界模拟器</h1>
-        <p class="welcome-subtitle">踏上修仙之路，谱写传奇人生</p>
-        
-        <!-- 存档状态 -->
-        {% if save_exists %}
-        <div class="save-status">
-            <p><strong>📁 检测到存档文件</strong></p>
-            <p>你可以继续之前的修仙之旅，或者开启全新的传奇。</p>
-        </div>
-        {% else %}
-        <div class="save-status" style="border-color: var(--cloud-gray); background: rgba(176, 176, 176, 0.1);">
-            <p><strong>🆕 首次启动</strong></p>
-            <p>欢迎来到修仙世界！准备开始你的修仙传奇吧。</p>
-        </div>
-        {% endif %}
+        <h1 class="welcome-title">修仙世界</h1>
+        <p class="welcome-subtitle">道法自然 · 天地玄黄</p>
         
         <!-- 操作按钮 -->
         <div class="welcome-actions">
             {% if save_exists %}
             <a href="{{ url_for('game') }}" class="welcome-button">
-                📖 继续游戏
+                继续修行
             </a>
             <a href="{{ url_for('intro') }}" class="welcome-button secondary">
-                🆕 开始新游戏
+                重入世间
             </a>
             {% else %}
             <a href="{{ url_for('intro') }}" class="welcome-button">
-                🚀 开始游戏
+                踏入此界
             </a>
             {% endif %}
             
-            <a href="{{ url_for('intro', mode='dev') }}" class="welcome-button secondary">
-                🔧 开发者模式
+            <a href="{{ url_for('intro', mode='dev') }}" class="welcome-button secondary" style="margin-top: 20px; font-size: 0.9rem; padding: 10px 30px;">
+                悟道模式
             </a>
         </div>
         
-        <!-- 游戏介绍 -->
-        <div class="game-intro" style="margin-top: 40px; max-width: 600px; text-align: center;">
-            <h3 style="color: var(--brush-gold); margin-bottom: 20px;">🌟 游戏特色</h3>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; text-align: center;">
-                <div>
-                    <div style="font-size: 2rem; margin-bottom: 10px;">🧘</div>
-                    <h4>修炼系统</h4>
-                    <p style="font-size: 0.9rem; color: var(--ink-lighter);">从炼气期到化神期，体验完整的修炼历程</p>
-                </div>
-                <div>
-                    <div style="font-size: 2rem; margin-bottom: 10px;">🗺️</div>
-                    <h4>广阔世界</h4>
-                    <p style="font-size: 0.9rem; color: var(--ink-lighter);">探索神秘的修仙世界，发现隐藏的秘密</p>
-                </div>
-                <div>
-                    <div style="font-size: 2rem; margin-bottom: 10px;">⚔️</div>
-                    <h4>战斗冒险</h4>
-                    <p style="font-size: 0.9rem; color: var(--ink-lighter);">与妖兽战斗，挑战强敌，获得珍贵宝物</p>
-                </div>
-                <div>
-                    <div style="font-size: 2rem; margin-bottom: 10px;">🏛️</div>
-                    <h4>门派系统</h4>
-                    <p style="font-size: 0.9rem; color: var(--ink-lighter);">加入门派，学习高深功法，结交道友</p>
-                </div>
-            </div>
-        </div>
-        
-        <!-- 操作说明 -->
-        <div class="game-tips" style="margin-top: 40px; padding: 20px; background: rgba(0, 0, 0, 0.1); border-radius: 8px; max-width: 500px;">
-            <h4 style="color: var(--brush-gold); margin-bottom: 15px;">💡 快速入门</h4>
-            <ul style="text-align: left; color: var(--ink-lighter); line-height: 1.8;">
-                <li>输入命令进行游戏，如：<code style="background: rgba(0,0,0,0.2); padding: 2px 4px; border-radius: 3px;">探索</code>、<code style="background: rgba(0,0,0,0.2); padding: 2px 4px; border-radius: 3px;">修炼</code></li>
-                <li>点击左侧菜单快速访问各种功能</li>
-                <li>使用 <kbd>F1</kbd> 键随时查看帮助文档</li>
-                <li>游戏会自动保存进度，也可手动保存</li>
-            </ul>
-        </div>
+        <!-- 存档提示 -->
+        {% if save_exists %}
+        <p class="subtle-hint">前尘往事 · 历历在目</p>
+        {% else %}
+        <p class="subtle-hint">初入此界 · 前路未卜</p>
+        {% endif %}
+    </div>
+    
+    <!-- 底部提示 -->
+    <div class="save-hint">
+        按下回车键即可开始
     </div>
     
     <!-- 版本信息 -->
     <div class="version-info">
-        <div>修仙世界引擎 v2.0</div>
-        <div>Build {{ build_time or '2025.06.22' }}</div>
+        <div>戊戌年制</div>
+        <div>{{ build_time or '乙巳' }}版</div>
     </div>
     
     <!-- JavaScript -->
     <script>
-        // 粒子动画效果
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            const particleCount = 20;
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 6 + 's';
-                particle.style.animationDuration = (Math.random() * 3 + 4) + 's';
-                particlesContainer.appendChild(particle);
-            }
-        }
-        
         // 墨晕过渡效果
         function inkTransition(callback) {
             const inkTransition = document.getElementById('inkTransition');
@@ -208,49 +344,12 @@
                     e.preventDefault();
                     const href = this.href;
                     
-                    // 播放点击音效 (如果音频系统可用)
-                    if (window.AudioContext || window.webkitAudioContext) {
-                        playClickSound();
-                    }
-                    
                     // 墨晕过渡
                     inkTransition(() => {
                         window.location.href = href;
                     });
                 });
-                
-                // 悬停效果
-                button.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-3px) scale(1.02)';
-                });
-                
-                button.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(-3px) scale(1)';
-                });
             });
-        }
-        
-        // 简单的点击音效
-        function playClickSound() {
-            try {
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                const oscillator = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
-                
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-                
-                oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-                oscillator.frequency.exponentialRampToValueAtTime(400, audioContext.currentTime + 0.1);
-                
-                gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
-                
-                oscillator.start(audioContext.currentTime);
-                oscillator.stop(audioContext.currentTime + 0.1);
-            } catch (error) {
-                // 静默失败
-            }
         }
         
         // 键盘快捷键
@@ -277,100 +376,22 @@
         
         // 初始化
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🎮 修仙世界模拟器欢迎页面加载完成');
-            
-            createParticles();
             setupButtonEffects();
             setupKeyboardShortcuts();
             
-            // 显示加载完成动画
+            // 页面淡入效果
             document.body.style.opacity = '0';
-            document.body.style.transform = 'scale(0.95)';
             
             setTimeout(() => {
-                document.body.style.transition = 'all 0.5s ease';
+                document.body.style.transition = 'opacity 1.5s ease';
                 document.body.style.opacity = '1';
-                document.body.style.transform = 'scale(1)';
             }, 100);
-            
-            // 检查浏览器兼容性
-            if (!window.fetch || !window.Promise) {
-                const warning = document.createElement('div');
-                warning.style.cssText = `
-                    position: fixed; top: 0; left: 0; right: 0;
-                    background: #ff4444; color: white; padding: 10px;
-                    text-align: center; z-index: 10000;
-                `;
-                warning.textContent = '⚠️ 您的浏览器版本过低，可能影响游戏体验。建议使用最新版本的现代浏览器。';
-                document.body.prepend(warning);
-            }
-            
-            // 性能检测
-            if ('performance' in window) {
-                window.addEventListener('load', function() {
-                    const loadTime = performance.now();
-                    if (loadTime > 3000) {
-                        console.warn('页面加载较慢:', loadTime + 'ms');
-                    }
-                });
-            }
         });
         
         // 错误处理
         window.addEventListener('error', function(e) {
             console.error('页面错误:', e.error);
-            
-            // 显示友好的错误信息
-            const errorDiv = document.createElement('div');
-            errorDiv.style.cssText = `
-                position: fixed; bottom: 20px; left: 20px;
-                background: rgba(255, 68, 68, 0.9); color: white;
-                padding: 10px 15px; border-radius: 5px;
-                font-size: 0.9rem; max-width: 300px;
-            `;
-            errorDiv.textContent = '发生了一个错误，但这不影响游戏正常运行。';
-            document.body.appendChild(errorDiv);
-            
-            setTimeout(() => {
-                if (errorDiv.parentNode) {
-                    errorDiv.parentNode.removeChild(errorDiv);
-                }
-            }, 5000);
         });
-        
-        // 在线状态检测
-        function updateOnlineStatus() {
-            const status = navigator.onLine ? '在线' : '离线';
-            console.log('网络状态:', status);
-            
-            if (!navigator.onLine) {
-                const offlineDiv = document.createElement('div');
-                offlineDiv.style.cssText = `
-                    position: fixed; top: 50%; left: 50%;
-                    transform: translate(-50%, -50%);
-                    background: rgba(255, 165, 0, 0.9); color: white;
-                    padding: 20px; border-radius: 8px;
-                    text-align: center; z-index: 10000;
-                `;
-                offlineDiv.innerHTML = `
-                    <h3>📶 网络连接中断</h3>
-                    <p>游戏可能无法正常运行，请检查网络连接。</p>
-                `;
-                document.body.appendChild(offlineDiv);
-                
-                // 恢复连接时移除提示
-                const onlineHandler = () => {
-                    if (offlineDiv.parentNode) {
-                        offlineDiv.parentNode.removeChild(offlineDiv);
-                    }
-                    window.removeEventListener('online', onlineHandler);
-                };
-                window.addEventListener('online', onlineHandler);
-            }
-        }
-        
-        window.addEventListener('online', updateOnlineStatus);
-        window.addEventListener('offline', updateOnlineStatus);
     </script>
     
     <!-- 预加载游戏资源 -->

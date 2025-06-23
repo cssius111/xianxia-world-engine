@@ -981,3 +981,247 @@ body::before {
     padding: 20px;
   }
 }
+
+/* ===== 新增水墨风格元素 ===== */
+
+/* 水墨飞溅效果 */
+.ink-splash {
+  position: fixed;
+  pointer-events: none;
+  z-index: 999;
+}
+
+.ink-splash::before,
+.ink-splash::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,0,0,0.8) 0%, transparent 70%);
+  animation: inkExpand 1s ease-out forwards;
+}
+
+.ink-splash::before {
+  width: 50px;
+  height: 50px;
+  top: -25px;
+  left: -25px;
+}
+
+.ink-splash::after {
+  width: 30px;
+  height: 30px;
+  top: -15px;
+  left: -15px;
+  animation-delay: 0.1s;
+}
+
+@keyframes inkExpand {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+
+/* 水墨画卷轴效果 */
+.scroll-container {
+  position: relative;
+  background: linear-gradient(to bottom, 
+    transparent 0%, 
+    rgba(248, 248, 240, 0.8) 5%, 
+    rgba(248, 248, 240, 0.9) 95%, 
+    transparent 100%);
+  padding: 40px 20px;
+  margin: 20px 0;
+}
+
+.scroll-container::before,
+.scroll-container::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 20px;
+  background-repeat: repeat-x;
+  background-size: 40px 20px;
+}
+
+.scroll-container::before {
+  top: 0;
+  background-image: linear-gradient(45deg, 
+    transparent 25%, 
+    var(--brush-gold) 25%, 
+    var(--brush-gold) 75%, 
+    transparent 75%);
+}
+
+.scroll-container::after {
+  bottom: 0;
+  background-image: linear-gradient(-45deg, 
+    transparent 25%, 
+    var(--brush-gold) 25%, 
+    var(--brush-gold) 75%, 
+    transparent 75%);
+}
+
+/* 毛笔书写效果 */
+.brush-text {
+  font-family: var(--font-title);
+  background: linear-gradient(180deg, 
+    var(--ink-black) 0%, 
+    var(--ink-gray) 50%, 
+    var(--ink-lighter) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.brush-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  color: transparent;
+  text-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+/* 禅意圆圈动画 */
+.zen-circle {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border: 2px solid rgba(212, 175, 55, 0.3);
+  border-radius: 50%;
+  animation: zenPulse 4s ease-in-out infinite;
+}
+
+@keyframes zenPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.1;
+  }
+}
+
+/* 山水背景纹理 */
+.mountain-pattern {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  background: 
+    linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.05) 100%),
+    repeating-linear-gradient(
+      115deg,
+      transparent,
+      transparent 50px,
+      rgba(0,0,0,0.02) 50px,
+      rgba(0,0,0,0.02) 100px
+    );
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.5;
+}
+
+/* 竹叶飘落效果 */
+.bamboo-leaf {
+  position: fixed;
+  width: 15px;
+  height: 30px;
+  background: var(--bamboo-green);
+  clip-path: ellipse(40% 50% at 50% 50%);
+  animation: leafFall 10s linear infinite;
+  opacity: 0.2;
+}
+
+@keyframes leafFall {
+  0% {
+    transform: translateY(-100px) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.2;
+  }
+  90% {
+    opacity: 0.2;
+  }
+  100% {
+    transform: translateY(calc(100vh + 100px)) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* 印章效果 */
+.seal-stamp {
+  position: relative;
+  display: inline-block;
+  padding: 10px 15px;
+  background: var(--brush-gold);
+  color: var(--paper-white);
+  font-family: var(--font-title);
+  font-weight: bold;
+  transform: rotate(-3deg);
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  border: 2px solid var(--ink-black);
+}
+
+.seal-stamp::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: var(--brush-gold);
+  z-index: -1;
+  filter: blur(4px);
+  opacity: 0.5;
+}
+
+/* 禅意loading */
+.zen-loading {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  margin: 20px auto;
+}
+
+.zen-loading::before,
+.zen-loading::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  border-top-color: var(--brush-gold);
+  animation: zenRotate 2s linear infinite;
+}
+
+.zen-loading::before {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.zen-loading::after {
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  animation-delay: 0.5s;
+  border-top-color: var(--bamboo-green);
+}
+
+@keyframes zenRotate {
+  to { transform: rotate(360deg); }
+}

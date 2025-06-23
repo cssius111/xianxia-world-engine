@@ -227,10 +227,25 @@ class XianxiaWebServer:
                     session['dev_mode'] = True
                     self.logger.info(f"[DEV] 开发模式访问游戏页面，会话ID: {session['session_id']}")
 
+                # 准备玩家数据，转换为可序列化的格式
+                player_data = None
+                if player:
+                    player_data = {
+                        'name': player.name,
+                        'character_type': player.character_type.value if hasattr(player.character_type, 'value') else str(player.character_type),
+                        'attributes': player.attributes,
+                        'extra_data': getattr(player, 'extra_data', {}),
+                        'state': player.state.value if hasattr(player.state, 'value') else str(player.state),
+                        'level': getattr(player, 'level', 1),
+                        'faction': getattr(player, 'faction', ''),
+                        'spiritual_root': getattr(player, 'spiritual_root', {}),
+                        'lingshi': getattr(player, 'lingshi', {'low': 0, 'mid': 0, 'high': 0, 'supreme': 0}),
+                    }
+                
                 # 渲染模板 - 使用新的优化模板
                 return render_template(
                     "game_enhanced_optimized_v2.html",
-                    player=player,
+                    player=player_data,
                     location=game_obj.game_state.current_location,
                     buffs=[],
                     special_status=[],
@@ -434,6 +449,15 @@ class XianxiaWebServer:
                 instance = self.get_game_instance(session["session_id"])
                 game_obj = instance["game"]
                 
+                # 加载平衡配置
+                balance_config = {}
+                try:
+                    import json
+                    with open('config/balance.json', 'r', encoding='utf-8') as f:
+                        balance_config = json.load(f)
+                except Exception as e:
+                    self.logger.warning(f"无法加载balance.json: {e}")
+                
                 # 创建新角色
                 if game_obj.game_state.player:
                     player = game_obj.game_state.player
@@ -443,27 +467,60 @@ class XianxiaWebServer:
                     if not hasattr(player, 'extra_data') or player.extra_data is None:
                         player.extra_data = {}
                     
-                    # 根据选择的模式设置属性
-                    character_type = data.get('type', 'random')
-                    if character_type == 'sword':  # 剑修
-                        player.attributes.attack_power += 5
-                        player.attributes.defense = max(1, player.attributes.defense - 2)
-                        player.extra_data.update({'faction': '剑宗', 'spiritual_root': '金'})
-                    elif character_type == 'body':  # 体修
-                        player.attributes.defense += 5
-                        player.attributes.speed = max(1, getattr(player.attributes, 'speed', 10) - 2)
-                        player.extra_data.update({'faction': '炼体宗', 'spiritual_root': '土'})
-                    elif character_type == 'magic':  # 法修
-                        player.attributes.max_mana += 20
-                        player.attributes.current_mana += 20
-                        player.attributes.max_health = max(10, player.attributes.max_health - 10)
-                        player.extra_data.update({'faction': '玄天宗', 'spiritual_root': '水'})
+                    # 应用八大属性系统
+                    if 'attrs' in data:
+                        attrs = data['attrs']
+                        # 根骨影响生命值
+                        player.attributes.max_health = 80 + attrs.get('root', 5) * 4
+                        player.attributes.current_health = player.attributes.max_health
+                        
+                        # 神识影响法力
+                        player.attributes.max_mana = 30 + attrs.get('spirit', 5) * 4
+                        player.attributes.current_mana = player.attributes.max_mana
+                        
+                        # 体魄影响耐力
+                        player.attributes.max_stamina = 80 + attrs.get('physique', 5) * 4
+                        player.attributes.current_stamina = player.attributes.max_stamina
+                        
+                        # 意志影响攻防
+                        player.attributes.attack_power = 8 + attrs.get('will', 5) * 2
+                        player.attributes.defense = 3 + attrs.get('physique', 5)
+                        
+                        # 保存八大属性到extra_data
+                        player.extra_data['base_attrs'] = attrs
+                        player.extra_data['destiny'] = data.get('destiny', [])
+                        player.extra_data['fortune'] = data.get('fortune', '平安是福')
+                        player.extra_data['fortune_tier'] = data.get('fortune_tier', 'huang')
+                        player.extra_data['age'] = data.get('age', 18)
+                    else:
+                        # 兼容旧的职业系统
+                        character_type = data.get('type', 'random')
+                        if character_type == 'sword':  # 剑修
+                            player.attributes.attack_power += 5
+                            player.attributes.defense = max(1, player.attributes.defense - 2)
+                            player.extra_data.update({'faction': '剑宗', 'spiritual_root': '金'})
+                        elif character_type == 'body':  # 体修
+                            player.attributes.defense += 5
+                            player.attributes.speed = max(1, getattr(player.attributes, 'speed', 10) - 2)
+                            player.extra_data.update({'faction': '炼体宗', 'spiritual_root': '土'})
+                        elif character_type == 'magic':  # 法修
+                            player.attributes.max_mana += 20
+                            player.attributes.current_mana += 20
+                            player.attributes.max_health = max(10, player.attributes.max_health - 10)
+                            player.extra_data.update({'faction': '玄天宗', 'spiritual_root': '水'})
+                    
+                    # 初始境界设定
+                    player.attributes.realm_name = "炼气期"
+                    player.attributes.realm_level = 1
+                    player.attributes.cultivation_level = 0
+                    player.attributes.max_cultivation = 100
+                    player.attributes.realm_progress = 0
                     
                     # 重新计算衍生属性
                     if hasattr(player.attributes, 'calculate_derived_attributes'):
                         player.attributes.calculate_derived_attributes()
                     
-                    self.logger.info(f"角色创建成功: {player.name}, 类型: {character_type}")
+                    self.logger.info(f"角色创建成功: {player.name}, 属性: {data.get('attrs', {})}")
                     
                 instance["need_refresh"] = True
                 return jsonify({"success": True})
