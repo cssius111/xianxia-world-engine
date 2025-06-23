@@ -1,0 +1,668 @@
+<!-- 优化版成就模态框 -->
+<div class="modal-header">
+    <h2>成就系统</h2>
+</div>
+
+<div class="modal-body">
+    <div class="achievement-container">
+        <!-- 成就统计概览 -->
+        <div class="achievement-overview">
+            <div class="achievement-stat">
+                <div class="stat-icon">🏆</div>
+                <div class="stat-info">
+                    <div class="stat-number" id="total-achievements">{{ achievements.unlocked|length if achievements else 0 }}</div>
+                    <div class="stat-label">已解锁</div>
+                </div>
+            </div>
+            <div class="achievement-stat">
+                <div class="stat-icon">⭐</div>
+                <div class="stat-info">
+                    <div class="stat-number" id="achievement-points">{{ achievements.total_points if achievements else 0 }}</div>
+                    <div class="stat-label">成就点</div>
+                </div>
+            </div>
+            <div class="achievement-stat">
+                <div class="stat-icon">📊</div>
+                <div class="stat-info">
+                    <div class="stat-number" id="completion-rate">{{ ((achievements.unlocked|length / achievements.total|length * 100)|round(1) if achievements and achievements.total else 0) }}%</div>
+                    <div class="stat-label">完成度</div>
+                </div>
+            </div>
+            <div class="achievement-stat">
+                <div class="stat-icon">🔥</div>
+                <div class="stat-info">
+                    <div class="stat-number" id="rare-achievements">{{ achievements.rare_count if achievements else 0 }}</div>
+                    <div class="stat-label">稀有成就</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 成就分类筛选 -->
+        <div class="achievement-filters">
+            <button class="filter-btn active" onclick="filterAchievements('all')">
+                <span class="filter-icon">🌟</span>
+                全部
+            </button>
+            <button class="filter-btn" onclick="filterAchievements('cultivation')">
+                <span class="filter-icon">🧘</span>
+                修炼
+            </button>
+            <button class="filter-btn" onclick="filterAchievements('combat')">
+                <span class="filter-icon">⚔️</span>
+                战斗
+            </button>
+            <button class="filter-btn" onclick="filterAchievements('exploration')">
+                <span class="filter-icon">🗺️</span>
+                探索
+            </button>
+            <button class="filter-btn" onclick="filterAchievements('social')">
+                <span class="filter-icon">👥</span>
+                社交
+            </button>
+            <button class="filter-btn" onclick="filterAchievements('crafting')">
+                <span class="filter-icon">🔨</span>
+                炼制
+            </button>
+            <button class="filter-btn" onclick="filterAchievements('special')">
+                <span class="filter-icon">⭐</span>
+                特殊
+            </button>
+        </div>
+
+        <!-- 成就列表 -->
+        <div class="achievement-list" id="achievement-list">
+            {% if achievements and achievements.list %}
+                {% for achievement in achievements.list %}
+                <div class="achievement-item {{ achievement.category }} {{ 'unlocked' if achievement.unlocked else 'locked' }}" 
+                     data-category="{{ achievement.category }}" 
+                     onclick="showAchievementDetail('{{ achievement.id }}')">
+                    
+                    <div class="achievement-icon">
+                        {% if achievement.unlocked %}
+                            <span class="icon unlocked">{{ achievement.icon or '🏆' }}</span>
+                        {% else %}
+                            <span class="icon locked">🔒</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="achievement-content">
+                        <div class="achievement-header">
+                            <h4 class="achievement-title">
+                                {% if achievement.unlocked or not achievement.hidden %}
+                                    {{ achievement.name }}
+                                {% else %}
+                                    ？？？
+                                {% endif %}
+                            </h4>
+                            <div class="achievement-rarity {{ achievement.rarity or 'common' }}">
+                                {{ achievement.rarity_display or '普通' }}
+                            </div>
+                        </div>
+                        
+                        <p class="achievement-description">
+                            {% if achievement.unlocked or not achievement.hidden %}
+                                {{ achievement.description }}
+                            {% else %}
+                                隐藏成就，达成特定条件后解锁
+                            {% endif %}
+                        </p>
+                        
+                        {% if achievement.progress is defined %}
+                        <div class="achievement-progress">
+                            <div class="progress-bar-mini">
+                                <div class="progress-fill" style="width: {{ (achievement.progress / achievement.requirement * 100) if achievement.requirement > 0 else 0 }}%"></div>
+                            </div>
+                            <span class="progress-text">{{ achievement.progress }}/{{ achievement.requirement }}</span>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="achievement-footer">
+                            <div class="achievement-points">
+                                <span class="points-icon">⭐</span>
+                                {{ achievement.points or 0 }} 点
+                            </div>
+                            {% if achievement.unlocked %}
+                            <div class="unlock-date">
+                                解锁于 {{ achievement.unlock_date or '未知' }}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    {% if achievement.unlocked %}
+                    <div class="achievement-status unlocked">
+                        <span class="status-icon">✅</span>
+                    </div>
+                    {% else %}
+                    <div class="achievement-status locked">
+                        <span class="status-icon">⏳</span>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            {% else %}
+            <!-- 默认成就列表 -->
+            <div class="achievement-item cultivation unlocked" data-category="cultivation">
+                <div class="achievement-icon">
+                    <span class="icon unlocked">👶</span>
+                </div>
+                <div class="achievement-content">
+                    <div class="achievement-header">
+                        <h4 class="achievement-title">初入江湖</h4>
+                        <div class="achievement-rarity common">普通</div>
+                    </div>
+                    <p class="achievement-description">完成新手教程，踏出修仙第一步</p>
+                    <div class="achievement-footer">
+                        <div class="achievement-points">
+                            <span class="points-icon">⭐</span>
+                            10 点
+                        </div>
+                        <div class="unlock-date">已解锁</div>
+                    </div>
+                </div>
+                <div class="achievement-status unlocked">
+                    <span class="status-icon">✅</span>
+                </div>
+            </div>
+
+            <div class="achievement-item cultivation locked" data-category="cultivation">
+                <div class="achievement-icon">
+                    <span class="icon locked">🔒</span>
+                </div>
+                <div class="achievement-content">
+                    <div class="achievement-header">
+                        <h4 class="achievement-title">炼气大成</h4>
+                        <div class="achievement-rarity common">普通</div>
+                    </div>
+                    <p class="achievement-description">修炼至炼气期九层</p>
+                    <div class="achievement-progress">
+                        <div class="progress-bar-mini">
+                            <div class="progress-fill" style="width: 11%"></div>
+                        </div>
+                        <span class="progress-text">1/9</span>
+                    </div>
+                    <div class="achievement-footer">
+                        <div class="achievement-points">
+                            <span class="points-icon">⭐</span>
+                            25 点
+                        </div>
+                    </div>
+                </div>
+                <div class="achievement-status locked">
+                    <span class="status-icon">⏳</span>
+                </div>
+            </div>
+
+            <div class="achievement-item combat locked" data-category="combat">
+                <div class="achievement-icon">
+                    <span class="icon locked">🔒</span>
+                </div>
+                <div class="achievement-content">
+                    <div class="achievement-header">
+                        <h4 class="achievement-title">初试锋芒</h4>
+                        <div class="achievement-rarity common">普通</div>
+                    </div>
+                    <p class="achievement-description">击败第一个敌人</p>
+                    <div class="achievement-footer">
+                        <div class="achievement-points">
+                            <span class="points-icon">⭐</span>
+                            10 点
+                        </div>
+                    </div>
+                </div>
+                <div class="achievement-status locked">
+                    <span class="status-icon">⏳</span>
+                </div>
+            </div>
+
+            <div class="achievement-item exploration locked" data-category="exploration">
+                <div class="achievement-icon">
+                    <span class="icon locked">🔒</span>
+                </div>
+                <div class="achievement-content">
+                    <div class="achievement-header">
+                        <h4 class="achievement-title">探索者</h4>
+                        <div class="achievement-rarity common">普通</div>
+                    </div>
+                    <p class="achievement-description">发现10个新地点</p>
+                    <div class="achievement-progress">
+                        <div class="progress-bar-mini">
+                            <div class="progress-fill" style="width: 10%"></div>
+                        </div>
+                        <span class="progress-text">1/10</span>
+                    </div>
+                    <div class="achievement-footer">
+                        <div class="achievement-points">
+                            <span class="points-icon">⭐</span>
+                            20 点
+                        </div>
+                    </div>
+                </div>
+                <div class="achievement-status locked">
+                    <span class="status-icon">⏳</span>
+                </div>
+            </div>
+
+            <div class="achievement-item special locked" data-category="special">
+                <div class="achievement-icon">
+                    <span class="icon locked">🔒</span>
+                </div>
+                <div class="achievement-content">
+                    <div class="achievement-header">
+                        <h4 class="achievement-title">？？？</h4>
+                        <div class="achievement-rarity legendary">传说</div>
+                    </div>
+                    <p class="achievement-description">隐藏成就，达成特定条件后解锁</p>
+                    <div class="achievement-footer">
+                        <div class="achievement-points">
+                            <span class="points-icon">⭐</span>
+                            ??? 点
+                        </div>
+                    </div>
+                </div>
+                <div class="achievement-status locked">
+                    <span class="status-icon">⏳</span>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- 成就详情面板 -->
+        <div class="achievement-detail-panel" id="achievement-detail-panel" style="display: none;">
+            <h3>成就详情</h3>
+            <div id="achievement-detail-content">
+                <!-- 动态加载成就详情 -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.modal-header h2 {
+    font-size: 20px;
+    color: #d8d8d8;
+    margin-bottom: 20px;
+    text-align: center;
+    letter-spacing: 2px;
+}
+
+.achievement-container {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.achievement-overview {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(200, 200, 200, 0.1);
+    border-radius: 8px;
+}
+
+.achievement-stat {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.achievement-stat:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.stat-icon {
+    font-size: 20px;
+}
+
+.stat-number {
+    color: #ffc107;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.stat-label {
+    color: #888;
+    font-size: 11px;
+    margin-top: 2px;
+}
+
+.achievement-filters {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(200, 200, 200, 0.2);
+    color: #888;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 12px;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(200, 200, 200, 0.4);
+    color: #d8d8d8;
+}
+
+.filter-icon {
+    font-size: 14px;
+}
+
+.achievement-list {
+    display: grid;
+    gap: 12px;
+}
+
+.achievement-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(200, 200, 200, 0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.achievement-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(200, 200, 200, 0.2);
+    transform: translateX(5px);
+}
+
+.achievement-item.unlocked {
+    border-left: 4px solid #28a745;
+}
+
+.achievement-item.locked {
+    border-left: 4px solid #6c757d;
+}
+
+.achievement-item.hidden {
+    opacity: 0.6;
+}
+
+.achievement-icon {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+    position: relative;
+}
+
+.achievement-icon .icon {
+    font-size: 24px;
+}
+
+.achievement-icon .icon.unlocked {
+    filter: none;
+}
+
+.achievement-icon .icon.locked {
+    filter: grayscale(100%);
+    opacity: 0.5;
+}
+
+.achievement-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.achievement-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.achievement-title {
+    color: #d8d8d8;
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.achievement-item.locked .achievement-title {
+    color: #888;
+}
+
+.achievement-rarity {
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.achievement-rarity.common {
+    background: rgba(108, 117, 125, 0.3);
+    color: #adb5bd;
+}
+
+.achievement-rarity.uncommon {
+    background: rgba(40, 167, 69, 0.3);
+    color: #28a745;
+}
+
+.achievement-rarity.rare {
+    background: rgba(23, 162, 184, 0.3);
+    color: #17a2b8;
+}
+
+.achievement-rarity.epic {
+    background: rgba(111, 66, 193, 0.3);
+    color: #6f42c1;
+}
+
+.achievement-rarity.legendary {
+    background: rgba(255, 193, 7, 0.3);
+    color: #ffc107;
+}
+
+.achievement-description {
+    color: #b8b8b8;
+    font-size: 13px;
+    margin: 0 0 12px 0;
+    line-height: 1.4;
+}
+
+.achievement-item.locked .achievement-description {
+    color: #888;
+}
+
+.achievement-progress {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.progress-bar-mini {
+    flex: 1;
+    height: 4px;
+    background: rgba(100, 100, 100, 0.2);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.progress-bar-mini .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #17a2b8, #5bc0de);
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    color: #888;
+    font-size: 11px;
+    min-width: 40px;
+}
+
+.achievement-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.achievement-points {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #ffc107;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.points-icon {
+    font-size: 12px;
+}
+
+.unlock-date {
+    color: #666;
+    font-size: 11px;
+}
+
+.achievement-status {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.achievement-status.unlocked {
+    background: rgba(40, 167, 69, 0.2);
+}
+
+.achievement-status.locked {
+    background: rgba(108, 117, 125, 0.2);
+}
+
+.status-icon {
+    font-size: 16px;
+}
+
+.achievement-detail-panel {
+    margin-top: 20px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(200, 200, 200, 0.2);
+    border-radius: 8px;
+}
+
+.achievement-detail-panel h3 {
+    color: #d8d8d8;
+    margin-bottom: 12px;
+    font-size: 16px;
+}
+
+/* 隐藏未选中的分类 */
+.achievement-item.hidden {
+    display: none;
+}
+
+@media (max-width: 600px) {
+    .achievement-overview {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .achievement-filters {
+        justify-content: center;
+    }
+    
+    .achievement-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+    }
+    
+    .achievement-header {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .achievement-footer {
+        flex-direction: column;
+        gap: 8px;
+    }
+}
+</style>
+
+<script>
+function filterAchievements(category) {
+    // 移除所有按钮的活动状态
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    // 激活当前按钮
+    event.target.classList.add('active');
+    
+    // 显示/隐藏成就
+    document.querySelectorAll('.achievement-item').forEach(item => {
+        if (category === 'all' || item.dataset.category === category) {
+            item.classList.remove('hidden');
+        } else {
+            item.classList.add('hidden');
+        }
+    });
+}
+
+function showAchievementDetail(achievementId) {
+    const panel = document.getElementById('achievement-detail-panel');
+    const content = document.getElementById('achievement-detail-content');
+    
+    // 这里应该从服务器获取成就详情
+    content.innerHTML = `
+        <div class="achievement-detail">
+            <h4>成就ID: ${achievementId}</h4>
+            <p>详细信息加载中...</p>
+            <div class="achievement-rewards">
+                <h5>奖励：</h5>
+                <ul>
+                    <li>经验值</li>
+                    <li>成就点数</li>
+                    <li>称号（如果有）</li>
+                </ul>
+            </div>
+            <div class="achievement-tips">
+                <h5>获得提示：</h5>
+                <p>完成相关活动即可解锁此成就。</p>
+            </div>
+        </div>
+    `;
+    
+    panel.style.display = 'block';
+    panel.scrollIntoView({ behavior: 'smooth' });
+}
+
+// 初始化时显示所有成就
+document.addEventListener('DOMContentLoaded', function() {
+    // 可以在这里添加更多初始化逻辑
+});
+</script>

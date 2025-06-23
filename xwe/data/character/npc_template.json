@@ -1,0 +1,136 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "description": "NPC角色模板"
+  },
+  "npcs": [
+    {
+      "name": "李太虚",
+      "type": "npc",
+      "base_attributes": {
+        "strength": 15,
+        "constitution": 12,
+        "agility": 14,
+        "intelligence": 18,
+        "willpower": 16,
+        "comprehension": 15,
+        "luck": 10
+      },
+      "cultivation": {
+        "realm": "筑基期",
+        "realm_level": 3,
+        "level": 12
+      },
+      "spiritual_root": {
+        "金": 10,
+        "木": 15,
+        "水": 35,
+        "火": 20,
+        "土": 20
+      },
+      "skills": ["sword_qi_slash", "swift_step"],
+      "faction": "青云宗",
+      "ai_profile": "balanced",
+      "extra_data": {
+        "location": "青云城",
+        "role": "外门长老"
+      }
+    },
+    {
+      "name": "王无极",
+      "type": "npc",
+      "base_attributes": {
+        "strength": 20,
+        "constitution": 18,
+        "agility": 10,
+        "intelligence": 12,
+        "willpower": 15,
+        "comprehension": 10,
+        "luck": 8
+      },
+      "cultivation": {
+        "realm": "聚气期",
+        "realm_level": 9,
+        "level": 9
+      },
+      "spiritual_root": {
+        "金": 30,
+        "木": 10,
+        "水": 20,
+        "火": 25,
+        "土": 15
+      },
+      "skills": ["basic_attack", "iron_body"],
+      "faction": "散修",
+      "ai_profile": "aggressive",
+      "extra_data": {
+        "location": "青云城",
+        "role": "护卫"
+      }
+    },
+    {
+      "name": "张玄机",
+      "type": "npc",
+      "base_attributes": {
+        "strength": 8,
+        "constitution": 10,
+        "agility": 12,
+        "intelligence": 22,
+        "willpower": 20,
+        "comprehension": 18,
+        "luck": 12
+      },
+      "cultivation": {
+        "realm": "筑基期",
+        "realm_level": 6,
+        "level": 15
+      },
+      "spiritual_root": {
+        "金": 5,
+        "木": 20,
+        "水": 15,
+        "火": 50,
+        "土": 10
+      },
+      "skills": ["fireball", "frost_bolt", "meditation"],
+      "faction": "灵符阁",
+      "ai_profile": "defensive",
+      "extra_data": {
+        "location": "青云城",
+        "role": "符师"
+      }
+    },
+    {
+      "name": "低阶妖兽",
+      "type": "monster",
+      "base_attributes": {
+        "strength": 12,
+        "constitution": 14,
+        "agility": 8,
+        "intelligence": 5,
+        "willpower": 8,
+        "comprehension": 3,
+        "luck": 5
+      },
+      "cultivation": {
+        "realm": "聚气期",
+        "realm_level": 1,
+        "level": 1
+      },
+      "spiritual_root": {
+        "金": 10,
+        "木": 30,
+        "水": 20,
+        "火": 20,
+        "土": 20
+      },
+      "skills": ["basic_attack"],
+      "faction": "",
+      "ai_profile": "aggressive",
+      "extra_data": {
+        "location": "城外荒野",
+        "role": "野怪"
+      }
+    }
+  ]
+}

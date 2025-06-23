@@ -1,0 +1,55 @@
+{
+  "template": {
+    "name": "物品模板",
+    "description": "定义物品的基础结构",
+    "item_structure": {
+      "id": "unique_item_id",
+      "name": "物品名称",
+      "description": "物品描述",
+      "type": "item_type",
+      "quality": "item_quality",
+      "stackable": true,
+      "max_stack": 99,
+      "price": {
+        "buy": 100,
+        "sell": 50
+      },
+      "requirements": {
+        "level": 1,
+        "realm": "qi_gathering",
+        "attributes": {}
+      },
+      "effects": [
+        {
+          "type": "instant/duration/permanent",
+          "attribute": "affected_attribute",
+          "value": 0,
+          "duration": 0
+        }
+      ]
+    },
+    "item_types": [
+      "consumable",
+      "equipment",
+      "material",
+      "quest",
+      "currency"
+    ],
+    "quality_levels": [
+      "common",
+      "uncommon",
+      "rare",
+      "epic",
+      "legendary",
+      "mythic"
+    ],
+    "equipment_slots": [
+      "weapon",
+      "armor",
+      "helmet",
+      "boots",
+      "gloves",
+      "accessory"
+    ]
+  }
+}

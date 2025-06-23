@@ -1,0 +1,542 @@
+{
+  "meta": {
+    "version": "2.0.0",
+    "description": "玄苍界战斗系统优化版，所有公式结构化，便于代码直接解析"
+  },
+  "combat_attributes": {
+    "primary_attributes": {
+      "attack_power": {
+        "description": "物理攻击力",
+        "base_formula": {
+          "operation": "*",
+          "operands": [
+            {"attribute": "strength"},
+            {"modifier": "weapon_multiplier"},
+            {"modifier": "skill_multiplier"}
+          ]
+        },
+        "modifiers": {
+          "realm_bonus": {
+            "operation": "*",
+            "value": {"formula": "1 + realm_level * 0.1"}
+          },
+          "cultivation_bonus": {
+            "operation": "+",
+            "value": {"attribute": "body_cultivation_level", "multiplier": 5}
+          },
+          "equipment_bonus": {
+            "operation": "+",
+            "value": {"sum_of": "equipment_attack_bonuses"}
+          },
+          "talent_bonus": {
+            "operation": "*",
+            "value": {"lookup": "talent_attack_multipliers"}
+          }
+        }
+      },
+      "spell_power": {
+        "description": "法术攻击力",
+        "base_formula": {
+          "operation": "*",
+          "operands": [
+            {"attribute": "spiritual_root_purity"},
+            {"attribute": "cultivation_technique_level"},
+            {"modifier": "magic_weapon_bonus"}
+          ]
+        },
+        "modifiers": {
+          "comprehension_bonus": {
+            "operation": "*",
+            "value": {"formula": "1 + comprehension * 0.2"}
+          },
+          "spiritual_power_scaling": {
+            "operation": "*",
+            "value": {"formula": "spiritual_power / 100"}
+          },
+          "spell_mastery": {
+            "operation": "*",
+            "value": {"lookup": "spell_mastery_level", "scale": 0.1}
+          }
+        }
+      },
+      "defense": {
+        "description": "物理防御力",
+        "base_formula": {
+          "operation": "+",
+          "operands": [
+            {
+              "operation": "*",
+              "operands": [
+                {"attribute": "constitution"},
+                {"constant": 2}
+              ]
+            },
+            {"sum_of": "armor_defense_values"},
+            {"modifier": "defensive_skill_bonus"}
+          ]
+        },
+        "modifiers": {
+          "body_cultivation": {
+            "operation": "*",
+            "value": {"formula": "1 + body_cultivation_level * 0.15"}
+          },
+          "defensive_stance": {
+            "operation": "*",
+            "value": {"conditional": "if_stance_active", "true": 1.5, "false": 1.0}
+          },
+          "treasure_protection": {
+            "operation": "+",
+            "value": {"sum_of": "defensive_treasure_bonuses"}
+          }
+        }
+      },
+      "magic_resistance": {
+        "description": "法术抗性",
+        "base_formula": {
+          "operation": "*",
+          "operands": [
+            {"attribute": "willpower"},
+            {"modifier": "resistance_equipment_bonus"},
+            {"modifier": "realm_resistance_multiplier"}
+          ]
+        },
+        "resistance_calculation": {
+          "operation": "min",
+          "operands": [
+            {
+              "operation": "/",
+              "operands": [
+                {"attribute": "magic_resistance"},
+                {
+                  "operation": "+",
+                  "operands": [
+                    {"attribute": "magic_resistance"},
+                    {"constant": 100}
+                  ]
+                }
+              ]
+            },
+            {"constant": 0.75}
+          ]
+        }
+      },
+      "speed": {
+        "description": "行动速度",
+        "base_formula": {
+          "operation": "*",
+          "operands": [
+            {"attribute": "agility"},
+            {"modifier": "movement_technique_multiplier"},
+            {"modifier": "lightness_skill_bonus"}
+          ]
+        },
+        "modifiers": {
+          "encumbrance_penalty": {
+            "operation": "*",
+            "value": {
+              "formula": "max(0.5, 1 - current_weight / max_weight)"
+            }
+          },
+          "injury_penalty": {
+            "operation": "*",
+            "value": {
+              "formula": "current_health / max_health"
+            }
+          },
+          "status_effects": {
+            "operation": "*",
+            "value": {"product_of": "speed_status_modifiers"}
+          }
+        }
+      }
+    }
+  },
+  "damage_calculation": {
+    "physical_damage": {
+      "formula": {
+        "operation": "max",
+        "operands": [
+          {
+            "operation": "-",
+            "operands": [
+              {
+                "operation": "*",
+                "operands": [
+                  {"attribute": "attack_power"},
+                  {"modifier": "skill_damage_multiplier"},
+                  {"random": {"type": "uniform", "min": 0.9, "max": 1.1}}
+                ]
+              },
+              {"attribute": "target_defense"}
+            ]
+          },
+          {"constant": 1}
+        ]
+      },
+      "critical_modifier": {
+        "operation": "*",
+        "value": {"conditional": "if_critical", "true": 2.0, "false": 1.0}
+      }
+    },
+    "magical_damage": {
+      "formula": {
+        "operation": "*",
+        "operands": [
+          {"attribute": "spell_power"},
+          {"modifier": "elemental_multiplier"},
+          {
+            "operation": "-",
+            "operands": [
+              {"constant": 1},
+              {"attribute": "target_magic_resistance"}
+            ]
+          }
+        ]
+      },
+      "elemental_bonus": {
+        "operation": "lookup",
+        "table": "elemental_interactions",
+        "key": ["attacker_element", "defender_element"]
+      }
+    },
+    "true_damage": {
+      "formula": {
+        "operation": "*",
+        "operands": [
+          {"attribute": "base_true_damage"},
+          {"modifier": "amplification_effects"}
+        ]
+      },
+      "ignores": ["defense", "resistance", "shields"]
+    }
+  },
+  "elemental_system": {
+    "element_matrix": {
+      "火": {
+        "克": ["金"],
+        "被克": ["水"],
+        "生": ["土"],
+        "被生": ["木"],
+        "damage_vs": {
+          "金": 1.5,
+          "木": 0.7,
+          "水": 0.5,
+          "火": 1.0,
+          "土": 1.2
+        }
+      },
+      "水": {
+        "克": ["火"],
+        "被克": ["土"],
+        "生": ["木"],
+        "被生": ["金"],
+        "damage_vs": {
+          "金": 1.2,
+          "木": 1.2,
+          "水": 1.0,
+          "火": 1.5,
+          "土": 0.5
+        }
+      },
+      "木": {
+        "克": ["土"],
+        "被克": ["金"],
+        "生": ["火"],
+        "被生": ["水"],
+        "damage_vs": {
+          "金": 0.5,
+          "木": 1.0,
+          "水": 0.7,
+          "火": 1.2,
+          "土": 1.5
+        }
+      },
+      "金": {
+        "克": ["木"],
+        "被克": ["火"],
+        "生": ["水"],
+        "被生": ["土"],
+        "damage_vs": {
+          "金": 1.0,
+          "木": 1.5,
+          "水": 0.7,
+          "火": 0.5,
+          "土": 1.2
+        }
+      },
+      "土": {
+        "克": ["水"],
+        "被克": ["木"],
+        "生": ["金"],
+        "被生": ["火"],
+        "damage_vs": {
+          "金": 0.7,
+          "木": 0.5,
+          "水": 1.5,
+          "火": 0.7,
+          "土": 1.0
+        }
+      }
+    },
+    "advanced_interactions": {
+      "雷": {
+        "special_vs": {
+          "水": {"multiplier": 2.0, "chain_lightning": true},
+          "金": {"multiplier": 1.8, "paralysis_chance": 0.3}
+        }
+      },
+      "冰": {
+        "special_vs": {
+          "火": {"multiplier": 1.8, "freeze_chance": 0.3},
+          "水": {"multiplier": 0.8, "slow_effect": true}
+        }
+      },
+      "风": {
+        "special_vs": {
+          "土": {"multiplier": 1.6, "disperse_effect": true},
+          "火": {"multiplier": 1.3, "spread_effect": true}
+        }
+      }
+    }
+  },
+  "action_system": {
+    "action_costs": {
+      "basic_attack": {
+        "action_points": 1,
+        "stamina": 5,
+        "can_move_after": true
+      },
+      "skill_attack": {
+        "action_points": {"lookup": "skill_action_cost"},
+        "mana": {"lookup": "skill_mana_cost"},
+        "stamina": {"lookup": "skill_stamina_cost"},
+        "can_move_after": {"lookup": "skill_mobility"}
+      },
+      "defend": {
+        "action_points": 1,
+        "stamina": 0,
+        "effects": {
+          "defense_multiplier": 1.5,
+          "damage_reduction": 0.3,
+          "counter_chance": 0.2
+        }
+      },
+      "move": {
+        "action_points": 0,
+        "stamina": {"formula": "distance * encumbrance_factor"},
+        "max_distance": {"formula": "speed * movement_skill_bonus"}
+      },
+      "use_item": {
+        "action_points": 1,
+        "types": {
+          "potion": {"animation_time": 0.5},
+          "talisman": {"activation_time": 1.0},
+          "treasure": {"channel_time": 2.0}
+        }
+      }
+    },
+    "action_priority": {
+      "instant": 1000,
+      "interrupt": 900,
+      "quick": 800,
+      "normal": 500,
+      "slow": 300,
+      "channeled": 100
+    }
+  },
+  "status_effect_system": {
+    "effect_types": {
+      "buff": {
+        "stacking_rule": "refresh_duration",
+        "dispellable": true,
+        "save_on_death": false
+      },
+      "debuff": {
+        "stacking_rule": "highest_potency",
+        "dispellable": true,
+        "cleanse_priority": 1
+      },
+      "dot": {
+        "stacking_rule": "separate_instances",
+        "tick_interval": 1,
+        "snapshot_stats": true
+      },
+      "hot": {
+        "stacking_rule": "separate_instances",
+        "tick_interval": 1,
+        "affected_by_healing_bonus": true
+      },
+      "control": {
+        "stacking_rule": "no_stack",
+        "break_on_damage": {"threshold": 0.2},
+        "diminishing_returns": true
+      }
+    },
+    "application_formula": {
+      "success_chance": {
+        "operation": "/",
+        "operands": [
+          {
+            "operation": "*",
+            "operands": [
+              {"attribute": "effect_potency"},
+              {"modifier": "caster_level_bonus"}
+            ]
+          },
+          {
+            "operation": "+",
+            "operands": [
+              {"attribute": "effect_potency"},
+              {"attribute": "target_resistance"}
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "ai_behavior_v2": {
+    "decision_weights": {
+      "health_percentage": {
+        "weight": 0.3,
+        "curve": "exponential_decay",
+        "threshold_actions": {
+          "below_20": ["defensive_mode", "use_healing", "retreat"],
+          "below_50": ["cautious_attack", "maintain_distance"],
+          "above_80": ["aggressive_attack", "pursuit"]
+        }
+      },
+      "mana_percentage": {
+        "weight": 0.2,
+        "influence": {
+          "skill_selection": "prefer_low_cost",
+          "action_frequency": "reduce_if_low"
+        }
+      },
+      "threat_assessment": {
+        "weight": 0.25,
+        "factors": [
+          {"enemy_dps": 0.4},
+          {"enemy_burst_potential": 0.3},
+          {"ally_support": 0.3}
+        ]
+      },
+      "tactical_advantage": {
+        "weight": 0.15,
+        "factors": [
+          {"positioning": 0.3},
+          {"elemental_matchup": 0.3},
+          {"cooldown_advantage": 0.2},
+          {"numbers_advantage": 0.2}
+        ]
+      },
+      "objective_priority": {
+        "weight": 0.1,
+        "types": {
+          "survival": 1.0,
+          "protect_target": 0.9,
+          "eliminate_target": 0.8,
+          "control_area": 0.7
+        }
+      }
+    },
+    "behavior_trees": {
+      "aggressive": {
+        "root": {
+          "type": "selector",
+          "children": [
+            {
+              "type": "sequence",
+              "name": "burst_combo",
+              "conditions": ["all_cooldowns_ready", "in_range"],
+              "actions": ["use_ultimate", "follow_up_attack", "pursue"]
+            },
+            {
+              "type": "sequence",
+              "name": "standard_attack",
+              "actions": ["move_to_range", "use_best_damage_skill", "maintain_pressure"]
+            }
+          ]
+        }
+      },
+      "defensive": {
+        "root": {
+          "type": "selector",
+          "children": [
+            {
+              "type": "sequence",
+              "name": "critical_defense",
+              "conditions": ["health_below_30"],
+              "actions": ["use_defensive_cooldowns", "heal_self", "create_distance"]
+            },
+            {
+              "type": "sequence",
+              "name": "counter_play",
+              "conditions": ["enemy_committed"],
+              "actions": ["dodge_or_block", "counter_attack", "reposition"]
+            }
+          ]
+        }
+      }
+    }
+  },
+  "combat_formulas": {
+    "hit_chance": {
+      "formula": {
+        "operation": "clamp",
+        "min": 0.05,
+        "max": 0.95,
+        "value": {
+          "operation": "/",
+          "operands": [
+            {"attribute": "accuracy"},
+            {
+              "operation": "+",
+              "operands": [
+                {"attribute": "accuracy"},
+                {"attribute": "target_evasion"}
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "critical_chance": {
+      "formula": {
+        "operation": "min",
+        "operands": [
+          {
+            "operation": "+",
+            "operands": [
+              {"attribute": "base_crit_rate"},
+              {"modifier": "weapon_crit_bonus"},
+              {"modifier": "skill_crit_bonus"},
+              {
+                "operation": "*",
+                "operands": [
+                  {"attribute": "luck"},
+                  {"constant": 0.001}
+                ]
+              }
+            ]
+          },
+          {"constant": 0.75}
+        ]
+      }
+    },
+    "block_value": {
+      "formula": {
+        "operation": "*",
+        "operands": [
+          {"attribute": "shield_block_value"},
+          {"modifier": "block_skill_multiplier"},
+          {
+            "operation": "random",
+            "type": "uniform",
+            "min": 0.5,
+            "max": 1.0
+          }
+        ]
+      }
+    }
+  }
+}

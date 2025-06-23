@@ -1,0 +1,314 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "description": "玄苍界命格系统，决定个体的天赋、运势与人生轨迹"
+  },
+  "destiny_grades": [
+    {
+      "id": "MORTAL_FATE",
+      "name": "凡命",
+      "rarity": 0.7,
+      "description": "平凡命格，修炼之路充满艰辛",
+      "base_attributes": {
+        "luck": 0.3,
+        "comprehension": 0.4,
+        "cultivation_speed": 0.6,
+        "breakthrough_chance": 0.5
+      },
+      "special_effects": [],
+      "lifespan_modifier": 1.0
+    },
+    {
+      "id": "BLESSED_FATE",
+      "name": "福命",
+      "rarity": 0.2,
+      "description": "天生有福，机缘较多",
+      "base_attributes": {
+        "luck": 0.7,
+        "comprehension": 0.6,
+        "cultivation_speed": 0.8,
+        "breakthrough_chance": 0.7
+      },
+      "special_effects": ["贵人相助", "化险为夷"],
+      "lifespan_modifier": 1.2
+    },
+    {
+      "id": "NOBLE_FATE",
+      "name": "贵命",
+      "rarity": 0.08,
+      "description": "天生贵格，容易获得地位与资源",
+      "base_attributes": {
+        "luck": 0.8,
+        "comprehension": 0.8,
+        "cultivation_speed": 1.0,
+        "breakthrough_chance": 0.8
+      },
+      "special_effects": ["身份显贵", "资源丰厚", "师门庇护"],
+      "lifespan_modifier": 1.5
+    },
+    {
+      "id": "EMPEROR_FATE",
+      "name": "帝命",
+      "rarity": 0.01,
+      "description": "帝王之命，统御天下的潜质",
+      "base_attributes": {
+        "luck": 0.9,
+        "comprehension": 0.9,
+        "cultivation_speed": 1.2,
+        "breakthrough_chance": 0.9
+      },
+      "special_effects": ["王者之威", "天命所归", "龙气护体"],
+      "lifespan_modifier": 2.0
+    },
+    {
+      "id": "HEAVENLY_FATE",
+      "name": "天命",
+      "rarity": 0.009,
+      "description": "天选之子，承载天道意志",
+      "base_attributes": {
+        "luck": 1.0,
+        "comprehension": 1.0,
+        "cultivation_speed": 1.5,
+        "breakthrough_chance": 0.95
+      },
+      "special_effects": ["天道眷顾", "逆天改命", "仙缘深厚"],
+      "lifespan_modifier": 3.0
+    },
+    {
+      "id": "CALAMITY_FATE",
+      "name": "劫命",
+      "rarity": 0.001,
+      "description": "天劫之命，毁灭与重生并存",
+      "base_attributes": {
+        "luck": 0.1,
+        "comprehension": 1.2,
+        "cultivation_speed": 2.0,
+        "breakthrough_chance": 0.3
+      },
+      "special_effects": ["劫难重重", "绝境逢生", "劫后通神"],
+      "lifespan_modifier": 0.5
+    }
+  ],
+  "karma_system": {
+    "karma_categories": [
+      {
+        "id": "KILLING_KARMA",
+        "name": "杀戮业",
+        "description": "因杀生而积累的业力",
+        "decay_rate": 0.01,
+        "max_accumulation": 1000,
+        "effects": {
+          "positive_threshold": 0,
+          "negative_effects": [
+            {
+              "threshold": 100,
+              "effects": ["心魔滋生", "天劫加强"]
+            },
+            {
+              "threshold": 500,
+              "effects": ["血光之灾", "仇敌缠身"]
+            },
+            {
+              "threshold": 1000,
+              "effects": ["万劫不复", "天道惩罚"]
+            }
+          ]
+        }
+      },
+      {
+        "id": "VIRTUE_KARMA",
+        "name": "功德业",
+        "description": "因善行而积累的功德",
+        "decay_rate": 0.005,
+        "max_accumulation": 1000,
+        "effects": {
+          "positive_effects": [
+            {
+              "threshold": 100,
+              "effects": ["贵人相助", "化险为夷"]
+            },
+            {
+              "threshold": 500,
+              "effects": ["天赐机缘", "功德护体"]
+            },
+            {
+              "threshold": 1000,
+              "effects": ["功德成圣", "天道嘉奖"]
+            }
+          ]
+        }
+      },
+      {
+        "id": "VOW_KARMA",
+        "name": "誓言业",
+        "description": "因立誓与毁誓产生的业力",
+        "decay_rate": 0,
+        "max_accumulation": 500,
+        "effects": {
+          "vow_keeping": {
+            "effects": ["道心坚固", "突破顺畅"]
+          },
+          "vow_breaking": {
+            "effects": ["道心受损", "天谴降临"]
+          }
+        }
+      }
+    ],
+    "karma_interactions": {
+      "offset_rules": [
+        {
+          "type": "virtue_offsets_killing",
+          "ratio": 0.8,
+          "description": "功德可以抵消部分杀戮业"
+        },
+        {
+          "type": "vow_amplifies_karma",
+          "multiplier": 1.5,
+          "description": "誓言会放大其他业力的影响"
+        }
+      ]
+    }
+  },
+  "luck_system": {
+    "base_luck_range": [-100, 100],
+    "luck_modifiers": [
+      {
+        "source": "destiny_grade",
+        "description": "命格天生决定基础气运",
+        "weight": 0.5
+      },
+      {
+        "source": "karma_balance",
+        "description": "善恶业力影响当前运势",
+        "weight": 0.3
+      },
+      {
+        "source": "celestial_alignment",
+        "description": "天象星辰的周期性影响",
+        "weight": 0.1
+      },
+      {
+        "source": "random_fluctuation",
+        "description": "天道无常的随机变化",
+        "weight": 0.1
+      }
+    ],
+    "luck_effects": {
+      "treasure_finding": {
+        "formula": "base_chance * (1 + luck/100)",
+        "description": "寻宝几率受气运影响"
+      },
+      "breakthrough_success": {
+        "formula": "base_chance * (1 + luck/200)",
+        "description": "突破成功率受气运影响"
+      },
+      "tribulation_severity": {
+        "formula": "base_power * (1 - luck/500)",
+        "description": "天劫威力受气运影响"
+      },
+      "encounter_quality": {
+        "formula": "encounter_pool_weighted_by_luck",
+        "description": "随机遭遇的质量受气运影响"
+      }
+    }
+  },
+  "fate_threads": {
+    "description": "连接不同个体的命运丝线",
+    "thread_types": [
+      {
+        "id": "MASTER_DISCIPLE",
+        "name": "师徒缘",
+        "strength": 0.8,
+        "effects": ["传承加成", "共享劫难", "因果纠缠"],
+        "duration": "终身"
+      },
+      {
+        "id": "BLOOD_RELATION",
+        "name": "血脉缘",
+        "strength": 0.6,
+        "effects": ["血脉共振", "家族气运", "血债血偿"],
+        "duration": "永久"
+      },
+      {
+        "id": "ROMANTIC_BOND",
+        "name": "情缘",
+        "strength": 0.7,
+        "effects": ["双修加成", "心有灵犀", "生死与共"],
+        "duration": "可变"
+      },
+      {
+        "id": "SWORN_ENEMY",
+        "name": "宿敌缘",
+        "strength": 0.9,
+        "effects": ["相克相生", "实力促进", "不死不休"],
+        "duration": "直至了结"
+      },
+      {
+        "id": "KARMA_DEBT",
+        "name": "因果债",
+        "strength": 0.5,
+        "effects": ["业力牵引", "偿还契机", "轮回追讨"],
+        "duration": "债清为止"
+      }
+    ],
+    "thread_evolution": {
+      "strengthening_events": ["共同经历", "深度交流", "生死相救"],
+      "weakening_events": ["背叛欺骗", "长期分离", "价值观分歧"],
+      "transformation_rules": [
+        {
+          "from": "ROMANTIC_BOND",
+          "to": "SWORN_ENEMY",
+          "trigger": "情变成仇"
+        },
+        {
+          "from": "SWORN_ENEMY",
+          "to": "MASTER_DISCIPLE",
+          "trigger": "化敌为师"
+        }
+      ]
+    }
+  },
+  "prophecy_system": {
+    "prophecy_types": [
+      {
+        "id": "PERSONAL_PROPHECY",
+        "name": "个人预言",
+        "scope": "单个角色的命运预示",
+        "accuracy": 0.7,
+        "examples": ["三十而立，必有大劫", "北方求道，南方成仙"]
+      },
+      {
+        "id": "SECTARIAN_PROPHECY",
+        "name": "宗门预言",
+        "scope": "整个宗门的兴衰预示",
+        "accuracy": 0.6,
+        "examples": ["千年宗门，毁于一旦", "紫气东来，宗门中兴"]
+      },
+      {
+        "id": "WORLD_PROPHECY",
+        "name": "天下预言",
+        "scope": "整个世界的重大变革",
+        "accuracy": 0.5,
+        "examples": ["大劫将至，天地翻覆", "真仙降世，道法重兴"]
+      }
+    ],
+    "fulfillment_mechanics": {
+      "self_fulfilling": {
+        "probability": 0.3,
+        "description": "因预言而改变行为，反而促成预言"
+      },
+      "self_defeating": {
+        "probability": 0.2,
+        "description": "因预言而改变行为，反而避免预言"
+      },
+      "inevitable": {
+        "probability": 0.4,
+        "description": "天道注定，无法改变的命运"
+      },
+      "variable": {
+        "probability": 0.1,
+        "description": "可能性众多，结果不定"
+      }
+    }
+  }
+}

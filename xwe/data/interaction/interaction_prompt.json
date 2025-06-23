@@ -1,0 +1,277 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "description": "玄苍界AI交互提示模板，用于生成对话、描述和引导玩家行为"
+  },
+  "dialogue_templates": {
+    "npc_greeting": {
+      "context_variables": ["npc_name", "npc_faction", "npc_realm", "relationship_level", "location", "time_of_day"],
+      "personality_modifiers": {
+        "冷漠": {
+          "greeting_style": "简短而疏远",
+          "examples": [
+            "嗯。",
+            "有事？",
+            "{npc_name}微微颔首，目光冷淡。"
+          ]
+        },
+        "热情": {
+          "greeting_style": "主动而友善",
+          "examples": [
+            "道友！久违了！",
+            "哈哈，{player_name}道友光临，真是蓬荜生辉！",
+            "{npc_name}笑容满面地迎了上来。"
+          ]
+        },
+        "谨慎": {
+          "greeting_style": "客气但保持距离",
+          "examples": [
+            "道友有礼了。",
+            "不知道友此来何事？",
+            "{npc_name}拱手作揖，眼中闪着审视之光。"
+          ]
+        },
+        "傲慢": {
+          "greeting_style": "居高临下",
+          "examples": [
+            "区区{player_realm}修士，也敢在本座面前放肆？",
+            "哼，什么人都能进这里了。",
+            "{npc_name}斜眼瞥了一下，语气轻蔑。"
+          ]
+        }
+      },
+      "relationship_adjustments": {
+        "初次见面": "加入试探性语言",
+        "熟识": "语气更加随意亲切",
+        "亲密": "可以开玩笑或关心对方",
+        "敌对": "充满敌意或嘲讽",
+        "恐惧": "语气颤抖，态度卑微"
+      }
+    },
+    "npc_farewell": {
+      "context_variables": ["conversation_outcome", "npc_satisfaction", "future_plans"],
+      "outcome_based": {
+        "交易成功": [
+          "承蒙道友惠顾，望日后多多合作。",
+          "今日之交易，令人满意。道友若有需要，尽管来寻。",
+          "合作愉快！{npc_name}送别之际，面带笑意。"
+        ],
+        "任务接受": [
+          "此事就拜托道友了，在下深信道友必能成事。",
+          "道友若能完成此事，必有重谢！",
+          "事关重大，还望道友慎重行事。"
+        ],
+        "信息获得": [
+          "既然道友想知道，在下自当相告。但此事...道友需小心。",
+          "这些消息，道友听过便罢，切勿外传。",
+          "江湖传言，真假难辨，道友自己斟酌吧。"
+        ],
+        "冲突结束": [
+          "今日承让了！{npc_name}，告辞！",
+          "技不如人，甘拜下风。他日再会！",
+          "山不转水转，咱们后会有期！"
+        ]
+      }
+    },
+    "combat_banter": {
+      "pre_combat": {
+        "正派": [
+          "道友既然执意如此，那便请指教！",
+          "既然言语无法解决，那就手上见真章吧！",
+          "得罪了！{npc_name}拔剑出鞘，剑气凛然。"
+        ],
+        "魔道": [
+          "桀桀桀...今天就让你见识见识什么叫做残酷！",
+          "敢挡本座的道路，找死！",
+          "血肉的味道...真是让人怀念啊。"
+        ],
+        "妖族": [
+          "人类，你的血肉一定很美味！",
+          "既然送上门来，那就成为本王的养料吧！",
+          "吼！{npc_name}妖气冲天，凶相毕露。"
+        ]
+      },
+      "mid_combat": [
+        "哼，还有两下子！",
+        "不过如此！",
+        "接招！{skill_name}！",
+        "你的实力，也就这样了。"
+      ],
+      "defeat_admission": [
+        "技不如人...承让了。",
+        "败了...败得心服口服。",
+        "想不到道友有如此实力，在下佩服。"
+      ]
+    }
+  },
+  "narration_templates": {
+    "scene_description": {
+      "location_atmosphere": {
+        "template": "在{location_name}，{weather_description}。{ambient_details}，{npc_activities}。",
+        "variables": {
+          "location_name": "reference[region_map.json]",
+          "weather_description": ["春风和煦", "夏日炎炎", "秋高气爽", "冬雪纷飞", "细雨蒙蒙", "艳阳高照"],
+          "ambient_details": ["灵气氤氲", "鸟语花香", "古树参天", "流水潺潺", "云雾缭绕"],
+          "npc_activities": ["修士来往穿梭", "商贾叫卖不绝", "弟子勤修苦练", "长老论道谈玄"]
+        }
+      },
+      "mood_setting": {
+        "peaceful": "这里一片祥和宁静，仿佛远离了江湖的纷争。",
+        "tense": "空气中弥漫着紧张的气息，似乎暴风雨即将来临。",
+        "mysterious": "此处透着诡异神秘的气息，让人心生警觉。",
+        "sacred": "天地灵气汇聚于此，令人心神宁静，如沐春风。"
+      }
+    },
+    "action_feedback": {
+      "cultivation_success": [
+        "一股暖流在丹田中流转，修为又有精进。",
+        "功法运转一个周天，{player_name}感到神清气爽。",
+        "天地灵气源源不断地涌入体内，化作纯净的真元。"
+      ],
+      "breakthrough_attempt": [
+        "瓶颈松动，似有突破征兆！",
+        "境界壁垒开始颤动，突破在即！",
+        "体内真元翻涌，正是冲击更高境界的绝佳时机！"
+      ],
+      "treasure_discovery": [
+        "在{location}的角落里，发现了一样奇物！",
+        "灵识扫过，察觉到此处有异宝气息。",
+        "宝光一闪而逝，定有珍宝在此！"
+      ]
+    }
+  },
+  "system_guidance": {
+    "tutorial_prompts": {
+      "first_cultivation": {
+        "instruction": "盘膝而坐，运转功法，感受天地灵气的流动。",
+        "hint": "输入'修炼'或'打坐'开始你的修仙之路。",
+        "explanation": "修炼是提升境界的基本方法，需要持续投入时间。"
+      },
+      "first_combat": {
+        "instruction": "敌人来袭！准备战斗！",
+        "hint": "你可以选择'攻击'、'防御'、'使用法术'或'逃跑'。",
+        "explanation": "战斗时要根据敌我实力选择合适的策略。"
+      },
+      "first_social": {
+        "instruction": "与NPC交流可以获得信息、接受任务或进行交易。",
+        "hint": "尝试和眼前的修士对话，说不定有意外收获。",
+        "explanation": "社交关系在修仙世界中非常重要。"
+      }
+    },
+    "warning_prompts": {
+      "danger_ahead": [
+        "前方似有危险气息，需要小心行事。",
+        "此处妖气冲天，恐有妖兽盘踞。",
+        "察觉到杀意，有人在暗中窥视！"
+      ],
+      "low_resources": [
+        "灵石不足，需要想办法赚取修炼资源。",
+        "法力即将耗尽，是否要服用回复丹药？",
+        "装备损耗严重，建议尽快修理。"
+      ],
+      "karma_warning": [
+        "此举可能会积累业力，需要谨慎考虑。",
+        "杀戮过重，小心心魔滋生。",
+        "违背誓言的后果可能很严重。"
+      ]
+    }
+  },
+  "dynamic_content": {
+    "rumor_generation": {
+      "template": "听说{subject}{action}，{consequence}。",
+      "subjects": [
+        "某位散修道友", "青云宗的核心弟子", "魔教长老",
+        "妖族大王", "神秘高人", "落魄世家后裔"
+      ],
+      "actions": [
+        "在坠魔谷得到了上古传承", "突破到了金丹期", "炼制出了地阶丹药",
+        "驯服了九阶妖兽", "发现了失传已久的功法", "招惹了不该招惹的人"
+      ],
+      "consequences": [
+        "引来了各方势力的争夺", "实力大增威震一方", "现在正被人追杀",
+        "准备开山立派", "决定闭关潜修", "已经离开了天南大陆"
+      ]
+    },
+    "quest_descriptions": {
+      "escort_mission": {
+        "template": "需要护送{target}从{start_location}到{end_location}，报酬{reward}。",
+        "difficulty_modifiers": {
+          "简单": "路程较短，危险较小",
+          "普通": "可能遇到妖兽或盗匪",
+          "困难": "路经危险区域，敌人众多",
+          "极难": "有强敌觊觎，九死一生"
+        }
+      },
+      "gathering_mission": {
+        "template": "寻找{item_name}，数量{quantity}，期限{deadline}。",
+        "item_rarity_hints": {
+          "常见": "坊市应该能够买到",
+          "稀有": "需要深入危险区域寻找",
+          "传说": "可遇而不可求的珍品"
+        }
+      }
+    }
+  },
+  "personality_speech_patterns": {
+    "scholarly": {
+      "characteristics": ["引经据典", "用词文雅", "逻辑清晰"],
+      "vocabulary": ["窃以为", "依在下愚见", "据古籍记载", "如此这般"],
+      "sentence_structure": "倾向于复句和排比"
+    },
+    "martial": {
+      "characteristics": ["直来直去", "重情重义", "略显粗犷"],
+      "vocabulary": ["老子", "妈的", "兄弟", "痛快", "干他娘的"],
+      "sentence_structure": "短句为主，感叹句较多"
+    },
+    "noble": {
+      "characteristics": ["高傲自大", "讲究身份", "居高临下"],
+      "vocabulary": ["本少爷", "贱民", "不知死活", "给脸不要脸"],
+      "sentence_structure": "命令句和反问句较多"
+    },
+    "mysterious": {
+      "characteristics": ["话中有话", "模糊暗示", "神秘莫测"],
+      "vocabulary": ["天机不可泄露", "缘分未到", "一切皆有定数", "你会明白的"],
+      "sentence_structure": "多用省略句和暗示"
+    }
+  },
+  "contextual_modifiers": {
+    "time_of_day": {
+      "清晨": "语气清新，充满活力",
+      "正午": "语气平和，中规中矩",
+      "黃昏": "语气略显慵懒或感伤",
+      "深夜": "语气低沉，可能透露秘密"
+    },
+    "weather_influence": {
+      "晴天": "心情较好，语气轻松",
+      "雨天": "略显沉闷，话语简短",
+      "风雪": "语气急促，想快点结束对话",
+      "雷暴": "紧张兴奋，可能说出平时不会说的话"
+    },
+    "location_atmosphere": {
+      "宗门重地": "语气庄重，遵守礼仪",
+      "市井坊间": "语气随意，贴近生活",
+      "荒野险地": "语气谨慎，注意安全",
+      "秘境深处": "语气压抑，充满敬畏"
+    }
+  },
+  "ai_generation_guidelines": {
+    "consistency_rules": [
+      "保持角色性格一致性",
+      "尊重已建立的关系网络",
+      "遵循世界观设定",
+      "不违背物理和法则限制"
+    ],
+    "creativity_boundaries": [
+      "可以创造新的次要情节",
+      "不能改变重要NPC的核心设定",
+      "不能违背玩家的既定选择",
+      "不能破坏游戏平衡性"
+    ],
+    "quality_standards": [
+      "语言符合东方修仙风格",
+      "描述生动具体，避免空洞",
+      "对话自然流畅，符合人物身份",
+      "保持适度的神秘感和仙侠气息"
+    ]
+  }
+}

@@ -1,0 +1,292 @@
+<!-- 优化版状态模态框 -->
+<div class="modal-header">
+    <h2>角色状态详情</h2>
+</div>
+
+<div class="modal-body">
+    {% if player %}
+    <div class="status-grid">
+        <!-- 基础信息卡片 -->
+        <div class="status-card">
+            <h3>基础信息</h3>
+            <div class="status-items">
+                <div class="status-item">
+                    <span class="label">姓名</span>
+                    <span class="value">{{ player.name }}</span>
+                </div>
+                <div class="status-item">
+                    <span class="label">境界</span>
+                    <span class="value">{{ player.attributes.realm_name }}</span>
+                </div>
+                {% if player.attributes.realm_level %}
+                <div class="status-item">
+                    <span class="label">境界层次</span>
+                    <span class="value">第{{ player.attributes.realm_level }}层</span>
+                </div>
+                {% endif %}
+                <div class="status-item">
+                    <span class="label">修炼进度</span>
+                    <span class="value">{{ player.attributes.cultivation_level or 0 }} / {{ player.attributes.max_cultivation or 100 }}</span>
+                </div>
+                {% if player.extra_data and player.extra_data.faction %}
+                <div class="status-item">
+                    <span class="label">所属势力</span>
+                    <span class="value">{{ player.extra_data.faction }}</span>
+                </div>
+                {% endif %}
+                {% if player.extra_data and player.extra_data.spiritual_root %}
+                <div class="status-item">
+                    <span class="label">灵根</span>
+                    <span class="value spiritual-root">{{ player.extra_data.spiritual_root }}灵根</span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- 生命属性卡片 -->
+        <div class="status-card">
+            <h3>生命属性</h3>
+            <div class="status-items">
+                <div class="status-item with-bar">
+                    <span class="label">气血</span>
+                    <span class="value">{{ player.attributes.current_health }} / {{ player.attributes.max_health }}</span>
+                    <div class="mini-progress-bar">
+                        <div class="mini-progress-fill health" style="width: {{ (player.attributes.current_health / player.attributes.max_health * 100) if player.attributes.max_health > 0 else 0 }}%"></div>
+                    </div>
+                </div>
+                <div class="status-item with-bar">
+                    <span class="label">灵力</span>
+                    <span class="value">{{ player.attributes.current_mana }} / {{ player.attributes.max_mana }}</span>
+                    <div class="mini-progress-bar">
+                        <div class="mini-progress-fill mana" style="width: {{ (player.attributes.current_mana / player.attributes.max_mana * 100) if player.attributes.max_mana > 0 else 0 }}%"></div>
+                    </div>
+                </div>
+                {% if player.attributes.current_stamina %}
+                <div class="status-item with-bar">
+                    <span class="label">体力</span>
+                    <span class="value">{{ player.attributes.current_stamina }} / {{ player.attributes.max_stamina }}</span>
+                    <div class="mini-progress-bar">
+                        <div class="mini-progress-fill stamina" style="width: {{ (player.attributes.current_stamina / player.attributes.max_stamina * 100) if player.attributes.max_stamina > 0 else 0 }}%"></div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- 战斗属性卡片 -->
+        <div class="status-card">
+            <h3>战斗属性</h3>
+            <div class="status-items">
+                <div class="status-item">
+                    <span class="label">攻击力</span>
+                    <span class="value combat-stat">{{ player.attributes.attack_power }}</span>
+                </div>
+                <div class="status-item">
+                    <span class="label">防御力</span>
+                    <span class="value combat-stat">{{ player.attributes.defense }}</span>
+                </div>
+                <div class="status-item">
+                    <span class="label">速度</span>
+                    <span class="value combat-stat">{{ player.attributes.speed or 10 }}</span>
+                </div>
+                {% if hasattr(player.attributes, 'critical_rate') %}
+                <div class="status-item">
+                    <span class="label">暴击率</span>
+                    <span class="value">{{ player.attributes.critical_rate }}%</span>
+                </div>
+                {% endif %}
+                {% if hasattr(player.attributes, 'dodge_rate') %}
+                <div class="status-item">
+                    <span class="label">闪避率</span>
+                    <span class="value">{{ player.attributes.dodge_rate }}%</span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- 其他属性卡片 -->
+        {% if hasattr(player.attributes, 'strength') %}
+        <div class="status-card">
+            <h3>基础属性</h3>
+            <div class="status-items">
+                <div class="status-item">
+                    <span class="label">力量</span>
+                    <span class="value">{{ player.attributes.strength or 10 }}</span>
+                </div>
+                <div class="status-item">
+                    <span class="label">体质</span>
+                    <span class="value">{{ player.attributes.constitution or 10 }}</span>
+                </div>
+                <div class="status-item">
+                    <span class="label">敏捷</span>
+                    <span class="value">{{ player.attributes.agility or 10 }}</span>
+                </div>
+                <div class="status-item">
+                    <span class="label">智力</span>
+                    <span class="value">{{ player.attributes.intelligence or 10 }}</span>
+                </div>
+                <div class="status-item">
+                    <span class="label">意志</span>
+                    <span class="value">{{ player.attributes.willpower or 10 }}</span>
+                </div>
+                <div class="status-item">
+                    <span class="label">悟性</span>
+                    <span class="value">{{ player.attributes.comprehension or 10 }}</span>
+                </div>
+                <div class="status-item">
+                    <span class="label">幸运</span>
+                    <span class="value">{{ player.attributes.luck or 10 }}</span>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    {% else %}
+    <div class="error-message">
+        <div class="error-icon">⚠️</div>
+        <div class="error-text">
+            <h3>无法读取状态信息</h3>
+            <p>角色数据未加载，请刷新页面重试。</p>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+.modal-header h2 {
+    font-size: 20px;
+    color: #d8d8d8;
+    margin-bottom: 20px;
+    text-align: center;
+    letter-spacing: 2px;
+}
+
+.status-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.status-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(200, 200, 200, 0.1);
+    border-radius: 8px;
+    padding: 16px;
+    transition: all 0.3s ease;
+}
+
+.status-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(200, 200, 200, 0.2);
+}
+
+.status-card h3 {
+    font-size: 14px;
+    color: #a8a8a8;
+    margin-bottom: 12px;
+    text-align: center;
+    letter-spacing: 1px;
+    border-bottom: 1px solid rgba(200, 200, 200, 0.1);
+    padding-bottom: 8px;
+}
+
+.status-items {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.status-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(200, 200, 200, 0.05);
+}
+
+.status-item:last-child {
+    border-bottom: none;
+}
+
+.status-item.with-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+}
+
+.status-item .label {
+    color: #888;
+    font-size: 13px;
+}
+
+.status-item .value {
+    color: #d8d8d8;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.status-item .value.combat-stat {
+    color: #ffc107;
+}
+
+.status-item .value.spiritual-root {
+    color: #87ceeb;
+}
+
+.mini-progress-bar {
+    width: 100%;
+    height: 4px;
+    background: rgba(100, 100, 100, 0.2);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.mini-progress-fill {
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+.mini-progress-fill.health {
+    background: linear-gradient(90deg, #dc3545, #ff6b6b);
+}
+
+.mini-progress-fill.mana {
+    background: linear-gradient(90deg, #17a2b8, #5bc0de);
+}
+
+.mini-progress-fill.stamina {
+    background: linear-gradient(90deg, #28a745, #5cb85c);
+}
+
+.error-message {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    background: rgba(220, 53, 69, 0.1);
+    border: 1px solid rgba(220, 53, 69, 0.3);
+    border-radius: 8px;
+}
+
+.error-icon {
+    font-size: 24px;
+}
+
+.error-text h3 {
+    color: #ff6b6b;
+    margin-bottom: 4px;
+}
+
+.error-text p {
+    color: #bbb;
+    font-size: 13px;
+}
+
+@media (max-width: 600px) {
+    .status-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>

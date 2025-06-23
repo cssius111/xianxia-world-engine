@@ -1,0 +1,85 @@
+<!-- 设置模态框 -->
+<div class="text-gray-200">
+    <h2 class="text-2xl font-light mb-6 tracking-wider">游戏设置</h2>
+    
+    <div class="space-y-6">
+        <div>
+            <h3 class="text-lg mb-3">音频设置</h3>
+            <div class="bg-gray-800 p-4 rounded">
+                <div class="flex items-center justify-between mb-4">
+                    <label class="text-sm">背景音乐</label>
+                    <input type="checkbox" id="bgm-toggle" checked class="w-4 h-4">
+                </div>
+                <div>
+                    <label class="text-sm block mb-2">音量</label>
+                    <input type="range" id="bgm-volume" min="0" max="100" value="30" 
+                        class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer">
+                </div>
+            </div>
+        </div>
+        
+        <div>
+            <h3 class="text-lg mb-3">显示设置</h3>
+            <div class="bg-gray-800 p-4 rounded space-y-3">
+                <div class="flex items-center justify-between">
+                    <label class="text-sm">显示时间戳</label>
+                    <input type="checkbox" id="timestamp-toggle" class="w-4 h-4">
+                </div>
+                <div class="flex items-center justify-between">
+                    <label class="text-sm">动画效果</label>
+                    <input type="checkbox" id="animation-toggle" checked class="w-4 h-4">
+                </div>
+                <div class="flex items-center justify-between">
+                    <label class="text-sm">自动滚动</label>
+                    <input type="checkbox" id="autoscroll-toggle" checked class="w-4 h-4">
+                </div>
+            </div>
+        </div>
+        
+        <div>
+            <h3 class="text-lg mb-3">游戏设置</h3>
+            <div class="bg-gray-800 p-4 rounded space-y-3">
+                <div class="flex items-center justify-between">
+                    <label class="text-sm">自动保存</label>
+                    <input type="checkbox" id="autosave-toggle" checked class="w-4 h-4">
+                </div>
+                <div class="flex items-center justify-between">
+                    <label class="text-sm">新手提示</label>
+                    <input type="checkbox" id="tutorial-toggle" checked class="w-4 h-4">
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center pt-4">
+            <button onclick="saveSettings()" 
+                class="px-6 py-2 bg-blue-600 hover:bg-blue-700 rounded transition-colors">
+                保存设置
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+// 初始化设置
+document.getElementById('bgm-toggle').addEventListener('change', (e) => {
+    if (window.GameUI && window.GameUI.bgMusic) {
+        if (e.target.checked) {
+            window.GameUI.bgMusic.play();
+        } else {
+            window.GameUI.bgMusic.pause();
+        }
+    }
+});
+
+document.getElementById('bgm-volume').addEventListener('input', (e) => {
+    const volume = e.target.value / 100;
+    if (window.GameUI && window.GameUI.bgMusic) {
+        window.GameUI.bgMusic.setVolume(volume);
+    }
+});
+
+function saveSettings() {
+    showNotification('设置已保存', 'success');
+    setTimeout(() => closeModal(), 1000);
+}
+</script>

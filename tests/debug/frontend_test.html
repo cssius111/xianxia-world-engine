@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>修仙世界引擎 - 前端测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .test-result {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        .error {
+            background: #ffebee;
+            color: #c62828;
+        }
+        .warning {
+            background: #fff3e0;
+            color: #e65100;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        pre {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        #console {
+            background: #263238;
+            color: #aed581;
+            padding: 15px;
+            border-radius: 4px;
+            height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 修仙世界引擎 - 前端测试</h1>
+        <p>此页面用于测试前端JavaScript模块和功能</p>
+
+        <div class="test-section">
+            <h2>1. 基础环境测试</h2>
+            <button onclick="testBasicEnvironment()">运行测试</button>
+            <div id="basic-test-results"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>2. 模块加载测试</h2>
+            <button onclick="testModuleLoading()">运行测试</button>
+            <div id="module-test-results"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>3. API连接测试</h2>
+            <button onclick="testAPIConnection()">运行测试</button>
+            <div id="api-test-results"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>4. 游戏功能测试</h2>
+            <button onclick="testGameFunctions()">运行测试</button>
+            <div id="game-test-results"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>5. 性能测试</h2>
+            <button onclick="testPerformance()">运行测试</button>
+            <div id="performance-test-results"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>控制台输出</h2>
+            <button onclick="clearConsole()">清空</button>
+            <div id="console"></div>
+        </div>
+    </div>
+
+    <script>
+        // 测试结果记录
+        const testResults = {
+            basic: [],
+            modules: [],
+            api: [],
+            game: [],
+            performance: []
+        };
+
+        // 控制台输出
+        function log(message, type = 'info') {
+            const console = document.getElementById('console');
+            const timestamp = new Date().toLocaleTimeString();
+            const color = type === 'error' ? '#ef5350' : type === 'success' ? '#66bb6a' : '#aed581';
+            console.innerHTML += `<div style="color: ${color}">[${timestamp}] ${message}</div>`;
+            console.scrollTop = console.scrollHeight;
+        }
+
+        function clearConsole() {
+            document.getElementById('console').innerHTML = '';
+        }
+
+        // 显示测试结果
+        function showResults(containerId, results) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            results.forEach(result => {
+                const div = document.createElement('div');
+                div.className = `test-result ${result.status}`;
+                div.innerHTML = `
+                    <strong>${result.status === 'success' ? '✅' : result.status === 'error' ? '❌' : '⚠️'} ${result.test}</strong>
+                    ${result.message ? `<p>${result.message}</p>` : ''}
+                    ${result.details ? `<pre>${JSON.stringify(result.details, null, 2)}</pre>` : ''}
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // 1. 基础环境测试
+        async function testBasicEnvironment() {
+            log('开始基础环境测试...');
+            const results = [];
+
+            // 测试浏览器支持
+            results.push({
+                test: '浏览器特性支持',
+                status: 'success',
+                details: {
+                    localStorage: typeof(Storage) !== "undefined",
+                    fetch: typeof(fetch) !== "undefined",
+                    promises: typeof(Promise) !== "undefined",
+                    modules: 'noModule' in HTMLScriptElement.prototype
+                }
+            });
+
+            // 测试Service Worker支持
+            if ('serviceWorker' in navigator) {
+                results.push({
+                    test: 'Service Worker支持',
+                    status: 'success',
+                    message: 'PWA功能可用'
+                });
+            } else {
+                results.push({
+                    test: 'Service Worker支持',
+                    status: 'warning',
+                    message: 'PWA功能不可用'
+                });
+            }
+
+            // 测试WebAudio支持
+            if (window.AudioContext || window.webkitAudioContext) {
+                results.push({
+                    test: 'Web Audio API支持',
+                    status: 'success',
+                    message: '音频功能可用'
+                });
+            } else {
+                results.push({
+                    test: 'Web Audio API支持',
+                    status: 'error',
+                    message: '音频功能不可用'
+                });
+            }
+
+            testResults.basic = results;
+            showResults('basic-test-results', results);
+            log('基础环境测试完成', 'success');
+        }
+
+        // 2. 模块加载测试
+        async function testModuleLoading() {
+            log('开始模块加载测试...');
+            const results = [];
+
+            // 测试加载CSS
+            try {
+                const response = await fetch('/static/css/ink_style.css');
+                results.push({
+                    test: 'CSS样式文件',
+                    status: response.ok ? 'success' : 'error',
+                    message: response.ok ? '水墨风样式加载成功' : `加载失败: ${response.status}`
+                });
+            } catch (e) {
+                results.push({
+                    test: 'CSS样式文件',
+                    status: 'error',
+                    message: `错误: ${e.message}`
+                });
+            }
+
+            // 测试加载JavaScript模块
+            const jsModules = [
+                '/static/js/game_controller.js',
+                '/static/js/modules/ui_controller.js',
+                '/static/js/modules/audio_controller.js',
+                '/static/js/modules/player_profile.js',
+                '/static/js/modules/modal_controller.js'
+            ];
+
+            for (const module of jsModules) {
+                try {
+                    const response = await fetch(module);
+                    results.push({
+                        test: `JS模块: ${module.split('/').pop()}`,
+                        status: response.ok ? 'success' : 'error',
+                        message: response.ok ? '加载成功' : `加载失败: ${response.status}`
+                    });
+                } catch (e) {
+                    results.push({
+                        test: `JS模块: ${module.split('/').pop()}`,
+                        status: 'error',
+                        message: `错误: ${e.message}`
+                    });
+                }
+            }
+
+            testResults.modules = results;
+            showResults('module-test-results', results);
+            log('模块加载测试完成', 'success');
+        }
+
+        // 3. API连接测试
+        async function testAPIConnection() {
+            log('开始API连接测试...');
+            const results = [];
+
+            // 测试基础连接
+            try {
+                const response = await fetch('/');
+                results.push({
+                    test: '服务器连接',
+                    status: response.ok || response.status === 302 ? 'success' : 'error',
+                    message: `状态码: ${response.status}`
+                });
+            } catch (e) {
+                results.push({
+                    test: '服务器连接',
+                    status: 'error',
+                    message: `无法连接到服务器: ${e.message}`
+                });
+            }
+
+            // 测试API端点
+            const endpoints = [
+                { path: '/status', method: 'GET', name: '状态API' },
+                { path: '/log', method: 'GET', name: '日志API' },
+                { path: '/get_audio_list', method: 'GET', name: '音频列表API' }
+            ];
+
+            for (const endpoint of endpoints) {
+                try {
+                    const response = await fetch(endpoint.path, { method: endpoint.method });
+                    const isSuccess = response.ok || (endpoint.path === '/status' && response.status === 401);
+                    
+                    results.push({
+                        test: endpoint.name,
+                        status: isSuccess ? 'success' : 'error',
+                        message: `${endpoint.method} ${endpoint.path} - 状态: ${response.status}`
+                    });
+
+                    if (response.ok) {
+                        try {
+                            const data = await response.json();
+                            log(`${endpoint.name} 返回数据: ${JSON.stringify(data).substring(0, 100)}...`);
+                        } catch (e) {
+                            log(`${endpoint.name} 返回非JSON数据`, 'warning');
+                        }
+                    }
+                } catch (e) {
+                    results.push({
+                        test: endpoint.name,
+                        status: 'error',
+                        message: `错误: ${e.message}`
+                    });
+                }
+            }
+
+            testResults.api = results;
+            showResults('api-test-results', results);
+            log('API连接测试完成', 'success');
+        }
+
+        // 4. 游戏功能测试
+        async function testGameFunctions() {
+            log('开始游戏功能测试...');
+            const results = [];
+
+            // 测试本地存储
+            try {
+                localStorage.setItem('test_key', 'test_value');
+                const value = localStorage.getItem('test_key');
+                localStorage.removeItem('test_key');
+                
+                results.push({
+                    test: '本地存储功能',
+                    status: value === 'test_value' ? 'success' : 'error',
+                    message: '游戏存档功能可用'
+                });
+            } catch (e) {
+                results.push({
+                    test: '本地存储功能',
+                    status: 'error',
+                    message: `错误: ${e.message}`
+                });
+            }
+
+            // 测试JSON解析
+            try {
+                const testData = { player: { name: '测试玩家', level: 1 } };
+                const json = JSON.stringify(testData);
+                const parsed = JSON.parse(json);
+                
+                results.push({
+                    test: 'JSON数据处理',
+                    status: parsed.player.name === '测试玩家' ? 'success' : 'error',
+                    message: '数据序列化功能正常'
+                });
+            } catch (e) {
+                results.push({
+                    test: 'JSON数据处理',
+                    status: 'error',
+                    message: `错误: ${e.message}`
+                });
+            }
+
+            // 测试事件系统
+            try {
+                let eventFired = false;
+                const testHandler = () => { eventFired = true; };
+                
+                window.addEventListener('test-event', testHandler);
+                window.dispatchEvent(new CustomEvent('test-event'));
+                window.removeEventListener('test-event', testHandler);
+                
+                results.push({
+                    test: '事件系统',
+                    status: eventFired ? 'success' : 'error',
+                    message: '事件触发和监听正常'
+                });
+            } catch (e) {
+                results.push({
+                    test: '事件系统',
+                    status: 'error',
+                    message: `错误: ${e.message}`
+                });
+            }
+
+            // 测试定时器
+            results.push({
+                test: '定时器功能',
+                status: 'success',
+                message: '游戏循环支持可用',
+                details: {
+                    setTimeout: typeof setTimeout === 'function',
+                    setInterval: typeof setInterval === 'function',
+                    requestAnimationFrame: typeof requestAnimationFrame === 'function'
+                }
+            });
+
+            testResults.game = results;
+            showResults('game-test-results', results);
+            log('游戏功能测试完成', 'success');
+        }
+
+        // 5. 性能测试
+        async function testPerformance() {
+            log('开始性能测试...');
+            const results = [];
+
+            // 测试渲染性能
+            const startTime = performance.now();
+            for (let i = 0; i < 1000; i++) {
+                const div = document.createElement('div');
+                div.textContent = `测试元素 ${i}`;
+                document.body.appendChild(div);
+                document.body.removeChild(div);
+            }
+            const renderTime = performance.now() - startTime;
+
+            results.push({
+                test: 'DOM渲染性能',
+                status: renderTime < 100 ? 'success' : renderTime < 500 ? 'warning' : 'error',
+                message: `1000次DOM操作耗时: ${renderTime.toFixed(2)}ms`,
+                details: {
+                    operations: 1000,
+                    totalTime: renderTime.toFixed(2),
+                    avgTime: (renderTime / 1000).toFixed(2)
+                }
+            });
+
+            // 测试内存使用
+            if (performance.memory) {
+                results.push({
+                    test: '内存使用情况',
+                    status: 'success',
+                    details: {
+                        used: Math.round(performance.memory.usedJSHeapSize / 1048576) + ' MB',
+                        total: Math.round(performance.memory.totalJSHeapSize / 1048576) + ' MB',
+                        limit: Math.round(performance.memory.jsHeapSizeLimit / 1048576) + ' MB'
+                    }
+                });
+            }
+
+            // 测试网络延迟
+            const pingStart = performance.now();
+            try {
+                await fetch('/status');
+                const pingTime = performance.now() - pingStart;
+                
+                results.push({
+                    test: '网络延迟',
+                    status: pingTime < 50 ? 'success' : pingTime < 200 ? 'warning' : 'error',
+                    message: `API响应时间: ${pingTime.toFixed(2)}ms`
+                });
+            } catch (e) {
+                results.push({
+                    test: '网络延迟',
+                    status: 'error',
+                    message: '无法测试网络延迟'
+                });
+            }
+
+            testResults.performance = results;
+            showResults('performance-test-results', results);
+            log('性能测试完成', 'success');
+        }
+
+        // 页面加载时自动运行基础测试
+        window.addEventListener('DOMContentLoaded', () => {
+            log('前端测试页面已加载');
+            log('点击各个测试按钮开始测试');
+        });
+    </script>
+</body>
+</html>

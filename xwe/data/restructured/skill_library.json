@@ -1,0 +1,301 @@
+{
+  "meta": {
+    "version": "2.0.0",
+    "description": "功法技能库配置",
+    "last_updated": "2025-06-22"
+  },
+  "skill_categories": {
+    "cultivation": {
+      "name": "修炼功法",
+      "description": "提升修为的基础功法"
+    },
+    "combat": {
+      "name": "战斗技能",
+      "description": "战斗中使用的攻击技能"
+    },
+    "support": {
+      "name": "辅助技能",
+      "description": "提供增益效果的技能"
+    },
+    "movement": {
+      "name": "身法",
+      "description": "移动和闪避相关技能"
+    },
+    "crafting": {
+      "name": "炼制技能",
+      "description": "炼丹、炼器等生产技能"
+    }
+  },
+  "cultivation_skills": [
+    {
+      "id": "basic_meditation",
+      "name": "基础吐纳诀",
+      "description": "最基础的修炼功法，通过调息吐纳聚集灵气",
+      "type": "cultivation",
+      "element": "neutral",
+      "rank": "mortal",
+      "level": 1,
+      "max_level": 10,
+      "effects": {
+        "exp_bonus": 10,
+        "mana_recovery": 5
+      },
+      "requirements": {
+        "realm": "qi_gathering",
+        "level": 1
+      },
+      "cost": {
+        "time": 30,
+        "stamina": 10
+      }
+    },
+    {
+      "id": "five_elements_method",
+      "name": "五行归元功",
+      "description": "调和五行之力的高级功法，修炼速度极快",
+      "type": "cultivation",
+      "element": "all",
+      "rank": "earth",
+      "level": 1,
+      "max_level": 15,
+      "effects": {
+        "exp_bonus": 30,
+        "mana_recovery": 15,
+        "attribute_bonus": {
+          "all": 0.1
+        }
+      },
+      "requirements": {
+        "realm": "foundation",
+        "level": 3,
+        "skills": ["basic_meditation"]
+      },
+      "cost": {
+        "time": 60,
+        "stamina": 25
+      }
+    }
+  ],
+  "combat_skills": [
+    {
+      "id": "spirit_blade",
+      "name": "灵刃术",
+      "description": "凝聚灵力形成利刃攻击敌人",
+      "type": "combat",
+      "element": "metal",
+      "rank": "mortal",
+      "level": 1,
+      "max_level": 10,
+      "effects": {
+        "damage": "attack_power * 1.5 + mana * 0.2",
+        "crit_chance": 15
+      },
+      "requirements": {
+        "realm": "qi_gathering",
+        "level": 3,
+        "spiritual_root": "metal"
+      },
+      "cost": {
+        "mana": 20,
+        "cooldown": 2
+      }
+    },
+    {
+      "id": "fireball",
+      "name": "火球术",
+      "description": "凝聚火焰元素形成火球攻击",
+      "type": "combat",
+      "element": "fire",
+      "rank": "mortal",
+      "level": 1,
+      "max_level": 12,
+      "effects": {
+        "damage": "attack_power * 1.2 + mana * 0.3",
+        "burn_chance": 25,
+        "burn_damage": 10
+      },
+      "requirements": {
+        "realm": "qi_gathering",
+        "level": 5,
+        "spiritual_root": "fire"
+      },
+      "cost": {
+        "mana": 25,
+        "cooldown": 3
+      }
+    },
+    {
+      "id": "sword_rain",
+      "name": "万剑归宗",
+      "description": "召唤无数灵剑攻击敌人的强大技能",
+      "type": "combat",
+      "element": "metal",
+      "rank": "heaven",
+      "level": 1,
+      "max_level": 20,
+      "effects": {
+        "damage": "attack_power * 3.0 + mana * 0.5",
+        "hit_count": "3-7",
+        "armor_pierce": 50
+      },
+      "requirements": {
+        "realm": "golden_core",
+        "level": 7,
+        "skills": ["spirit_blade"],
+        "spiritual_root": "metal"
+      },
+      "cost": {
+        "mana": 100,
+        "cooldown": 15
+      }
+    }
+  ],
+  "support_skills": [
+    {
+      "id": "healing_light",
+      "name": "治愈术",
+      "description": "使用温和的灵力治疗伤势",
+      "type": "support",
+      "element": "wood",
+      "rank": "mortal",
+      "level": 1,
+      "max_level": 10,
+      "effects": {
+        "heal": "mana * 0.8 + level * 5",
+        "target": "self"
+      },
+      "requirements": {
+        "realm": "qi_gathering",
+        "level": 2,
+        "spiritual_root": "wood"
+      },
+      "cost": {
+        "mana": 30,
+        "cooldown": 5
+      }
+    },
+    {
+      "id": "barrier",
+      "name": "护体灵罩",
+      "description": "形成防护屏障，减少受到的伤害",
+      "type": "support",
+      "element": "earth",
+      "rank": "mortal",
+      "level": 1,
+      "max_level": 8,
+      "effects": {
+        "damage_reduction": 30,
+        "duration": 60,
+        "target": "self"
+      },
+      "requirements": {
+        "realm": "qi_gathering",
+        "level": 4,
+        "spiritual_root": "earth"
+      },
+      "cost": {
+        "mana": 40,
+        "cooldown": 30
+      }
+    }
+  ],
+  "movement_skills": [
+    {
+      "id": "swift_step",
+      "name": "疾风步",
+      "description": "提升移动速度的基础身法",
+      "type": "movement",
+      "element": "wind",
+      "rank": "mortal",
+      "level": 1,
+      "max_level": 8,
+      "effects": {
+        "speed_bonus": 50,
+        "dodge_bonus": 20,
+        "duration": 30
+      },
+      "requirements": {
+        "realm": "qi_gathering",
+        "level": 3
+      },
+      "cost": {
+        "stamina": 20,
+        "cooldown": 10
+      }
+    },
+    {
+      "id": "shadow_step",
+      "name": "鬼影迷踪",
+      "description": "瞬间移动到敌人身后的高级身法",
+      "type": "movement",
+      "element": "shadow",
+      "rank": "earth",
+      "level": 1,
+      "max_level": 12,
+      "effects": {
+        "teleport_range": 10,
+        "next_attack_bonus": 100,
+        "stealth_duration": 3
+      },
+      "requirements": {
+        "realm": "foundation",
+        "level": 5,
+        "skills": ["swift_step"]
+      },
+      "cost": {
+        "mana": 50,
+        "stamina": 30,
+        "cooldown": 20
+      }
+    }
+  ],
+  "skill_ranks": {
+    "mortal": {
+      "name": "凡品",
+      "color": "#888888",
+      "description": "普通的功法技能"
+    },
+    "earth": {
+      "name": "地品",
+      "color": "#8B4513",
+      "description": "较为稀有的功法技能"
+    },
+    "heaven": {
+      "name": "天品",
+      "color": "#4169E1",
+      "description": "珍贵的高级功法技能"
+    },
+    "immortal": {
+      "name": "仙品",
+      "color": "#FFD700",
+      "description": "传说中的仙家功法"
+    }
+  },
+  "skill_learning": {
+    "methods": [
+      {
+        "type": "teacher",
+        "name": "师父传授",
+        "success_rate": 90,
+        "cost": "指点费用"
+      },
+      {
+        "type": "manual",
+        "name": "秘籍自学",
+        "success_rate": 60,
+        "cost": "悟性要求"
+      },
+      {
+        "type": "enlightenment",
+        "name": "顿悟获得",
+        "success_rate": 10,
+        "cost": "机缘巧合"
+      }
+    ],
+    "upgrade_requirements": {
+      "practice_count": "level * 10",
+      "exp_cost": "level * 100",
+      "success_rate": "90 - level * 2"
+    }
+  }
+}

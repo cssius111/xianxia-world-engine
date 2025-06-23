@@ -1,0 +1,655 @@
+<!-- 地图系统模态框 -->
+<div class="modal-header">
+    <h2>世界地图</h2>
+</div>
+
+<div class="modal-body">
+    <div class="map-container">
+        <!-- 地图导航 -->
+        <div class="map-navigation">
+            <button class="nav-btn active" onclick="showMapView('world')">
+                <span class="nav-icon">🗺️</span>
+                世界地图
+            </button>
+            <button class="nav-btn" onclick="showMapView('region')">
+                <span class="nav-icon">🏞️</span>
+                区域地图
+            </button>
+            <button class="nav-btn" onclick="showMapView('local')">
+                <span class="nav-icon">🏘️</span>
+                本地地图
+            </button>
+        </div>
+
+        <!-- 世界地图视图 -->
+        <div class="map-view active" id="world-map">
+            <div class="map-grid">
+                <!-- 已知区域 -->
+                <div class="map-location visited current" onclick="selectLocation('qingyun_city')">
+                    <div class="location-icon">🏙️</div>
+                    <div class="location-name">青云城</div>
+                    <div class="location-status">当前位置</div>
+                </div>
+
+                <div class="map-location visited" onclick="selectLocation('qingyun_mountain')">
+                    <div class="location-icon">⛰️</div>
+                    <div class="location-name">青云山</div>
+                    <div class="location-status">已探索</div>
+                </div>
+
+                <div class="map-location discovered" onclick="selectLocation('misty_forest')">
+                    <div class="location-icon">🌲</div>
+                    <div class="location-name">迷雾森林</div>
+                    <div class="location-status">已发现</div>
+                </div>
+
+                <!-- 未知区域 -->
+                <div class="map-location unknown">
+                    <div class="location-icon">❓</div>
+                    <div class="location-name">未知区域</div>
+                    <div class="location-status">需要探索</div>
+                </div>
+
+                <div class="map-location unknown">
+                    <div class="location-icon">❓</div>
+                    <div class="location-name">未知区域</div>
+                    <div class="location-status">需要探索</div>
+                </div>
+
+                <div class="map-location unknown">
+                    <div class="location-icon">❓</div>
+                    <div class="location-name">未知区域</div>
+                    <div class="location-status">需要探索</div>
+                </div>
+
+                <!-- 特殊地点 -->
+                <div class="map-location special discovered" onclick="selectLocation('ancient_ruins')">
+                    <div class="location-icon">🏛️</div>
+                    <div class="location-name">古代遗迹</div>
+                    <div class="location-status">秘境</div>
+                </div>
+
+                <div class="map-location special unknown">
+                    <div class="location-icon">✨</div>
+                    <div class="location-name">神秘地点</div>
+                    <div class="location-status">传说中...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 区域地图视图 -->
+        <div class="map-view" id="region-map">
+            <div class="region-details">
+                <h3>青云城区域</h3>
+                <div class="region-locations">
+                    <div class="sub-location visited">
+                        <span class="sub-icon">🏠</span>
+                        城中心广场
+                    </div>
+                    <div class="sub-location visited">
+                        <span class="sub-icon">🛒</span>
+                        商业街
+                    </div>
+                    <div class="sub-location visited">
+                        <span class="sub-icon">⚔️</span>
+                        武器店
+                    </div>
+                    <div class="sub-location visited">
+                        <span class="sub-icon">💊</span>
+                        丹药铺
+                    </div>
+                    <div class="sub-location unknown">
+                        <span class="sub-icon">❓</span>
+                        未知区域
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 本地地图视图 -->
+        <div class="map-view" id="local-map">
+            <div class="local-details">
+                <h3>当前区域：青云城中心</h3>
+                <div class="local-map-grid">
+                    <div class="local-cell empty"></div>
+                    <div class="local-cell building">🏛️</div>
+                    <div class="local-cell empty"></div>
+                    <div class="local-cell road">🛤️</div>
+                    <div class="local-cell player">🧙‍♂️</div>
+                    <div class="local-cell road">🛤️</div>
+                    <div class="local-cell empty"></div>
+                    <div class="local-cell building">🏪</div>
+                    <div class="local-cell empty"></div>
+                </div>
+                <p class="local-description">
+                    你现在位于青云城的中心广场，这里是城市的心脏地带。
+                    周围有各种商店和建筑，人流熙攘。
+                </p>
+            </div>
+        </div>
+
+        <!-- 地图信息面板 -->
+        <div class="map-info-panel" id="location-info" style="display: none;">
+            <h3 id="info-location-name">地点名称</h3>
+            <div id="info-location-content">
+                <!-- 动态加载地点信息 -->
+            </div>
+            <div class="location-actions">
+                <button class="action-btn" onclick="travelToLocation()">
+                    <span>🚶</span>
+                    前往此地
+                </button>
+                <button class="action-btn" onclick="markLocation()">
+                    <span>📍</span>
+                    标记地点
+                </button>
+            </div>
+        </div>
+
+        <!-- 地图传说 -->
+        <div class="map-legend">
+            <h4>图例</h4>
+            <div class="legend-items">
+                <div class="legend-item">
+                    <span class="legend-icon current">🧙‍♂️</span>
+                    <span class="legend-text">当前位置</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-icon visited">✅</span>
+                    <span class="legend-text">已探索</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-icon discovered">👁️</span>
+                    <span class="legend-text">已发现</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-icon unknown">❓</span>
+                    <span class="legend-text">未知</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-icon special">✨</span>
+                    <span class="legend-text">特殊地点</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.modal-header h2 {
+    font-size: 20px;
+    color: #d8d8d8;
+    margin-bottom: 20px;
+    text-align: center;
+    letter-spacing: 2px;
+}
+
+.map-container {
+    max-height: 70vh;
+    overflow-y: auto;
+    display: grid;
+    gap: 20px;
+}
+
+.map-navigation {
+    display: flex;
+    gap: 8px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(200, 200, 200, 0.1);
+    border-radius: 8px;
+}
+
+.nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: transparent;
+    border: 1px solid rgba(200, 200, 200, 0.2);
+    color: #888;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 13px;
+}
+
+.nav-btn:hover,
+.nav-btn.active {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(200, 200, 200, 0.4);
+    color: #d8d8d8;
+}
+
+.nav-icon {
+    font-size: 16px;
+}
+
+.map-view {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.map-view.active {
+    display: block;
+}
+
+.map-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(200, 200, 200, 0.1);
+    border-radius: 8px;
+}
+
+.map-location {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 2px solid rgba(200, 200, 200, 0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    min-height: 120px;
+    justify-content: center;
+    text-align: center;
+}
+
+.map-location:hover {
+    background: rgba(255, 255, 255, 0.06);
+    transform: translateY(-2px);
+}
+
+.map-location.visited {
+    border-color: rgba(40, 167, 69, 0.5);
+    background: rgba(40, 167, 69, 0.1);
+}
+
+.map-location.current {
+    border-color: rgba(255, 193, 7, 0.7);
+    background: rgba(255, 193, 7, 0.15);
+    box-shadow: 0 0 15px rgba(255, 193, 7, 0.3);
+}
+
+.map-location.discovered {
+    border-color: rgba(23, 162, 184, 0.5);
+    background: rgba(23, 162, 184, 0.1);
+}
+
+.map-location.special {
+    border-color: rgba(111, 66, 193, 0.5);
+    background: rgba(111, 66, 193, 0.1);
+}
+
+.map-location.unknown {
+    border-color: rgba(108, 117, 125, 0.3);
+    background: rgba(108, 117, 125, 0.05);
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.location-icon {
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+.location-name {
+    color: #d8d8d8;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.location-status {
+    color: #888;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.map-location.current .location-status {
+    color: #ffc107;
+}
+
+.region-details,
+.local-details {
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(200, 200, 200, 0.1);
+    border-radius: 8px;
+}
+
+.region-details h3,
+.local-details h3 {
+    color: #d8d8d8;
+    margin-bottom: 16px;
+    font-size: 18px;
+    text-align: center;
+}
+
+.region-locations {
+    display: grid;
+    gap: 8px;
+}
+
+.sub-location {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(200, 200, 200, 0.1);
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.sub-location:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(200, 200, 200, 0.2);
+}
+
+.sub-location.visited {
+    border-left: 4px solid #28a745;
+}
+
+.sub-location.unknown {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.sub-icon {
+    font-size: 16px;
+    width: 20px;
+    text-align: center;
+}
+
+.local-map-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 16px 0;
+    max-width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.local-cell {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(200, 200, 200, 0.1);
+    border-radius: 4px;
+    font-size: 20px;
+}
+
+.local-cell.player {
+    background: rgba(255, 193, 7, 0.2);
+    border-color: rgba(255, 193, 7, 0.5);
+    animation: pulse 2s infinite;
+}
+
+.local-cell.building {
+    background: rgba(23, 162, 184, 0.1);
+    border-color: rgba(23, 162, 184, 0.3);
+}
+
+.local-cell.road {
+    background: rgba(108, 117, 125, 0.1);
+    border-color: rgba(108, 117, 125, 0.3);
+}
+
+.local-description {
+    color: #b8b8b8;
+    font-size: 14px;
+    line-height: 1.6;
+    text-align: center;
+    margin-top: 16px;
+}
+
+.map-info-panel {
+    margin-top: 20px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(200, 200, 200, 0.2);
+    border-radius: 8px;
+}
+
+.map-info-panel h3 {
+    color: #d8d8d8;
+    margin-bottom: 12px;
+    font-size: 16px;
+}
+
+.location-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.action-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(200, 200, 200, 0.2);
+    color: #b8b8b8;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 13px;
+}
+
+.action-btn:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(200, 200, 200, 0.4);
+    color: #d8d8d8;
+}
+
+.map-legend {
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(200, 200, 200, 0.1);
+    border-radius: 8px;
+}
+
+.map-legend h4 {
+    color: #d8d8d8;
+    margin-bottom: 12px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.legend-items {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #888;
+}
+
+.legend-icon {
+    font-size: 14px;
+    width: 20px;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .map-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .map-navigation {
+        flex-direction: column;
+    }
+    
+    .legend-items {
+        grid-template-columns: 1fr;
+    }
+    
+    .location-actions {
+        flex-direction: column;
+    }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+</style>
+
+<script>
+function showMapView(viewType) {
+    // 移除所有按钮的活动状态
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    // 激活当前按钮
+    event.target.classList.add('active');
+    
+    // 隐藏所有地图视图
+    document.querySelectorAll('.map-view').forEach(view => {
+        view.classList.remove('active');
+    });
+    
+    // 显示选中的视图
+    document.getElementById(viewType + '-map').classList.add('active');
+}
+
+function selectLocation(locationId) {
+    const panel = document.getElementById('location-info');
+    const nameElement = document.getElementById('info-location-name');
+    const contentElement = document.getElementById('info-location-content');
+    
+    // 地点信息数据
+    const locationData = {
+        'qingyun_city': {
+            name: '青云城',
+            description: '修仙界的重要城市，商贾云集，是许多修士的聚集地。',
+            features: ['商店齐全', '任务丰富', '传送便利'],
+            level: '新手友好',
+            danger: '安全'
+        },
+        'qingyun_mountain': {
+            name: '青云山',
+            description: '灵气充沛的修炼圣地，山中有各种珍贵的修炼资源。',
+            features: ['修炼加成', '材料丰富', '灵兽出没'],
+            level: '适合炼气期',
+            danger: '低危险'
+        },
+        'misty_forest': {
+            name: '迷雾森林',
+            description: '神秘的森林，常年被迷雾笼罩，隐藏着unknown的秘密。',
+            features: ['迷雾阻挡', '机缘与危险并存', '稀有材料'],
+            level: '适合筑基期',
+            danger: '中等危险'
+        },
+        'ancient_ruins': {
+            name: '古代遗迹',
+            description: '传说中的上古修士遗迹，蕴含着强大的机缘和宝物。',
+            features: ['强大宝物', '上古传承', '危险重重'],
+            level: '金丹期以上',
+            danger: '极度危险'
+        }
+    };
+    
+    const location = locationData[locationId];
+    if (location) {
+        nameElement.textContent = location.name;
+        contentElement.innerHTML = `
+            <p class="location-description">${location.description}</p>
+            <div class="location-details">
+                <div class="detail-row">
+                    <span class="detail-label">特色：</span>
+                    <span class="detail-value">${location.features.join('、')}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">推荐等级：</span>
+                    <span class="detail-value">${location.level}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">危险程度：</span>
+                    <span class="detail-value ${location.danger === '安全' ? 'safe' : location.danger === '低危险' ? 'low' : location.danger === '中等危险' ? 'medium' : 'high'}">${location.danger}</span>
+                </div>
+            </div>
+        `;
+        
+        panel.style.display = 'block';
+        panel.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+function travelToLocation() {
+    if (window.gameClient) {
+        const locationName = document.getElementById('info-location-name').textContent;
+        window.gameClient.sendCommandDirectly(`前往 ${locationName}`);
+        window.gameClient.closeModal();
+    }
+}
+
+function markLocation() {
+    if (window.gameClient) {
+        const locationName = document.getElementById('info-location-name').textContent;
+        window.gameClient.sendCommandDirectly(`标记 ${locationName}`);
+    }
+}
+</script>
+
+<style>
+.location-description {
+    color: #b8b8b8;
+    font-size: 14px;
+    margin-bottom: 16px;
+    line-height: 1.6;
+}
+
+.location-details {
+    display: grid;
+    gap: 8px;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(200, 200, 200, 0.05);
+}
+
+.detail-label {
+    color: #888;
+    font-size: 13px;
+}
+
+.detail-value {
+    color: #d8d8d8;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.detail-value.safe { color: #28a745; }
+.detail-value.low { color: #ffc107; }
+.detail-value.medium { color: #fd7e14; }
+.detail-value.high { color: #dc3545; }
+</style>

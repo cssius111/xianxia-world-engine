@@ -1,0 +1,11 @@
+{
+  "description": "角色Roll系统数据配置文件",
+  "note": "实际的Roll数据在 xwe/core/roll_system/roll_data.py 中",
+  "character_creation": {
+    "name_generation": {
+      "surnames": ["林", "张", "王", "李", "陈", "云", "苏", "白", "萧", "叶"],
+      "male_names": ["天", "云", "风", "辰", "宇", "逸", "浩", "轩", "凌", "霄"],
+      "female_names": ["雪", "月", "霜", "梦", "瑶", "婉", "清", "灵", "曦", "萱"]
+    }
+  }
+}

@@ -1,0 +1,236 @@
+{
+  "events": [
+    {
+      "id": "evt_childhood_injury",
+      "name": "幼年摔伤",
+      "description": "年幼时不慎从树上摔下，伤了筋骨，导致体质略有受损，但也因此学会了谨慎。",
+      "type": "random",
+      "category": "background",
+      "weight": 100,
+      "effect": {
+        "type": "stat_delta",
+        "payload": {
+          "physique": -2,
+          "agility": -1,
+          "intelligence": 1
+        }
+      },
+      "flags": ["childhood_injury=true", "cautious_nature=true"],
+      "tags": ["童年", "负面", "成长"]
+    },
+    {
+      "id": "evt_village_help",
+      "name": "助人为乐",
+      "description": "帮助村中老人挑水砍柴，虽然耽误了修炼时间，但获得了良好的名声和一些实用技巧。",
+      "type": "random",
+      "category": "social",
+      "weight": 150,
+      "effect": {
+        "type": "stat_delta",
+        "payload": {
+          "charm": 1,
+          "strength": 1
+        }
+      },
+      "flags": ["good_reputation=true"],
+      "conditions": {
+        "location": ["新手村", "凡人村落"],
+        "min_level": 1
+      }
+    },
+    {
+      "id": "evt_find_herbs",
+      "name": "采药奇遇",
+      "description": "在山中采药时发现一株百年灵芝，服用后大补元气！",
+      "type": "random",
+      "category": "exploration",
+      "weight": 50,
+      "effect": {
+        "type": "item_reward",
+        "payload": {
+          "items": [
+            {"id": "century_lingzhi", "count": 1}
+          ],
+          "exp": 100
+        }
+      },
+      "conditions": {
+        "location": ["深山", "灵山"],
+        "min_luck": 5
+      },
+      "tags": ["机缘", "灵药", "幸运"]
+    },
+    {
+      "id": "evt_bandit_encounter",
+      "name": "山贼劫道",
+      "description": "路遇山贼劫道，虽然最终击退了他们，但也受了些轻伤。",
+      "type": "random",
+      "category": "combat",
+      "weight": 120,
+      "effect": {
+        "type": "stat_delta",
+        "payload": {
+          "vitality": -3
+        }
+      },
+      "combat_trigger": {
+        "enemy": "mountain_bandit",
+        "count": "2-4"
+      },
+      "conditions": {
+        "location": ["荒郊野外", "山道"],
+        "min_level": 3
+      },
+      "tags": ["战斗", "危险", "山贼"]
+    },
+    {
+      "id": "evt_elder_guidance",
+      "name": "高人指点",
+      "description": "偶遇云游高人，获其指点修炼之道，茅塞顿开！",
+      "type": "random",
+      "category": "cultivation",
+      "weight": 30,
+      "effect": {
+        "type": "stat_delta",
+        "payload": {
+          "intelligence": 2,
+          "cultivation_speed": 0.1
+        }
+      },
+      "flags": ["elder_guidance=true"],
+      "conditions": {
+        "min_realm": "炼气期三层"
+      },
+      "tags": ["机缘", "高人", "顿悟"]
+    },
+    {
+      "id": "evt_spirit_stone_mine",
+      "name": "发现灵石矿",
+      "description": "在探索山洞时，意外发现一个小型灵石矿脉！",
+      "type": "random",
+      "category": "exploration",
+      "weight": 20,
+      "effect": {
+        "type": "item_reward",
+        "payload": {
+          "items": [
+            {"id": "low_spirit_stone", "count": 50}
+          ],
+          "money": 500
+        }
+      },
+      "flags": ["found_mine=true"],
+      "conditions": {
+        "location": ["矿洞", "山洞", "地下"],
+        "min_luck": 7
+      },
+      "tags": ["探索", "财富", "灵石"]
+    },
+    {
+      "id": "evt_beast_friend",
+      "name": "灵兽结缘",
+      "description": "救助了一只受伤的灵兽幼崽，它似乎对你产生了好感。",
+      "type": "random",
+      "category": "social",
+      "weight": 40,
+      "effect": {
+        "type": "boolean_flag",
+        "payload": {
+          "action": "set",
+          "flags": ["beast_affinity", "has_pet_option"]
+        }
+      },
+      "follow_up_quest": "tame_spirit_beast",
+      "conditions": {
+        "min_charm": 5
+      },
+      "tags": ["灵兽", "缘分", "宠物"]
+    },
+    {
+      "id": "evt_technique_insight",
+      "name": "功法顿悟",
+      "description": "在修炼中突然福至心灵，对功法有了更深的理解！",
+      "type": "random",
+      "category": "cultivation",
+      "weight": 60,
+      "effect": {
+        "type": "stat_delta",
+        "payload": {
+          "exp": 200,
+          "intelligence": 1
+        }
+      },
+      "conditions": {
+        "activity": "cultivating",
+        "min_intelligence": 6
+      },
+      "tags": ["修炼", "顿悟", "进步"]
+    },
+    {
+      "id": "evt_treasure_map",
+      "name": "藏宝图线索",
+      "description": "从一个醉酒的散修那里得到了半张藏宝图，似乎标注着某个宝藏的位置。",
+      "type": "random",
+      "category": "exploration",
+      "weight": 25,
+      "effect": {
+        "type": "item_reward",
+        "payload": {
+          "items": [
+            {"id": "treasure_map_half", "count": 1}
+          ]
+        }
+      },
+      "flags": ["has_treasure_map=true"],
+      "conditions": {
+        "location": ["酒楼", "客栈", "坊市"]
+      },
+      "tags": ["线索", "宝藏", "冒险"]
+    },
+    {
+      "id": "evt_heart_demon",
+      "name": "心魔侵扰",
+      "description": "修炼时操之过急，引发心魔，虽然最终克服，但元气大伤。",
+      "type": "random",
+      "category": "cultivation",
+      "weight": 80,
+      "effect": {
+        "type": "stat_delta",
+        "payload": {
+          "vitality": -5,
+          "exp": -100,
+          "intelligence": 1
+        }
+      },
+      "flags": ["overcame_heart_demon=true"],
+      "conditions": {
+        "activity": "breakthrough_attempt",
+        "min_level": 10
+      },
+      "tags": ["危险", "心魔", "修炼"]
+    }
+  ],
+
+  "event_pools": {
+    "early_game": ["evt_childhood_injury", "evt_village_help", "evt_find_herbs"],
+    "mid_game": ["evt_bandit_encounter", "evt_elder_guidance", "evt_spirit_stone_mine"],
+    "exploration": ["evt_find_herbs", "evt_spirit_stone_mine", "evt_treasure_map"],
+    "cultivation": ["evt_elder_guidance", "evt_technique_insight", "evt_heart_demon"],
+    "social": ["evt_village_help", "evt_beast_friend"]
+  },
+
+  "fallback_config": {
+    "use_pools": true,
+    "default_pool": "early_game",
+    "level_based_pools": {
+      "1-5": "early_game",
+      "6-15": "mid_game",
+      "16+": "all"
+    },
+    "category_override": {
+      "exploration": "exploration",
+      "cultivation": "cultivation",
+      "social": "social"
+    }
+  }
+}

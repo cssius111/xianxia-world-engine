@@ -1,0 +1,130 @@
+{
+  "meta": {
+    "version": "2.0.0",
+    "description": "修炼境界系统配置",
+    "last_updated": "2025-06-22"
+  },
+  "realm_progression": [
+    {
+      "id": "qi_gathering",
+      "name": "炼气期",
+      "description": "修仙入门阶段，聚集天地灵气于体内",
+      "levels": 9,
+      "base_exp_requirement": 100,
+      "exp_multiplier": 1.5,
+      "breakthrough_difficulty": 10,
+      "unlock_features": ["基础修炼", "简单法术"],
+      "attribute_bonus": {
+        "health": 1.0,
+        "mana": 1.0,
+        "attack": 1.0,
+        "defense": 1.0,
+        "speed": 1.0
+      }
+    },
+    {
+      "id": "foundation",
+      "name": "筑基期",
+      "description": "构筑修仙根基，奠定未来道途",
+      "levels": 9,
+      "base_exp_requirement": 1000,
+      "exp_multiplier": 2.0,
+      "breakthrough_difficulty": 25,
+      "unlock_features": ["高级修炼", "飞行术", "法器使用"],
+      "attribute_bonus": {
+        "health": 1.5,
+        "mana": 1.8,
+        "attack": 1.3,
+        "defense": 1.2,
+        "speed": 1.1
+      },
+      "breakthrough_requirements": {
+        "items": ["筑基丹"],
+        "conditions": ["悟性 >= 50", "灵根品质 >= 普通"]
+      }
+    },
+    {
+      "id": "golden_core",
+      "name": "金丹期",
+      "description": "凝聚金丹，寿命大增，法力精纯",
+      "levels": 9,
+      "base_exp_requirement": 10000,
+      "exp_multiplier": 3.0,
+      "breakthrough_difficulty": 50,
+      "unlock_features": ["神识探测", "遁法", "炼丹", "布阵"],
+      "attribute_bonus": {
+        "health": 2.5,
+        "mana": 3.0,
+        "attack": 2.0,
+        "defense": 1.8,
+        "speed": 1.5
+      },
+      "breakthrough_requirements": {
+        "items": ["凝丹草", "地火精华"],
+        "conditions": ["悟性 >= 80", "完成筑基期所有功法"]
+      }
+    },
+    {
+      "id": "nascent_soul",
+      "name": "元婴期",
+      "description": "孕育元婴，神魂分离，踏入长生之门",
+      "levels": 9,
+      "base_exp_requirement": 100000,
+      "exp_multiplier": 4.0,
+      "breakthrough_difficulty": 100,
+      "unlock_features": ["分身术", "空间法术", "高级炼器"],
+      "attribute_bonus": {
+        "health": 4.0,
+        "mana": 5.0,
+        "attack": 3.5,
+        "defense": 3.0,
+        "speed": 2.5
+      },
+      "breakthrough_requirements": {
+        "items": ["化婴丹", "天材地宝"],
+        "conditions": ["悟性 >= 120", "渡过心魔劫"]
+      }
+    }
+  ],
+  "breakthrough_system": {
+    "success_rate_base": 50,
+    "modifiers": {
+      "high_quality_pill": 20,
+      "perfect_timing": 15,
+      "previous_failures": -10,
+      "blessed_location": 25,
+      "teacher_guidance": 30
+    },
+    "failure_consequences": [
+      "修为倒退10%",
+      "经脉受损",
+      "灵根品质下降",
+      "获得心魔"
+    ]
+  },
+  "cultivation_methods": {
+    "meditation": {
+      "name": "打坐修炼",
+      "base_exp_gain": 10,
+      "time_cost": 1,
+      "mana_cost": 0,
+      "description": "最基础的修炼方式"
+    },
+    "pill_cultivation": {
+      "name": "丹药辅助修炼",
+      "base_exp_gain": 25,
+      "time_cost": 1,
+      "mana_cost": 0,
+      "requirements": ["相应丹药"],
+      "description": "使用丹药加速修炼"
+    },
+    "formation_cultivation": {
+      "name": "阵法修炼",
+      "base_exp_gain": 40,
+      "time_cost": 2,
+      "mana_cost": 20,
+      "requirements": ["修炼阵法", "灵石"],
+      "description": "借助阵法聚集灵气修炼"
+    }
+  }
+}

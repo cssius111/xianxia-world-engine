@@ -1,0 +1,1096 @@
+{
+  "meta": {
+    "version": "3.0.0",
+    "description": "修仙世界引擎事件模板定义",
+    "schema_version": "2025-06",
+    "last_modified": "2025-06-07"
+  },
+  "event_categories": {
+    "exploration": {
+      "id": "exploration",
+      "name": "探索事件",
+      "trigger_type": "location_based",
+      "frequency": "common"
+    },
+    "cultivation": {
+      "id": "cultivation",
+      "name": "修炼事件",
+      "trigger_type": "action_based",
+      "frequency": "common"
+    },
+    "encounter": {
+      "id": "encounter",
+      "name": "遭遇事件",
+      "trigger_type": "random",
+      "frequency": "uncommon"
+    },
+    "quest": {
+      "id": "quest",
+      "name": "任务事件",
+      "trigger_type": "chain",
+      "frequency": "rare"
+    },
+    "catastrophe": {
+      "id": "catastrophe",
+      "name": "灾劫事件",
+      "trigger_type": "scheduled",
+      "frequency": "very_rare"
+    },
+    "random_encounter": {
+      "id": "random_encounter",
+      "name": "随机遭遇",
+      "trigger_type": "varied",
+      "frequency": "高"
+    },
+    "cultivation_event": {
+      "id": "cultivation_event",
+      "name": "修炼事件",
+      "trigger_type": "varied",
+      "frequency": "中"
+    },
+    "social_event": {
+      "id": "social_event",
+      "name": "社交事件",
+      "trigger_type": "varied",
+      "frequency": "中高"
+    },
+    "world_event": {
+      "id": "world_event",
+      "name": "世界事件",
+      "trigger_type": "varied",
+      "frequency": "低"
+    },
+    "karmic_event": {
+      "id": "karmic_event",
+      "name": "因果事件",
+      "trigger_type": "varied",
+      "frequency": "中"
+    }
+  },
+  "event_templates": [
+    {
+      "id": "mysterious_cave",
+      "name": "神秘洞穴",
+      "category": "exploration",
+      "rarity": "uncommon",
+      "requirements": {
+        "location_type": [
+          "mountain",
+          "wilderness"
+        ],
+        "player_level": ">=10",
+        "time_of_day": "any"
+      },
+      "description": "你在山中发现了一个散发着淡淡灵光的洞穴，似乎有宝物的气息...",
+      "choices": [
+        {
+          "id": "enter_carefully",
+          "text": "小心进入探索",
+          "requirements": {
+            "perception": ">=15"
+          },
+          "success_rate": 0.7,
+          "outcomes": [
+            {
+              "weight": 60,
+              "type": "treasure",
+              "rewards": {
+                "items": [
+                  "random_rare_item"
+                ],
+                "experience": 500,
+                "spirit_stones": "100-500"
+              },
+              "text": "你发现了前人留下的宝藏！"
+            },
+            {
+              "weight": 30,
+              "type": "combat",
+              "enemy": "cave_guardian",
+              "text": "一只守护妖兽突然出现！"
+            },
+            {
+              "weight": 10,
+              "type": "trap",
+              "damage": "20-50",
+              "text": "你触发了防护阵法！"
+            }
+          ]
+        },
+        {
+          "id": "force_entry",
+          "text": "强行破开洞口",
+          "requirements": {
+            "strength": ">=20"
+          },
+          "success_rate": 0.5,
+          "outcomes": [
+            {
+              "weight": 40,
+              "type": "treasure",
+              "rewards": {
+                "items": [
+                  "random_uncommon_item"
+                ],
+                "experience": 300
+              },
+              "text": "你破开了洞口，但惊动了阵法，只抢到一些物品。"
+            },
+            {
+              "weight": 60,
+              "type": "cave_collapse",
+              "damage": "50-100",
+              "text": "洞穴坍塌了！你被困其中！"
+            }
+          ]
+        },
+        {
+          "id": "leave",
+          "text": "谨慎离开",
+          "requirements": {},
+          "outcomes": [
+            {
+              "weight": 100,
+              "type": "nothing",
+              "text": "你决定不冒险，转身离开。"
+            }
+          ]
+        }
+      ],
+      "chain_events": {
+        "cave_collapse": "escape_from_cave",
+        "cave_guardian_defeated": "ancient_inheritance"
+      }
+    },
+    {
+      "id": "enlightenment_moment",
+      "name": "顿悟时刻",
+      "category": "cultivation",
+      "rarity": "rare",
+      "requirements": {
+        "action": "meditation",
+        "comprehension": ">=1.5",
+        "location_spiritual_density": ">=0.8"
+      },
+      "description": "修炼中，你突然对天地法则有了新的感悟...",
+      "choices": [
+        {
+          "id": "follow_enlightenment",
+          "text": "顺应感悟，深入参悟",
+          "success_rate": "comprehension * 0.3",
+          "outcomes": [
+            {
+              "weight": 70,
+              "type": "breakthrough",
+              "effects": {
+                "comprehension": "+0.1",
+                "skill_insight": "random_skill_upgrade",
+                "experience": 1000
+              },
+              "text": "你成功捕捉到了那一丝明悟，修为大进！"
+            },
+            {
+              "weight": 30,
+              "type": "qi_deviation",
+              "effects": {
+                "internal_injury": "minor",
+                "cultivation_speed": "-20%"
+              },
+              "duration": "7_days",
+              "text": "你太过急躁，走火入魔了！"
+            }
+          ]
+        },
+        {
+          "id": "steady_cultivation",
+          "text": "稳固修为，不贪功冒进",
+          "outcomes": [
+            {
+              "weight": 100,
+              "type": "safe_progress",
+              "effects": {
+                "experience": 500,
+                "mental_state": "stable"
+              },
+              "text": "你稳扎稳打，虽无突破但根基更稳。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "merchant_encounter",
+      "name": "行商相遇",
+      "category": "encounter",
+      "rarity": "common",
+      "requirements": {
+        "location_type": [
+          "road",
+          "city_gate",
+          "wilderness"
+        ],
+        "karma": ">=-50"
+      },
+      "description": "一位神秘的行商拦住了你的去路，似乎有好东西要卖...",
+      "choices": [
+        {
+          "id": "check_goods",
+          "text": "查看商品",
+          "outcomes": [
+            {
+              "weight": 100,
+              "type": "shop",
+              "shop_inventory": {
+                "items": [
+                  {
+                    "id": "healing_pill",
+                    "price": 50,
+                    "stock": 10
+                  },
+                  {
+                    "id": "qi_gathering_pill",
+                    "price": 200,
+                    "stock": 5
+                  },
+                  {
+                    "id": "mysterious_map",
+                    "price": 1000,
+                    "stock": 1
+                  }
+                ],
+                "discount": "charisma * 0.01"
+              },
+              "text": "商人展示了他的货物。"
+            }
+          ]
+        },
+        {
+          "id": "rob_merchant",
+          "text": "抢劫商人",
+          "requirements": {
+            "karma": "<=-20"
+          },
+          "outcomes": [
+            {
+              "weight": 30,
+              "type": "combat",
+              "enemy": "mysterious_merchant",
+              "consequences": {
+                "karma": "-20",
+                "reputation": "-100"
+              },
+              "text": "商人冷笑一声，原来是个高手！"
+            },
+            {
+              "weight": 70,
+              "type": "successful_robbery",
+              "rewards": {
+                "spirit_stones": "500-2000",
+                "items": [
+                  "random_items_3"
+                ]
+              },
+              "consequences": {
+                "karma": "-10",
+                "wanted_level": "+1"
+              },
+              "text": "你成功抢劫了商人，但行此恶事必有报应。"
+            }
+          ]
+        },
+        {
+          "id": "help_merchant",
+          "text": "询问是否需要帮助",
+          "requirements": {
+            "karma": ">=20"
+          },
+          "outcomes": [
+            {
+              "weight": 100,
+              "type": "quest_start",
+              "quest_id": "escort_merchant",
+              "rewards": {
+                "karma": "+5",
+                "reputation": "+50"
+              },
+              "text": "商人感激地请求你护送他到下一个城镇。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "heavenly_tribulation",
+      "name": "天劫降临",
+      "category": "catastrophe",
+      "rarity": "guaranteed",
+      "requirements": {
+        "trigger": "breakthrough_attempt",
+        "realm": [
+          "golden_core",
+          "nascent_soul",
+          "deity_transformation"
+        ]
+      },
+      "description": "天空骤然变色，雷云密布，你的突破引来了天劫！",
+      "phases": [
+        {
+          "name": "第一重雷劫",
+          "description": "紫色雷电如雨般落下",
+          "difficulty": 1.0,
+          "damage_type": "thunder",
+          "damage": "max_health * 0.3",
+          "success_condition": "health > 0"
+        },
+        {
+          "name": "第二重心魔劫",
+          "description": "内心深处的魔念开始侵蚀",
+          "difficulty": 1.5,
+          "damage_type": "mental",
+          "test": "willpower",
+          "failure_effect": "qi_deviation"
+        },
+        {
+          "name": "第三重五行劫",
+          "description": "五行之力轮番轰击",
+          "difficulty": 2.0,
+          "damage_type": "elemental",
+          "pattern": [
+            "fire",
+            "water",
+            "earth",
+            "metal",
+            "wood"
+          ],
+          "survival_bonus": {
+            "elemental_resistance": "+10%"
+          }
+        }
+      ],
+      "outcomes": {
+        "success": {
+          "type": "breakthrough_success",
+          "effects": {
+            "realm": "+1",
+            "all_attributes": "+10",
+            "special_title": "渡劫真人"
+          },
+          "text": "你成功渡过天劫，修为更上一层楼！"
+        },
+        "failure": {
+          "type": "breakthrough_failure",
+          "effects": {
+            "death_chance": 0.5,
+            "cultivation_damage": "severe",
+            "realm": "-1"
+          },
+          "text": "你没能扛过天劫，修为大损！"
+        }
+      }
+    },
+    {
+      "id": "sect_recruitment",
+      "name": "宗门招募",
+      "category": "quest",
+      "rarity": "uncommon",
+      "requirements": {
+        "realm": ">=foundation_building",
+        "reputation": ">=100",
+        "faction": "none"
+      },
+      "description": "一位宗门长老看中了你的资质，邀请你加入他们的宗门。",
+      "npc": "sect_elder",
+      "dialogue_tree": {
+        "start": {
+          "text": "年轻人，老夫看你骨骼清奇，可愿加入我天剑宗？",
+          "responses": [
+            {
+              "text": "请问贵宗有何优势？",
+              "next": "sect_benefits"
+            },
+            {
+              "text": "我愿意加入！",
+              "next": "join_test"
+            },
+            {
+              "text": "容我考虑一下。",
+              "next": "end_conversation"
+            }
+          ]
+        },
+        "sect_benefits": {
+          "text": "我天剑宗乃正道魁首，门中功法无数，资源丰厚...",
+          "effects": {
+            "knowledge": "sect_info_tianjian"
+          },
+          "responses": [
+            {
+              "text": "听起来不错，我愿意加入。",
+              "next": "join_test"
+            },
+            {
+              "text": "我再想想。",
+              "next": "end_conversation"
+            }
+          ]
+        },
+        "join_test": {
+          "text": "很好！但你需要通过入门考验。",
+          "start_quest": "sect_entrance_exam",
+          "responses": [
+            {
+              "text": "我准备好了！",
+              "end": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "TREASURE_DISCOVERY",
+      "name": "意外发现",
+      "category": "RANDOM_ENCOUNTER",
+      "rarity": "0.15",
+      "description": "在探索中发现宝物或秘密",
+      "trigger_conditions": {
+        "location_types": [
+          "山脉",
+          "森林",
+          "废墟",
+          "洞穴"
+        ],
+        "luck_threshold": 30,
+        "exploration_skill": 0.3
+      },
+      "outcomes": {
+        "variants": [
+          {
+            "probability": 0.4,
+            "type": "common_treasure",
+            "description": "发现普通宝物",
+            "rewards": [
+              "灵石",
+              "低级材料",
+              "小型法宝"
+            ],
+            "risks": []
+          },
+          {
+            "probability": 0.3,
+            "type": "rare_treasure",
+            "description": "发现珍稀宝物",
+            "rewards": [
+              "高级材料",
+              "中级法宝",
+              "古籍功法"
+            ],
+            "risks": [
+              "守护者",
+              "陷阱机关"
+            ]
+          },
+          {
+            "probability": 0.2,
+            "type": "ancient_relic",
+            "description": "发现上古遗迹",
+            "rewards": [
+              "传承功法",
+              "顶级法宝",
+              "修为提升"
+            ],
+            "risks": [
+              "古代禁制",
+              "怨灵侵扰",
+              "因果纠缠"
+            ]
+          },
+          {
+            "probability": 0.1,
+            "type": "cursed_item",
+            "description": "发现诅咒物品",
+            "rewards": [
+              "强大但危险的宝物"
+            ],
+            "risks": [
+              "诅咒效果",
+              "业力负担",
+              "仇敌追杀"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "WANDERING_CULTIVATOR",
+      "name": "行脚修士",
+      "category": "RANDOM_ENCOUNTER",
+      "rarity": "0.25",
+      "description": "遇到其他修士",
+      "trigger_conditions": {
+        "location_types": [
+          "道路",
+          "客栈",
+          "坊市"
+        ],
+        "social_disposition": 0.4
+      },
+      "npc_generation": {
+        "realm_range": "±2层",
+        "faction_probability": {
+          "同阵营": 0.4,
+          "中性": 0.4,
+          "敌对": 0.2
+        },
+        "disposition_factors": [
+          "声望",
+          "阵营关系",
+          "随机性格"
+        ]
+      },
+      "interaction_options": [
+        {
+          "type": "friendly_chat",
+          "description": "友好交谈",
+          "requirements": [
+            "好感度>0"
+          ],
+          "outcomes": [
+            "信息获得",
+            "交易机会",
+            "结识朋友"
+          ]
+        },
+        {
+          "type": "challenge_duel",
+          "description": "挑战切磋",
+          "requirements": [
+            "实力相近"
+          ],
+          "outcomes": [
+            "技能提升",
+            "声望变化",
+            "结仇结友"
+          ]
+        },
+        {
+          "type": "ignore_pass",
+          "description": "无视路过",
+          "requirements": [],
+          "outcomes": [
+            "无事发生",
+            "可能错失机缘"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DEMONIC_BEAST_ATTACK",
+      "name": "妖兽袭击",
+      "category": "RANDOM_ENCOUNTER",
+      "rarity": "0.2",
+      "description": "遭遇妖兽攻击",
+      "trigger_conditions": {
+        "location_types": [
+          "荒野",
+          "深山",
+          "魔域"
+        ],
+        "danger_level": 2,
+        "time_periods": [
+          "夜晚",
+          "新月"
+        ]
+      },
+      "beast_generation": {
+        "strength_formula": "玩家实力 × (0.8~1.5)",
+        "type_by_location": {
+          "山脉": [
+            "山魈",
+            "石猿",
+            "岩蟒"
+          ],
+          "森林": [
+            "妖狼",
+            "树妖",
+            "毒蜘蛛"
+          ],
+          "水域": [
+            "水猴",
+            "蛟龙",
+            "巨鲸"
+          ]
+        }
+      },
+      "combat_outcomes": [
+        {
+          "condition": "胜利",
+          "rewards": [
+            "妖兽材料",
+            "实战经验",
+            "可能的妖丹"
+          ],
+          "karma_effect": "微量杀戮业"
+        },
+        {
+          "condition": "逃跑成功",
+          "rewards": [
+            "保全性命"
+          ],
+          "penalties": [
+            "威望损失",
+            "心理阴影"
+          ]
+        },
+        {
+          "condition": "战败",
+          "consequences": [
+            "重伤",
+            "财物损失",
+            "可能死亡"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "SUDDEN_ENLIGHTENMENT",
+      "name": "顿悟机缘",
+      "category": "CULTIVATION_EVENT",
+      "rarity": "0.05",
+      "description": "修炼中突然顿悟天道奥秘",
+      "trigger_conditions": {
+        "cultivation_state": "深度修炼",
+        "comprehension_threshold": 0.7,
+        "fortune_minimum": 50
+      },
+      "effects": {
+        "immediate": [
+          "修为大增",
+          "功法理解提升",
+          "可能突破瓶颈"
+        ],
+        "long_term": [
+          "悟性永久提升",
+          "对某系法则理解加深",
+          "心境提升"
+        ]
+      },
+      "variations": [
+        {
+          "type": "五行顿悟",
+          "description": "对五行法则的深度理解",
+          "requirements": [
+            "五行灵根",
+            "相关功法"
+          ]
+        },
+        {
+          "type": "剑意觉醒",
+          "description": "剑修的剑意觉醒",
+          "requirements": [
+            "剑修",
+            "剑法达到一定层次"
+          ]
+        },
+        {
+          "type": "天人合一",
+          "description": "与天地自然的融合感悟",
+          "requirements": [
+            "高境界",
+            "道心纯净"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "CULTIVATION_DEVIATION",
+      "name": "修炼偏差",
+      "category": "CULTIVATION_EVENT",
+      "rarity": "0.1",
+      "description": "修炼过程中出现偏差或副作用",
+      "trigger_conditions": {
+        "cultivation_intensity": "过度修炼",
+        "technique_compatibility": "不兼容功法同修",
+        "emotional_state": "心境不稳"
+      },
+      "deviation_types": [
+        {
+          "type": "气息紊乱",
+          "severity": "轻微",
+          "effects": [
+            "修炼效率下降",
+            "短期内需要调息"
+          ],
+          "recovery_time": "3-7天"
+        },
+        {
+          "type": "走火入魔",
+          "severity": "严重",
+          "effects": [
+            "境界倒退",
+            "心魔滋生",
+            "理智混乱"
+          ],
+          "recovery_methods": [
+            "高人指点",
+            "特殊丹药",
+            "静心修养"
+          ]
+        },
+        {
+          "type": "经脉受损",
+          "severity": "中等",
+          "effects": [
+            "灵力运行受阻",
+            "战斗力下降"
+          ],
+          "treatment_required": [
+            "疗伤丹药",
+            "经脉重塑"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "SECT_RECRUITMENT",
+      "name": "宗门招收",
+      "category": "SOCIAL_EVENT",
+      "rarity": "0.08",
+      "description": "被宗门看中，邀请加入",
+      "trigger_conditions": {
+        "talent_threshold": 0.6,
+        "reputation_minimum": 100,
+        "current_faction": "散修",
+        "age_maximum": 30
+      },
+      "sect_evaluation": {
+        "criteria": [
+          {
+            "factor": "灵根品质",
+            "weight": 0.4
+          },
+          {
+            "factor": "修炼天赋",
+            "weight": 0.3
+          },
+          {
+            "factor": "品行声望",
+            "weight": 0.2
+          },
+          {
+            "factor": "特殊能力",
+            "weight": 0.1
+          }
+        ]
+      },
+      "decision_consequences": {
+        "accept": {
+          "benefits": [
+            "稳定修炼资源",
+            "师长指导",
+            "同门关系"
+          ],
+          "restrictions": [
+            "宗门约束",
+            "任务义务",
+            "自由度降低"
+          ]
+        },
+        "decline": {
+          "benefits": [
+            "保持自由",
+            "无约束修炼"
+          ],
+          "risks": [
+            "错失机缘",
+            "可能得罪宗门"
+          ]
+        }
+      }
+    },
+    {
+      "id": "MARRIAGE_PROPOSAL",
+      "name": "结为道侣",
+      "category": "SOCIAL_EVENT",
+      "rarity": "0.03",
+      "description": "与某位修士结为道侣的机会",
+      "trigger_conditions": {
+        "relationship_intimacy": 80,
+        "mutual_attraction": true,
+        "realm_compatibility": "相差不超过大境界",
+        "no_existing_partner": true
+      },
+      "partner_evaluation": {
+        "compatibility_factors": [
+          "修炼道路契合度",
+          "性格匹配度",
+          "实力平衡性",
+          "背景门第"
+        ]
+      },
+      "dual_cultivation_benefits": {
+        "cultivation_speed": 1.2,
+        "breakthrough_assistance": 0.1,
+        "emotional_support": "心魔抗性提升",
+        "resource_sharing": "财富和知识共享"
+      }
+    },
+    {
+      "id": "SECT_WAR",
+      "name": "宗门大战",
+      "category": "WORLD_EVENT",
+      "rarity": "0.01",
+      "description": "大型宗门间的全面战争",
+      "duration": "数月至数年",
+      "scope": "整个地区",
+      "trigger_conditions": {
+        "resource_conflict": "重要资源争夺",
+        "power_balance": "势力平衡打破",
+        "historical_grudges": "宿怨积累"
+      },
+      "war_phases": [
+        {
+          "phase": "前期试探",
+          "description": "小规模冲突和外交试探",
+          "duration": "1-3个月",
+          "player_involvement": [
+            "选择阵营",
+            "参与小战",
+            "收集情报"
+          ]
+        },
+        {
+          "phase": "全面开战",
+          "description": "大规模正面冲突",
+          "duration": "6个月-2年",
+          "player_involvement": [
+            "重要战役",
+            "立功机会",
+            "生死考验"
+          ]
+        },
+        {
+          "phase": "战后重建",
+          "description": "胜负已分，开始重建",
+          "duration": "数年",
+          "consequences": [
+            "势力版图改变",
+            "新的统治秩序",
+            "战后机遇"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "HEAVENLY_PHENOMENON",
+      "name": "天象异变",
+      "category": "WORLD_EVENT",
+      "rarity": "0.005",
+      "description": "罕见的天象异变，预示重大变化",
+      "types": [
+        {
+          "name": "九星连珠",
+          "effect": "天地灵气暴涨",
+          "duration": "一个月",
+          "global_impact": "所有修士修炼速度x2"
+        },
+        {
+          "name": "血月当空",
+          "effect": "魔气复苏，妖魔活跃",
+          "duration": "三天",
+          "global_impact": "妖兽实力提升，魔修获益"
+        },
+        {
+          "name": "紫气东来",
+          "effect": "预示圣人出世",
+          "duration": "七天",
+          "global_impact": "顿悟概率大增，天劫减弱"
+        }
+      ]
+    },
+    {
+      "id": "KARMA_RETRIBUTION",
+      "name": "因果报应",
+      "category": "KARMIC_EVENT",
+      "rarity": "0.15",
+      "description": "过往行为的因果清算",
+      "trigger_conditions": {
+        "karma_threshold": "绝对值>200",
+        "time_accumulation": "足够时间发酵",
+        "fate_convergence": "命运交汇点"
+      },
+      "retribution_types": [
+        {
+          "karma_type": "positive",
+          "manifestations": [
+            "贵人相助解决困难",
+            "意外获得传承机缘",
+            "化险为夷逢凶化吉",
+            "仇人主动和解"
+          ]
+        },
+        {
+          "karma_type": "negative",
+          "manifestations": [
+            "昔日仇家寻仇上门",
+            "修炼过程频繁出错",
+            "天劫威力超常增强",
+            "亲友因自己遭受连累"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "VOW_FULFILLMENT",
+      "name": "誓言应验",
+      "category": "KARMIC_EVENT",
+      "rarity": "0.1",
+      "description": "立下的誓言面临兑现时刻",
+      "trigger_conditions": {
+        "active_vows": "存在未了誓言",
+        "fulfillment_opportunity": "出现完成条件",
+        "choice_point": "关键决策时刻"
+      },
+      "vow_types": [
+        {
+          "type": "复仇誓言",
+          "description": "发誓要为某事复仇",
+          "fulfillment_test": "面对仇敌时的选择",
+          "consequences": {
+            "keep": "心结解开，道心圆满",
+            "break": "道心蒙尘，修为受损"
+          }
+        },
+        {
+          "type": "保护誓言",
+          "description": "发誓保护某个人或事物",
+          "fulfillment_test": "保护对象面临危险",
+          "consequences": {
+            "keep": "获得守护之力加成",
+            "break": "永远失去保护对象信任"
+          }
+        }
+      ]
+    }
+  ],
+  "event_chains": {
+    "ancient_inheritance": {
+      "id": "ancient_inheritance",
+      "name": "上古传承",
+      "description": "一个关于上古大能传承的系列事件",
+      "stages": [
+        {
+          "id": "inheritance_clue",
+          "trigger": "defeat_special_boss",
+          "next": "find_inheritance_key"
+        },
+        {
+          "id": "find_inheritance_key",
+          "requirements": {
+            "items": [
+              "inheritance_map",
+              "ancient_key"
+            ]
+          },
+          "next": "inheritance_trial"
+        },
+        {
+          "id": "inheritance_trial",
+          "type": "dungeon",
+          "difficulty": "hard",
+          "rewards": {
+            "techniques": [
+              "ancient_sword_art"
+            ],
+            "items": [
+              "celestial_sword"
+            ],
+            "title": "传承者"
+          }
+        }
+      ]
+    }
+  },
+  "event_modifiers": {
+    "luck_influence": {
+      "formula": "base_chance * (1 + luck / 100)",
+      "cap": 2.0
+    },
+    "karma_influence": {
+      "good_karma": {
+        "positive_events": "+20%",
+        "negative_events": "-20%"
+      },
+      "bad_karma": {
+        "positive_events": "-20%",
+        "negative_events": "+20%",
+        "special_events": [
+          "demonic_encounters",
+          "heavenly_punishment"
+        ]
+      }
+    },
+    "time_based": {
+      "full_moon": {
+        "cultivation_events": "+50%",
+        "demon_encounters": "+100%"
+      },
+      "eclipse": {
+        "rare_events": "+200%",
+        "catastrophe_events": "+500%"
+      }
+    },
+    "realm_scaling": {
+      "description": "修为境界对事件的影响",
+      "factors": [
+        "高境界解锁特殊事件",
+        "低境界某些事件概率降低",
+        "同等境界事件更加激烈"
+      ]
+    },
+    "location_influence": {
+      "description": "地点对事件类型的影响",
+      "examples": {
+        "魔域": "魔道事件概率x3",
+        "仙山": "机缘事件概率x2",
+        "凡间": "凡俗事件为主"
+      }
+    },
+    "seasonal_effects": {
+      "description": "季节和时间对事件的影响",
+      "patterns": {
+        "春季": "生机事件增多",
+        "夏季": "火属性事件增强",
+        "秋季": "收获和争夺事件",
+        "冬季": "修炼和沉寂事件"
+      }
+    }
+  },
+  "event_rewards": {
+    "experience_scaling": "player_level * event_difficulty * completion_bonus",
+    "item_quality": {
+      "normal": [
+        "common",
+        "uncommon"
+      ],
+      "rare_event": [
+        "rare",
+        "epic"
+      ],
+      "legendary_event": [
+        "legendary",
+        "mythic"
+      ]
+    },
+    "special_rewards": {
+      "titles": "permanent_character_modifier",
+      "techniques": "new_skill_unlock",
+      "insights": "attribute_permanent_increase",
+      "connections": "npc_relationship_boost"
+    }
+  },
+  "_custom_tags": [
+    "seasonal_events",
+    "faction_events",
+    "romance_events"
+  ]
+}

@@ -1,0 +1,505 @@
+{
+  "meta": {
+    "version": "2.0.0",
+    "description": "成就系统配置",
+    "last_updated": "2025-06-22"
+  },
+  "achievement_categories": {
+    "cultivation": {
+      "name": "修炼成就",
+      "description": "与修炼进展相关的成就",
+      "icon": "🧘"
+    },
+    "combat": {
+      "name": "战斗成就",
+      "description": "与战斗表现相关的成就",
+      "icon": "⚔️"
+    },
+    "exploration": {
+      "name": "探索成就",
+      "description": "与世界探索相关的成就",
+      "icon": "🗺️"
+    },
+    "social": {
+      "name": "社交成就",
+      "description": "与人际关系相关的成就",
+      "icon": "👥"
+    },
+    "crafting": {
+      "name": "炼制成就",
+      "description": "与炼丹炼器相关的成就",
+      "icon": "🔨"
+    },
+    "special": {
+      "name": "特殊成就",
+      "description": "特殊条件触发的成就",
+      "icon": "⭐"
+    }
+  },
+  "achievements": [
+    {
+      "id": "first_steps",
+      "name": "初入江湖",
+      "description": "完成新手教程，踏出修仙第一步",
+      "category": "cultivation",
+      "rarity": "common",
+      "points": 10,
+      "icon": "👶",
+      "requirements": {
+        "type": "tutorial_complete",
+        "value": true
+      },
+      "rewards": {
+        "exp": 50,
+        "gold": 100,
+        "title": "初学者"
+      }
+    },
+    {
+      "id": "qi_gathering_master",
+      "name": "炼气大成",
+      "description": "修炼至炼气期九层",
+      "category": "cultivation",
+      "rarity": "common",
+      "points": 25,
+      "icon": "🌀",
+      "requirements": {
+        "type": "realm_level",
+        "realm": "qi_gathering",
+        "level": 9
+      },
+      "rewards": {
+        "exp": 200,
+        "item": "突破丹",
+        "title": "炼气大师"
+      }
+    },
+    {
+      "id": "foundation_builder",
+      "name": "筑基成功",
+      "description": "成功突破至筑基期",
+      "category": "cultivation",
+      "rarity": "uncommon",
+      "points": 50,
+      "icon": "🏗️",
+      "requirements": {
+        "type": "realm_breakthrough",
+        "realm": "foundation"
+      },
+      "rewards": {
+        "exp": 500,
+        "gold": 1000,
+        "item": "筑基法袍",
+        "title": "筑基修士"
+      }
+    },
+    {
+      "id": "golden_core_formed",
+      "name": "金丹有成",
+      "description": "凝聚金丹，踏入长生门槛",
+      "category": "cultivation",
+      "rarity": "rare",
+      "points": 100,
+      "icon": "🟡",
+      "requirements": {
+        "type": "realm_breakthrough",
+        "realm": "golden_core"
+      },
+      "rewards": {
+        "exp": 2000,
+        "gold": 5000,
+        "item": "金丹护体符",
+        "title": "金丹真人"
+      }
+    },
+    {
+      "id": "first_kill",
+      "name": "初试锋芒",
+      "description": "击败第一个敌人",
+      "category": "combat",
+      "rarity": "common",
+      "points": 10,
+      "icon": "🗡️",
+      "requirements": {
+        "type": "kill_count",
+        "value": 1
+      },
+      "rewards": {
+        "exp": 25,
+        "item": "初级疗伤药"
+      }
+    },
+    {
+      "id": "monster_slayer",
+      "name": "妖兽克星",
+      "description": "击败100只妖兽",
+      "category": "combat",
+      "rarity": "uncommon",
+      "points": 30,
+      "icon": "🐉",
+      "requirements": {
+        "type": "kill_type_count",
+        "target_type": "monster",
+        "value": 100
+      },
+      "rewards": {
+        "exp": 300,
+        "gold": 500,
+        "item": "妖兽克星剑",
+        "title": "斩妖除魔"
+      }
+    },
+    {
+      "id": "boss_hunter",
+      "name": "BOSS猎手",
+      "description": "击败强大的BOSS敌人",
+      "category": "combat",
+      "rarity": "rare",
+      "points": 75,
+      "icon": "👹",
+      "requirements": {
+        "type": "boss_kill",
+        "value": 1
+      },
+      "rewards": {
+        "exp": 1000,
+        "gold": 2000,
+        "item": "BOSS战利品箱",
+        "title": "BOSS杀手"
+      }
+    },
+    {
+      "id": "flawless_victory",
+      "name": "完美胜利",
+      "description": "在战斗中不受任何伤害获胜",
+      "category": "combat",
+      "rarity": "rare",
+      "points": 50,
+      "icon": "💫",
+      "requirements": {
+        "type": "flawless_win",
+        "value": 1
+      },
+      "rewards": {
+        "exp": 500,
+        "item": "完美护符"
+      }
+    },
+    {
+      "id": "explorer",
+      "name": "探索者",
+      "description": "发现10个新地点",
+      "category": "exploration",
+      "rarity": "common",
+      "points": 20,
+      "icon": "🧭",
+      "requirements": {
+        "type": "locations_discovered",
+        "value": 10
+      },
+      "rewards": {
+        "exp": 150,
+        "gold": 300,
+        "item": "探索者地图"
+      }
+    },
+    {
+      "id": "treasure_hunter",
+      "name": "寻宝达人",
+      "description": "发现50个宝藏",
+      "category": "exploration",
+      "rarity": "uncommon",
+      "points": 40,
+      "icon": "💰",
+      "requirements": {
+        "type": "treasures_found",
+        "value": 50
+      },
+      "rewards": {
+        "exp": 400,
+        "gold": 1000,
+        "item": "寻宝罗盘",
+        "title": "寻宝大师"
+      }
+    },
+    {
+      "id": "secret_finder",
+      "name": "秘境探索者",
+      "description": "发现隐藏的秘境",
+      "category": "exploration",
+      "rarity": "rare",
+      "points": 80,
+      "icon": "🏛️",
+      "requirements": {
+        "type": "secret_area_found",
+        "value": 1
+      },
+      "rewards": {
+        "exp": 800,
+        "gold": 2000,
+        "item": "秘境钥匙",
+        "title": "秘境行者"
+      }
+    },
+    {
+      "id": "first_friend",
+      "name": "初识好友",
+      "description": "获得第一个NPC好友",
+      "category": "social",
+      "rarity": "common",
+      "points": 15,
+      "icon": "👫",
+      "requirements": {
+        "type": "friendship_level",
+        "npc_count": 1,
+        "level": "friend"
+      },
+      "rewards": {
+        "exp": 100,
+        "item": "友谊信物"
+      }
+    },
+    {
+      "id": "sect_member",
+      "name": "门派弟子",
+      "description": "加入一个修仙门派",
+      "category": "social",
+      "rarity": "common",
+      "points": 25,
+      "icon": "🏯",
+      "requirements": {
+        "type": "join_sect",
+        "value": true
+      },
+      "rewards": {
+        "exp": 200,
+        "gold": 500,
+        "item": "门派令牌"
+      }
+    },
+    {
+      "id": "respected_master",
+      "name": "德高望重",
+      "description": "获得极高的声望",
+      "category": "social",
+      "rarity": "rare",
+      "points": 60,
+      "icon": "👑",
+      "requirements": {
+        "type": "reputation",
+        "value": 80
+      },
+      "rewards": {
+        "exp": 600,
+        "gold": 1500,
+        "title": "德高望重",
+        "special": "NPC态度大幅改善"
+      }
+    },
+    {
+      "id": "first_pill",
+      "name": "初级丹师",
+      "description": "成功炼制第一颗丹药",
+      "category": "crafting",
+      "rarity": "common",
+      "points": 20,
+      "icon": "💊",
+      "requirements": {
+        "type": "craft_item",
+        "item_type": "pill",
+        "count": 1
+      },
+      "rewards": {
+        "exp": 150,
+        "item": "炼丹炉",
+        "skill": "炼丹术"
+      }
+    },
+    {
+      "id": "master_alchemist",
+      "name": "炼丹大师",
+      "description": "炼制100颗丹药",
+      "category": "crafting",
+      "rarity": "uncommon",
+      "points": 50,
+      "icon": "🧪",
+      "requirements": {
+        "type": "craft_item",
+        "item_type": "pill",
+        "count": 100
+      },
+      "rewards": {
+        "exp": 500,
+        "gold": 1000,
+        "item": "高级炼丹炉",
+        "title": "炼丹大师"
+      }
+    },
+    {
+      "id": "weapon_smith",
+      "name": "炼器师",
+      "description": "成功炼制第一件法器",
+      "category": "crafting",
+      "rarity": "uncommon",
+      "points": 35,
+      "icon": "🔨",
+      "requirements": {
+        "type": "craft_item",
+        "item_type": "weapon",
+        "count": 1
+      },
+      "rewards": {
+        "exp": 300,
+        "gold": 800,
+        "item": "炼器锤",
+        "skill": "炼器术"
+      }
+    },
+    {
+      "id": "lucky_devil",
+      "name": "气运之子",
+      "description": "连续获得10次暴击",
+      "category": "special",
+      "rarity": "rare",
+      "points": 40,
+      "icon": "🍀",
+      "requirements": {
+        "type": "consecutive_crits",
+        "value": 10
+      },
+      "rewards": {
+        "exp": 400,
+        "gold": 888,
+        "item": "幸运符",
+        "permanent_buff": "暴击率+5%"
+      }
+    },
+    {
+      "id": "immortal_path",
+      "name": "仙路漫漫",
+      "description": "游戏时间达到100小时",
+      "category": "special",
+      "rarity": "uncommon",
+      "points": 30,
+      "icon": "⏰",
+      "requirements": {
+        "type": "play_time",
+        "value": 360000
+      },
+      "rewards": {
+        "exp": 300,
+        "gold": 1000,
+        "title": "修仙老手"
+      }
+    },
+    {
+      "id": "death_cheater",
+      "name": "死里逃生",
+      "description": "在生命值只剩1点时获得胜利",
+      "category": "special",
+      "rarity": "rare",
+      "points": 60,
+      "icon": "💀",
+      "requirements": {
+        "type": "near_death_victory",
+        "value": 1
+      },
+      "rewards": {
+        "exp": 600,
+        "item": "不死鸟羽",
+        "permanent_buff": "濒死时攻击力翻倍"
+      }
+    },
+    {
+      "id": "perfectionist",
+      "name": "完美主义者",
+      "description": "达成所有其他成就",
+      "category": "special",
+      "rarity": "legendary",
+      "points": 500,
+      "icon": "👑",
+      "requirements": {
+        "type": "all_achievements",
+        "exclude_self": true
+      },
+      "rewards": {
+        "exp": 5000,
+        "gold": 10000,
+        "item": "完美之证",
+        "title": "修仙至尊",
+        "permanent_buff": "所有属性+50%"
+      }
+    }
+  ],
+  "rarity_levels": {
+    "common": {
+      "name": "普通",
+      "color": "#FFFFFF",
+      "multiplier": 1.0
+    },
+    "uncommon": {
+      "name": "稀有",
+      "color": "#90EE90",
+      "multiplier": 1.5
+    },
+    "rare": {
+      "name": "珍稀",
+      "color": "#87CEEB",
+      "multiplier": 2.0
+    },
+    "epic": {
+      "name": "史诗",
+      "color": "#9370DB",
+      "multiplier": 3.0
+    },
+    "legendary": {
+      "name": "传说",
+      "color": "#FFD700",
+      "multiplier": 5.0
+    }
+  },
+  "achievement_system": {
+    "point_rewards": {
+      "100": {
+        "reward": "achievement_chest_bronze",
+        "description": "获得青铜成就宝箱"
+      },
+      "500": {
+        "reward": "achievement_chest_silver",
+        "description": "获得白银成就宝箱"
+      },
+      "1000": {
+        "reward": "achievement_chest_gold",
+        "description": "获得黄金成就宝箱"
+      },
+      "2000": {
+        "reward": "achievement_chest_platinum",
+        "description": "获得白金成就宝箱"
+      }
+    },
+    "title_system": {
+      "display": true,
+      "max_active": 1,
+      "effects": {
+        "social_bonus": true,
+        "reputation_bonus": true,
+        "special_dialogue": true
+      }
+    },
+    "hidden_achievements": {
+      "enabled": true,
+      "discovery_hints": true,
+      "completion_rate_inclusion": false
+    }
+  },
+  "progress_tracking": {
+    "auto_save": true,
+    "sync_frequency": "real_time",
+    "backup_frequency": "daily",
+    "notification_system": {
+      "achievement_unlock": true,
+      "progress_milestone": true,
+      "rare_achievement_broadcast": true
+    }
+  }
+}

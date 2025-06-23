@@ -1,0 +1,48 @@
+<!-- 加载游戏模态框 -->
+<div class="text-gray-200">
+    <h2 class="text-2xl font-light mb-6 tracking-wider">加载游戏</h2>
+    
+    <div class="text-center py-8">
+        <div class="inline-block">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-400 mx-auto"></div>
+            <p class="mt-4 text-gray-400">正在加载游戏存档...</p>
+        </div>
+    </div>
+    
+    <div id="load-result" class="hidden">
+        <div class="bg-green-900 bg-opacity-50 border border-green-600 rounded p-4 text-center">
+            <p class="text-green-400">✓ 游戏已成功加载</p>
+        </div>
+    </div>
+</div>
+
+<script>
+// 页面加载时自动执行加载
+setTimeout(async () => {
+    try {
+        const response = await fetch('/load_game', { method: 'POST' });
+        const data = await response.json();
+        
+        document.querySelector('.animate-spin').parentElement.style.display = 'none';
+        document.getElementById('load-result').classList.remove('hidden');
+        
+        if (!data.success) {
+            document.getElementById('load-result').innerHTML = `
+                <div class="bg-red-900 bg-opacity-50 border border-red-600 rounded p-4 text-center">
+                    <p class="text-red-400">✗ 加载失败：${data.error || '没有找到存档'}</p>
+                </div>
+            `;
+        } else {
+            // 成功后刷新页面
+            setTimeout(() => window.location.reload(), 1000);
+        }
+        
+        // 失败时3秒后关闭
+        if (!data.success) {
+            setTimeout(() => closeModal(), 3000);
+        }
+    } catch (error) {
+        console.error('加载失败:', error);
+    }
+}, 500);
+</script>

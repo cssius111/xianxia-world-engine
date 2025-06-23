@@ -3,106 +3,211 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>仙侠世界引擎 - 欢迎</title>
+    <title>修仙世界引擎 - 欢迎</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700&display=swap');
+        
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Microsoft YaHei', sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
-            color: #fff;
+            font-family: 'Noto Serif SC', '思源宋体', 'STSong', '宋体', serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
         
-        .welcome-container {
-            text-align: center;
-            padding: 40px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            max-width: 600px;
-            width: 90%;
+        .watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-15deg);
+            font-size: 20rem;
+            color: rgba(255, 255, 255, 0.02);
+            z-index: 0;
+            pointer-events: none;
+            user-select: none;
         }
         
-        h1 {
-            font-size: 3em;
-            margin-bottom: 20px;
-            background: linear-gradient(45deg, #00dbde, #fc00ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 30px rgba(0, 219, 222, 0.5);
+        .glow-effect {
+            animation: glow 2s ease-in-out infinite alternate;
         }
         
-        .subtitle {
-            font-size: 1.2em;
-            color: #aaa;
-            margin-bottom: 40px;
+        @keyframes glow {
+            from { text-shadow: 0 0 10px rgba(200, 200, 200, 0.5); }
+            to { text-shadow: 0 0 20px rgba(200, 200, 200, 0.8), 0 0 30px rgba(200, 200, 200, 0.6); }
         }
         
-        .menu-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            align-items: center;
+        .fade-in {
+            animation: fadeIn 1s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .menu-button {
-            display: inline-block;
-            padding: 15px 40px;
-            font-size: 1.1em;
-            text-decoration: none;
-            color: #fff;
-            background: linear-gradient(45deg, #2196F3, #21CBF3);
-            border-radius: 50px;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
-            min-width: 200px;
+            position: relative;
+            overflow: hidden;
         }
         
-        .menu-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(33, 150, 243, 0.5);
+        .menu-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
         }
         
-        .menu-button.secondary {
-            background: linear-gradient(45deg, #666, #888);
-            box-shadow: 0 4px 15px rgba(102, 102, 102, 0.3);
-        }
-        
-        .menu-button.dev {
-            background: linear-gradient(45deg, #ff6b6b, #ff8787);
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
-        }
-        
-        .version {
-            margin-top: 40px;
-            color: #666;
-            font-size: 0.9em;
+        .menu-button:hover::before {
+            width: 300px;
+            height: 300px;
         }
     </style>
 </head>
-<body>
-    <div class="welcome-container">
-        <h1>仙侠世界引擎</h1>
-        <p class="subtitle">踏入修仙之路，书写属于你的传奇</p>
-        
-        <div class="menu-buttons">
-            <a href="/intro" class="menu-button">开始新游戏</a>
+<body class="bg-gray-900 text-gray-300">
+    <!-- 背景水印 -->
+    <div class="watermark">仙</div>
+    
+    <!-- 主容器 -->
+    <div class="relative z-10 min-h-screen flex items-center justify-center px-4">
+        <div class="max-w-2xl w-full">
+            <!-- 标题区域 -->
+            <div class="text-center mb-12 fade-in">
+                <h1 class="text-5xl font-light tracking-widest text-gray-200 mb-4 glow-effect">
+                    修仙世界引擎
+                </h1>
+                <p class="text-lg text-gray-500 tracking-wider">
+                    —— 沉浸式文字修真模拟 ——
+                </p>
+            </div>
             
-            {% if save_exists %}
-            <a href="/game?continue=true" class="menu-button secondary">继续游戏</a>
-            {% endif %}
+            <!-- 菜单选项 -->
+            <div class="space-y-4 fade-in" style="animation-delay: 0.3s;">
+                <!-- 新游戏 -->
+                <button onclick="startNewGame()" 
+                    class="menu-button w-full py-6 px-8 bg-gray-800 border border-gray-700 rounded-lg hover:bg-gray-700 hover:border-gray-600 group">
+                    <div class="flex items-center justify-between">
+                        <div class="text-left">
+                            <h3 class="text-xl font-medium text-gray-200 group-hover:text-white">
+                                新的征程
+                            </h3>
+                            <p class="text-sm text-gray-500 mt-1">开始全新的修仙之旅</p>
+                        </div>
+                        <svg class="w-6 h-6 text-gray-500 group-hover:text-gray-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                        </svg>
+                    </div>
+                </button>
+                
+                <!-- 继续游戏 -->
+                <button onclick="continueGame()" 
+                    class="menu-button w-full py-6 px-8 bg-gray-800 border border-gray-700 rounded-lg hover:bg-gray-700 hover:border-gray-600 group 
+                    {{ 'opacity-50 cursor-not-allowed' if not save_exists else '' }}"
+                    {{ 'disabled' if not save_exists else '' }}>
+                    <div class="flex items-center justify-between">
+                        <div class="text-left">
+                            <h3 class="text-xl font-medium text-gray-200 group-hover:text-white">
+                                继续修行
+                            </h3>
+                            <p class="text-sm text-gray-500 mt-1">
+                                {{ '载入上次的存档' if save_exists else '暂无存档' }}
+                            </p>
+                        </div>
+                        <svg class="w-6 h-6 text-gray-500 group-hover:text-gray-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                        </svg>
+                    </div>
+                </button>
+                
+                <!-- 开发者模式 -->
+                <button onclick="startDevMode()" 
+                    class="menu-button w-full py-6 px-8 bg-gray-800 border border-gray-700 rounded-lg hover:bg-gray-700 hover:border-gray-600 group">
+                    <div class="flex items-center justify-between">
+                        <div class="text-left">
+                            <h3 class="text-xl font-medium text-gray-200 group-hover:text-white">
+                                开发者模式
+                            </h3>
+                            <p class="text-sm text-gray-500 mt-1">调试功能，显示额外信息</p>
+                        </div>
+                        <svg class="w-6 h-6 text-gray-500 group-hover:text-gray-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                        </svg>
+                    </div>
+                </button>
+            </div>
             
-            <a href="/intro?mode=dev" class="menu-button dev">开发者模式</a>
-        </div>
-        
-        <div class="version">
-            版本 v1.0.0
+            <!-- 底部信息 -->
+            <div class="text-center mt-12 text-sm text-gray-600 fade-in" style="animation-delay: 0.6s;">
+                <p>版本 4.2 · 2025</p>
+            </div>
         </div>
     </div>
+    
+    <!-- 背景音乐 -->
+    <audio id="bgMusic" loop></audio>
+    
+    <script>
+        // 初始化背景音乐
+        async function initMusic() {
+            try {
+                const response = await fetch('/get_audio_list');
+                const data = await response.json();
+                const audioFiles = data.files;
+                
+                if (audioFiles && audioFiles.length > 0) {
+                    const randomFile = audioFiles[Math.floor(Math.random() * audioFiles.length)];
+                    const audio = document.getElementById('bgMusic');
+                    audio.src = `/static/audio/${randomFile}`;
+                    audio.volume = 0.3;
+                    
+                    // 用户交互后播放
+                    document.addEventListener('click', () => {
+                        audio.play().catch(e => console.log('音频播放失败:', e));
+                    }, { once: true });
+                }
+            } catch (error) {
+                console.error('加载音频列表失败:', error);
+            }
+        }
+        
+        // 新游戏
+        function startNewGame() {
+            window.location.href = '/intro';
+        }
+        
+        // 继续游戏
+        async function continueGame() {
+            {% if save_exists %}
+            try {
+                const response = await fetch('/load_game', { method: 'POST' });
+                const data = await response.json();
+                
+                if (data.success) {
+                    window.location.href = '/game';
+                } else {
+                    alert('加载存档失败: ' + data.error);
+                }
+            } catch (error) {
+                console.error('加载游戏失败:', error);
+                alert('加载游戏时出错');
+            }
+            {% endif %}
+        }
+        
+        // 开发者模式
+        function startDevMode() {
+            window.location.href = '/intro?mode=dev';
+        }
+        
+        // 页面加载完成后初始化
+        window.addEventListener('DOMContentLoaded', () => {
+            initMusic();
+        });
+    </script>
 </body>
 </html>

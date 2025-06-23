@@ -1,0 +1,220 @@
+<!-- 左侧状态栏 -->
+<div class="sidebar">
+    <!-- 角色基本信息 -->
+    <div class="character-info">
+        <h3 class="character-name">
+            <span id="playerName">{{ player.name if player else '无名侠客' }}</span>
+            <span class="faction" id="playerFaction">(散修)</span>
+        </h3>
+        <div class="realm-info">
+            <span class="realm-name" id="realmName">{{ player.attributes.realm_name if player else '凡人' }}</span>
+            <span class="realm-progress" id="realmProgress">(0%)</span>
+        </div>
+    </div>
+
+    <div class="location-info">
+        <span id="currentLocation">青云城</span>
+    </div>
+
+    <!-- 生命值和灵力值 -->
+    <div class="status-bars">
+        <div class="status-bar-item">
+            <label>气血</label>
+            <div class="status-bar">
+                <div class="status-bar-fill health-bar" id="healthBar" style="width: 100%"></div>
+            </div>
+            <span class="status-text" id="healthText">100/100</span>
+        </div>
+
+        <div class="status-bar-item">
+            <label>灵力</label>
+            <div class="status-bar">
+                <div class="status-bar-fill mana-bar" id="manaBar" style="width: 100%"></div>
+            </div>
+            <span class="status-text" id="manaText">50/50</span>
+        </div>
+    </div>
+
+    <!-- 功能链接面板 -->
+    <div class="function-panel">
+        <table class="function-table">
+            <tr>
+                <td><a href="#" onclick="GamePanels.showStatus()">查看状态</a></td>
+                <td><a href="#" onclick="GamePanels.showInventory()">查看背包</a></td>
+            </tr>
+            <tr>
+                <td><a href="#" onclick="GamePanels.showCultivation()">修炼系统</a></td>
+                <td><a href="#" onclick="GamePanels.showAchievements()">成就系统</a></td>
+            </tr>
+            <tr>
+                <td><a href="#" onclick="GamePanels.showExplore()">进行探索</a></td>
+                <td><a href="#" onclick="GamePanels.showMap()">地图系统</a></td>
+            </tr>
+            <tr>
+                <td><a href="#" onclick="GamePanels.showQuests()">当前任务</a></td>
+                <td><a href="#" onclick="GamePanels.showIntel()">情报面板</a></td>
+            </tr>
+            <tr>
+                <td colspan="2"><a href="#" onclick="GamePanels.showSaveLoad()">保存加载</a></td>
+            </tr>
+            <tr>
+                <td colspan="2"><a href="#" onclick="GamePanels.showHelp()">帮助文档</a></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+<style>
+
+.character-info {
+    text-align: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(200, 200, 200, 0.1);
+}
+
+.character-name {
+    margin: 0 0 10px 0;
+    font-size: 22px;
+    color: #d8d8d8;
+}
+
+.faction {
+    font-size: 16px;
+    color: #888;
+    font-weight: normal;
+}
+
+.realm-info {
+    font-size: 18px;
+    color: #b8b8b8;
+}
+
+.realm-name {
+    font-weight: bold;
+}
+
+.realm-progress {
+    color: #888;
+    font-size: 16px;
+}
+
+.location-info {
+    margin: 10px 0;
+    text-align: center;
+    color: #d8d8d8;
+    font-weight: bold;
+}
+
+.status-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.status-bar-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.status-bar-item label {
+    color: #888;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.status-bar {
+    width: 100%;
+    height: 4px;
+    background: rgba(100, 100, 100, 0.2);
+    border-radius: 2px;
+    margin-top: 3px;
+    overflow: hidden;
+}
+
+.status-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, rgba(200, 200, 200, 0.6), rgba(255, 255, 255, 0.4));
+    transition: width 0.3s ease;
+}
+
+.health-bar {
+    background: linear-gradient(90deg, rgba(200, 200, 200, 0.6), rgba(220, 220, 220, 0.4));
+}
+
+.mana-bar {
+    background: linear-gradient(90deg, rgba(180, 180, 180, 0.6), rgba(200, 200, 200, 0.4));
+}
+
+.status-text {
+    color: #d8d8d8;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 4px;
+}
+
+.function-panel {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(200, 200, 200, 0.1);
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 20px;
+}
+
+.function-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.function-table td {
+    width: 50%;
+    padding: 8px;
+    text-align: center;
+}
+
+.function-table a {
+    color: #888;
+    text-decoration: none;
+    font-size: 14px;
+    display: block;
+    padding: 5px;
+    border-radius: 4px;
+    transition: color 0.2s ease;
+}
+
+.function-table a:hover {
+    color: #d8d8d8;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(200, 200, 200, 0.3);
+    border-radius: 3px;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: none;
+    }
+
+    .function-table {
+        font-size: 12px;
+    }
+
+    .function-table td {
+        padding: 5px;
+    }
+}
+</style>

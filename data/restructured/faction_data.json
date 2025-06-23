@@ -1,0 +1,353 @@
+{
+  "faction_types": {
+    "正道门派": {
+      "description": "以正义为名的修仙门派",
+      "alignment": "正义",
+      "reputation_modifier": 1.0
+    },
+    "魔道门派": {
+      "description": "行事邪恶的魔修门派",
+      "alignment": "邪恶",
+      "reputation_modifier": -0.5
+    },
+    "散修联盟": {
+      "description": "散修组成的松散联盟",
+      "alignment": "中立",
+      "reputation_modifier": 0.0
+    },
+    "世俗王朝": {
+      "description": "凡人建立的王朝政权",
+      "alignment": "中立",
+      "reputation_modifier": 0.0
+    },
+    "神秘组织": {
+      "description": "身份神秘的特殊组织",
+      "alignment": "未知",
+      "reputation_modifier": 0.0
+    }
+  },
+  "major_factions": {
+    "青云宗": {
+      "id": "qingyun_sect",
+      "name": "青云宗",
+      "type": "正道门派",
+      "level": "一流门派",
+      "location": "青云山",
+      "description": "修仙界最著名的正道门派之一，以剑法闻名天下",
+      "history": "传承三千年的正道大派，历代弟子无数，强者辈出",
+      "specialties": ["剑法", "青云功法", "符篆术"],
+      "entry_requirements": {
+        "age_min": 8,
+        "age_max": 20,
+        "spiritual_root": "三属性以上",
+        "reputation_min": 0,
+        "test_required": true
+      },
+      "benefits": {
+        "cultivation_bonus": 0.2,
+        "skill_learning_bonus": 0.3,
+        "resource_access": "高级",
+        "protection": "很高"
+      },
+      "ranks": {
+        "外门弟子": {
+          "level": 1,
+          "requirements": {"cultivation_realm": "炼气期"},
+          "benefits": {"monthly_allowance": 50, "library_access": "基础"}
+        },
+        "内门弟子": {
+          "level": 2,
+          "requirements": {"cultivation_realm": "筑基期", "contribution": 1000},
+          "benefits": {"monthly_allowance": 200, "library_access": "进阶"}
+        },
+        "核心弟子": {
+          "level": 3,
+          "requirements": {"cultivation_realm": "结丹期", "contribution": 5000},
+          "benefits": {"monthly_allowance": 500, "library_access": "高级"}
+        },
+        "真传弟子": {
+          "level": 4,
+          "requirements": {"cultivation_realm": "元婴期", "contribution": 20000},
+          "benefits": {"monthly_allowance": 1000, "library_access": "顶级"}
+        },
+        "长老": {
+          "level": 5,
+          "requirements": {"cultivation_realm": "化神期", "contribution": 50000},
+          "benefits": {"monthly_allowance": 2000, "teaching_authority": true}
+        }
+      },
+      "missions": {
+        "日常任务": ["采集灵草", "巡山", "清理妖兽"],
+        "重要任务": ["护送商队", "调查异象", "门派交流"],
+        "危险任务": ["深入魔域", "猎杀强敌", "探索秘境"]
+      },
+      "relationships": {
+        "allies": ["天音寺", "焚香谷"],
+        "enemies": ["魔教", "血炼门"],
+        "neutral": ["散修联盟", "商贸公会"]
+      },
+      "unique_features": {
+        "七脉会武": {
+          "description": "门派内部比武大会",
+          "frequency": "每三年一次",
+          "rewards": ["功法传承", "法宝赐予", "地位提升"]
+        },
+        "诛仙古剑": {
+          "description": "镇派之宝",
+          "power": "传说级",
+          "condition": "只有掌门可以使用"
+        }
+      }
+    },
+    "天音寺": {
+      "id": "tianyin_temple",
+      "name": "天音寺",
+      "type": "正道门派",
+      "level": "一流门派",
+      "location": "天音山",
+      "description": "佛门圣地，以佛法和音攻闻名",
+      "specialties": ["佛法", "音攻", "治疗术"],
+      "entry_requirements": {
+        "age_min": 10,
+        "age_max": 25,
+        "spiritual_root": "不限",
+        "karma": "正善",
+        "buddhist_affinity": true
+      },
+      "benefits": {
+        "cultivation_bonus": 0.15,
+        "mental_resistance": 0.5,
+        "healing_bonus": 0.8
+      },
+      "unique_features": {
+        "大雄宝殿": {
+          "description": "佛门圣地，修炼佛法效果翻倍",
+          "buff": "佛法修炼+100%"
+        },
+        "梵音阵": {
+          "description": "天音寺护山大阵",
+          "effect": "音攻威力+200%"
+        }
+      }
+    },
+    "焚香谷": {
+      "id": "fenxiang_valley",
+      "name": "焚香谷",
+      "type": "正道门派",
+      "level": "一流门派",
+      "location": "焚香谷",
+      "description": "以炼丹和火系法术著称的门派",
+      "specialties": ["炼丹术", "火系法术", "阵法"],
+      "entry_requirements": {
+        "age_min": 12,
+        "age_max": 30,
+        "spiritual_root": "含火属性",
+        "alchemy_talent": "优秀"
+      },
+      "benefits": {
+        "alchemy_bonus": 1.0,
+        "fire_skill_bonus": 0.5,
+        "rare_materials_access": true
+      }
+    },
+    "魔教": {
+      "id": "demon_cult",
+      "name": "魔教",
+      "type": "魔道门派",
+      "level": "一流门派",
+      "location": "魔域",
+      "description": "修仙界最大的魔道势力",
+      "specialties": ["魔功", "血祭术", "魅惑术"],
+      "entry_requirements": {
+        "age_min": 15,
+        "age_max": 40,
+        "spiritual_root": "不限",
+        "evil_karma": "required",
+        "loyalty_test": true
+      },
+      "benefits": {
+        "cultivation_speed": 1.5,
+        "power_growth": 2.0,
+        "fear_immunity": true
+      },
+      "penalties": {
+        "reputation_loss": 0.1,
+        "righteous_hostility": true,
+        "karma_corruption": 0.05
+      },
+      "unique_features": {
+        "血池": {
+          "description": "魔教圣地，可快速提升修为",
+          "effect": "修炼速度+300%",
+          "cost": "生命力-10%"
+        },
+        "魔主": {
+          "description": "魔教最高领袖",
+          "power": "渡劫期",
+          "influence": "整个修仙界"
+        }
+      }
+    },
+    "血炼门": {
+      "id": "blood_refining_sect",
+      "name": "血炼门",
+      "type": "魔道门派",
+      "level": "二流门派",
+      "location": "血炼山",
+      "description": "以血炼之术闻名的邪恶门派",
+      "specialties": ["血炼术", "炼尸术", "毒功"],
+      "entry_requirements": {
+        "age_min": 16,
+        "age_max": 35,
+        "spiritual_root": "不限",
+        "cruelty_test": true
+      },
+      "benefits": {
+        "blood_magic_bonus": 1.0,
+        "corpse_manipulation": true,
+        "poison_immunity": 0.8
+      }
+    },
+    "散修联盟": {
+      "id": "rogue_cultivator_alliance",
+      "name": "散修联盟",
+      "type": "散修联盟",
+      "level": "二流势力",
+      "location": "流云城",
+      "description": "散修为了生存而组成的松散联盟",
+      "specialties": ["自由修炼", "商贸", "信息交换"],
+      "entry_requirements": {
+        "age_min": 15,
+        "age_max": 50,
+        "spiritual_root": "不限",
+        "independent_spirit": true
+      },
+      "benefits": {
+        "freedom": "最高",
+        "resource_trading": true,
+        "information_network": "广泛"
+      },
+      "services": {
+        "任务发布": "可发布和接取各种任务",
+        "资源交换": "提供物品交易平台",
+        "避难所": "为散修提供安全的修炼场所"
+      }
+    },
+    "大离王朝": {
+      "id": "dali_dynasty",
+      "name": "大离王朝",
+      "type": "世俗王朝",
+      "level": "世俗政权",
+      "location": "大离国都",
+      "description": "凡人建立的强大王朝",
+      "specialties": ["政治", "军事", "商贸"],
+      "entry_requirements": {
+        "citizenship": true,
+        "loyalty_oath": true
+      },
+      "benefits": {
+        "legal_protection": true,
+        "trade_privileges": true,
+        "official_position": "可能"
+      },
+      "unique_features": {
+        "皇室供奉": {
+          "description": "为皇室服务的修仙者",
+          "benefits": ["高额俸禄", "稀有资源", "政治地位"]
+        },
+        "国师": {
+          "description": "王朝最高修仙顾问",
+          "requirements": "元婴期以上",
+          "authority": "仅次于皇帝"
+        }
+      }
+    },
+    "天机阁": {
+      "id": "tianji_pavilion",
+      "name": "天机阁",
+      "type": "神秘组织",
+      "level": "神秘势力",
+      "location": "未知",
+      "description": "掌握天下情报的神秘组织",
+      "specialties": ["情报", "预言", "暗杀"],
+      "entry_requirements": {
+        "invitation_only": true,
+        "special_talent": "required",
+        "secrecy_oath": true
+      },
+      "benefits": {
+        "information_access": "最高",
+        "stealth_training": true,
+        "mysterious_techniques": true
+      },
+      "services": {
+        "情报买卖": "可购买各种机密信息",
+        "预言服务": "预测未来趋势",
+        "暗杀委托": "执行暗杀任务"
+      }
+    }
+  },
+  "faction_relationships": {
+    "alliance_matrix": {
+      "青云宗": ["天音寺", "焚香谷"],
+      "天音寺": ["青云宗", "焚香谷"],
+      "焚香谷": ["青云宗", "天音寺"],
+      "魔教": ["血炼门"],
+      "血炼门": ["魔教"]
+    },
+    "hostility_matrix": {
+      "青云宗": ["魔教", "血炼门"],
+      "天音寺": ["魔教", "血炼门"],
+      "焚香谷": ["魔教", "血炼门"],
+      "魔教": ["青云宗", "天音寺", "焚香谷"],
+      "血炼门": ["青云宗", "天音寺", "焚香谷"]
+    }
+  },
+  "reputation_system": {
+    "levels": {
+      "崇敬": {"value": 21000, "benefits": "最高级待遇"},
+      "尊敬": {"value": 9000, "benefits": "高级待遇"},
+      "友善": {"value": 3000, "benefits": "友好待遇"},
+      "中立": {"value": 0, "benefits": "普通待遇"},
+      "冷淡": {"value": -3000, "penalties": "冷遇"},
+      "敌对": {"value": -9000, "penalties": "敌视"},
+      "仇恨": {"value": -21000, "penalties": "格杀勿论"}
+    },
+    "reputation_gains": {
+      "完成任务": 100,
+      "击杀敌对": 200,
+      "捐献资源": 50,
+      "保护成员": 300,
+      "传播声望": 25
+    },
+    "reputation_losses": {
+      "任务失败": -50,
+      "伤害成员": -500,
+      "背叛行为": -2000,
+      "破坏设施": -200,
+      "违背承诺": -100
+    }
+  },
+  "faction_wars": {
+    "current_conflicts": {
+      "正魔大战": {
+        "participants": ["青云宗", "天音寺", "焚香谷", "魔教", "血炼门"],
+        "status": "暂时停战",
+        "impact": "整个修仙界",
+        "history": "持续千年的正魔之争"
+      }
+    },
+    "historical_events": {
+      "青云灭魔": {
+        "year": "500年前",
+        "description": "青云宗联合正道各派围剿魔教",
+        "result": "魔教主力被消灭，退守魔域"
+      },
+      "血炼门之乱": {
+        "year": "200年前",
+        "description": "血炼门屠杀凡人村庄，引起公愤",
+        "result": "被正道联盟重创，势力大减"
+      }
+    }
+  }
+}

@@ -1,0 +1,651 @@
+<!-- 优化版修炼模态框 -->
+<div class="modal-header">
+    <h2>修炼系统</h2>
+</div>
+
+<div class="modal-body">
+    {% if player %}
+    <div class="cultivation-container">
+        <!-- 当前修炼状态 -->
+        <div class="cultivation-status">
+            <div class="realm-display">
+                <h3>当前境界</h3>
+                <div class="realm-info">
+                    <div class="realm-badge">
+                        <span class="realm-name">{{ player.attributes.realm_name or '炼气期' }}</span>
+                        <span class="realm-level">第{{ player.attributes.realm_level or 1 }}层</span>
+                    </div>
+                    <div class="cultivation-progress">
+                        <div class="progress-label">修炼进度</div>
+                        <div class="progress-bar-large">
+                            <div class="progress-fill" style="width: {{ (player.attributes.cultivation_level / player.attributes.max_cultivation * 100) if player.attributes.max_cultivation > 0 else 0 }}%"></div>
+                        </div>
+                        <div class="progress-text">
+                            {{ player.attributes.cultivation_level or 0 }} / {{ player.attributes.max_cultivation or 100 }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 修炼方式选择 -->
+        <div class="cultivation-methods">
+            <h3>修炼方式</h3>
+            <div class="method-grid">
+                <div class="method-card" onclick="startCultivation('meditation')">
+                    <div class="method-icon">🧘</div>
+                    <div class="method-info">
+                        <h4>打坐修炼</h4>
+                        <p>基础修炼方式，稳定提升修为</p>
+                        <div class="method-stats">
+                            <span class="stat">+10 修为/次</span>
+                            <span class="cost">消耗: 10 体力</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="method-card" onclick="startCultivation('pill')">
+                    <div class="method-icon">💊</div>
+                    <div class="method-info">
+                        <h4>丹药辅助</h4>
+                        <p>使用丹药加速修炼进程</p>
+                        <div class="method-stats">
+                            <span class="stat">+25 修为/次</span>
+                            <span class="cost">需要: 修炼丹药</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="method-card" onclick="startCultivation('formation')">
+                    <div class="method-icon">⭕</div>
+                    <div class="method-info">
+                        <h4>阵法修炼</h4>
+                        <p>借助阵法聚集天地灵气</p>
+                        <div class="method-stats">
+                            <span class="stat">+40 修为/次</span>
+                            <span class="cost">需要: 修炼阵法</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="method-card" onclick="startCultivation('technique')">
+                    <div class="method-icon">📜</div>
+                    <div class="method-info">
+                        <h4>功法修炼</h4>
+                        <p>修炼特定功法提升技能</p>
+                        <div class="method-stats">
+                            <span class="stat">+技能熟练度</span>
+                            <span class="cost">需要: 功法秘籍</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 功法列表 -->
+        <div class="technique-list">
+            <h3>已学功法</h3>
+            <div class="technique-grid">
+                {% if player.skills %}
+                    {% for skill in player.skills %}
+                    <div class="technique-item">
+                        <div class="technique-header">
+                            <h4>{{ skill.name }}</h4>
+                            <span class="technique-rank {{ skill.rank or 'mortal' }}">{{ skill.rank_display or '凡品' }}</span>
+                        </div>
+                        <p class="technique-desc">{{ skill.description or '功法描述暂无' }}</p>
+                        <div class="technique-progress">
+                            <div class="progress-mini">
+                                <div class="progress-fill" style="width: {{ (skill.level / skill.max_level * 100) if skill.max_level > 0 else 0 }}%"></div>
+                            </div>
+                            <span class="level-text">{{ skill.level or 1 }}/{{ skill.max_level or 10 }}</span>
+                        </div>
+                        <button class="practice-btn" onclick="practiceTechnique('{{ skill.id }}')">修炼此功法</button>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                <div class="no-techniques">
+                    <div class="empty-icon">📚</div>
+                    <p>尚未学会任何功法</p>
+                    <p class="empty-hint">通过探索或购买获得功法秘籍</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- 突破系统 -->
+        {% if player.attributes.cultivation_level >= player.attributes.max_cultivation %}
+        <div class="breakthrough-section">
+            <h3>境界突破</h3>
+            <div class="breakthrough-card">
+                <div class="breakthrough-info">
+                    <h4>🌟 可以突破至更高境界！</h4>
+                    <p>修为已达当前境界极限，是否尝试突破？</p>
+                    <div class="breakthrough-requirements">
+                        <h5>突破需求：</h5>
+                        <ul>
+                            <li>修为: {{ player.attributes.cultivation_level }}/{{ player.attributes.max_cultivation }} ✅</li>
+                            <li>突破丹药 (可选)</li>
+                            <li>安静的修炼环境</li>
+                        </ul>
+                    </div>
+                    <div class="breakthrough-warning">
+                        ⚠️ 突破失败可能导致修为倒退，请谨慎选择！
+                    </div>
+                </div>
+                <div class="breakthrough-actions">
+                    <button class="breakthrough-btn primary" onclick="attemptBreakthrough()">
+                        尝试突破
+                    </button>
+                    <button class="breakthrough-btn secondary" onclick="prepareBreakthrough()">
+                        准备突破
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- 修炼统计 -->
+        <div class="cultivation-stats">
+            <h3>修炼统计</h3>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-label">总修炼次数</span>
+                    <span class="stat-value">{{ player.stats.cultivation_count or 0 }}</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">突破次数</span>
+                    <span class="stat-value">{{ player.stats.breakthrough_count or 0 }}</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">顿悟次数</span>
+                    <span class="stat-value">{{ player.stats.enlightenment_count or 0 }}</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">修炼天数</span>
+                    <span class="stat-value">{{ player.stats.cultivation_days or 0 }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="error-message">
+        <div class="error-icon">🧘</div>
+        <div class="error-text">
+            <h3>修炼系统未初始化</h3>
+            <p>无法读取角色修炼数据，请确保游戏正常运行。</p>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+.modal-header h2 {
+    font-size: 20px;
+    color: #d8d8d8;
+    margin-bottom: 20px;
+    text-align: center;
+    letter-spacing: 2px;
+}
+
+.cultivation-container {
+    max-height: 70vh;
+    overflow-y: auto;
+    display: grid;
+    gap: 24px;
+}
+
+.cultivation-status {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(200, 200, 200, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.cultivation-status h3 {
+    color: #87ceeb;
+    margin-bottom: 16px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.realm-display {
+    text-align: center;
+}
+
+.realm-badge {
+    margin-bottom: 16px;
+}
+
+.realm-name {
+    color: #ffc107;
+    font-size: 18px;
+    font-weight: 700;
+    margin-right: 8px;
+}
+
+.realm-level {
+    color: #87ceeb;
+    font-size: 14px;
+}
+
+.cultivation-progress {
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.progress-label {
+    color: #888;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.progress-bar-large {
+    width: 100%;
+    height: 12px;
+    background: rgba(100, 100, 100, 0.2);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.progress-bar-large .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ffc107, #ffdf00);
+    transition: width 0.5s ease;
+    box-shadow: 0 0 10px rgba(255, 193, 7, 0.5);
+}
+
+.progress-text {
+    color: #d8d8d8;
+    font-size: 13px;
+}
+
+.cultivation-methods h3 {
+    color: #87ceeb;
+    margin-bottom: 16px;
+    font-size: 16px;
+}
+
+.method-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.method-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(200, 200, 200, 0.1);
+    border-radius: 8px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.method-card:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(200, 200, 200, 0.3);
+    transform: translateY(-2px);
+}
+
+.method-icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+}
+
+.method-info h4 {
+    color: #d8d8d8;
+    margin-bottom: 8px;
+    font-size: 15px;
+}
+
+.method-info p {
+    color: #888;
+    font-size: 12px;
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+.method-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.method-stats .stat {
+    color: #5cb85c;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.method-stats .cost {
+    color: #ffc107;
+    font-size: 11px;
+}
+
+.technique-list h3 {
+    color: #87ceeb;
+    margin-bottom: 16px;
+    font-size: 16px;
+}
+
+.technique-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+}
+
+.technique-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(200, 200, 200, 0.1);
+    border-radius: 8px;
+    padding: 16px;
+    transition: all 0.3s ease;
+}
+
+.technique-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(200, 200, 200, 0.2);
+}
+
+.technique-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.technique-header h4 {
+    color: #d8d8d8;
+    font-size: 14px;
+}
+
+.technique-rank {
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.technique-rank.mortal { background: #6c757d; color: white; }
+.technique-rank.earth { background: #8b4513; color: white; }
+.technique-rank.heaven { background: #4169e1; color: white; }
+.technique-rank.immortal { background: #ffd700; color: #000; }
+
+.technique-desc {
+    color: #888;
+    font-size: 12px;
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+.technique-progress {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.progress-mini {
+    flex: 1;
+    height: 6px;
+    background: rgba(100, 100, 100, 0.2);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-mini .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #17a2b8, #5bc0de);
+    transition: width 0.3s ease;
+}
+
+.level-text {
+    color: #b8b8b8;
+    font-size: 11px;
+    min-width: 40px;
+}
+
+.practice-btn {
+    width: 100%;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(200, 200, 200, 0.2);
+    color: #b8b8b8;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 12px;
+}
+
+.practice-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(200, 200, 200, 0.4);
+    color: #d8d8d8;
+}
+
+.no-techniques {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px 20px;
+    color: #888;
+}
+
+.empty-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+}
+
+.empty-hint {
+    font-size: 12px;
+    color: #666;
+}
+
+.breakthrough-section h3 {
+    color: #ffc107;
+    margin-bottom: 16px;
+    font-size: 16px;
+}
+
+.breakthrough-card {
+    background: rgba(255, 193, 7, 0.1);
+    border: 1px solid rgba(255, 193, 7, 0.3);
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.breakthrough-info h4 {
+    color: #ffc107;
+    margin-bottom: 12px;
+    font-size: 16px;
+}
+
+.breakthrough-info p {
+    color: #d8d8d8;
+    margin-bottom: 16px;
+}
+
+.breakthrough-requirements h5 {
+    color: #b8b8b8;
+    margin-bottom: 8px;
+    font-size: 13px;
+}
+
+.breakthrough-requirements ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 16px;
+}
+
+.breakthrough-requirements li {
+    color: #888;
+    font-size: 12px;
+    margin-bottom: 4px;
+    padding-left: 16px;
+    position: relative;
+}
+
+.breakthrough-requirements li::before {
+    content: '•';
+    color: #ffc107;
+    position: absolute;
+    left: 0;
+}
+
+.breakthrough-warning {
+    background: rgba(220, 53, 69, 0.1);
+    border: 1px solid rgba(220, 53, 69, 0.3);
+    padding: 8px 12px;
+    border-radius: 4px;
+    color: #ff6b6b;
+    font-size: 12px;
+    margin-bottom: 16px;
+}
+
+.breakthrough-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.breakthrough-btn {
+    flex: 1;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.breakthrough-btn.primary {
+    background: #ffc107;
+    color: #000;
+}
+
+.breakthrough-btn.primary:hover {
+    background: #ffdf00;
+}
+
+.breakthrough-btn.secondary {
+    background: transparent;
+    border: 1px solid rgba(200, 200, 200, 0.3);
+    color: #b8b8b8;
+}
+
+.breakthrough-btn.secondary:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #d8d8d8;
+}
+
+.cultivation-stats h3 {
+    color: #87ceeb;
+    margin-bottom: 16px;
+    font-size: 16px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 12px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(200, 200, 200, 0.1);
+    border-radius: 6px;
+}
+
+.stat-label {
+    color: #888;
+    font-size: 11px;
+    margin-bottom: 4px;
+}
+
+.stat-value {
+    color: #d8d8d8;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.error-message {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    background: rgba(220, 53, 69, 0.1);
+    border: 1px solid rgba(220, 53, 69, 0.3);
+    border-radius: 8px;
+}
+
+.error-icon {
+    font-size: 24px;
+}
+
+.error-text h3 {
+    color: #ff6b6b;
+    margin-bottom: 4px;
+}
+
+.error-text p {
+    color: #bbb;
+    font-size: 13px;
+}
+
+@media (max-width: 600px) {
+    .method-grid,
+    .technique-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .breakthrough-actions {
+        flex-direction: column;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+</style>
+
+<script>
+function startCultivation(method) {
+    const methods = {
+        'meditation': '修炼',
+        'pill': '服用丹药修炼',
+        'formation': '阵法修炼',
+        'technique': '功法修炼'
+    };
+    
+    if (window.gameClient) {
+        window.gameClient.sendCommandDirectly(methods[method] || '修炼');
+        window.gameClient.closeModal();
+    }
+}
+
+function practiceTechnique(skillId) {
+    if (window.gameClient) {
+        window.gameClient.sendCommandDirectly(`修炼功法 ${skillId}`);
+    }
+}
+
+function attemptBreakthrough() {
+    if (confirm('确定要尝试突破吗？失败可能导致修为倒退！')) {
+        if (window.gameClient) {
+            window.gameClient.sendCommandDirectly('突破');
+            window.gameClient.closeModal();
+        }
+    }
+}
+
+function prepareBreakthrough() {
+    if (window.gameClient) {
+        window.gameClient.sendCommandDirectly('准备突破');
+    }
+}
+</script>

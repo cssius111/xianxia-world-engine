@@ -1,0 +1,458 @@
+{
+  "meta": {
+    "version": "3.0.0",
+    "description": "修仙世界引擎物品模板定义",
+    "schema_version": "2020-12",
+    "last_modified": "2025-06-07"
+  },
+  "item_types": {
+    "PILL": {
+      "id": "PILL",
+      "name": "丹药",
+      "stackable": true,
+      "consumable": true,
+      "slot": null
+    },
+    "WEAPON": {
+      "id": "WEAPON",
+      "name": "武器",
+      "stackable": false,
+      "consumable": false,
+      "slot": "main_hand"
+    },
+    "ARMOR": {
+      "id": "ARMOR",
+      "name": "防具",
+      "stackable": false,
+      "consumable": false,
+      "slot": "body"
+    },
+    "ACCESSORY": {
+      "id": "ACCESSORY",
+      "name": "饰品",
+      "stackable": false,
+      "consumable": false,
+      "slot": ["ring", "necklace", "bracelet"]
+    },
+    "MATERIAL": {
+      "id": "MATERIAL",
+      "name": "材料",
+      "stackable": true,
+      "consumable": false,
+      "slot": null
+    },
+    "TREASURE": {
+      "id": "TREASURE",
+      "name": "法宝",
+      "stackable": false,
+      "consumable": false,
+      "slot": "treasure"
+    },
+    "TALISMAN": {
+      "id": "TALISMAN",
+      "name": "符箓",
+      "stackable": true,
+      "consumable": true,
+      "slot": null
+    },
+    "BOOK": {
+      "id": "BOOK",
+      "name": "典籍",
+      "stackable": false,
+      "consumable": true,
+      "slot": null
+    }
+  },
+  "quality_tiers": {
+    "common": {
+      "id": 1,
+      "name": "凡品",
+      "color": "#FFFFFF",
+      "value_multiplier": 1.0,
+      "drop_weight": 1000
+    },
+    "uncommon": {
+      "id": 2,
+      "name": "精品",
+      "color": "#00FF00",
+      "value_multiplier": 2.5,
+      "drop_weight": 400
+    },
+    "rare": {
+      "id": 3,
+      "name": "稀有",
+      "color": "#0080FF",
+      "value_multiplier": 5.0,
+      "drop_weight": 150
+    },
+    "epic": {
+      "id": 4,
+      "name": "史诗",
+      "color": "#9932CC",
+      "value_multiplier": 10.0,
+      "drop_weight": 40
+    },
+    "legendary": {
+      "id": 5,
+      "name": "传说",
+      "color": "#FF8C00",
+      "value_multiplier": 25.0,
+      "drop_weight": 9
+    },
+    "mythic": {
+      "id": 6,
+      "name": "神话",
+      "color": "#DC143C",
+      "value_multiplier": 100.0,
+      "drop_weight": 1
+    }
+  },
+  "item_templates": [
+    {
+      "id": "qi_gathering_pill",
+      "name": "聚气丹",
+      "item_type": "PILL",
+      "grade": 1,
+      "quality": "common",
+      "description": "最基础的修炼丹药，可以加快灵气吸收速度。",
+      "icon": "icons/pills/qi_gathering.png",
+      "effects": {
+        "instant": {
+          "spiritual_power": "+50"
+        },
+        "duration": {
+          "cultivation_speed": "+20%",
+          "duration": "1_hour"
+        }
+      },
+      "requirements": {
+        "realm": ">=qi_gathering"
+      },
+      "value": 10,
+      "weight": 0.1,
+      "max_stack": 99
+    },
+    {
+      "id": "foundation_pill",
+      "name": "筑基丹",
+      "item_type": "PILL",
+      "grade": 3,
+      "quality": "rare",
+      "description": "突破筑基期的必需丹药，能够稳固修士根基。",
+      "icon": "icons/pills/foundation.png",
+      "effects": {
+        "instant": {
+          "breakthrough_chance": "+30%",
+          "spiritual_power": "+500"
+        },
+        "special": "foundation_stabilization"
+      },
+      "requirements": {
+        "realm": "qi_gathering",
+        "level": 9
+      },
+      "value": 1000,
+      "weight": 0.1,
+      "max_stack": 10,
+      "cooldown": "7_days"
+    },
+    {
+      "id": "celestial_sword",
+      "name": "天阶飞剑",
+      "item_type": "WEAPON",
+      "grade": 9,
+      "quality": "legendary",
+      "description": "传说中的仙器，蕴含无尽剑意，可御剑千里。",
+      "icon": "icons/weapons/celestial_sword.png",
+      "base_stats": {
+        "attack": 1000,
+        "critical_rate": 15,
+        "critical_damage": 50
+      },
+      "bonus_stats": {
+        "atk%": 30,
+        "speed": 100,
+        "sword_mastery": 3
+      },
+      "effects": {
+        "passive": [
+          {
+            "name": "剑心通明",
+            "description": "剑术技能伤害+50%"
+          },
+          {
+            "name": "御剑术",
+            "description": "可以御剑飞行"
+          }
+        ],
+        "active": {
+          "name": "万剑归宗",
+          "cooldown": "24_hours",
+          "effect": "summon_sword_rain"
+        }
+      },
+      "requirements": {
+        "realm": ">=golden_core",
+        "sword_mastery": ">=5"
+      },
+      "value": 1000000,
+      "weight": 5.0,
+      "durability": {
+        "current": 1000,
+        "max": 1000,
+        "unbreakable": false
+      },
+      "enhancement": {
+        "level": 0,
+        "max_level": 10,
+        "success_rate": "base_rate * (1 - level * 0.1)"
+      }
+    },
+    {
+      "id": "dragon_scale_armor",
+      "name": "龙鳞甲",
+      "item_type": "ARMOR",
+      "grade": 8,
+      "quality": "epic",
+      "description": "以真龙之鳞打造的宝甲，坚不可摧。",
+      "icon": "icons/armor/dragon_scale.png",
+      "base_stats": {
+        "defense": 800,
+        "magic_resistance": 500
+      },
+      "bonus_stats": {
+        "hp%": 25,
+        "def%": 20,
+        "elemental_resistance": 30
+      },
+      "effects": {
+        "passive": [
+          {
+            "name": "龙威",
+            "description": "免疫威压效果"
+          },
+          {
+            "name": "龙血沸腾",
+            "description": "受到致命伤害时，恢复30%生命值（每场战斗限一次）"
+          }
+        ]
+      },
+      "set_bonus": {
+        "set_id": "dragon_set",
+        "pieces_required": {
+          "2": {"all_stats": "+10"},
+          "4": {"dragon_transformation": true}
+        }
+      },
+      "value": 500000,
+      "weight": 50.0
+    },
+    {
+      "id": "spirit_stone",
+      "name": "灵石",
+      "item_type": "MATERIAL",
+      "grade": 1,
+      "quality": "common",
+      "description": "修真界的通用货币，蕴含纯净灵气。",
+      "icon": "icons/materials/spirit_stone.png",
+      "effects": {
+        "currency": true,
+        "instant": {
+          "spiritual_power": "+10"
+        }
+      },
+      "value": 1,
+      "weight": 0.01,
+      "max_stack": 99999,
+      "variants": {
+        "low_grade": {
+          "multiplier": 1,
+          "color": "white"
+        },
+        "mid_grade": {
+          "multiplier": 100,
+          "color": "green"
+        },
+        "high_grade": {
+          "multiplier": 10000,
+          "color": "blue"
+        },
+        "supreme_grade": {
+          "multiplier": 1000000,
+          "color": "purple"
+        }
+      }
+    },
+    {
+      "id": "storage_ring",
+      "name": "储物戒指",
+      "item_type": "ACCESSORY",
+      "grade": 5,
+      "quality": "rare",
+      "description": "内含独立空间的戒指，可存放大量物品。",
+      "icon": "icons/accessories/storage_ring.png",
+      "effects": {
+        "passive": {
+          "inventory_space": "+100"
+        },
+        "special": "spatial_storage"
+      },
+      "storage_capacity": {
+        "slots": 100,
+        "weight_reduction": 0.9,
+        "time_freeze": true
+      },
+      "requirements": {
+        "spiritual_sense": ">=10"
+      },
+      "value": 50000,
+      "weight": 0.1,
+      "bind_on_equip": true
+    },
+    {
+      "id": "thunderbolt_talisman",
+      "name": "雷击符",
+      "item_type": "TALISMAN",
+      "grade": 4,
+      "quality": "uncommon",
+      "description": "绘有雷法的符箓，激发可召唤天雷。",
+      "icon": "icons/talismans/thunderbolt.png",
+      "effects": {
+        "active": {
+          "damage": "spell_power * 3",
+          "damage_type": "thunder",
+          "area": "single_target",
+          "stun_chance": 0.3
+        }
+      },
+      "requirements": {
+        "realm": ">=foundation_building"
+      },
+      "value": 500,
+      "weight": 0.01,
+      "max_stack": 50,
+      "crafting": {
+        "profession": "talisman_making",
+        "skill_required": 3,
+        "materials": [
+          {"id": "spirit_paper", "quantity": 1},
+          {"id": "thunder_essence", "quantity": 1},
+          {"id": "spirit_ink", "quantity": 1}
+        ]
+      }
+    },
+    {
+      "id": "heaven_dao_scripture",
+      "name": "天道真经",
+      "item_type": "BOOK",
+      "grade": 10,
+      "quality": "mythic",
+      "description": "记载天地大道的无上经书，参悟可得大造化。",
+      "icon": "icons/books/heaven_dao.png",
+      "effects": {
+        "on_read": {
+          "comprehension": "+0.5",
+          "unlock_skill": "heaven_dao_technique",
+          "enlightenment_chance": 0.1
+        },
+        "passive": {
+          "held_effect": {
+            "all_attributes": "+10",
+            "luck": "+20"
+          }
+        }
+      },
+      "reading_progress": {
+        "chapters": 9,
+        "time_per_chapter": "7_days",
+        "comprehension_required": [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0]
+      },
+      "requirements": {
+        "realm": ">=nascent_soul",
+        "comprehension": ">=1.5",
+        "karma": ">=50"
+      },
+      "value": 10000000,
+      "weight": 1.0,
+      "unique": true,
+      "indestructible": true
+    }
+  ],
+  "item_mechanics": {
+    "enhancement_system": {
+      "materials": {
+        "common": "enhancement_stone",
+        "protection": "blessing_scroll",
+        "guaranteed": "divine_blessing"
+      },
+      "success_rates": {
+        "formula": "base_rate * (1 - current_level * difficulty_factor)",
+        "failure_consequences": {
+          "1-3": "no_change",
+          "4-6": "level_decrease",
+          "7-9": "item_damage",
+          "10+": "item_destruction"
+        }
+      }
+    },
+    "set_system": {
+      "bonus_activation": "equipped_pieces >= required_pieces",
+      "set_effects": {
+        "cumulative": true,
+        "unique_bonuses": true
+      }
+    },
+    "binding_system": {
+      "bind_types": {
+        "bind_on_pickup": "立即绑定",
+        "bind_on_equip": "装备绑定",
+        "bind_on_use": "使用绑定",
+        "no_binding": "不绑定"
+      },
+      "unbinding": {
+        "possible": true,
+        "cost": "unbinding_talisman",
+        "success_rate": 0.5
+      }
+    },
+    "durability_system": {
+      "damage_sources": ["combat", "death", "special_attacks"],
+      "repair_methods": {
+        "npc_repair": {
+          "cost": "value * (1 - current_durability / max_durability)",
+          "efficiency": 0.9
+        },
+        "self_repair": {
+          "skill_required": "blacksmithing",
+          "materials": "repair_materials",
+          "efficiency": 0.7
+        }
+      }
+    }
+  },
+  "item_generation": {
+    "random_affixes": {
+      "prefixes": [
+        {"id": "sharp", "effect": "atk +10%", "weight": 100},
+        {"id": "sturdy", "effect": "def +10%", "weight": 100},
+        {"id": "swift", "effect": "speed +10%", "weight": 80},
+        {"id": "mystic", "effect": "spell_power +10%", "weight": 60}
+      ],
+      "suffixes": [
+        {"id": "of_power", "effect": "all_stats +5", "weight": 50},
+        {"id": "of_vitality", "effect": "hp +20%", "weight": 80},
+        {"id": "of_wisdom", "effect": "mp +20%", "weight": 80},
+        {"id": "of_fortune", "effect": "luck +10", "weight": 20}
+      ]
+    },
+    "quality_variance": {
+      "formula": "base_value * (0.8 + random() * 0.4) * quality_multiplier",
+      "perfect_roll_chance": 0.01
+    }
+  },
+  "_custom_tags": [
+    "crafting_recipes",
+    "item_evolution",
+    "soul_binding"
+  ]
+}

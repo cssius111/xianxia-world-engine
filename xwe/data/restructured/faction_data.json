@@ -1,0 +1,331 @@
+{
+  "meta": {
+    "version": "2.0.0",
+    "description": "门派势力系统配置",
+    "last_updated": "2025-06-22"
+  },
+  "major_factions": {
+    "righteous": {
+      "id": "righteous",
+      "name": "正道联盟",
+      "description": "维护天下正义的修仙门派联盟",
+      "alignment": "lawful_good",
+      "reputation_bonus": 20,
+      "color": "#FFD700",
+      "core_values": ["正义", "和谐", "护民"],
+      "advantages": [
+        "获得正道门派好感度加成",
+        "可以学习正道功法",
+        "城镇中享受优惠",
+        "容易获得任务"
+      ],
+      "disadvantages": [
+        "魔道门派敌视",
+        "行动受到道德约束",
+        "某些强力邪功无法修炼"
+      ],
+      "member_sects": [
+        "青云宗",
+        "天音寺",
+        "太极门",
+        "峨眉派",
+        "少林寺"
+      ]
+    },
+    "demonic": {
+      "id": "demonic",
+      "name": "魔道势力",
+      "description": "不择手段追求力量的修炼者联盟",
+      "alignment": "chaotic_evil",
+      "reputation_bonus": -10,
+      "color": "#8B0000",
+      "core_values": ["力量", "自由", "征服"],
+      "advantages": [
+        "可以修炼强大的魔功",
+        "行动不受道德约束",
+        "获得经验值加成20%",
+        "战斗力提升明显"
+      ],
+      "disadvantages": [
+        "正道门派敌视",
+        "城镇中被排斥",
+        "容易遭遇天劫",
+        "修炼风险较高"
+      ],
+      "member_sects": [
+        "血煞宗",
+        "幽冥教",
+        "万毒谷",
+        "骷髅门",
+        "噬魂殿"
+      ]
+    },
+    "neutral": {
+      "id": "neutral",
+      "name": "散修联盟",
+      "description": "不依附任何大势力的自由修炼者",
+      "alignment": "true_neutral",
+      "reputation_bonus": 0,
+      "color": "#808080",
+      "core_values": ["自由", "中立", "独立"],
+      "advantages": [
+        "不受任何势力约束",
+        "可以与所有派系交易",
+        "修炼功法限制较少",
+        "适应性强"
+      ],
+      "disadvantages": [
+        "缺少门派资源支持",
+        "修炼指导较少",
+        "容易成为各方争夺目标"
+      ],
+      "member_sects": [
+        "散修盟",
+        "自由城",
+        "商会联盟",
+        "游侠团"
+      ]
+    }
+  },
+  "individual_sects": {
+    "qingyun_sect": {
+      "id": "qingyun_sect",
+      "name": "青云宗",
+      "faction": "righteous",
+      "description": "正道第一大宗，以剑修著称",
+      "location": "青云山",
+      "specialties": ["剑修", "符咒", "阵法"],
+      "reputation": 95,
+      "power_level": "super_major",
+      "entrance_requirements": {
+        "spiritual_root": ["metal", "wood", "water"],
+        "age_limit": 30,
+        "moral_alignment": "good",
+        "minimum_talent": "common"
+      },
+      "sect_skills": [
+        {
+          "name": "青云剑诀",
+          "type": "sword",
+          "rank": "heaven",
+          "description": "青云宗镇派剑法"
+        },
+        {
+          "name": "太极玄清道",
+          "type": "cultivation",
+          "rank": "heaven",
+          "description": "青云宗心法"
+        }
+      ],
+      "benefits": {
+        "monthly_salary": 100,
+        "cultivation_bonus": 25,
+        "skill_learning_discount": 30,
+        "protection": "high"
+      },
+      "hierarchy": [
+        "宗主",
+        "长老",
+        "峰主",
+        "内门弟子",
+        "外门弟子",
+        "杂役弟子"
+      ]
+    },
+    "tianyin_temple": {
+      "id": "tianyin_temple",
+      "name": "天音寺",
+      "faction": "righteous",
+      "description": "佛门圣地，以音律和医术著称",
+      "location": "天音山",
+      "specialties": ["音律", "医术", "佛法"],
+      "reputation": 90,
+      "power_level": "major",
+      "entrance_requirements": {
+        "spiritual_root": ["wood", "water"],
+        "age_limit": 25,
+        "moral_alignment": "good",
+        "wisdom_requirement": 60
+      },
+      "sect_skills": [
+        {
+          "name": "大梵般若",
+          "type": "cultivation",
+          "rank": "heaven",
+          "description": "天音寺心法"
+        },
+        {
+          "name": "天音妙法",
+          "type": "support",
+          "rank": "earth",
+          "description": "音律攻击法门"
+        }
+      ]
+    },
+    "xueshazong": {
+      "id": "xueshazong",
+      "name": "血煞宗",
+      "faction": "demonic",
+      "description": "魔道强宗，以血系功法著称",
+      "location": "血煞谷",
+      "specialties": ["血功", "毒术", "暗杀"],
+      "reputation": -80,
+      "power_level": "major",
+      "entrance_requirements": {
+        "spiritual_root": ["fire", "shadow"],
+        "age_limit": 35,
+        "moral_alignment": "evil",
+        "kill_count": 10
+      },
+      "sect_skills": [
+        {
+          "name": "血神经",
+          "type": "cultivation",
+          "rank": "heaven",
+          "description": "血煞宗魔功"
+        },
+        {
+          "name": "血河车",
+          "type": "combat",
+          "rank": "earth",
+          "description": "血系攻击法门"
+        }
+      ],
+      "special_rules": [
+        "需要定期献祭",
+        "内部竞争激烈",
+        "背叛者必死"
+      ]
+    }
+  },
+  "faction_relationships": {
+    "relationships": [
+      {
+        "faction1": "righteous",
+        "faction2": "demonic",
+        "relationship": "hostile",
+        "intensity": -80,
+        "description": "正邪不两立，见面必战"
+      },
+      {
+        "faction1": "righteous",
+        "faction2": "neutral",
+        "relationship": "friendly",
+        "intensity": 20,
+        "description": "正道对散修较为友善"
+      },
+      {
+        "faction1": "demonic",
+        "faction2": "neutral",
+        "relationship": "neutral",
+        "intensity": -10,
+        "description": "魔道对散修略有不屑"
+      }
+    ],
+    "sect_relationships": [
+      {
+        "sect1": "qingyun_sect",
+        "sect2": "tianyin_temple",
+        "relationship": "allied",
+        "intensity": 60,
+        "description": "正道盟友关系"
+      },
+      {
+        "sect1": "qingyun_sect",
+        "sect2": "xueshazong",
+        "relationship": "nemesis",
+        "intensity": -90,
+        "description": "世代仇敌"
+      }
+    ]
+  },
+  "faction_events": {
+    "righteous_events": [
+      {
+        "name": "正道大会",
+        "description": "正道门派聚集商讨天下大事",
+        "frequency": "yearly",
+        "benefits": [
+          "名望提升",
+          "获得珍贵功法",
+          "结识其他弟子"
+        ]
+      },
+      {
+        "name": "除魔卫道",
+        "description": "正道联合行动清剿魔道",
+        "frequency": "random",
+        "benefits": [
+          "实战经验",
+          "魔道宝物",
+          "声望大增"
+        ]
+      }
+    ],
+    "demonic_events": [
+      {
+        "name": "血月祭典",
+        "description": "魔道门派的邪恶仪式",
+        "frequency": "monthly",
+        "benefits": [
+          "修为大增",
+          "获得邪恶力量",
+          "魔道威望提升"
+        ],
+        "risks": [
+          "可能走火入魔",
+          "被正道追杀"
+        ]
+      }
+    ]
+  },
+  "reputation_system": {
+    "levels": [
+      {
+        "name": "声名狼藉",
+        "range": [-100, -80],
+        "effects": ["被所有正道敌视", "城镇拒绝服务", "悬赏通缉"]
+      },
+      {
+        "name": "恶名昭彰",
+        "range": [-79, -50],
+        "effects": ["正道敌视", "部分服务拒绝", "价格上涨"]
+      },
+      {
+        "name": "无名之辈",
+        "range": [-49, 49],
+        "effects": ["无特殊影响"]
+      },
+      {
+        "name": "小有名气",
+        "range": [50, 79],
+        "effects": ["部分优惠", "容易获得任务", "NPC友善"]
+      },
+      {
+        "name": "声名远扬",
+        "range": [80, 100],
+        "effects": ["大幅优惠", "特殊任务", "门派邀请"]
+      }
+    ]
+  },
+  "joining_mechanics": {
+    "application_process": [
+      "寻找门派",
+      "通过入门考验",
+      "宣誓加入",
+      "分配职位"
+    ],
+    "leaving_process": [
+      "申请离宗",
+      "完成未完成任务",
+      "交还门派物品",
+      "承受声望损失"
+    ],
+    "betrayal_consequences": [
+      "被原门派追杀",
+      "声望大幅下降",
+      "被其他门派不信任",
+      "可能获得特殊机缘"
+    ]
+  }
+}

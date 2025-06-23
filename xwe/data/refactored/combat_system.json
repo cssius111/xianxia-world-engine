@@ -1,0 +1,226 @@
+{
+  "_spec_version": "1.0.0",
+  "_checksum": "0000000000000000000000000000000000000000000000000000000000000000",
+  "_generated_at": "2025-01-09T00:00:00Z",
+  "base_stats": {
+    "hp": { "min": 1, "max": 999999 },
+    "mp": { "min": 0, "max": 999999 },
+    "atk": { "min": 1, "max": 99999 },
+    "def": { "min": 0, "max": 99999 },
+    "agi": { "min": 1, "max": 9999 },
+    "wis": { "min": 1, "max": 9999 },
+    "luck": { "min": -100, "max": 999 },
+    "crit_pct": { "min": 0.0, "max": 1.0 },
+    "crit_dmg": { "min": 1.0, "max": 10.0 },
+    "pen_pct": { "min": 0.0, "max": 1.0 },
+    "evade_pct": { "min": 0.0, "max": 0.95 }
+  },
+  "damage_formulas": {
+    "physical": {
+      "base": "atk * (1 + str/100) * weapon_mult",
+      "defense": "def * (1 + con/100) * armor_mult",
+      "final": "max(1, base - defense) * (1 - damage_reduction)",
+      "critical": "final * crit_dmg * (1 + luck/1000)",
+      "variance": 0.1
+    },
+    "magical": {
+      "base": "spell_power * element_affinity * (1 + int/100)",
+      "resistance": "magic_resist * (1 + wis/100) * element_resist",
+      "final": "base * (1 - min(0.9, resistance))",
+      "critical": "final * (crit_dmg * 0.75) * (1 + comprehension)",
+      "variance": 0.15
+    },
+    "true": {
+      "base": "source_value",
+      "defense": 0,
+      "final": "base",
+      "critical": "base * 1.5",
+      "variance": 0.0
+    }
+  },
+  "dps_formula": "atk * (1 + crit_pct * (crit_dmg - 1)) * attack_speed * skill_multiplier",
+  "hit_rate": "max(0.05, min(0.95, 1 - (target_evasion - (agi * 0.01 + accuracy_bonus))))",
+  "combat_phases": [
+    "INIT",
+    "BUFF_APPLICATION",
+    "ACTION_DECLARATION",
+    "ACTION_RESOLUTION",
+    "DAMAGE_CALCULATION",
+    "STATUS_UPDATE",
+    "DEATH_CHECK",
+    "END_TURN"
+  ],
+  "action_types": {
+    "ATTACK": { "cost": 1, "target": "enemy", "range": "weapon_range" },
+    "DEFEND": { "cost": 1, "target": "self", "effect": { "def_mult": 1.5, "damage_reduction": 0.3 } },
+    "SKILL": { "cost": "skill_specific", "target": "skill_specific", "cooldown": "skill_specific" },
+    "ITEM": { "cost": 1, "target": "varies", "consume": true },
+    "FLEE": { "cost": 1, "success_rate": "agi_diff * 0.1 + 0.5", "penalty": { "reputation": -10 } },
+    "CHARGE": { "cost": 2, "effect": { "next_attack_mult": 2.0 } },
+    "MEDITATE": { "cost": 1, "effect": { "mp_regen": "max_mp * 0.1", "vulnerable": 1.5 } }
+  },
+  "elemental_damage_matrix": [
+    [1.0, 0.5, 1.0, 1.5, 1.0, 1.0, 0.7, 1.0, 1.0, 1.2],
+    [1.5, 1.0, 0.5, 1.0, 1.0, 0.8, 1.0, 1.0, 1.0, 1.0],
+    [1.0, 1.5, 1.0, 0.5, 1.0, 1.0, 1.0, 0.7, 1.0, 1.0],
+    [0.5, 1.0, 1.5, 1.0, 1.0, 1.2, 1.0, 2.0, 1.0, 0.8],
+    [1.0, 1.0, 1.0, 1.0, 1.0, 0.5, 2.0, 1.0, 1.0, 1.0],
+    [1.0, 1.2, 1.0, 0.8, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+    [1.3, 1.0, 1.0, 1.0, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0],
+    [1.0, 1.0, 1.3, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+    [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.5],
+    [0.8, 1.0, 1.0, 1.2, 1.0, 1.0, 1.0, 1.0, 0.5, 1.0]
+  ],
+  "/* element order: 金木水火土风雷冰暗光 */": null,
+  "status_effects": {
+    "POISON": {
+      "type": "DOT",
+      "damage_per_tick": "max_hp * 0.02",
+      "duration": 300,
+      "stack_limit": 5,
+      "cure_items": ["antidote", "purify_spell"]
+    },
+    "BURN": {
+      "type": "DOT",
+      "damage_per_tick": "max_hp * 0.03",
+      "duration": 180,
+      "stack_limit": 3,
+      "spread_chance": 0.1,
+      "cure_methods": ["water_spell", "ice_spell"]
+    },
+    "FREEZE": {
+      "type": "DISABLE",
+      "duration": 120,
+      "effect": { "action_disabled": true, "def_mult": 0.7 },
+      "break_chance": "str * 0.01",
+      "immunity_after": 300
+    },
+    "STUN": {
+      "type": "DISABLE",
+      "duration": 60,
+      "effect": { "action_disabled": true, "evade_pct": 0 },
+      "resist_formula": "willpower * 0.02"
+    },
+    "BLEED": {
+      "type": "DOT",
+      "damage_per_tick": "max_hp * 0.01 * stack_count",
+      "duration": 240,
+      "stack_limit": 10,
+      "heal_reduction": 0.5
+    },
+    "BERSERK": {
+      "type": "BUFF_DEBUFF",
+      "duration": 300,
+      "effect": { "atk_mult": 2.0, "def_mult": 0.5, "accuracy": 0.8 },
+      "uncontrollable": true
+    },
+    "SHIELD": {
+      "type": "BUFF",
+      "duration": 600,
+      "effect": { "damage_reduction": "shield_value / max_hp", "max_reduction": 0.9 },
+      "shield_value": "caster_spell_power * 3"
+    },
+    "REGENERATION": {
+      "type": "HOT",
+      "heal_per_tick": "max_hp * 0.05",
+      "duration": 600,
+      "stack_limit": 3,
+      "bonus_with_nature": 1.5
+    }
+  },
+  "combat_ai_patterns": {
+    "AGGRESSIVE": {
+      "target_priority": ["lowest_hp", "highest_threat", "support_first"],
+      "skill_preference": ["high_damage", "aoe", "debuff"],
+      "flee_threshold": 0.1,
+      "action_weights": { "attack": 0.7, "skill": 0.25, "defend": 0.05 }
+    },
+    "DEFENSIVE": {
+      "target_priority": ["highest_threat", "closest", "lowest_defense"],
+      "skill_preference": ["heal", "shield", "debuff"],
+      "flee_threshold": 0.3,
+      "action_weights": { "attack": 0.3, "skill": 0.4, "defend": 0.3 }
+    },
+    "TACTICAL": {
+      "target_priority": ["weakest_element", "isolated", "key_target"],
+      "skill_preference": ["control", "combo_setup", "efficient"],
+      "flee_threshold": 0.2,
+      "action_weights": { "attack": 0.4, "skill": 0.5, "defend": 0.1 }
+    },
+    "BERSERKER": {
+      "target_priority": ["random", "nearest", "anyone"],
+      "skill_preference": ["self_buff", "aoe", "lifesteal"],
+      "flee_threshold": 0.0,
+      "action_weights": { "attack": 0.9, "skill": 0.1, "defend": 0.0 }
+    },
+    "SUPPORT": {
+      "target_priority": ["ally_lowest_hp", "ally_debuffed", "threat_to_ally"],
+      "skill_preference": ["heal", "buff", "cleanse"],
+      "flee_threshold": 0.4,
+      "action_weights": { "attack": 0.1, "skill": 0.8, "defend": 0.1 }
+    }
+  },
+  "combo_system": {
+    "combo_window": 2,
+    "chain_bonus": "1 + (chain_length * 0.2)",
+    "registered_combos": {
+      "triple_strike": {
+        "sequence": ["ATTACK", "ATTACK", "ATTACK"],
+        "effect": { "damage_mult": 3.0, "guaranteed_crit": true }
+      },
+      "elemental_burst": {
+        "sequence": ["FIRE_SKILL", "WIND_SKILL", "FIRE_SKILL"],
+        "effect": { "aoe_explosion": true, "burn_all": true }
+      },
+      "perfect_defense": {
+        "sequence": ["DEFEND", "DEFEND", "COUNTER"],
+        "effect": { "reflect_damage": 1.0, "invulnerable": 60 }
+      },
+      "assassinate": {
+        "sequence": ["STEALTH", "POSITION", "CRITICAL_STRIKE"],
+        "effect": { "instant_kill_chance": 0.3, "damage_mult": 5.0 }
+      }
+    }
+  },
+  "environmental_modifiers": {
+    "VOLCANIC": { "fire_dmg": 1.3, "water_dmg": 0.7, "burn_chance": 0.1 },
+    "UNDERWATER": { "water_dmg": 1.5, "fire_dmg": 0.3, "lightning_dmg": 2.0 },
+    "FOREST": { "wood_dmg": 1.3, "stealth_bonus": 0.3, "fire_risk": 0.2 },
+    "MOUNTAIN": { "earth_dmg": 1.3, "wind_dmg": 1.2, "movement_cost": 1.5 },
+    "VOID": { "all_dmg": 0.8, "miss_chance": 0.1, "spatial_instability": true },
+    "HOLY_GROUND": { "light_dmg": 1.5, "dark_dmg": 0.5, "heal_bonus": 0.3 },
+    "CHAOS_FIELD": { "random_element": true, "damage_variance": 0.5, "effect_chance": 0.2 }
+  },
+  "death_mechanics": {
+    "revival_methods": [
+      { "method": "revival_pill", "success_rate": 0.8, "penalty": { "max_hp": 0.9 } },
+      { "method": "phoenix_rebirth", "success_rate": 1.0, "cooldown": 2592000 },
+      { "method": "soul_reformation", "success_rate": 0.5, "cost": { "realm_level": -1 } },
+      { "method": "divine_intervention", "success_rate": 0.1, "karma_required": 1000 }
+    ],
+    "death_penalties": {
+      "exp_loss": 0.1,
+      "item_drop_chance": 0.3,
+      "soul_damage": 0.05,
+      "respawn_time": 3600
+    }
+  },
+  "special_mechanics": {
+    "overkill": {
+      "threshold": "damage > target_hp * 2",
+      "effects": ["instant_death", "no_revival", "soul_scatter"]
+    },
+    "last_stand": {
+      "trigger": "hp < max_hp * 0.1",
+      "effects": { "damage_reduction": 0.5, "atk_mult": 1.5, "cannot_flee": true }
+    },
+    "divine_protection": {
+      "trigger": "would_die && has_protection",
+      "effects": { "survive_with_1_hp": true, "invulnerable": 60, "consumes_protection": true }
+    },
+    "berserk_transformation": {
+      "trigger": "ally_death || hp < 30%",
+      "effects": { "all_stats_mult": 2.0, "lose_control": true, "aoe_attacks": true }
+    }
+  }
+}

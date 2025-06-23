@@ -1,0 +1,391 @@
+{
+  "global_news": {
+    "categories": {
+      "sect_dynamics": {
+        "name": "宗门动态",
+        "priority": 100,
+        "refresh_rate": 86400,
+        "max_items": 10
+      },
+      "secret_realm": {
+        "name": "秘境消息",
+        "priority": 150,
+        "refresh_rate": 172800,
+        "max_items": 5
+      },
+      "demon_activity": {
+        "name": "魔道动向",
+        "priority": 120,
+        "refresh_rate": 43200,
+        "max_items": 8
+      },
+      "merchant_notice": {
+        "name": "商会公告",
+        "priority": 80,
+        "refresh_rate": 21600,
+        "max_items": 15
+      },
+      "heaven_phenomenon": {
+        "name": "天地异象",
+        "priority": 200,
+        "refresh_rate": 604800,
+        "max_items": 3
+      },
+      "cultivation_breakthrough": {
+        "name": "突破快讯",
+        "priority": 90,
+        "refresh_rate": 3600,
+        "max_items": 20
+      }
+    },
+
+    "templates": [
+      {
+        "id": "sect_recruitment_01",
+        "category": "sect_dynamics",
+        "template": {
+          "title": "{sect_name}即将举办{recruitment_type}",
+          "content": "据{source}消息，{sect_name}将于{date}举办{period}的{recruitment_type}。此次{recruitment_event}门槛{threshold_change}，凡{requirements}者皆可参加。宗门{elder_name}长老透露，此次将招收{disciple_type}弟子{outer_count}名，{inner_type}弟子{inner_count}名。{special_note}",
+          "variables": {
+            "sect_name": ["青云宗", "太虚门", "玄天宗", "灵霄宫", "万剑宗"],
+            "recruitment_type": ["收徒大典", "选拔大会", "入门试炼", "弟子招募"],
+            "source": ["可靠", "内部", "独家", "一手"],
+            "date": ["下月初八", "月圆之夜", "春分时节", "三日后"],
+            "period": ["三年一度", "五年一度", "十年一度", "百年一遇"],
+            "recruitment_event": ["大典", "试炼", "选拔", "考核"],
+            "threshold_change": ["有所降低", "维持不变", "略有提高", "大幅提升"],
+            "requirements": ["炼气三层以上", "筑基期以下", "年龄不超过二十", "灵根纯净"],
+            "elder_name": ["传功", "执法", "内门", "外门"],
+            "disciple_type": ["外门", "杂役", "记名"],
+            "outer_count": [100, 200, 300, 500],
+            "inner_type": ["内门", "真传", "核心"],
+            "inner_count": [10, 20, 30, 50],
+            "special_note": ["有意者可前往{location}报名。", "此次将有神秘奖励。", "据说宗主将亲自主持。", ""]
+          }
+        },
+        "ttl": 2592000,
+        "relevance_level": 8,
+        "tags": ["招募", "机会", "宗门"],
+        "effects": {
+          "trigger_task": "join_sect_examination",
+          "requirement_check": true
+        }
+      },
+
+      {
+        "id": "secret_realm_discovery",
+        "category": "secret_realm",
+        "template": {
+          "title": "{location}惊现{realm_type}秘境{status}",
+          "content": "{location}{phenomenon}，{observer}推测为{time_period}秘境'{realm_name}'即将{status}的征兆。{history_info}。{danger_warning}各大势力{reaction}，预计{time_estimate}秘境将{final_state}。{treasure_hint}",
+          "variables": {
+            "location": ["东海之滨", "西漠深处", "南疆密林", "北域雪原", "中州古地"],
+            "realm_type": ["千年", "万年", "上古", "远古", "太古"],
+            "status": ["开启征兆", "即将现世", "空间波动", "封印松动"],
+            "phenomenon": ["出现异常灵气波动", "天现异象", "空间裂缝频现", "灵兽异动"],
+            "observer": ["多位金丹修士", "元婴老祖", "天机阁", "阵法大师"],
+            "time_period": ["失落已久的", "传说中的", "神秘的", "禁忌的"],
+            "realm_name": ["落日洞天", "青莲秘境", "龙宫遗址", "仙府遗迹", "魔神战场"],
+            "history_info": ["上次开启时有三人成就元婴", "传说其中有仙器", "曾是上古宗门所在", "内有完整传承"],
+            "danger_warning": ["死亡率超过七成。", "元婴修士也有陨落风险。", "需谨慎进入。", "机缘与危险并存。"],
+            "reaction": ["已开始调动人手", "暗中布局", "严阵以待", "蠢蠢欲动"],
+            "time_estimate": ["半年内", "三月之内", "月内", "七日内"],
+            "final_state": ["完全显现", "彻底开启", "稳定下来", "可以进入"],
+            "treasure_hint": ["据说内有{treasure}。", "传闻可寻得{treasure}。", "", "或有{treasure}现世。"],
+            "treasure": ["仙器", "神通传承", "破境丹药", "上古灵药", "法则碎片"]
+          }
+        },
+        "ttl": 15552000,
+        "relevance_level": 10,
+        "special_conditions": {
+          "realm_requirements": true,
+          "entry_token_needed": true,
+          "team_formation_allowed": true
+        }
+      },
+
+      {
+        "id": "breaking_news_cultivator",
+        "category": "cultivation_breakthrough",
+        "template": {
+          "title": "{location}{cultivator_name}{breakthrough_result}{realm_name}",
+          "content": "就在{time_ago}，{location}传来{adjective}消息：{cultivator_description}的{cultivator_name}，在{breakthrough_location}{breakthrough_result}{realm_name}！{phenomenon_description}。{reaction_description}。{influence_description}",
+          "variables": {
+            "location": ["青云山", "魔煞谷", "中州城", "东海", "散修联盟"],
+            "cultivator_name": ["陈长老", "李真人", "王道友", "赵仙子", "神秘修士"],
+            "breakthrough_result": ["成功突破至", "顺利晋升", "一举踏入", "终于迈入"],
+            "realm_name": ["金丹期", "元婴期", "化神期", "合体期"],
+            "time_ago": ["刚才", "半个时辰前", "今日清晨", "昨夜子时"],
+            "adjective": ["震撼", "轰动", "惊人", "重大"],
+            "cultivator_description": ["闭关百年", "天才", "老牌", "神秘"],
+            "breakthrough_location": ["闭关密室中", "雷劫之下", "众目睽睽下", "秘境之中"],
+            "phenomenon_description": ["天降祥瑞，紫气东来", "雷劫九重，声震百里", "异象频现，灵气如潮", "天地同庆，万物共鸣"],
+            "reaction_description": ["各方势力纷纷道贺", "引起修真界轰动", "无数修士前来观礼", "消息迅速传遍四方"],
+            "influence_description": ["实力格局或将改变", "必将影响未来走势", "为宗门增添强援", "修真界又多一位强者"]
+          }
+        },
+        "ttl": 259200,
+        "relevance_level": 6,
+        "dynamic_generation": true
+      }
+    ],
+
+    "dynamic_rules": {
+      "generation_triggers": {
+        "player_action": {
+          "major_breakthrough": "generate_breakthrough_news",
+          "sect_contribution": "generate_sect_news",
+          "rare_item_obtained": "generate_treasure_news"
+        },
+        "world_events": {
+          "time_based": "check_timeline_events",
+          "random_chance": 0.1,
+          "player_influence": "calculate_ripple_effect"
+        }
+      },
+      "relevance_calculation": {
+        "factors": [
+          {"name": "player_level", "weight": 0.2},
+          {"name": "player_location", "weight": 0.3},
+          {"name": "player_faction", "weight": 0.2},
+          {"name": "current_quest", "weight": 0.3}
+        ]
+      }
+    }
+  },
+
+  "personal_intelligence": {
+    "sources": {
+      "npc": {
+        "name": "NPC对话",
+        "trust_level": 0.7,
+        "cost": "relationship",
+        "unlock_condition": "min_affinity"
+      },
+      "vendor": {
+        "name": "商人情报",
+        "trust_level": 0.6,
+        "cost": "money",
+        "unlock_condition": "vip_status"
+      },
+      "rumor": {
+        "name": "市井传闻",
+        "trust_level": 0.3,
+        "cost": "time",
+        "unlock_condition": "always"
+      },
+      "quest": {
+        "name": "任务线索",
+        "trust_level": 0.9,
+        "cost": "quest_progress",
+        "unlock_condition": "active_quest"
+      },
+      "exploration": {
+        "name": "亲身发现",
+        "trust_level": 1.0,
+        "cost": "risk",
+        "unlock_condition": "exploration_skill"
+      },
+      "divination": {
+        "name": "占卜推演",
+        "trust_level": 0.8,
+        "cost": "spiritual_power",
+        "unlock_condition": "divination_skill"
+      },
+      "network": {
+        "name": "情报网络",
+        "trust_level": 0.85,
+        "cost": "contribution",
+        "unlock_condition": "intelligence_network"
+      }
+    },
+
+    "intelligence_types": {
+      "location_intel": {
+        "description": "地点相关情报",
+        "examples": ["隐藏洞府", "资源点", "危险区域"],
+        "value_factors": ["rarity", "exclusivity", "danger"]
+      },
+      "npc_intel": {
+        "description": "人物相关情报",
+        "examples": ["NPC位置", "弱点", "需求", "秘密"],
+        "value_factors": ["importance", "relationship", "blackmail_potential"]
+      },
+      "item_intel": {
+        "description": "物品相关情报",
+        "examples": ["宝物线索", "材料产地", "隐藏商人"],
+        "value_factors": ["item_grade", "demand", "accessibility"]
+      },
+      "event_intel": {
+        "description": "事件相关情报",
+        "examples": ["即将发生", "触发条件", "隐藏结果"],
+        "value_factors": ["impact", "time_sensitivity", "prevention_possibility"]
+      }
+    },
+
+    "intelligence_network": {
+      "build_requirements": {
+        "initial_cost": 10000,
+        "monthly_maintenance": 500,
+        "minimum_contacts": 10
+      },
+      "network_benefits": {
+        "auto_intel_generation": true,
+        "intel_verification": true,
+        "counter_intelligence": true,
+        "early_warning_system": true
+      },
+      "network_levels": [
+        {
+          "level": 1,
+          "name": "基础网络",
+          "coverage": "local",
+          "intel_frequency": "weekly",
+          "accuracy": 0.7
+        },
+        {
+          "level": 2,
+          "name": "区域网络",
+          "coverage": "regional",
+          "intel_frequency": "daily",
+          "accuracy": 0.8
+        },
+        {
+          "level": 3,
+          "name": "势力网络",
+          "coverage": "faction-wide",
+          "intel_frequency": "real-time",
+          "accuracy": 0.9
+        },
+        {
+          "level": 4,
+          "name": "天机网络",
+          "coverage": "world-wide",
+          "intel_frequency": "predictive",
+          "accuracy": 0.95
+        }
+      ]
+    },
+
+    "intel_trading": {
+      "market_enabled": true,
+      "trading_rules": {
+        "verification_required": true,
+        "exclusive_intel_bonus": 2.0,
+        "false_intel_penalty": -1000,
+        "reputation_impact": true
+      },
+      "price_factors": {
+        "base_price": "intel_grade",
+        "modifiers": [
+          {"factor": "buyer_need", "range": [0.5, 3.0]},
+          {"factor": "seller_reputation", "range": [0.8, 1.5]},
+          {"factor": "time_sensitivity", "range": [1.0, 5.0]},
+          {"factor": "exclusivity", "range": [1.0, 10.0]}
+        ]
+      }
+    }
+  },
+
+  "news_interaction": {
+    "player_actions": {
+      "investigate": {
+        "description": "深入调查新闻真相",
+        "cost": {"time": 24, "energy": 50},
+        "outcomes": ["verify_truth", "discover_hidden", "trigger_quest"]
+      },
+      "spread": {
+        "description": "传播消息",
+        "cost": {"reputation": 10},
+        "outcomes": ["increase_influence", "create_chaos", "earn_rewards"]
+      },
+      "suppress": {
+        "description": "压制消息",
+        "cost": {"money": 1000, "influence": 100},
+        "outcomes": ["hide_truth", "protect_secret", "avoid_trouble"]
+      },
+      "manipulate": {
+        "description": "操纵舆论",
+        "requirements": {"intelligence": 20, "influence": 200},
+        "outcomes": ["change_perception", "create_opportunity", "destroy_reputation"]
+      }
+    },
+
+    "news_verification": {
+      "verification_methods": [
+        {
+          "method": "witness_testimony",
+          "accuracy": 0.7,
+          "cost": "relationship"
+        },
+        {
+          "method": "physical_evidence",
+          "accuracy": 0.9,
+          "cost": "investigation"
+        },
+        {
+          "method": "divination",
+          "accuracy": 0.8,
+          "cost": "spiritual_power"
+        },
+        {
+          "method": "network_cross_check",
+          "accuracy": 0.85,
+          "cost": "network_points"
+        }
+      ]
+    }
+  },
+
+  "special_news_events": {
+    "war_declaration": {
+      "trigger": "faction_tension_max",
+      "impact": "global",
+      "duration": "until_resolved",
+      "player_choices": ["join_side", "stay_neutral", "war_profiteer"]
+    },
+    "realm_collapse": {
+      "trigger": "secret_realm_instability",
+      "impact": "regional",
+      "duration": 604800,
+      "opportunities": ["escape_treasures", "rescue_trapped", "scavenge_remains"]
+    },
+    "cultivator_fall": {
+      "trigger": "major_npc_death",
+      "impact": "faction",
+      "duration": 2592000,
+      "consequences": ["power_vacuum", "inheritance_dispute", "revenge_quest"]
+    }
+  },
+
+  "intelligence_ui_config": {
+    "display_format": {
+      "news_item": {
+        "show_source": true,
+        "show_reliability": true,
+        "show_timestamp": true,
+        "allow_actions": ["read", "save", "share", "investigate"]
+      },
+      "intel_item": {
+        "show_confidence": true,
+        "show_value": true,
+        "show_expiration": true,
+        "allow_actions": ["use", "trade", "verify", "discard"]
+      }
+    },
+    "filtering_options": {
+      "by_category": true,
+      "by_relevance": true,
+      "by_location": true,
+      "by_faction": true,
+      "by_time": true,
+      "custom_tags": true
+    },
+    "notification_settings": {
+      "important_news": "popup",
+      "relevant_intel": "sidebar_flash",
+      "network_updates": "silent",
+      "emergency_alerts": "fullscreen"
+    }
+  }
+}

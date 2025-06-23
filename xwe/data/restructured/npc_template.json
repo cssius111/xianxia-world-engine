@@ -1,0 +1,385 @@
+{
+  "meta": {
+    "version": "3.0.0",
+    "description": "修仙世界引擎NPC模板定义",
+    "schema_version": "2020-12",
+    "last_modified": "2025-06-07"
+  },
+  "npc_archetypes": {
+    "sect_elder": {
+      "id": "sect_elder",
+      "name": "宗门长老",
+      "base_stats": {
+        "level_range": [50, 80],
+        "realm": ["nascent_soul", "deity_transformation"],
+        "reputation": 1000,
+        "wealth": "high"
+      },
+      "personality_pool": ["wise", "strict", "protective", "traditional"],
+      "skills": ["teaching", "alchemy", "formation_mastery"],
+      "role": ["quest_giver", "teacher", "faction_leader"]
+    },
+    "wandering_cultivator": {
+      "id": "wandering_cultivator",
+      "name": "散修",
+      "base_stats": {
+        "level_range": [10, 60],
+        "realm": ["qi_gathering", "golden_core"],
+        "reputation": 0,
+        "wealth": "variable"
+      },
+      "personality_pool": ["independent", "cautious", "opportunistic"],
+      "skills": ["survival", "trading", "combat"],
+      "role": ["trader", "information_broker", "random_encounter"]
+    },
+    "young_master": {
+      "id": "young_master",
+      "name": "世家公子",
+      "base_stats": {
+        "level_range": [15, 40],
+        "realm": ["foundation_building", "golden_core"],
+        "reputation": 500,
+        "wealth": "very_high"
+      },
+      "personality_pool": ["arrogant", "proud", "talented", "spoiled"],
+      "skills": ["swordsmanship", "leadership", "politics"],
+      "role": ["rival", "ally", "love_interest"]
+    },
+    "mysterious_expert": {
+      "id": "mysterious_expert",
+      "name": "神秘高人",
+      "base_stats": {
+        "level_range": [80, 100],
+        "realm": ["void_refinement", "body_integration"],
+        "reputation": "hidden",
+        "wealth": "unknown"
+      },
+      "personality_pool": ["enigmatic", "profound", "eccentric"],
+      "skills": ["all_mastery", "divination", "space_law"],
+      "role": ["hidden_master", "plot_device", "final_boss"]
+    }
+  },
+  "npc_templates": [
+    {
+      "id": "li_qingshan",
+      "name": "李青山",
+      "archetype": "sect_elder",
+      "gender": "male",
+      "race": "human",
+      "portrait_id": "elder_li_01",
+      "base_stats": {
+        "hp": 5000,
+        "mp": 8000,
+        "atk": 800,
+        "def": 600,
+        "speed": 400,
+        "realm": "nascent_soul",
+        "level": 70
+      },
+      "attributes": {
+        "strength": 60,
+        "agility": 50,
+        "constitution": 70,
+        "intelligence": 90,
+        "willpower": 85,
+        "charisma": 65
+      },
+      "traits": ["冷静", "守序", "正义", "博学"],
+      "skills": [
+        {"id": "heaven_sword_art", "level": 9},
+        {"id": "pill_refinement", "level": 8},
+        {"id": "array_formation", "level": 7}
+      ],
+      "inventory": {
+        "equipment": {
+          "weapon": "celestial_sword",
+          "armor": "elder_robe",
+          "accessory": ["storage_ring", "protective_jade"]
+        },
+        "items": [
+          {"id": "high_grade_healing_pill", "quantity": 10},
+          {"id": "spirit_stone", "quantity": 10000}
+        ]
+      },
+      "dialogue": {
+        "greeting": {
+          "default": "小友，老夫观你气度不凡，可是为求道而来？",
+          "faction_member": "弟子，今日修炼可有精进？",
+          "high_reputation": "道友，别来无恙。"
+        },
+        "topics": [
+          {
+            "id": "ask_about_sect",
+            "condition": "always",
+            "text": "天剑宗立派三千载，以剑入道，以德服人..."
+          },
+          {
+            "id": "request_teaching",
+            "condition": "faction == tianjian_sect",
+            "text": "既是本门弟子，老夫自当倾囊相授。"
+          }
+        ]
+      },
+      "behavior_tree": {
+        "root": "selector_main",
+        "nodes": {
+          "selector_main": {
+            "type": "selector",
+            "children": ["combat_check", "dialogue_check", "patrol"]
+          },
+          "combat_check": {
+            "type": "condition",
+            "condition": "is_threatened",
+            "success": "combat_response",
+            "failure": "continue"
+          },
+          "combat_response": {
+            "type": "sequence",
+            "children": ["warn_once", "defend_sect"]
+          },
+          "dialogue_check": {
+            "type": "condition",
+            "condition": "player_nearby && player_friendly",
+            "success": "initiate_dialogue",
+            "failure": "continue"
+          },
+          "patrol": {
+            "type": "action",
+            "action": "patrol_area",
+            "parameters": {
+              "area": "sect_grounds",
+              "speed": "slow"
+            }
+          }
+        }
+      },
+      "schedule": {
+        "06:00": "morning_meditation",
+        "08:00": "teach_disciples",
+        "12:00": "pill_refinement",
+        "15:00": "sect_affairs",
+        "18:00": "evening_cultivation",
+        "21:00": "rest"
+      },
+      "relationships": {
+        "sect_master": {
+          "type": "superior",
+          "value": 80,
+          "description": "忠心耿耿"
+        },
+        "disciples": {
+          "type": "mentor",
+          "value": 60,
+          "description": "严师慈父"
+        }
+      },
+      "event_hooks": {
+        "on_player_join_sect": "welcome_ceremony",
+        "on_sect_attacked": "defend_sect",
+        "on_disciple_breakthrough": "give_reward"
+      }
+    },
+    {
+      "id": "yun_menger",
+      "name": "云梦儿",
+      "archetype": "young_master",
+      "gender": "female",
+      "race": "human",
+      "portrait_id": "beauty_yun_01",
+      "base_stats": {
+        "hp": 1500,
+        "mp": 2000,
+        "atk": 300,
+        "def": 200,
+        "speed": 500,
+        "realm": "golden_core",
+        "level": 35
+      },
+      "attributes": {
+        "strength": 25,
+        "agility": 45,
+        "constitution": 30,
+        "intelligence": 50,
+        "willpower": 40,
+        "charisma": 80
+      },
+      "traits": ["高傲", "聪慧", "善良", "任性"],
+      "skills": [
+        {"id": "cloud_dream_technique", "level": 6},
+        {"id": "charm_magic", "level": 5},
+        {"id": "flying_sword", "level": 4}
+      ],
+      "behavior_tree": {
+        "root": "personality_based",
+        "nodes": {
+          "personality_based": {
+            "type": "weighted_selector",
+            "weights": {
+              "proud_behavior": 0.4,
+              "kind_behavior": 0.3,
+              "playful_behavior": 0.3
+            }
+          },
+          "proud_behavior": {
+            "type": "sequence",
+            "children": ["show_superiority", "test_player"]
+          },
+          "kind_behavior": {
+            "type": "sequence",
+            "children": ["offer_help", "share_knowledge"]
+          }
+        }
+      },
+      "romance_data": {
+        "romanceable": true,
+        "preference": {
+          "personality": ["confident", "talented", "mysterious"],
+          "gifts": ["rare_flowers", "ancient_texts", "jewelry"],
+          "actions": ["heroic_deeds", "intellectual_conversation"]
+        },
+        "affection_events": {
+          "25": "first_smile",
+          "50": "share_secret",
+          "75": "confession",
+          "100": "dao_companion"
+        }
+      }
+    },
+    {
+      "id": "shadow_assassin",
+      "name": "影杀",
+      "archetype": "mysterious_expert",
+      "gender": "unknown",
+      "race": "unknown",
+      "portrait_id": "shadow_figure",
+      "base_stats": {
+        "hp": 10000,
+        "mp": 15000,
+        "atk": 2000,
+        "def": 1000,
+        "speed": 3000,
+        "realm": "void_refinement",
+        "level": 95
+      },
+      "traits": ["冷酷", "神秘", "致命", "孤独"],
+      "skills": [
+        {"id": "shadow_law", "level": 10},
+        {"id": "assassination_art", "level": 10},
+        {"id": "void_step", "level": 9}
+      ],
+      "behavior_tree": {
+        "root": "assassin_logic",
+        "nodes": {
+          "assassin_logic": {
+            "type": "selector",
+            "children": ["execute_contract", "remain_hidden", "escape"]
+          },
+          "execute_contract": {
+            "type": "condition",
+            "condition": "has_target && target_in_range",
+            "success": "assassination_sequence"
+          },
+          "assassination_sequence": {
+            "type": "sequence",
+            "children": ["stealth_approach", "instant_kill", "vanish"]
+          }
+        }
+      },
+      "special_mechanics": {
+        "stealth_level": 10,
+        "detection_immunity": ["spiritual_sense", "formations"],
+        "instant_kill_threshold": 0.3,
+        "escape_ability": "void_teleport"
+      }
+    }
+  ],
+  "npc_generation_rules": {
+    "name_pools": {
+      "male_surname": ["李", "王", "张", "刘", "陈", "杨", "赵", "黄", "周", "吴"],
+      "female_surname": ["云", "花", "月", "雪", "冰", "梦", "诗", "画"],
+      "male_given": ["天", "龙", "虎", "山", "海", "风", "雷", "霄"],
+      "female_given": ["梦", "雪", "冰", "月", "花", "诗", "画", "舞"]
+    },
+    "stat_variance": {
+      "formula": "base_stat * (0.8 + random() * 0.4)",
+      "elite_multiplier": 1.5,
+      "boss_multiplier": 3.0
+    },
+    "personality_matrix": {
+      "combinations": [
+        ["brave", "reckless"],
+        ["wise", "cautious"],
+        ["kind", "naive"],
+        ["cruel", "efficient"]
+      ],
+      "conflicts": [
+        ["kind", "cruel"],
+        ["brave", "cowardly"],
+        ["honest", "deceptive"]
+      ]
+    }
+  },
+  "npc_interaction_system": {
+    "reputation_effects": {
+      "hostile": {
+        "range": [-1000, -500],
+        "effects": ["attack_on_sight", "refuse_trade", "spread_bad_rumors"]
+      },
+      "unfriendly": {
+        "range": [-499, -100],
+        "effects": ["price_increase", "limited_dialogue", "suspicious"]
+      },
+      "neutral": {
+        "range": [-99, 99],
+        "effects": ["normal_interaction"]
+      },
+      "friendly": {
+        "range": [100, 499],
+        "effects": ["price_discount", "share_information", "offer_quests"]
+      },
+      "revered": {
+        "range": [500, 1000],
+        "effects": ["teach_skills", "give_gifts", "loyal_ally"]
+      }
+    },
+    "gift_system": {
+      "value_calculation": "item_value * (1 + affinity_bonus)",
+      "daily_limit": 1,
+      "special_gifts": {
+        "loved": {"multiplier": 3.0},
+        "liked": {"multiplier": 1.5},
+        "neutral": {"multiplier": 1.0},
+        "disliked": {"multiplier": 0.5},
+        "hated": {"multiplier": -1.0}
+      }
+    }
+  },
+  "npc_memory_system": {
+    "memory_types": [
+      {
+        "type": "player_actions",
+        "duration": "permanent",
+        "impact": "relationship_modifier"
+      },
+      {
+        "type": "conversations",
+        "duration": "30_days",
+        "impact": "dialogue_options"
+      },
+      {
+        "type": "combat_history",
+        "duration": "permanent",
+        "impact": "combat_behavior"
+      }
+    ],
+    "memory_decay": {
+      "formula": "memory_strength * (0.9 ^ days_passed)",
+      "minimum": 0.1
+    }
+  },
+  "_custom_tags": [
+    "npc_factions",
+    "npc_occupations",
+    "dynamic_relationships"
+  ]
+}

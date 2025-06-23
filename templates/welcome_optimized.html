@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>修仙世界模拟器 - 踏上修仙之路</title>
+    
+    <!-- CSS样式 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ink_style.css') }}">
+    
+    <!-- 网站图标 -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    
+    <!-- SEO元数据 -->
+    <meta name="description" content="沉浸式修仙世界模拟器，开启你的传奇修仙之旅">
+    <meta name="keywords" content="修仙,游戏,模拟器,RPG,中国风,水墨">
+    
+    <!-- 移动设备优化 -->
+    <meta name="theme-color" content="#1a1a1a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    
+    <style>
+        /* 欢迎页面专用样式 */
+        .welcome-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--brush-gold);
+            border-radius: 50%;
+            opacity: 0;
+            animation: float 6s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% { opacity: 0; transform: translateY(100vh) rotate(0deg); }
+            50% { opacity: 0.8; transform: translateY(-100px) rotate(180deg); }
+        }
+        
+        .welcome-subtitle {
+            animation: fadeInUp 1s ease 0.5s both;
+        }
+        
+        .welcome-actions {
+            animation: fadeInUp 1s ease 1s both;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .save-status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid var(--brush-gold);
+            background: rgba(212, 175, 55, 0.1);
+        }
+        
+        .version-info {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            color: var(--ink-lighter);
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- 粒子背景效果 -->
+    <div class="welcome-particles" id="particles"></div>
+    
+    <!-- 墨晕过渡效果 -->
+    <div class="ink-transition" id="inkTransition"></div>
+    
+    <!-- 欢迎页面内容 -->
+    <div class="welcome-container">
+        <h1 class="welcome-title">修仙世界模拟器</h1>
+        <p class="welcome-subtitle">踏上修仙之路，谱写传奇人生</p>
+        
+        <!-- 存档状态 -->
+        {% if save_exists %}
+        <div class="save-status">
+            <p><strong>📁 检测到存档文件</strong></p>
+            <p>你可以继续之前的修仙之旅，或者开启全新的传奇。</p>
+        </div>
+        {% else %}
+        <div class="save-status" style="border-color: var(--cloud-gray); background: rgba(176, 176, 176, 0.1);">
+            <p><strong>🆕 首次启动</strong></p>
+            <p>欢迎来到修仙世界！准备开始你的修仙传奇吧。</p>
+        </div>
+        {% endif %}
+        
+        <!-- 操作按钮 -->
+        <div class="welcome-actions">
+            {% if save_exists %}
+            <a href="{{ url_for('game') }}" class="welcome-button">
+                📖 继续游戏
+            </a>
+            <a href="{{ url_for('intro') }}" class="welcome-button secondary">
+                🆕 开始新游戏
+            </a>
+            {% else %}
+            <a href="{{ url_for('intro') }}" class="welcome-button">
+                🚀 开始游戏
+            </a>
+            {% endif %}
+            
+            <a href="{{ url_for('intro', mode='dev') }}" class="welcome-button secondary">
+                🔧 开发者模式
+            </a>
+        </div>
+        
+        <!-- 游戏介绍 -->
+        <div class="game-intro" style="margin-top: 40px; max-width: 600px; text-align: center;">
+            <h3 style="color: var(--brush-gold); margin-bottom: 20px;">🌟 游戏特色</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; text-align: center;">
+                <div>
+                    <div style="font-size: 2rem; margin-bottom: 10px;">🧘</div>
+                    <h4>修炼系统</h4>
+                    <p style="font-size: 0.9rem; color: var(--ink-lighter);">从炼气期到化神期，体验完整的修炼历程</p>
+                </div>
+                <div>
+                    <div style="font-size: 2rem; margin-bottom: 10px;">🗺️</div>
+                    <h4>广阔世界</h4>
+                    <p style="font-size: 0.9rem; color: var(--ink-lighter);">探索神秘的修仙世界，发现隐藏的秘密</p>
+                </div>
+                <div>
+                    <div style="font-size: 2rem; margin-bottom: 10px;">⚔️</div>
+                    <h4>战斗冒险</h4>
+                    <p style="font-size: 0.9rem; color: var(--ink-lighter);">与妖兽战斗，挑战强敌，获得珍贵宝物</p>
+                </div>
+                <div>
+                    <div style="font-size: 2rem; margin-bottom: 10px;">🏛️</div>
+                    <h4>门派系统</h4>
+                    <p style="font-size: 0.9rem; color: var(--ink-lighter);">加入门派，学习高深功法，结交道友</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 操作说明 -->
+        <div class="game-tips" style="margin-top: 40px; padding: 20px; background: rgba(0, 0, 0, 0.1); border-radius: 8px; max-width: 500px;">
+            <h4 style="color: var(--brush-gold); margin-bottom: 15px;">💡 快速入门</h4>
+            <ul style="text-align: left; color: var(--ink-lighter); line-height: 1.8;">
+                <li>输入命令进行游戏，如：<code style="background: rgba(0,0,0,0.2); padding: 2px 4px; border-radius: 3px;">探索</code>、<code style="background: rgba(0,0,0,0.2); padding: 2px 4px; border-radius: 3px;">修炼</code></li>
+                <li>点击左侧菜单快速访问各种功能</li>
+                <li>使用 <kbd>F1</kbd> 键随时查看帮助文档</li>
+                <li>游戏会自动保存进度，也可手动保存</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- 版本信息 -->
+    <div class="version-info">
+        <div>修仙世界引擎 v2.0</div>
+        <div>Build {{ build_time or '2025.06.22' }}</div>
+    </div>
+    
+    <!-- JavaScript -->
+    <script>
+        // 粒子动画效果
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 20;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // 墨晕过渡效果
+        function inkTransition(callback) {
+            const inkTransition = document.getElementById('inkTransition');
+            inkTransition.classList.add('active');
+            
+            setTimeout(() => {
+                if (callback) callback();
+            }, 500);
+        }
+        
+        // 按钮点击效果
+        function setupButtonEffects() {
+            const buttons = document.querySelectorAll('.welcome-button');
+            
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const href = this.href;
+                    
+                    // 播放点击音效 (如果音频系统可用)
+                    if (window.AudioContext || window.webkitAudioContext) {
+                        playClickSound();
+                    }
+                    
+                    // 墨晕过渡
+                    inkTransition(() => {
+                        window.location.href = href;
+                    });
+                });
+                
+                // 悬停效果
+                button.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-3px) scale(1.02)';
+                });
+                
+                button.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(-3px) scale(1)';
+                });
+            });
+        }
+        
+        // 简单的点击音效
+        function playClickSound() {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(400, audioContext.currentTime + 0.1);
+                
+                gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.1);
+            } catch (error) {
+                // 静默失败
+            }
+        }
+        
+        // 键盘快捷键
+        function setupKeyboardShortcuts() {
+            document.addEventListener('keydown', function(e) {
+                // Enter键快速开始游戏
+                if (e.key === 'Enter') {
+                    const primaryButton = document.querySelector('.welcome-button:not(.secondary)');
+                    if (primaryButton) {
+                        primaryButton.click();
+                    }
+                }
+                
+                // Ctrl+D 开发者模式
+                if (e.ctrlKey && e.key === 'd') {
+                    e.preventDefault();
+                    const devButton = document.querySelector('[href*="mode=dev"]');
+                    if (devButton) {
+                        devButton.click();
+                    }
+                }
+            });
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎮 修仙世界模拟器欢迎页面加载完成');
+            
+            createParticles();
+            setupButtonEffects();
+            setupKeyboardShortcuts();
+            
+            // 显示加载完成动画
+            document.body.style.opacity = '0';
+            document.body.style.transform = 'scale(0.95)';
+            
+            setTimeout(() => {
+                document.body.style.transition = 'all 0.5s ease';
+                document.body.style.opacity = '1';
+                document.body.style.transform = 'scale(1)';
+            }, 100);
+            
+            // 检查浏览器兼容性
+            if (!window.fetch || !window.Promise) {
+                const warning = document.createElement('div');
+                warning.style.cssText = `
+                    position: fixed; top: 0; left: 0; right: 0;
+                    background: #ff4444; color: white; padding: 10px;
+                    text-align: center; z-index: 10000;
+                `;
+                warning.textContent = '⚠️ 您的浏览器版本过低，可能影响游戏体验。建议使用最新版本的现代浏览器。';
+                document.body.prepend(warning);
+            }
+            
+            // 性能检测
+            if ('performance' in window) {
+                window.addEventListener('load', function() {
+                    const loadTime = performance.now();
+                    if (loadTime > 3000) {
+                        console.warn('页面加载较慢:', loadTime + 'ms');
+                    }
+                });
+            }
+        });
+        
+        // 错误处理
+        window.addEventListener('error', function(e) {
+            console.error('页面错误:', e.error);
+            
+            // 显示友好的错误信息
+            const errorDiv = document.createElement('div');
+            errorDiv.style.cssText = `
+                position: fixed; bottom: 20px; left: 20px;
+                background: rgba(255, 68, 68, 0.9); color: white;
+                padding: 10px 15px; border-radius: 5px;
+                font-size: 0.9rem; max-width: 300px;
+            `;
+            errorDiv.textContent = '发生了一个错误，但这不影响游戏正常运行。';
+            document.body.appendChild(errorDiv);
+            
+            setTimeout(() => {
+                if (errorDiv.parentNode) {
+                    errorDiv.parentNode.removeChild(errorDiv);
+                }
+            }, 5000);
+        });
+        
+        // 在线状态检测
+        function updateOnlineStatus() {
+            const status = navigator.onLine ? '在线' : '离线';
+            console.log('网络状态:', status);
+            
+            if (!navigator.onLine) {
+                const offlineDiv = document.createElement('div');
+                offlineDiv.style.cssText = `
+                    position: fixed; top: 50%; left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: rgba(255, 165, 0, 0.9); color: white;
+                    padding: 20px; border-radius: 8px;
+                    text-align: center; z-index: 10000;
+                `;
+                offlineDiv.innerHTML = `
+                    <h3>📶 网络连接中断</h3>
+                    <p>游戏可能无法正常运行，请检查网络连接。</p>
+                `;
+                document.body.appendChild(offlineDiv);
+                
+                // 恢复连接时移除提示
+                const onlineHandler = () => {
+                    if (offlineDiv.parentNode) {
+                        offlineDiv.parentNode.removeChild(offlineDiv);
+                    }
+                    window.removeEventListener('online', onlineHandler);
+                };
+                window.addEventListener('online', onlineHandler);
+            }
+        }
+        
+        window.addEventListener('online', updateOnlineStatus);
+        window.addEventListener('offline', updateOnlineStatus);
+    </script>
+    
+    <!-- 预加载游戏资源 -->
+    <link rel="prefetch" href="{{ url_for('static', filename='js/game_controller.js') }}">
+    <link rel="prefetch" href="{{ url_for('static', filename='js/modules/ui_controller.js') }}">
+    <link rel="prefetch" href="{{ url_for('static', filename='js/modules/audio_controller.js') }}">
+</body>
+</html>

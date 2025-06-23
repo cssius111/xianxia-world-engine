@@ -1,0 +1,327 @@
+{
+  "meta": {
+    "version": "2.0.0",
+    "description": "灵根系统配置",
+    "last_updated": "2025-06-22"
+  },
+  "spiritual_root_types": {
+    "metal": {
+      "id": "metal",
+      "name": "金灵根",
+      "element": "金",
+      "description": "主攻击，利于剑修和器修",
+      "color": "#FFD700",
+      "advantages": [
+        "攻击力增强30%",
+        "剑类技能威力提升50%",
+        "炼器成功率提升25%"
+      ],
+      "disadvantages": [
+        "防御力降低10%",
+        "治疗技能效果降低20%"
+      ],
+      "compatible_elements": ["earth", "water"],
+      "conflicting_elements": ["fire", "wood"]
+    },
+    "wood": {
+      "id": "wood",
+      "name": "木灵根",
+      "element": "木",
+      "description": "主生命力，利于医修和丹修",
+      "color": "#228B22",
+      "advantages": [
+        "生命值增强25%",
+        "治疗技能威力提升50%",
+        "炼丹成功率提升30%",
+        "毒抗性提升40%"
+      ],
+      "disadvantages": [
+        "攻击力降低15%",
+        "火系技能威力降低30%"
+      ],
+      "compatible_elements": ["water", "fire"],
+      "conflicting_elements": ["metal"]
+    },
+    "water": {
+      "id": "water",
+      "name": "水灵根",
+      "element": "水",
+      "description": "主灵力，利于法修和阵修",
+      "color": "#1E90FF",
+      "advantages": [
+        "灵力值增强40%",
+        "法术威力提升25%",
+        "阵法效果提升35%",
+        "冰系技能威力提升50%"
+      ],
+      "disadvantages": [
+        "物理攻击力降低10%",
+        "火系技能威力降低25%"
+      ],
+      "compatible_elements": ["metal", "wood"],
+      "conflicting_elements": ["fire"]
+    },
+    "fire": {
+      "id": "fire",
+      "name": "火灵根",
+      "element": "火",
+      "description": "主爆发力，利于战修和器修",
+      "color": "#FF4500",
+      "advantages": [
+        "火系技能威力提升60%",
+        "暴击率提升20%",
+        "炼器温度控制精准度提升30%"
+      ],
+      "disadvantages": [
+        "灵力消耗增加15%",
+        "冰系技能威力降低40%",
+        "容易走火入魔"
+      ],
+      "compatible_elements": ["wood", "earth"],
+      "conflicting_elements": ["water"]
+    },
+    "earth": {
+      "id": "earth",
+      "name": "土灵根",
+      "element": "土",
+      "description": "主防御力，利于体修和阵修",
+      "color": "#8B4513",
+      "advantages": [
+        "防御力增强40%",
+        "生命值增强20%",
+        "土系技能威力提升50%",
+        "阵法稳定性提升25%"
+      ],
+      "disadvantages": [
+        "速度降低20%",
+        "风系技能威力降低30%"
+      ],
+      "compatible_elements": ["fire", "metal"],
+      "conflicting_elements": ["wood"]
+    }
+  },
+  "special_spiritual_roots": {
+    "thunder": {
+      "id": "thunder",
+      "name": "雷灵根",
+      "element": "雷",
+      "description": "极其罕见的变异灵根，拥有毁灭性力量",
+      "color": "#9370DB",
+      "rarity": "legendary",
+      "advantages": [
+        "雷系技能威力提升80%",
+        "攻击附带麻痹效果",
+        "修炼速度提升50%",
+        "天劫抗性提升30%"
+      ],
+      "disadvantages": [
+        "容易引来天劫",
+        "修炼不稳定",
+        "消耗灵力巨大"
+      ],
+      "unlock_conditions": [
+        "机缘巧合",
+        "雷劫洗礼",
+        "特殊传承"
+      ]
+    },
+    "ice": {
+      "id": "ice",
+      "name": "冰灵根",
+      "element": "冰",
+      "description": "水之变异，拥有极寒之力",
+      "color": "#87CEEB",
+      "rarity": "rare",
+      "advantages": [
+        "冰系技能威力提升70%",
+        "攻击附带冰冻效果",
+        "寒抗性免疫",
+        "冰系材料炼制加成"
+      ],
+      "disadvantages": [
+        "火系技能威力降低50%",
+        "温度敏感",
+        "修炼需要寒冷环境"
+      ],
+      "unlock_conditions": [
+        "寒冰洞修炼",
+        "吞噬冰魄",
+        "特殊功法转化"
+      ]
+    },
+    "shadow": {
+      "id": "shadow",
+      "name": "暗灵根",
+      "element": "暗",
+      "description": "黑暗属性的神秘灵根",
+      "color": "#2F2F2F",
+      "rarity": "rare",
+      "advantages": [
+        "暗系技能威力提升65%",
+        "隐身和潜行能力大幅提升",
+        "夜晚修炼效果翻倍",
+        "精神攻击抗性提升"
+      ],
+      "disadvantages": [
+        "光系技能威力降低60%",
+        "白天修炼效果减半",
+        "容易被正道排斥"
+      ],
+      "unlock_conditions": [
+        "魔道传承",
+        "黑暗环境长期修炼",
+        "特殊机缘"
+      ]
+    }
+  },
+  "spiritual_root_quality": {
+    "inferior": {
+      "name": "下品",
+      "multiplier": 0.7,
+      "description": "资质较差，修炼困难",
+      "color": "#808080",
+      "probability": 40
+    },
+    "common": {
+      "name": "中品",
+      "multiplier": 1.0,
+      "description": "普通资质，修炼正常",
+      "color": "#FFFFFF",
+      "probability": 35
+    },
+    "superior": {
+      "name": "上品",
+      "multiplier": 1.3,
+      "description": "资质优秀，修炼较快",
+      "color": "#90EE90",
+      "probability": 20
+    },
+    "supreme": {
+      "name": "极品",
+      "multiplier": 1.8,
+      "description": "资质卓越，修炼极快",
+      "color": "#87CEEB",
+      "probability": 4
+    },
+    "divine": {
+      "name": "神品",
+      "multiplier": 2.5,
+      "description": "千年难遇的仙人资质",
+      "color": "#FFD700",
+      "probability": 1
+    }
+  },
+  "multi_spiritual_roots": {
+    "dual_roots": {
+      "name": "双灵根",
+      "description": "拥有两种灵根属性",
+      "modifier": 0.8,
+      "advantages": [
+        "可以修炼两种属性的功法",
+        "属性平衡性更好"
+      ],
+      "disadvantages": [
+        "修炼速度略慢",
+        "需要更多资源"
+      ],
+      "probability": 15
+    },
+    "tri_roots": {
+      "name": "三灵根",
+      "description": "拥有三种灵根属性",
+      "modifier": 0.6,
+      "advantages": [
+        "可以修炼多种属性功法",
+        "适应性极强"
+      ],
+      "disadvantages": [
+        "修炼速度较慢",
+        "资源需求巨大"
+      ],
+      "probability": 8
+    },
+    "quad_roots": {
+      "name": "四灵根",
+      "description": "拥有四种灵根属性",
+      "modifier": 0.4,
+      "advantages": [
+        "几乎可以修炼所有功法",
+        "极强的适应性"
+      ],
+      "disadvantages": [
+        "修炼速度很慢",
+        "被称为修炼废材"
+      ],
+      "probability": 3
+    },
+    "penta_roots": {
+      "name": "五灵根",
+      "description": "拥有全部五种基础灵根",
+      "modifier": 0.2,
+      "advantages": [
+        "理论上可以修炼任何功法",
+        "极其罕见"
+      ],
+      "disadvantages": [
+        "修炼速度极慢",
+        "通常被认为是废材"
+      ],
+      "probability": 1,
+      "hidden_potential": "传说中五灵根全部觉醒后可成为传说级存在"
+    }
+  },
+  "spiritual_root_awakening": {
+    "natural_awakening": {
+      "name": "天然觉醒",
+      "description": "出生时就已经觉醒的灵根",
+      "probability": 70
+    },
+    "triggered_awakening": {
+      "name": "后天觉醒",
+      "description": "通过特殊方法觉醒的灵根",
+      "methods": [
+        "觉醒丹",
+        "灵根觉醒阵",
+        "高人指点",
+        "生死关头的顿悟"
+      ],
+      "success_rate": 30,
+      "risk": "可能损伤根基"
+    },
+    "evolution": {
+      "name": "灵根进化",
+      "description": "已有灵根向更高级形态进化",
+      "conditions": [
+        "修为达到一定境界",
+        "特殊机缘",
+        "强大的意志力"
+      ],
+      "examples": [
+        "水灵根 → 冰灵根",
+        "火灵根 → 炎灵根",
+        "金灵根 → 剑灵根"
+      ]
+    }
+  },
+  "cultivation_compatibility": {
+    "optimal_methods": {
+      "metal": ["剑修", "器修", "符修"],
+      "wood": ["医修", "丹修", "兽修"],
+      "water": ["法修", "阵修", "幻修"],
+      "fire": ["战修", "器修", "符修"],
+      "earth": ["体修", "阵修", "建筑修"]
+    },
+    "forbidden_combinations": [
+      {
+        "root": "fire",
+        "forbidden": ["ice", "water"],
+        "reason": "属性相克，易走火入魔"
+      },
+      {
+        "root": "metal",
+        "forbidden": ["wood"],
+        "reason": "金克木，修炼冲突"
+      }
+    ]
+  }
+}

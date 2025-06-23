@@ -1,0 +1,47 @@
+<!-- 探索模态框 -->
+<div class="text-gray-200">
+    <h2 class="text-2xl font-light mb-6 tracking-wider">探索系统</h2>
+    
+    <div class="mb-6">
+        <h3 class="text-lg mb-3">当前位置</h3>
+        <div class="bg-gray-800 p-4 rounded">
+            <p class="text-xl">{{ game.game_state.current_location if game else '青云城' }}</p>
+            <p class="text-sm text-gray-400 mt-2">一座位于青云山脚下的修仙城市，各种修士云集于此。</p>
+        </div>
+    </div>
+    
+    <div class="mb-6">
+        <h3 class="text-lg mb-3">可探索区域</h3>
+        <div class="space-y-2">
+            <button onclick="sendCommand('探索 东市')" class="w-full text-left bg-gray-800 hover:bg-gray-700 p-3 rounded transition-colors">
+                <p class="font-medium">东市</p>
+                <p class="text-sm text-gray-400">繁华的交易市场</p>
+            </button>
+            
+            <button onclick="sendCommand('探索 西街')" class="w-full text-left bg-gray-800 hover:bg-gray-700 p-3 rounded transition-colors">
+                <p class="font-medium">西街</p>
+                <p class="text-sm text-gray-400">各种店铺林立</p>
+            </button>
+            
+            <button onclick="sendCommand('探索 北门')" class="w-full text-left bg-gray-800 hover:bg-gray-700 p-3 rounded transition-colors">
+                <p class="font-medium">北门</p>
+                <p class="text-sm text-gray-400">通往青云山的道路</p>
+            </button>
+        </div>
+    </div>
+    
+    <div class="text-center">
+        <p class="text-sm text-gray-500">提示：直接在命令行输入"探索"也可以探索当前区域</p>
+    </div>
+</div>
+
+<script>
+function sendCommand(cmd) {
+    const input = document.getElementById('command-input');
+    if (input) {
+        input.value = cmd;
+        executeCommand();
+        closeModal();
+    }
+}
+</script>

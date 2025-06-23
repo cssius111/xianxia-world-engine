@@ -1,0 +1,377 @@
+{
+  "meta": {
+    "version": "3.1.0",
+    "description": "修仙世界引擎境界体系定义（平衡版）",
+    "schema_version": "2020-12",
+    "last_modified": "2025-06-09"
+  },
+  "realms": [
+    {
+      "id": "qi_gathering",
+      "tier": 1,
+      "name": "聚气期",
+      "description": "引气入体，初步感应天地灵气",
+      "levels": 9,
+      "min_age": 6,
+      "power_multiplier": 1.0,
+      "requirements": {
+        "spiritual_root": "any",
+        "comprehension": 0.1
+      },
+      "breakthrough_requirements": {
+        "to_next_realm": {
+          "spiritual_power": 100,
+          "comprehension": 0.5,
+          "special_items": ["筑基丹"],
+          "success_rate_formula": "base_rate * comprehension * (1 + spiritual_root_quality * 0.2)"
+        }
+      },
+      "level_benefits": {
+        "per_level": {
+          "max_health": "+10",
+          "max_mana": "+20",
+          "all_attributes": "+1"
+        },
+        "milestones": {
+          "3": {"unlock": "basic_meditation"},
+          "6": {"unlock": "qi_sensing"},
+          "9": {"unlock": "foundation_preparation"}
+        }
+      },
+      "abilities": [
+        "qi_gathering",
+        "basic_meditation",
+        "spirit_stone_absorption"
+      ],
+      "lifespan_bonus": 0,
+      "tribulation": null
+    },
+    {
+      "id": "foundation_building",
+      "tier": 2,
+      "name": "筑基期",
+      "description": "凝气成液，筑就道基",
+      "levels": 9,
+      "min_age": 10,
+      "power_multiplier": 2.0,
+      "requirements": {
+        "previous_realm": "qi_gathering",
+        "realm_level": 9,
+        "breakthrough_item": "筑基丹"
+      },
+      "breakthrough_requirements": {
+        "to_next_realm": {
+          "spiritual_power": 500,
+          "comprehension": 0.7,
+          "core_formation": "condensed",
+          "success_rate_formula": "base_rate * willpower * 0.1 * (1 - failure_count * 0.1)"
+        }
+      },
+      "level_benefits": {
+        "per_level": {
+          "max_health": "+50",
+          "max_mana": "+100",
+          "all_attributes": "+3"
+        },
+        "milestones": {
+          "3": {"unlock": "spiritual_sense"},
+          "6": {"unlock": "minor_spell_casting"},
+          "9": {"unlock": "core_condensation"}
+        }
+      },
+      "abilities": [
+        "spiritual_sense",
+        "basic_flying",
+        "spell_casting",
+        "alchemy_basics"
+      ],
+      "lifespan_bonus": 50,
+      "tribulation": null
+    },
+    {
+      "id": "golden_core",
+      "tier": 3,
+      "name": "金丹期",
+      "description": "凝液成丹，金丹大道",
+      "levels": 9,
+      "min_age": 20,
+      "power_multiplier": 4.0,
+      "requirements": {
+        "previous_realm": "foundation_building",
+        "realm_level": 9,
+        "special_condition": "core_formation_complete"
+      },
+      "breakthrough_requirements": {
+        "to_next_realm": {
+          "spiritual_power": 2000,
+          "comprehension": 0.9,
+          "nascent_soul": "gestating",
+          "tribulation": "minor_heavenly",
+          "success_rate_formula": "base_rate * dao_understanding * 0.05"
+        }
+      },
+      "level_benefits": {
+        "per_level": {
+          "max_health": "+200",
+          "max_mana": "+500",
+          "all_attributes": "+5"
+        },
+        "milestones": {
+          "3": {"quality": "inferior_gold_core", "bonus": 0.8},
+          "6": {"quality": "standard_gold_core", "bonus": 1.0},
+          "9": {"quality": "superior_gold_core", "bonus": 1.5}
+        }
+      },
+      "core_grades": {
+        "inferior": {"power": 0.8, "description": "暗淡无光，杂质较多"},
+        "standard": {"power": 1.0, "description": "金光内敛，圆润光滑"},
+        "superior": {"power": 1.5, "description": "金光璀璨，道韵天成"},
+        "perfect": {"power": 2.0, "description": "无瑕无垢，大道至简"}
+      },
+      "abilities": [
+        "true_flying",
+        "domain_projection",
+        "advanced_spells",
+        "divine_sense",
+        "core_techniques"
+      ],
+      "lifespan_bonus": 200,
+      "tribulation": "three_nine_tribulation"
+    },
+    {
+      "id": "nascent_soul",
+      "tier": 4,
+      "name": "元婴期",
+      "description": "金丹碎而元婴生，神魂初显",
+      "levels": 9,
+      "min_age": 50,
+      "power_multiplier": 8.0,
+      "requirements": {
+        "previous_realm": "golden_core",
+        "realm_level": 9,
+        "tribulation_passed": "three_nine_tribulation"
+      },
+      "breakthrough_requirements": {
+        "to_next_realm": {
+          "spiritual_power": 10000,
+          "comprehension": 1.5,
+          "dao_understanding": "small_accomplishment",
+          "tribulation": "major_heavenly",
+          "success_rate_formula": "base_rate * 0.3 * luck_factor"
+        }
+      },
+      "level_benefits": {
+        "per_level": {
+          "max_health": "+1000",
+          "max_mana": "+2000",
+          "all_attributes": "+10",
+          "soul_strength": "+5"
+        },
+        "milestones": {
+          "3": {"soul": "stabilized", "teleportation": true},
+          "6": {"soul": "strengthened", "incarnation": 1},
+          "9": {"soul": "perfected", "domain": "nascent"}
+        }
+      },
+      "soul_abilities": {
+        "soul_projection": "元婴出窍，千里之外",
+        "soul_search": "神识覆盖，明察秋毫",
+        "soul_attack": "神魂攻击，防不胜防",
+        "rebirth": "元婴不灭，夺舍重生"
+      },
+      "abilities": [
+        "teleportation",
+        "soul_techniques",
+        "law_comprehension",
+        "space_manipulation",
+        "advanced_alchemy"
+      ],
+      "lifespan_bonus": 800,
+      "tribulation": "six_nine_tribulation"
+    },
+    {
+      "id": "deity_transformation",
+      "tier": 5,
+      "name": "化神期",
+      "description": "元婴化神，掌控法则",
+      "levels": 9,
+      "min_age": 200,
+      "power_multiplier": 15.0,
+      "requirements": {
+        "previous_realm": "nascent_soul",
+        "realm_level": 9,
+        "law_comprehension": "entry",
+        "tribulation_passed": "six_nine_tribulation"
+      },
+      "breakthrough_requirements": {
+        "to_next_realm": {
+          "spiritual_power": 50000,
+          "comprehension": 2.0,
+          "dao_understanding": "great_accomplishment",
+          "law_mastery": 1,
+          "tribulation": "nine_nine_tribulation"
+        }
+      },
+      "level_benefits": {
+        "per_level": {
+          "max_health": "+5000",
+          "max_mana": "+10000",
+          "all_attributes": "+20",
+          "law_power": "+1"
+        }
+      },
+      "law_system": {
+        "basic_laws": ["fire", "water", "earth", "metal", "wood"],
+        "advanced_laws": ["space", "time", "life", "death", "karma"],
+        "supreme_laws": ["creation", "destruction", "samsara"]
+      },
+      "abilities": [
+        "law_manipulation",
+        "divine_abilities",
+        "cross_realm_travel",
+        "creation_techniques"
+      ],
+      "lifespan_bonus": 3000,
+      "tribulation": "nine_nine_tribulation"
+    },
+    {
+      "id": "void_refinement",
+      "tier": 6,
+      "name": "炼虚期",
+      "description": "返虚合道，天人合一",
+      "levels": 9,
+      "min_age": 1000,
+      "power_multiplier": 30.0,
+      "special_features": {
+        "void_body": "虚实转换，不死不灭",
+        "dao_integration": "与天地法则共鸣",
+        "realm_creation": "开辟小世界"
+      },
+      "lifespan_bonus": 10000,
+      "tribulation": "void_tribulation"
+    },
+    {
+      "id": "body_integration",
+      "tier": 7,
+      "name": "合体期",
+      "description": "炼虚合道，大道之躯",
+      "levels": 9,
+      "min_age": 5000,
+      "power_multiplier": 60.0,
+      "special_features": {
+        "dao_body": "法则化身，言出法随",
+        "world_lord": "掌控一方世界",
+        "immortal_body": "不老不死，与天地同寿"
+      },
+      "lifespan_bonus": 50000,
+      "tribulation": "dao_tribulation"
+    },
+    {
+      "id": "mahayana",
+      "tier": 8,
+      "name": "大乘期",
+      "description": "超脱生死，直指大道",
+      "levels": 9,
+      "min_age": 10000,
+      "power_multiplier": 120.0,
+      "ascension_ready": true,
+      "special_features": {
+        "transcendent": "超脱因果，不沾业力",
+        "omniscient": "洞察三界，知晓天机",
+        "reality_shaper": "改写现实，创造法则"
+      },
+      "lifespan_bonus": 999999,
+      "tribulation": "ascension_tribulation"
+    },
+    {
+      "id": "tribulation_transcendence",
+      "tier": 9,
+      "name": "渡劫期",
+      "description": "历九重天劫，证道成仙",
+      "levels": 9,
+      "min_age": 50000,
+      "power_multiplier": 250.0,
+      "final_realm": true,
+      "tribulation_stages": [
+        "心魔劫",
+        "五行劫",
+        "阴阳劫",
+        "因果劫",
+        "时空劫",
+        "轮回劫",
+        "天道劫",
+        "混沌劫",
+        "无量劫"
+      ],
+      "ascension_paths": {
+        "true_immortal": "飞升仙界，位列仙班",
+        "demon_lord": "入主魔界，统御群魔",
+        "world_creator": "开天辟地，创造新界",
+        "dao_seeker": "追寻大道，永恒求索"
+      },
+      "lifespan_bonus": "infinite",
+      "tribulation": "final_tribulation"
+    }
+  ],
+  "breakthrough_mechanics": {
+    "base_success_rates": {
+      "qi_to_foundation": 0.6,
+      "foundation_to_golden": 0.4,
+      "golden_to_nascent": 0.25,
+      "nascent_to_deity": 0.15,
+      "deity_to_void": 0.08,
+      "higher_realms": 0.05
+    },
+    "failure_consequences": {
+      "minor": "cultivation_backlash",
+      "moderate": "realm_regression",
+      "severe": "dao_injury",
+      "catastrophic": "death"
+    },
+    "success_modifiers": {
+      "perfect_foundation": 1.3,
+      "heavenly_spiritual_root": 1.5,
+      "dao_comprehension": "variable",
+      "fortune_treasure": 1.2,
+      "master_guidance": 1.15
+    }
+  },
+  "realm_suppression": {
+    "description": "高境界对低境界的压制（平衡版）",
+    "formula": "log(1 + tier_difference) * 0.15 * (1 - target_willpower / 200)",
+    "max_suppression": 0.5,
+    "effects": [
+      "attribute_reduction",
+      "skill_seal",
+      "movement_restriction",
+      "spiritual_pressure"
+    ],
+    "counter_measures": {
+      "special_techniques": {"reduction": 0.3, "description": "特殊功法可减轻压制"},
+      "formations": {"reduction": 0.2, "description": "阵法加持"},
+      "treasures": {"reduction": 0.2, "description": "法宝护体"},
+      "environment": {"reduction": 0.1, "description": "地利优势"}
+    }
+  },
+  "cross_realm_combat": {
+    "description": "跨境界战斗平衡机制",
+    "underdog_bonus": {
+      "description": "弱者补偿机制",
+      "experience_multiplier": "1 + tier_difference * 0.5",
+      "skill_mastery_bonus": "2x",
+      "breakthrough_insight": "5% per tier difference"
+    },
+    "technique_importance": {
+      "description": "技巧重于蛮力",
+      "skill_scaling": "exponential",
+      "combo_damage": "ignores 30% realm suppression",
+      "perfect_timing": "ignores 50% realm suppression"
+    }
+  },
+  "_custom_tags": [
+    "realm_variations",
+    "special_cultivation_paths",
+    "realm_titles",
+    "balanced_progression"
+  ]
+}

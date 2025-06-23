@@ -1,0 +1,27 @@
+{
+  "重构时间": "2025-06-02",
+  "项目路径": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine",
+  "操作统计": {
+    "移动的废弃脚本": 24,
+    "移动的废弃文档": 10,
+    "整理的工具脚本": 3,
+    "整理的演示脚本": 1
+  },
+  "新的目录结构": {
+    "xwe/": "游戏引擎核心代码",
+    "scripts/": "运行脚本和工具",
+    "tests/": "测试套件",
+    "docs/": "项目文档",
+    "saves/": "游戏存档",
+    "delete/": "废弃文件归档",
+    "archive/": "历史文件存档"
+  },
+  "保留的主要文件": [
+    "main.py",
+    "main_menu.py",
+    "requirements.txt",
+    ".gitignore",
+    ".env.example",
+    "README.md"
+  ]
+}

@@ -1,0 +1,242 @@
+{
+  "timeline_events": [
+    {
+      "event_id": "sect_recruit_qingyun",
+      "name": "青云宗收徒大典",
+      "trigger_date": "Y+0 M+1 D+0",
+      "duration_days": 3,
+      "min_realm": "炼气期三层",
+      "max_age": 20,
+      "description": "三大正道宗门之一的青云宗举办收徒大典。这是加入名门正派的绝佳机会，成功入门者可获得系统的修炼指导和丰厚的资源。",
+      "location": "青云山",
+      "rewards": {
+        "success": {
+          "faction": "青云宗",
+          "position": "外门弟子",
+          "items": ["青云宗弟子令", "基础功法", "储物袋"],
+          "monthly_resources": {
+            "spirit_stones": 10,
+            "pills": 3
+          }
+        }
+      },
+      "requirements": {
+        "no_evil_flags": true,
+        "talent_test": true
+      }
+    },
+    {
+      "event_id": "blood_moon_tide",
+      "name": "血月潮汐",
+      "trigger_date": "Y+0 M+2 D+15",
+      "duration_days": 1,
+      "min_realm": null,
+      "description": "罕见的血月现象引发灵气潮汐。这一夜妖兽实力大增，但击杀妖兽掉落也会翻倍。邪修在此夜力量增强30%。",
+      "global_effects": {
+        "monster_strength": 1.5,
+        "monster_drops": 2.0,
+        "evil_cultivation_bonus": 0.3,
+        "breakthrough_risk": 0.2
+      },
+      "warnings": ["外出凶险", "邪修活跃", "妖兽狂暴"]
+    },
+    {
+      "event_id": "merchant_gathering",
+      "name": "万商大会",
+      "trigger_date": "Y+0 M+3 D+10",
+      "duration_days": 7,
+      "min_realm": null,
+      "description": "一年一度的万商大会在中立城邦举行。各地商会齐聚，珍稀物品应有尽有。期间所有商品打八折，并有拍卖会举行。",
+      "location": "中立城邦",
+      "effects": {
+        "shop_discount": 0.8,
+        "rare_item_chance": 3.0,
+        "special_shops": ["天机阁", "万宝楼", "神兵阁"]
+      },
+      "special_items": [
+        "残缺仙器",
+        "上古丹方",
+        "神秘藏宝图"
+      ]
+    },
+    {
+      "event_id": "secret_realm_open",
+      "name": "千年秘境开启",
+      "trigger_date": "Y+0 M+6 D+0",
+      "duration_days": 30,
+      "min_realm": "炼气期九层",
+      "max_realm": "筑基期",
+      "description": "传说中的'落日秘境'时隔千年再次开启。秘境中机缘与危险并存，据说有前辈大能的传承和大量天材地宝。但死亡率超过七成。",
+      "location": "东海之滨",
+      "entry_requirements": {
+        "realm_check": true,
+        "entry_token": "秘境令牌",
+        "team_size": "1-5"
+      },
+      "possible_rewards": [
+        "结丹契机",
+        "上古功法",
+        "本命法宝",
+        "天品灵药"
+      ],
+      "mortality_rate": 0.7
+    },
+    {
+      "event_id": "demon_invasion",
+      "name": "魔道入侵",
+      "trigger_date": "Y+0 M+9 D+1",
+      "duration_days": 15,
+      "min_realm": "炼气期六层",
+      "description": "魔道宗门大举入侵正道领地，修真界陷入混战。期间可选择阵营参战，获得战功可换取奖励。保持中立则可趁乱获利。",
+      "faction_war": true,
+      "choices": [
+        {
+          "id": "join_righteous",
+          "name": "加入正道",
+          "effects": {
+            "faction_points": {"righteous": 1000, "demonic": -2000},
+            "war_contributions": true
+          }
+        },
+        {
+          "id": "join_demonic",
+          "name": "加入魔道",
+          "effects": {
+            "faction_points": {"righteous": -2000, "demonic": 1000},
+            "war_contributions": true
+          }
+        },
+        {
+          "id": "stay_neutral",
+          "name": "保持中立",
+          "effects": {
+            "black_market_access": true,
+            "scavenge_battlefields": true
+          }
+        }
+      ]
+    },
+    {
+      "event_id": "auction_house_special",
+      "name": "天机拍卖会",
+      "trigger_date": "Y+1 M+0 D+1",
+      "duration_days": 1,
+      "min_realm": "筑基期",
+      "description": "天机阁举办的顶级拍卖会，只有筑基期以上修士才能参加。拍卖品包括金丹期使用的宝物，甚至可能出现元婴期物品。",
+      "location": "天机城",
+      "entry_fee": 1000,
+      "auction_items": [
+        {
+          "name": "破障丹",
+          "description": "突破瓶颈神药",
+          "starting_price": 10000
+        },
+        {
+          "name": "玄天剑",
+          "description": "上品灵器飞剑",
+          "starting_price": 50000
+        },
+        {
+          "name": "道韵石",
+          "description": "蕴含天地法则",
+          "starting_price": 100000
+        }
+      ]
+    },
+    {
+      "event_id": "spiritual_rain",
+      "name": "灵雨降世",
+      "trigger_date": "Y+0 M+4 D+20",
+      "duration_days": 3,
+      "min_realm": null,
+      "description": "天降灵雨，万物生长。期间修炼速度提升50%，灵药成熟时间缩短，是突破瓶颈的最佳时机。",
+      "global_effects": {
+        "cultivation_speed": 1.5,
+        "herb_growth": 3.0,
+        "breakthrough_success": 0.2,
+        "healing_rate": 2.0
+      },
+      "special_notes": "露天修炼效果更佳"
+    },
+    {
+      "event_id": "trial_tower_open",
+      "name": "试炼之塔开放",
+      "trigger_date": "Y+0 M+7 D+15",
+      "duration_days": 10,
+      "min_realm": "炼气期五层",
+      "description": "上古试炼之塔每半年开放一次。塔分九层，每上一层奖励翻倍，但难度也倍增。能登顶者可获得一次问道机会。",
+      "location": "试炼之地",
+      "tower_rewards": [
+        {"floor": 1, "reward": "下品灵石x100"},
+        {"floor": 3, "reward": "中品功法"},
+        {"floor": 5, "reward": "灵器一件"},
+        {"floor": 7, "reward": "天材地宝"},
+        {"floor": 9, "reward": "问道机会"}
+      ],
+      "death_penalty": false,
+      "retry_allowed": true
+    },
+    {
+      "event_id": "beast_tide",
+      "name": "兽潮来袭",
+      "trigger_date": "Y+0 M+11 D+1",
+      "duration_days": 5,
+      "min_realm": null,
+      "description": "妖兽山脉深处的兽王发动兽潮，无数妖兽涌向人族城市。守城成功有丰厚奖励，但城破则损失惨重。",
+      "type": "defense_event",
+      "waves": 10,
+      "rewards": {
+        "per_wave": {
+          "exp": 1000,
+          "contribution": 100
+        },
+        "completion": {
+          "title": "守城英雄",
+          "items": ["英雄令牌", "妖兽材料x50"]
+        }
+      },
+      "failure_penalty": {
+        "city_damage": true,
+        "shop_closed_days": 7
+      }
+    },
+    {
+      "event_id": "enlightenment_conference",
+      "name": "论道大会",
+      "trigger_date": "Y+1 M+3 D+1",
+      "duration_days": 7,
+      "min_realm": "筑基期",
+      "description": "各派高人齐聚论道，分享修炼心得。参与者可能获得顿悟，提升功法境界或领悟新的神通。",
+      "location": "悟道山",
+      "participation_cost": 500,
+      "possible_gains": [
+        "功法进阶",
+        "神通领悟",
+        "瓶颈突破",
+        "道友结交"
+      ],
+      "enlightenment_chance": 0.3
+    }
+  ],
+
+  "timeline_config": {
+    "date_format": "Y+{years} M+{months} D+{days}",
+    "check_interval": 86400,
+    "advance_notice_days": 7,
+    "event_overlap_allowed": true,
+    "missed_event_handling": "skip",
+    "realm_conversion": {
+      "炼气期一层": 1,
+      "炼气期三层": 3,
+      "炼气期五层": 5,
+      "炼气期六层": 6,
+      "炼气期九层": 9,
+      "炼气期大圆满": 10,
+      "筑基期": 11,
+      "筑基中期": 15,
+      "筑基后期": 18,
+      "筑基大圆满": 20,
+      "金丹期": 21
+    }
+  }
+}

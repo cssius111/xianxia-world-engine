@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xianxia-engine.com/schemas/cultivation_realm.json",
+  "title": "Cultivation Realm Schema",
+  "description": "Schema for cultivation realm system definitions",
+  "type": "object",
+  "required": ["meta", "realms", "breakthrough_mechanics"],
+  "properties": {
+    "meta": {
+      "$ref": "#/$defs/metaInfo"
+    },
+    "realms": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "tier", "name", "levels", "power_multiplier"],
+        "properties": {
+          "id": {"type": "string"},
+          "tier": {"type": "integer", "minimum": 1, "maximum": 9},
+          "name": {"type": "string"},
+          "description": {"type": "string"},
+          "levels": {"type": "integer", "minimum": 1},
+          "min_age": {"type": "integer"},
+          "power_multiplier": {"type": "number"},
+          "requirements": {"type": "object"},
+          "breakthrough_requirements": {"type": "object"},
+          "level_benefits": {"type": "object"},
+          "abilities": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "lifespan_bonus": {
+            "oneOf": [
+              {"type": "integer"},
+              {"type": "string", "const": "infinite"}
+            ]
+          },
+          "tribulation": {
+            "oneOf": [
+              {"type": "null"},
+              {"type": "string"}
+            ]
+          },
+          "special_features": {"type": "object"},
+          "final_realm": {"type": "boolean"},
+          "ascension_ready": {"type": "boolean"},
+          "tribulation_stages": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "ascension_paths": {"type": "object"}
+        }
+      }
+    },
+    "breakthrough_mechanics": {
+      "type": "object",
+      "properties": {
+        "base_success_rates": {
+          "type": "object",
+          "additionalProperties": {"type": "number", "minimum": 0, "maximum": 1}
+        },
+        "failure_consequences": {"type": "object"},
+        "success_modifiers": {"type": "object"}
+      }
+    },
+    "realm_suppression": {
+      "type": "object",
+      "properties": {
+        "description": {"type": "string"},
+        "formula": {"type": "string"},
+        "effects": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      }
+    },
+    "_custom_tags": {"$ref": "#/$defs/customTags"}
+  },
+  "$defs": {
+    "metaInfo": {
+      "type": "object",
+      "required": ["version", "description", "schema_version"],
+      "properties": {
+        "version": {"type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$"},
+        "description": {"type": "string"},
+        "schema_version": {"type": "string"},
+        "last_modified": {"type": "string", "format": "date"}
+      }
+    },
+    "customTags": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  }
+}

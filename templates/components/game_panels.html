@@ -1,0 +1,1037 @@
+<!-- 游戏功能面板集合 -->
+
+<!-- 通用弹窗容器 -->
+<div id="panelOverlay" class="panel-overlay" style="display: none;" onclick="GamePanels.closeCurrentPanel(event)">
+    <!-- 查看状态面板 -->
+    <div id="statusPanel" class="game-panel" style="display: none;">
+        <div class="panel-header">
+            <h3>角色状态</h3>
+            <button class="panel-close" onclick="GamePanels.closePanel('statusPanel')">&times;</button>
+        </div>
+        <div class="panel-body">
+            <div class="status-grid">
+                <div class="status-item">
+                    <label>姓名：</label><span id="status-name">-</span>
+                </div>
+                <div class="status-item">
+                    <label>境界：</label><span id="status-realm">-</span>
+                </div>
+                <div class="status-item">
+                    <label>修为：</label><span id="status-cultivation">-</span>
+                </div>
+                <div class="status-item">
+                    <label>寿元：</label><span id="status-lifespan">-</span>
+                </div>
+                <div class="status-item">
+                    <label>阵营：</label><span id="status-faction">-</span>
+                </div>
+                <div class="status-item">
+                    <label>声望：</label><span id="status-reputation">-</span>
+                </div>
+                <div class="status-item">
+                    <label>根骨：</label><span id="status-constitution">-</span>
+                </div>
+                <div class="status-item">
+                    <label>悟性：</label><span id="status-comprehension">-</span>
+                </div>
+                <div class="status-item">
+                    <label>神识：</label><span id="status-spirit">-</span>
+                </div>
+                <div class="status-item">
+                    <label>机缘：</label><span id="status-luck">-</span>
+                </div>
+                <div class="status-item">
+                    <label>状态：</label><span id="status-buffs">正常</span>
+                </div>
+                <div class="status-item">
+                    <label>金币：</label><span id="status-gold">-</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 查看背包面板 -->
+    <div id="inventoryPanel" class="game-panel" style="display: none;">
+        <div class="panel-header">
+            <h3>背包</h3>
+            <button class="panel-close" onclick="GamePanels.closePanel('inventoryPanel')">&times;</button>
+        </div>
+        <div class="panel-body">
+            <div class="inventory-grid" id="inventoryGrid">
+                <!-- 动态生成物品格子 -->
+            </div>
+            <div class="item-info" id="itemInfo" style="display: none;">
+                <h4 id="itemName">物品名称</h4>
+                <p id="itemDesc">物品描述</p>
+                <p>数量：<span id="itemCount">1</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 修炼系统面板 -->
+    <div id="cultivationPanel" class="game-panel" style="display: none;">
+        <div class="panel-header">
+            <h3>修炼系统</h3>
+            <button class="panel-close" onclick="GamePanels.closePanel('cultivationPanel')">&times;</button>
+        </div>
+        <div class="panel-body">
+            <div class="cultivation-section">
+                <h4>当前功法</h4>
+                <div class="technique-info">
+                    <span class="technique-name" id="currentTechnique">无</span>
+                    <span class="technique-progress" id="techniqueProgress"></span>
+                </div>
+            </div>
+
+            <div class="cultivation-section">
+                <h4>功法列表</h4>
+                <div class="technique-list" id="techniqueList">
+                    <!-- 动态生成功法列表 -->
+                </div>
+            </div>
+
+            <div class="cultivation-section">
+                <h4>修炼设置</h4>
+                <p class="cultivation-tip" id="cultivationTip">
+                    当前可修炼时长：<span id="maxCultivationTime">1</span>小时
+                </p>
+                <p class="warning-text" id="cultivationWarning"></p>
+                <div class="cultivation-input">
+                    <label>修炼时长（小时）：</label>
+                    <input type="number" id="cultivationHours" min="1" max="24" value="1">
+                    <button onclick="GamePanels.startCultivation()">开始修炼</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 成就系统面板 -->
+    <div id="achievementsPanel" class="game-panel" style="display: none;">
+        <div class="panel-header">
+            <h3>成就系统</h3>
+            <button class="panel-close" onclick="GamePanels.closePanel('achievementsPanel')">&times;</button>
+        </div>
+        <div class="panel-body">
+            <table class="achievement-table">
+                <thead>
+                    <tr>
+                        <th>成就</th>
+                        <th>描述</th>
+                        <th>状态</th>
+                    </tr>
+                </thead>
+                <tbody id="achievementList">
+                    <!-- 动态生成成就列表 -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 进行探索面板 -->
+    <div id="explorePanel" class="game-panel" style="display: none;">
+        <div class="panel-header">
+            <h3>探索</h3>
+            <button class="panel-close" onclick="GamePanels.closePanel('explorePanel')">&times;</button>
+        </div>
+        <div class="panel-body">
+            <p>当前位置：<span id="exploreLocation">青云城</span></p>
+            <button class="explore-btn" onclick="GamePanels.doExplore()">开始探索</button>
+            <div class="explore-result" id="exploreResult" style="display: none;">
+                <!-- 探索结果 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 地图系统面板 -->
+    <div id="mapPanel" class="game-panel large-panel" style="display: none;">
+        <div class="panel-header">
+            <h3>地图</h3>
+            <button class="panel-close" onclick="GamePanels.closePanel('mapPanel')">&times;</button>
+        </div>
+        <div class="panel-body">
+            <div class="map-container" id="mapContainer">
+                <!-- 动态生成地图 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 当前任务面板 -->
+    <div id="questsPanel" class="game-panel" style="display: none;">
+        <div class="panel-header">
+            <h3>当前任务</h3>
+            <button class="panel-close" onclick="GamePanels.closePanel('questsPanel')">&times;</button>
+        </div>
+        <div class="panel-body">
+            <div class="quest-list" id="questList">
+                <!-- 动态生成任务列表 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 情报面板 -->
+    <div id="intelPanel" class="game-panel" style="display: none;">
+        <div class="panel-header">
+            <h3>情报</h3>
+            <button class="panel-close" onclick="GamePanels.closePanel('intelPanel')">&times;</button>
+        </div>
+        <div class="panel-body">
+            <div class="intel-tabs">
+                <button id="intelTabWorld" onclick="GamePanels.switchIntelTab('world')">世界</button>
+                <button id="intelTabPersonal" onclick="GamePanels.switchIntelTab('personal')">个人</button>
+            </div>
+            <div class="intel-list" id="intelList"></div>
+        </div>
+    </div>
+
+    <!-- 保存加载面板 -->
+    <div id="saveLoadPanel" class="game-panel" style="display: none;">
+        <div class="panel-header">
+            <h3>保存/加载</h3>
+            <button class="panel-close" onclick="GamePanels.closePanel('saveLoadPanel')">&times;</button>
+        </div>
+        <div class="panel-body">
+            <div class="save-load-buttons">
+                <button class="save-btn" onclick="GamePanels.saveGame()">保存游戏</button>
+                <button class="load-btn" onclick="GamePanels.loadGame()">加载游戏</button>
+            </div>
+            <div class="save-load-message" id="saveLoadMessage"></div>
+        </div>
+    </div>
+
+    <!-- 帮助文档面板 -->
+    <div id="helpPanel" class="game-panel large-panel" style="display: none;">
+        <div class="panel-header">
+            <h3>帮助文档</h3>
+            <button class="panel-close" onclick="GamePanels.closePanel('helpPanel')">&times;</button>
+        </div>
+        <div class="panel-body">
+            <div class="help-content">
+                <h4>基本命令</h4>
+                <ul>
+                    <li><code>探索</code> - 探索当前区域</li>
+                    <li><code>修炼</code> - 进行修炼</li>
+                    <li><code>前往 [地点]</code> - 前往指定地点</li>
+                    <li><code>交谈 [NPC]</code> - 与NPC交谈</li>
+                    <li><code>使用 [物品]</code> - 使用物品</li>
+                </ul>
+
+                <h4>境界说明</h4>
+                <ul>
+                    <li>聚气期 - 初入修真之门</li>
+                    <li>筑基期 - 奠定修真根基</li>
+                    <li>金丹期 - 凝结金丹大道</li>
+                    <li>元婴期 - 元婴出窍神游</li>
+                    <li>化神期 - 化神御物飞天</li>
+                </ul>
+
+                <h4>游戏提示</h4>
+                <ul>
+                    <li>勤加修炼，方能突破境界</li>
+                    <li>探索世界，寻找机缘造化</li>
+                    <li>结交道友，互助共进仙途</li>
+                    <li>谨慎选择，一念成仙成魔</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* 弹窗遮罩 */
+.panel-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.2s ease;
+}
+
+/* 游戏面板通用样式 */
+.game-panel {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border: 2px solid #aaa;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 30px rgba(107, 139, 125, 0.3);
+    animation: slideIn 0.3s ease;
+}
+
+.large-panel {
+    max-width: 800px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* 面板头部 */
+.panel-header {
+    padding: 15px 20px;
+    border-bottom: 1px solid rgba(107, 139, 125, 0.3);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.panel-header h3 {
+    margin: 0;
+    color: #aaa;
+    font-size: 20px;
+}
+
+.panel-close {
+    background: none;
+    border: none;
+    color: #aaa;
+    font-size: 24px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.panel-close:hover {
+    opacity: 1;
+}
+
+/* 面板主体 */
+.panel-body {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    color: #e0e0e0;
+}
+
+/* 状态面板样式 */
+.status-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.status-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+}
+
+.status-item label {
+    color: #aaa;
+    font-weight: bold;
+}
+
+.status-item span {
+    color: #ccc;
+}
+
+/* 背包样式 */
+.inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.inventory-slot {
+    aspect-ratio: 1;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(107, 139, 125, 0.3);
+    border-radius: 5px;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.inventory-slot:hover {
+    border-color: #aaa;
+    background: rgba(107, 139, 125, 0.1);
+}
+
+.item-info {
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+    border: 1px solid rgba(107, 139, 125, 0.3);
+}
+
+.item-info h4 {
+    margin: 0 0 10px 0;
+    color: #aaa;
+}
+
+/* 修炼系统样式 */
+.cultivation-section {
+    margin-bottom: 25px;
+}
+
+.cultivation-section h4 {
+    color: #aaa;
+    margin: 0 0 15px 0;
+}
+
+.technique-info {
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.technique-name {
+    font-weight: bold;
+    color: #ccc;
+}
+
+.technique-progress {
+    color: #aaa;
+}
+
+.technique-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.technique-item {
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.technique-item:hover {
+    background: rgba(107, 139, 125, 0.1);
+}
+
+.cultivation-input {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.cultivation-input input {
+    width: 80px;
+    padding: 5px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(107, 139, 125, 0.3);
+    color: #e0e0e0;
+    border-radius: 3px;
+}
+
+.cultivation-input button {
+    padding: 5px 15px;
+    background: #aaa;
+    color: #1a1a2e;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.cultivation-tip {
+    color: #ccc;
+    margin-bottom: 10px;
+}
+
+.warning-text {
+    color: #bbb;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+/* 成就系统样式 */
+.achievement-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.achievement-table th {
+    background: rgba(107, 139, 125, 0.2);
+    color: #aaa;
+    padding: 10px;
+    text-align: left;
+}
+
+.achievement-table td {
+    padding: 10px;
+    border-bottom: 1px solid rgba(107, 139, 125, 0.1);
+}
+
+.achievement-table tr:hover {
+    background: rgba(107, 139, 125, 0.05);
+}
+
+/* 探索面板样式 */
+.explore-btn {
+    display: block;
+    margin: 20px auto;
+    padding: 15px 30px;
+    background: linear-gradient(135deg, #aaa 0%, #ccc 100%);
+    color: #1a1a2e;
+    border: none;
+    border-radius: 25px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.explore-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(107, 139, 125, 0.3);
+}
+
+.explore-result {
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+/* 地图样式 */
+.map-container {
+    min-height: 400px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    padding: 20px;
+}
+
+/* 任务样式 */
+.quest-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.quest-item {
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    border-left: 3px solid #aaa;
+}
+
+.quest-item h5 {
+    margin: 0 0 10px 0;
+    color: #aaa;
+}
+
+.quest-item p {
+    margin: 0;
+    color: #e0e0e0;
+}
+
+/* 情报面板样式 */
+.intel-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+.intel-tabs button {
+    flex: 1;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.4);
+    border: none;
+    color: #ccc;
+    cursor: pointer;
+}
+.intel-tabs button.active {
+    background: rgba(107, 139, 125, 0.4);
+}
+.intel-item {
+    padding: 10px;
+    border-bottom: 1px solid rgba(107, 139, 125, 0.2);
+    cursor: pointer;
+}
+.intel-item:hover {
+    background: rgba(107, 139, 125, 0.1);
+}
+
+/* 保存加载样式 */
+.save-load-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.save-btn, .load-btn {
+    padding: 15px 30px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.save-btn {
+    background: #aaa;
+    color: white;
+}
+
+.load-btn {
+    background: #aaa;
+    color: white;
+}
+
+.save-btn:hover, .load-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.save-load-message {
+    text-align: center;
+    padding: 15px;
+    color: #aaa;
+}
+
+/* 帮助文档样式 */
+.help-content h4 {
+    color: #aaa;
+    margin: 20px 0 10px 0;
+}
+
+.help-content ul {
+    list-style: none;
+    padding: 0;
+}
+
+.help-content li {
+    padding: 5px 0;
+    color: #e0e0e0;
+}
+
+.help-content code {
+    background: rgba(107, 139, 125, 0.2);
+    padding: 2px 5px;
+    border-radius: 3px;
+    color: #ccc;
+}
+
+/* 滚动条 */
+.panel-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.panel-body::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.panel-body::-webkit-scrollbar-thumb {
+    background: rgba(107, 139, 125, 0.5);
+    border-radius: 4px;
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+    .game-panel {
+        width: 95%;
+        max-width: none;
+    }
+
+    .status-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .inventory-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+</style>
+
+<script>
+/**
+ * 游戏面板系统
+ */
+const GamePanels = {
+    currentPanel: null,
+
+    /**
+     * 显示面板
+     */
+    showPanel(panelId) {
+        // 关闭当前面板
+        if (this.currentPanel) {
+            document.getElementById(this.currentPanel).style.display = 'none';
+        }
+
+        // 显示遮罩和新面板
+        document.getElementById('panelOverlay').style.display = 'flex';
+        document.getElementById(panelId).style.display = 'flex';
+        this.currentPanel = panelId;
+
+        // 加载面板数据
+        this.loadPanelData(panelId);
+    },
+
+    /**
+     * 关闭面板
+     */
+    closePanel(panelId) {
+        document.getElementById(panelId).style.display = 'none';
+        document.getElementById('panelOverlay').style.display = 'none';
+        this.currentPanel = null;
+    },
+
+    /**
+     * 点击遮罩关闭面板
+     */
+    closeCurrentPanel(event) {
+        if (event.target.id === 'panelOverlay') {
+            if (this.currentPanel) {
+                this.closePanel(this.currentPanel);
+            }
+        }
+    },
+
+    /**
+     * 加载面板数据
+     */
+    loadPanelData(panelId) {
+        switch(panelId) {
+            case 'statusPanel':
+                this.loadStatusData();
+                break;
+            case 'inventoryPanel':
+                this.loadInventoryData();
+                break;
+            case 'cultivationPanel':
+                this.loadCultivationData();
+                break;
+            case 'achievementsPanel':
+                this.loadAchievementsData();
+                break;
+            case 'mapPanel':
+                this.loadMapData();
+                break;
+            case 'questsPanel':
+                this.loadQuestsData();
+                break;
+            case 'intelPanel':
+                this.loadIntelData();
+                break;
+        }
+    },
+
+    // 各功能入口
+    showStatus() { this.showPanel('statusPanel'); },
+    showInventory() { this.showPanel('inventoryPanel'); },
+    showCultivation() { this.showPanel('cultivationPanel'); },
+    showAchievements() { this.showPanel('achievementsPanel'); },
+    showExplore() { this.showPanel('explorePanel'); },
+    showMap() { this.showPanel('mapPanel'); },
+    showQuests() { this.showPanel('questsPanel'); },
+    showIntel() { this.showPanel('intelPanel'); },
+    showSaveLoad() { this.showPanel('saveLoadPanel'); },
+    showHelp() { this.showPanel('helpPanel'); },
+
+    /**
+     * 加载状态数据
+     */
+    async loadStatusData() {
+        try {
+            const response = await fetch('/api/character/info');
+            const data = await response.json();
+
+            if (data.success) {
+                const char = data.character;
+                document.getElementById('status-name').textContent = char.name || '-';
+                document.getElementById('status-realm').textContent = char.attributes.realm_name || '-';
+                document.getElementById('status-cultivation').textContent = `${char.attributes.cultivation_level || 0}/${char.attributes.max_cultivation || 100}`;
+                document.getElementById('status-faction').textContent = char.extra_data?.faction || '散修';
+                document.getElementById('status-constitution').textContent = char.extra_data?.constitution || '5';
+                document.getElementById('status-comprehension').textContent = char.extra_data?.comprehension || '5';
+                document.getElementById('status-spirit').textContent = char.attributes.defense || '5';
+                document.getElementById('status-luck').textContent = char.extra_data?.luck || '5';
+                document.getElementById('status-gold').textContent = char.inventory?.gold || '0';
+                document.getElementById('status-lifespan').textContent = char.extra_data?.lifespan || '100/100';
+                document.getElementById('status-reputation').textContent = char.extra_data?.reputation || '0';
+            }
+        } catch (error) {
+            console.error('加载状态失败:', error);
+        }
+    },
+
+    /**
+     * 加载背包数据
+     */
+    loadInventoryData() {
+        // 模拟背包数据
+        const inventory = [
+            { name: '筑灵石', count: 1, desc: '蕴含微弱灵气的石头，可辅助修炼' },
+            { name: '回春丹', count: 3, desc: '恢复少量气血' },
+            { name: '清心丹', count: 2, desc: '恢复少量灵力' }
+        ];
+
+        const grid = document.getElementById('inventoryGrid');
+        grid.innerHTML = '';
+
+        // 创建24个格子
+        for (let i = 0; i < 24; i++) {
+            const slot = document.createElement('div');
+            slot.className = 'inventory-slot';
+
+            if (i < inventory.length) {
+                const item = inventory[i];
+                slot.innerHTML = `<span>${item.name}</span>`;
+                slot.onclick = () => this.showItemInfo(item);
+            }
+
+            grid.appendChild(slot);
+        }
+    },
+
+    /**
+     * 显示物品信息
+     */
+    showItemInfo(item) {
+        document.getElementById('itemInfo').style.display = 'block';
+        document.getElementById('itemName').textContent = item.name;
+        document.getElementById('itemDesc').textContent = item.desc;
+        document.getElementById('itemCount').textContent = item.count;
+    },
+
+    /**
+     * 加载修炼数据
+     */
+    loadCultivationData() {
+        // 当前功法
+        document.getElementById('currentTechnique').textContent = '青云诀';
+        document.getElementById('techniqueProgress').textContent = '入门(25%)';
+
+        // 功法列表
+        const techniques = [
+            { name: '青云诀', level: '黄阶下品', color: '#aaa' },
+            { name: '烈火诀', level: '黄阶中品', color: '#bbb' },
+            { name: '寒冰诀', level: '黄阶中品', color: '#bbb' }
+        ];
+
+        const list = document.getElementById('techniqueList');
+        list.innerHTML = '';
+
+        techniques.forEach(tech => {
+            const item = document.createElement('div');
+            item.className = 'technique-item';
+            item.innerHTML = `<span style="color: ${tech.color}">${tech.name}</span> - ${tech.level}`;
+            list.appendChild(item);
+        });
+
+        // 修炼限制
+        document.getElementById('maxCultivationTime').textContent = '8';
+        document.getElementById('cultivationWarning').textContent = '注意：当前体力只能支撑8小时修炼';
+    },
+
+    /**
+     * 加载成就数据
+     */
+    loadAchievementsData() {
+        const achievements = [
+            { name: '初入仙门', desc: '踏上修仙之路', unlocked: true },
+            { name: '筑基成功', desc: '突破至筑基期', unlocked: false },
+            { name: '丹成九转', desc: '炼制出九转金丹', unlocked: false },
+            { name: '剑心通明', desc: '领悟剑道真意', unlocked: false }
+        ];
+
+        const tbody = document.getElementById('achievementList');
+        tbody.innerHTML = '';
+
+        achievements.forEach(ach => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${ach.unlocked ? ach.name : '???'}</td>
+                <td>${ach.unlocked ? ach.desc : '未解锁'}</td>
+                <td>${ach.unlocked ? '✓' : '✗'}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+    },
+
+    /**
+     * 加载地图数据
+     */
+    loadMapData() {
+        const mapContainer = document.getElementById('mapContainer');
+        mapContainer.innerHTML = `
+            <div class="map-region">
+                <h4>青云山脉</h4>
+                <ul>
+                    <li><a href="#" onclick="GamePanels.travelTo('青云城')">青云城</a> - 繁华的修真城市</li>
+                    <li><a href="#" onclick="GamePanels.travelTo('青云峰')">青云峰</a> - 青云宗山门</li>
+                    <li><a href="#" onclick="GamePanels.travelTo('灵兽森林')">灵兽森林<span style="color: #aaa">(新)</span></a> - 危险的森林</li>
+                </ul>
+            </div>
+        `;
+    },
+
+    /**
+     * 加载任务数据
+     */
+    loadQuestsData() {
+        const quests = [
+            { name: '初入青云', desc: '前往青云城了解情况', progress: '进行中' },
+            { name: '寻找机缘', desc: '探索周围区域，寻找修炼资源', progress: '未开始' }
+        ];
+
+        const list = document.getElementById('questList');
+        list.innerHTML = '';
+
+        quests.forEach(quest => {
+            const item = document.createElement('div');
+            item.className = 'quest-item';
+            item.innerHTML = `
+                <h5>${quest.name}</h5>
+                <p>${quest.desc}</p>
+                <p style="color: #aaa">状态：${quest.progress}</p>
+            `;
+            list.appendChild(item);
+        });
+    },
+
+    /**
+     * 加载情报数据
+     */
+    async loadIntelData(tab = 'world') {
+        try {
+            const resp = await fetch('/api/intel');
+            const data = await resp.json();
+            const list = document.getElementById('intelList');
+            list.innerHTML = '';
+            const items = tab === 'world' ? data.global : data.personal;
+            items.forEach(i => {
+                const div = document.createElement('div');
+                div.className = 'intel-item';
+                div.textContent = i.title;
+                div.onclick = () => GamePanels.showIntelDetail(i);
+                list.appendChild(div);
+            });
+            document.getElementById('intelTabWorld').classList.toggle('active', tab === 'world');
+            document.getElementById('intelTabPersonal').classList.toggle('active', tab === 'personal');
+        } catch (e) {
+            console.error('加载情报失败', e);
+        }
+    },
+
+    switchIntelTab(tab) {
+        this.loadIntelData(tab);
+    },
+
+    showIntelDetail(item) {
+        alert(item.content);
+        if (item.interactable_task_id) {
+            this.showQuests();
+        }
+    },
+
+    /**
+     * 开始修炼
+     */
+    startCultivation() {
+        const hours = document.getElementById('cultivationHours').value;
+        // 发送修炼命令
+        if (typeof GameUI !== 'undefined' && GameUI.sendCommand) {
+            GameUI.sendCommand(`修炼 ${hours}小时`);
+        }
+        this.closePanel('cultivationPanel');
+    },
+
+    /**
+     * 进行探索
+     */
+    doExplore() {
+        // 发送探索命令
+        if (typeof GameUI !== 'undefined' && GameUI.sendCommand) {
+            GameUI.sendCommand('探索');
+        }
+
+        // 显示探索结果
+        const result = document.getElementById('exploreResult');
+        result.style.display = 'block';
+        result.innerHTML = '<p>正在探索中...</p>';
+
+        setTimeout(() => {
+            result.innerHTML = '<p>你在附近发现了一株<span style="color: #aaa">百年人参</span>！</p>';
+        }, 1000);
+    },
+
+    /**
+     * 前往地点
+     */
+    travelTo(location) {
+        if (typeof GameUI !== 'undefined' && GameUI.sendCommand) {
+            GameUI.sendCommand(`前往 ${location}`);
+        }
+        this.closePanel('mapPanel');
+    },
+
+    /**
+     * 保存游戏
+     */
+    async saveGame() {
+        try {
+            const response = await fetch('/save_game', { method: 'POST' });
+            const data = await response.json();
+
+            const msg = document.getElementById('saveLoadMessage');
+            if (data.success) {
+                msg.textContent = '游戏保存成功！';
+                msg.style.color = '#aaa';
+            } else {
+                msg.textContent = '保存失败：' + data.error;
+                msg.style.color = '#bbb';
+            }
+        } catch (error) {
+            console.error('保存失败:', error);
+        }
+    },
+
+    /**
+     * 加载游戏
+     */
+    async loadGame() {
+        try {
+            const response = await fetch('/load_game', { method: 'POST' });
+            const data = await response.json();
+
+            const msg = document.getElementById('saveLoadMessage');
+            if (data.success) {
+                msg.textContent = '游戏加载成功！';
+                msg.style.color = '#aaa';
+                // 刷新游戏状态
+                if (typeof GameUI !== 'undefined' && GameUI.refreshStatus) {
+                    GameUI.refreshStatus();
+                }
+                setTimeout(() => this.closePanel('saveLoadPanel'), 1000);
+            } else {
+                msg.textContent = '加载失败：' + data.error;
+                msg.style.color = '#bbb';
+            }
+        } catch (error) {
+            console.error('加载失败:', error);
+        }
+    }
+};
+
+// 导出到全局
+window.GamePanels = GamePanels;
+</script>

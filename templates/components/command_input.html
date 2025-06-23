@@ -1,0 +1,16 @@
+<!-- 命令输入组件 -->
+<div class="command-section">
+    <div class="input-hint">💡 输入"帮助"查看全部可用命令，按Tab键显示命令提示</div>
+    <div class="input-line">
+        <input type="text"
+               class="command-input"
+               id="command-input"
+               placeholder="输入命令，如：探索、攻击妖兽、使用回元丹……"
+               onkeydown="handleKeyDown(event)"
+               onkeyup="handleKeyUp(event)"
+               autocomplete="off">
+        <button class="command-submit" onclick="executeCommand()" title="发送指令并刷新界面">执行</button>
+    </div>
+    <!-- 自动完成提示 -->
+    <div class="autocomplete" id="autocomplete"></div>
+</div>

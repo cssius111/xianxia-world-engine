@@ -1,0 +1,281 @@
+{
+  "origins": [
+    {
+      "id": "peasant_family",
+      "name": "凡俗农家",
+      "description": "出身贫寒，但心怀修仙之志",
+      "effects": {
+        "attributes": {
+          "vitality": 2,
+          "strength": 1,
+          "luck": -1
+        },
+        "starting_items": ["粗布衣", "干粮x5"],
+        "starting_money": 10,
+        "flags": ["hardworking", "humble_origin"]
+      }
+    },
+    {
+      "id": "fallen_nobility",
+      "name": "没落世家",
+      "description": "曾经辉煌的修真世家，如今只剩残破传承",
+      "effects": {
+        "attributes": {
+          "intelligence": 2,
+          "charm": 1,
+          "vitality": -1
+        },
+        "starting_items": ["残缺功法", "世家信物"],
+        "starting_money": 50,
+        "flags": ["noble_bearing", "ancient_knowledge"]
+      }
+    },
+    {
+      "id": "mysterious_origin",
+      "name": "神秘来历",
+      "description": "身世成谜，似乎隐藏着惊天秘密",
+      "effects": {
+        "attributes": {
+          "luck": 3,
+          "random_boost": true
+        },
+        "starting_items": ["神秘玉佩", "残缺地图"],
+        "starting_money": 30,
+        "flags": ["mysterious_past", "hidden_bloodline"]
+      }
+    },
+    {
+      "id": "merchant_family",
+      "name": "商贾之家",
+      "description": "精于算计，擅长资源运作",
+      "effects": {
+        "attributes": {
+          "intelligence": 1,
+          "charm": 2,
+          "strength": -1
+        },
+        "starting_items": ["账本", "优质丹药x3"],
+        "starting_money": 100,
+        "flags": ["business_acumen", "resource_management"]
+      }
+    },
+    {
+      "id": "martial_family",
+      "name": "武道世家",
+      "description": "世代习武，根基扎实",
+      "effects": {
+        "attributes": {
+          "strength": 2,
+          "agility": 2,
+          "intelligence": -1
+        },
+        "starting_items": ["家传拳谱", "淬体丹x2"],
+        "starting_money": 30,
+        "flags": ["martial_foundation", "combat_talent"]
+      }
+    }
+  ],
+
+  "spiritual_roots": [
+    {
+      "id": "single_root",
+      "name": "单灵根",
+      "description": "天赋异禀，修炼速度极快",
+      "types": ["金", "木", "水", "火", "土"],
+      "effects": {
+        "cultivation_speed": 2.0,
+        "breakthrough_bonus": 0.3,
+        "element_affinity": 1.5
+      }
+    },
+    {
+      "id": "dual_root",
+      "name": "双灵根",
+      "description": "较为罕见，修炼速度优秀",
+      "types": ["金木", "水火", "土金", "木土", "火金"],
+      "effects": {
+        "cultivation_speed": 1.5,
+        "breakthrough_bonus": 0.2,
+        "element_affinity": 1.2
+      }
+    },
+    {
+      "id": "mixed_root",
+      "name": "杂灵根",
+      "description": "最为常见，修炼缓慢但根基稳固",
+      "types": ["五行杂灵根"],
+      "effects": {
+        "cultivation_speed": 0.8,
+        "breakthrough_bonus": -0.1,
+        "stability_bonus": 0.3,
+        "comprehension_bonus": 0.1
+      }
+    },
+    {
+      "id": "mutant_root",
+      "name": "变异灵根",
+      "description": "罕见的特殊灵根，拥有独特能力",
+      "types": ["雷", "冰", "风", "暗", "光"],
+      "effects": {
+        "cultivation_speed": 1.8,
+        "special_technique_affinity": 2.0,
+        "breakthrough_difficulty": 0.2
+      }
+    }
+  ],
+
+  "personality_traits": [
+    {
+      "id": "kind",
+      "name": "善良",
+      "description": "心地善良，易得他人好感",
+      "effects": {
+        "karma": 10,
+        "npc_affinity": 0.2,
+        "evil_technique_penalty": -0.5
+      }
+    },
+    {
+      "id": "cold",
+      "name": "冷漠",
+      "description": "不近人情，专注修炼",
+      "effects": {
+        "cultivation_focus": 0.2,
+        "npc_affinity": -0.2,
+        "mental_resistance": 0.3
+      }
+    },
+    {
+      "id": "decisive",
+      "name": "果断",
+      "description": "杀伐决断，不留后患",
+      "effects": {
+        "combat_decision": 0.3,
+        "breakthrough_determination": 0.2,
+        "hesitation_penalty": -0.5
+      }
+    },
+    {
+      "id": "cautious",
+      "name": "谨慎",
+      "description": "三思而行，趋利避害",
+      "effects": {
+        "danger_perception": 0.3,
+        "trap_avoidance": 0.4,
+        "opportunity_recognition": -0.1
+      }
+    },
+    {
+      "id": "ambitious",
+      "name": "野心勃勃",
+      "description": "志存高远，不甘人后",
+      "effects": {
+        "cultivation_drive": 0.3,
+        "resource_competition": 0.2,
+        "contentment": -0.3
+      }
+    },
+    {
+      "id": "scholarly",
+      "name": "博学",
+      "description": "饱读诗书，触类旁通",
+      "effects": {
+        "comprehension": 0.3,
+        "technique_learning": 0.2,
+        "combat_instinct": -0.1
+      }
+    }
+  ],
+
+  "initial_talents": [
+    {
+      "id": "sword_heart",
+      "name": "剑心",
+      "description": "天生剑骨，剑道天赋卓绝",
+      "effects": {
+        "sword_technique_bonus": 0.5,
+        "sword_comprehension": 0.3,
+        "sword_qi_generation": 0.2
+      },
+      "unlock_skills": ["基础剑术", "剑意雏形"]
+    },
+    {
+      "id": "alchemy_genius",
+      "name": "炼丹天才",
+      "description": "对丹道有着惊人领悟",
+      "effects": {
+        "alchemy_success_rate": 0.3,
+        "pill_quality_bonus": 0.2,
+        "herb_recognition": 0.4
+      },
+      "unlock_skills": ["基础炼丹", "药性辨识"]
+    },
+    {
+      "id": "body_refinement",
+      "name": "炼体天赋",
+      "description": "肉身强横，适合体修之道",
+      "effects": {
+        "physical_resistance": 0.3,
+        "body_tempering_efficiency": 0.4,
+        "vitality_recovery": 0.2
+      },
+      "unlock_skills": ["金刚体", "气血如龙"]
+    },
+    {
+      "id": "formation_affinity",
+      "name": "阵法亲和",
+      "description": "对阵法有独特感知",
+      "effects": {
+        "formation_comprehension": 0.4,
+        "formation_breaking": 0.3,
+        "spatial_perception": 0.2
+      },
+      "unlock_skills": ["阵法入门", "破阵之眼"]
+    },
+    {
+      "id": "beast_affinity",
+      "name": "兽缘",
+      "description": "天生受灵兽喜爱",
+      "effects": {
+        "beast_taming_success": 0.4,
+        "beast_loyalty": 0.3,
+        "beast_communication": 0.2
+      },
+      "unlock_skills": ["驯兽术", "兽语通"]
+    },
+    {
+      "id": "none",
+      "name": "无特殊天赋",
+      "description": "天赋平平，但可塑性强",
+      "effects": {
+        "flexibility": 0.2,
+        "adaptation": 0.1
+      },
+      "unlock_skills": []
+    }
+  ],
+
+  "creation_weights": {
+    "origins": [25, 20, 10, 25, 20],
+    "spiritual_roots": [5, 15, 70, 10],
+    "personality_max_selection": 2,
+    "talents": [5, 10, 10, 10, 10, 55]
+  },
+
+  "mode_config": {
+    "dev": {
+      "show_all_options": true,
+      "enable_custom_stats": true,
+      "max_stat_value": 100,
+      "unlock_all_talents": true,
+      "show_hidden_origins": true
+    },
+    "player": {
+      "show_all_options": false,
+      "enable_custom_stats": false,
+      "max_stat_value": 20,
+      "unlock_all_talents": false,
+      "show_hidden_origins": false
+    }
+  }
+}

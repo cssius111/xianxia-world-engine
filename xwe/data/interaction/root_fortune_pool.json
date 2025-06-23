@@ -1,0 +1,340 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "description": "杂灵根专属事件池与补偿机制，支持逆天改命系统"
+  },
+  "compensation_formulas": {
+    "cultivation_efficiency": {
+      "formula": "V杂 = Σ(Pi) × (1 + 0.05 × N) / (T / 10)",
+      "variables": {
+        "Pi": "各属性纯度",
+        "N": "已突破大境界数",
+        "T": "修炼时长(天)"
+      },
+      "description": "杂灵根修炼效率补偿公式"
+    },
+    "breakthrough_bonus": {
+      "formula": "成功率 = 基础成功率 × (1 + 灵根数量 × 0.1)",
+      "description": "多灵根在突破时的额外概率加成"
+    },
+    "tribulation_resistance": {
+      "formula": "抗性 = 0.1 × √(灵根冲突指数)",
+      "description": "灵根冲突越大，天劫抗性越强"
+    }
+  },
+  "exclusive_events": [
+    {
+      "id": "CHAOTIC_ENLIGHTENMENT",
+      "name": "混沌顿悟",
+      "category": "逆天改命",
+      "trigger_probability": 0.08,
+      "requirements": {
+        "灵根数量": "≥3",
+        "冲突指数": "≥0.4",
+        "修炼状态": "深度修炼中"
+      },
+      "description": "在灵根冲突的痛苦中获得独特感悟",
+      "outcomes": [
+        {
+          "probability": 0.4,
+          "type": "灵根协调",
+          "effects": ["灵根冲突-20%", "修炼效率+15%"],
+          "description": "学会调和不同属性的灵气"
+        },
+        {
+          "probability": 0.3,
+          "type": "融合契机",
+          "effects": ["解锁灵根融合路径", "获得融合指导"],
+          "description": "感悟到灵根融合的方法"
+        },
+        {
+          "probability": 0.2,
+          "type": "平衡之道",
+          "effects": ["解锁平衡守护者职业", "五行亲和+10%"],
+          "description": "领悟天地平衡的真谛"
+        },
+        {
+          "probability": 0.1,
+          "type": "混沌初开",
+          "effects": ["混沌灵根觉醒线索", "悟性永久+0.2"],
+          "description": "窥见混沌本源的奥秘"
+        }
+      ]
+    },
+    {
+      "id": "ELEMENTAL_STORM",
+      "name": "元素风暴洗礼",
+      "category": "特殊机遇",
+      "trigger_probability": 0.05,
+      "requirements": {
+        "location": "元素交汇点",
+        "灵根冲突": "正在发生",
+        "时机": "天象特殊时期"
+      },
+      "description": "在元素风暴中接受洗礼，可能获得意外收获",
+      "outcomes": [
+        {
+          "probability": 0.3,
+          "type": "灵根进化",
+          "effects": ["随机一个灵根品质提升", "获得变异可能"],
+          "risks": ["其他灵根可能受损"]
+        },
+        {
+          "probability": 0.25,
+          "type": "抗性增强",
+          "effects": ["元素抗性+20%", "法术免疫几率+5%"],
+          "description": "在多元素冲击下获得抗性"
+        },
+        {
+          "probability": 0.25,
+          "type": "感知觉醒",
+          "effects": ["元素感知能力觉醒", "预警危险+15%"],
+          "description": "对元素波动变得极其敏感"
+        },
+        {
+          "probability": 0.15,
+          "type": "融合突破",
+          "effects": ["强制触发灵根融合", "成功率+50%"],
+          "risks": ["失败将导致重伤"]
+        },
+        {
+          "probability": 0.05,
+          "type": "风暴之子",
+          "effects": ["获得风暴操控能力", "解锁界域旅者职业"],
+          "description": "成为元素风暴的宠儿"
+        }
+      ]
+    },
+    {
+      "id": "ANCIENT_RESONANCE",
+      "name": "上古共鸣",
+      "category": "血脉觉醒",
+      "trigger_probability": 0.03,
+      "requirements": {
+        "location": "上古遗迹",
+        "境界": "≥筑基期",
+        "血脉纯度": "存在上古血脉"
+      },
+      "description": "与上古遗迹产生共鸣，觉醒祖先记忆",
+      "outcomes": [
+        {
+          "probability": 0.4,
+          "type": "血脉觉醒",
+          "effects": ["觉醒隐藏血脉", "获得祖传技能"],
+          "description": "祖先的力量在血脉中苏醒"
+        },
+        {
+          "probability": 0.3,
+          "type": "传承获得",
+          "effects": ["获得上古功法", "修炼速度+20%"],
+          "description": "得到上古修炼传承"
+        },
+        {
+          "probability": 0.2,
+          "type": "记忆片段",
+          "effects": ["获得珍贵知识", "悟性+0.1"],
+          "description": "看到祖先的记忆片段"
+        },
+        {
+          "probability": 0.1,
+          "type": "时空回响",
+          "effects": ["短暂获得祖先实力", "战力×3(1小时)"],
+          "description": "祖先的力量短暂降临"
+        }
+      ]
+    },
+    {
+      "id": "HARMONY_ASCENSION",
+      "name": "和谐飞升",
+      "category": "终极进化",
+      "trigger_probability": 0.01,
+      "requirements": {
+        "五行平衡": "差值≤0.02",
+        "境界": "≥元婴期",
+        "karma": "善恶平衡",
+        "achievements": "化解过重大冲突"
+      },
+      "description": "达到完美平衡状态，获得天道认可",
+      "outcomes": [
+        {
+          "probability": 0.6,
+          "type": "混沌觉醒",
+          "effects": ["觉醒混沌灵根", "获得创造能力"],
+          "description": "灵根进化为传说中的混沌属性"
+        },
+        {
+          "probability": 0.3,
+          "type": "天道眷顾",
+          "effects": ["天劫豁免权", "气运+50", "寿命+500年"],
+          "description": "得到天道的特殊眷顾"
+        },
+        {
+          "probability": 0.1,
+          "type": "平衡之主",
+          "effects": ["成为平衡法则化身", "境界直接突破"],
+          "description": "成为维护天地平衡的存在"
+        }
+      ]
+    },
+    {
+      "id": "DEFYING_FATE",
+      "name": "逆天改命",
+      "category": "命运转折",
+      "trigger_probability": 0.12,
+      "requirements": {
+        "desperation": "面临绝境",
+        "willpower": "意志力≥0.8",
+        "accumulated_effort": "长期努力修炼"
+      },
+      "description": "在绝境中爆发出改变命运的力量",
+      "outcomes": [
+        {
+          "probability": 0.3,
+          "type": "潜能爆发",
+          "effects": ["所有属性临时翻倍", "解锁隐藏能力"],
+          "duration": "1天",
+          "description": "激发出所有潜在力量"
+        },
+        {
+          "probability": 0.25,
+          "type": "命格提升",
+          "effects": ["命格等级+1", "气运大幅提升"],
+          "description": "通过努力改变了天生命格"
+        },
+        {
+          "probability": 0.2,
+          "type": "天赋觉醒",
+          "effects": ["随机觉醒稀有天赋", "获得特殊能力"],
+          "description": "在极限状态下觉醒天赋"
+        },
+        {
+          "probability": 0.15,
+          "type": "境界突破",
+          "effects": ["强制突破当前境界", "无副作用"],
+          "description": "突破修炼瓶颈"
+        },
+        {
+          "probability": 0.1,
+          "type": "重塑根基",
+          "effects": ["重新分配灵根", "纯度全面提升"],
+          "description": "彻底改造灵根体质"
+        }
+      ]
+    }
+  ],
+  "periodic_compensations": {
+    "monthly_bonus": {
+      "description": "每月一次的杂灵根补偿",
+      "conditions": "拥有2个以上不同属性灵根",
+      "effects": {
+        "修炼效率": "+5%",
+        "突破概率": "+2%",
+        "资源获得": "+10%"
+      }
+    },
+    "breakthrough_assistance": {
+      "description": "突破时的额外帮助",
+      "trigger": "尝试突破大境界",
+      "effects": {
+        "成功率加成": "灵根数量 × 3%",
+        "副作用减免": "30%",
+        "稳固时间": "减少50%"
+      }
+    },
+    "serendipity_enhancement": {
+      "description": "机缘事件概率提升",
+      "base_multiplier": 1.5,
+      "special_events_multiplier": 3.0,
+      "description_detail": "杂灵根更容易遇到特殊机缘"
+    }
+  },
+  "adversity_transformation": {
+    "description": "将劣势转化为优势的机制",
+    "transformations": [
+      {
+        "name": "冲突即力量",
+        "condition": "灵根冲突指数≥0.6",
+        "effect": "冲突能量可转化为修炼动力",
+        "bonus": "修炼速度 × (1 + 冲突指数)"
+      },
+      {
+        "name": "多元适应",
+        "condition": "拥有3种以上灵根",
+        "effect": "环境适应性极强",
+        "bonus": "在任何环境下修炼效率不低于80%"
+      },
+      {
+        "name": "包容万象",
+        "condition": "五行俱全",
+        "effect": "可以学习任何属性的技能",
+        "bonus": "技能学习速度+50%"
+      },
+      {
+        "name": "平衡之美",
+        "condition": "灵根纯度差值≤0.1",
+        "effect": "心境极其稳定",
+        "bonus": "走火入魔概率-90%"
+      }
+    ]
+  },
+  "legacy_paths": {
+    "description": "杂灵根的传承路径",
+    "paths": [
+      {
+        "name": "混沌开创者",
+        "requirement": "成功觉醒混沌灵根",
+        "legacy": "后代有几率直接觉醒混沌灵根",
+        "impact": "开创新的修炼流派"
+      },
+      {
+        "name": "平衡传承者",
+        "requirement": "达成完美五行平衡",
+        "legacy": "后代灵根更加平衡",
+        "impact": "建立平衡修炼体系"
+      },
+      {
+        "name": "融合先驱",
+        "requirement": "创造新的灵根融合方法",
+        "legacy": "融合技术传承给后人",
+        "impact": "推动灵根融合技术发展"
+      },
+      {
+        "name": "逆命英雄",
+        "requirement": "多次成功逆天改命",
+        "legacy": "后代更容易触发逆天事件",
+        "impact": "激励其他杂灵根修士"
+      }
+    ]
+  },
+  "special_mechanics": {
+    "resonance_amplification": {
+      "description": "杂灵根在特定情况下的共鸣放大",
+      "triggers": [
+        "生死关头",
+        "情绪极限",
+        "天地异象",
+        "同道共鸣"
+      ],
+      "effects": "所有能力临时大幅提升"
+    },
+    "adaptive_evolution": {
+      "description": "适应性进化机制",
+      "mechanism": "长期面对某种挑战会逐渐产生抗性",
+      "examples": [
+        "长期修炼困难 → 修炼天赋提升",
+        "经常灵根冲突 → 协调能力增强",
+        "多次突破失败 → 突破经验积累"
+      ]
+    },
+    "collective_strength": {
+      "description": "杂灵根群体力量",
+      "mechanism": "多个杂灵根修士聚集时产生特殊效应",
+      "effects": [
+        "共鸣增强",
+        "经验分享",
+        "集体突破",
+        "创新合作"
+      ]
+    }
+  }
+}

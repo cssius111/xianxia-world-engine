@@ -1,0 +1,819 @@
+{
+  "origins": [
+    {
+      "id": "peasant_family",
+      "name": "凡俗农家",
+      "description": "出身贫寒，但心怀修仙之志。虽无背景，却也无拘无束。",
+      "story": "你出生在一个普通的农家，从小便向往修仙者御剑飞行的身影。一次偶然的机会，你觉醒了修炼资质...",
+      "effects": {
+        "attributes": {
+          "vitality": 2,
+          "strength": 1,
+          "perseverance": 2,
+          "luck": -1
+        },
+        "starting_items": ["粗布衣", "干粮x5", "农具（可当武器）"],
+        "starting_money": 10,
+        "starting_skills": ["农活熟手", "吃苦耐劳"],
+        "flags": ["hardworking", "humble_origin", "survival_instinct"]
+      },
+      "special_events": ["hometown_visit", "family_crisis"],
+      "unlock_condition": "always"
+    },
+    {
+      "id": "fallen_nobility",
+      "name": "没落世家",
+      "description": "曾经辉煌的修真世家，如今只剩残破传承。血脉中仍有一丝不凡。",
+      "story": "你的家族曾是一方豪强，可惜在百年前的大变中衰落。你继承了一些残缺的传承...",
+      "effects": {
+        "attributes": {
+          "intelligence": 2,
+          "charm": 1,
+          "comprehension": 1,
+          "vitality": -1
+        },
+        "starting_items": ["残缺功法", "世家信物", "破损法袍"],
+        "starting_money": 50,
+        "starting_skills": ["古文识读", "礼仪修养"],
+        "flags": ["noble_bearing", "ancient_knowledge", "family_vendetta"]
+      },
+      "special_events": ["family_restoration", "ancient_enemy"],
+      "unlock_condition": "always"
+    },
+    {
+      "id": "mysterious_origin",
+      "name": "神秘来历",
+      "description": "身世成谜，似乎隐藏着惊天秘密。命运的齿轮已经开始转动。",
+      "story": "你不记得自己的过去，只有一块神秘玉佩和模糊的记忆碎片...",
+      "effects": {
+        "attributes": {
+          "luck": 3,
+          "spiritual_sense": 2,
+          "random_boost": true
+        },
+        "starting_items": ["神秘玉佩", "残缺地图", "无字天书"],
+        "starting_money": 30,
+        "starting_skills": ["危险感知", "天生灵觉"],
+        "flags": ["mysterious_past", "hidden_bloodline", "fate_entangled"]
+      },
+      "special_events": ["memory_recovery", "bloodline_awakening"],
+      "unlock_condition": "random_chance"
+    },
+    {
+      "id": "merchant_family",
+      "name": "商贾之家",
+      "description": "精于算计，擅长资源运作。铜臭味中也能悟出大道。",
+      "story": "出身商贾世家的你，从小便懂得利益交换。当发现修炼也是一门'生意'时...",
+      "effects": {
+        "attributes": {
+          "intelligence": 1,
+          "charm": 2,
+          "negotiation": 2,
+          "strength": -1
+        },
+        "starting_items": ["账本", "优质丹药x3", "商会令牌"],
+        "starting_money": 100,
+        "starting_skills": ["商业头脑", "鉴宝", "人脉网络"],
+        "flags": ["business_acumen", "resource_management", "profit_minded"]
+      },
+      "special_events": ["trade_opportunity", "merchant_guild_quest"],
+      "unlock_condition": "always"
+    },
+    {
+      "id": "martial_family",
+      "name": "武道世家",
+      "description": "世代习武，根基扎实。武道极致亦可通仙。",
+      "story": "你的家族世代习武，虽是凡俗武学，却也磨练出了坚韧的意志...",
+      "effects": {
+        "attributes": {
+          "strength": 2,
+          "agility": 2,
+          "willpower": 1,
+          "intelligence": -1
+        },
+        "starting_items": ["家传拳谱", "淬体丹x2", "精钢长剑"],
+        "starting_money": 30,
+        "starting_skills": ["武学基础", "钢筋铁骨", "战斗直觉"],
+        "flags": ["martial_foundation", "combat_talent", "warrior_spirit"]
+      },
+      "special_events": ["martial_enlightenment", "family_technique"],
+      "unlock_condition": "always"
+    },
+    {
+      "id": "orphan_wanderer",
+      "name": "孤儿流浪",
+      "description": "自幼无依无靠，在夹缝中求生。苦难造就了超乎常人的求生本能。",
+      "story": "你不知道父母是谁，从小在街头巷尾讨生活，直到那一天...",
+      "effects": {
+        "attributes": {
+          "agility": 2,
+          "perception": 2,
+          "luck": 1,
+          "charm": -2
+        },
+        "starting_items": ["破烂衣衫", "偷来的馒头x3", "捡到的灵石碎片"],
+        "starting_money": 5,
+        "starting_skills": ["偷窃", "察言观色", "逃跑专精"],
+        "flags": ["street_smart", "survivor", "trust_issues"]
+      },
+      "special_events": ["mentor_encounter", "hidden_talent_awakening"],
+      "unlock_condition": "always"
+    },
+    {
+      "id": "scholar_family",
+      "name": "书香门第",
+      "description": "饱读诗书，博学多才。知识就是力量，悟道更需智慧。",
+      "story": "你出身书香门第，从小熟读经典。当你发现修仙也需要悟性时...",
+      "effects": {
+        "attributes": {
+          "intelligence": 3,
+          "comprehension": 2,
+          "strength": -1,
+          "vitality": -1
+        },
+        "starting_items": ["藏书百卷", "文房四宝", "明心符"],
+        "starting_money": 40,
+        "starting_skills": ["博闻强记", "推演之术", "静心冥想"],
+        "flags": ["scholarly", "quick_learner", "theoretical_knowledge"]
+      },
+      "special_events": ["ancient_text_discovery", "dao_comprehension"],
+      "unlock_condition": "always"
+    },
+    {
+      "id": "spirit_beast_raised",
+      "name": "兽族养大",
+      "description": "被灵兽抚养长大，通晓兽语，与自然亲近。",
+      "story": "你的童年是在深山中度过的，养育你的不是人类，而是一只通灵的灵兽...",
+      "effects": {
+        "attributes": {
+          "vitality": 2,
+          "agility": 2,
+          "beast_affinity": 3,
+          "charm": -1,
+          "intelligence": -1
+        },
+        "starting_items": ["兽皮衣", "灵兽信物", "野果x10"],
+        "starting_money": 0,
+        "starting_skills": ["兽语通", "野外生存", "本能感知"],
+        "flags": ["beast_raised", "nature_child", "primal_instincts"]
+      },
+      "special_events": ["beast_reunion", "wild_calling"],
+      "unlock_condition": "special"
+    },
+    {
+      "id": "cursed_bloodline",
+      "name": "诅咒血脉",
+      "description": "身负诅咒，命运多舛。但诅咒有时也是另一种祝福。",
+      "story": "你的血脉中流淌着古老的诅咒，这既是枷锁，也可能是机遇...",
+      "effects": {
+        "attributes": {
+          "all_random": true,
+          "curse_power": 5,
+          "karma": -3
+        },
+        "starting_items": ["诅咒印记", "镇魂铃", "解咒残页"],
+        "starting_money": 13,
+        "starting_skills": ["诅咒感应", "厄运抵抗", "黑暗亲和"],
+        "flags": ["cursed", "unstable_power", "fate_defier"]
+      },
+      "special_events": ["curse_outbreak", "curse_evolution"],
+      "unlock_condition": "hidden"
+    },
+    {
+      "id": "reincarnator",
+      "name": "转世重生",
+      "description": "前世记忆觉醒，带着经验重新开始。这一世，必不负己！",
+      "story": "你隐约记得前世的一些片段，那些修炼的经验正在慢慢苏醒...",
+      "effects": {
+        "attributes": {
+          "intelligence": 2,
+          "comprehension": 3,
+          "spiritual_sense": 2,
+          "vitality": -2
+        },
+        "starting_items": ["前世遗物", "修炼心得", "因果石"],
+        "starting_money": 1,
+        "starting_skills": ["经验直觉", "宿慧", "因果感知"],
+        "flags": ["reincarnated", "past_memories", "karmic_debt"]
+      },
+      "special_events": ["past_life_enemy", "memory_inheritance"],
+      "unlock_condition": "achievement"
+    }
+  ],
+
+  "spiritual_roots": [
+    {
+      "id": "single_root",
+      "name": "天灵根",
+      "description": "万中无一的绝世天才，单一属性纯粹至极。",
+      "types": [
+        {"element": "金", "bonus": "攻击锋锐+30%"},
+        {"element": "木", "bonus": "生命恢复+30%"},
+        {"element": "水", "bonus": "法力回复+30%"},
+        {"element": "火", "bonus": "爆发伤害+30%"},
+        {"element": "土", "bonus": "防御坚固+30%"}
+      ],
+      "effects": {
+        "cultivation_speed": 3.0,
+        "breakthrough_bonus": 0.5,
+        "element_affinity": 2.0,
+        "tribulation_resistance": 0.3
+      },
+      "special_abilities": ["元素化身", "本源觉醒", "天人合一"]
+    },
+    {
+      "id": "dual_root",
+      "name": "双灵根",
+      "description": "罕见的优质灵根，两种属性相辅相成。",
+      "types": [
+        {"elements": ["金", "水"], "name": "锐流", "bonus": "剑气如虹"},
+        {"elements": ["水", "木"], "name": "生机", "bonus": "治愈强化"},
+        {"elements": ["木", "火"], "name": "燎原", "bonus": "持续燃烧"},
+        {"elements": ["火", "土"], "name": "熔岩", "bonus": "防御反伤"},
+        {"elements": ["土", "金"], "name": "金刚", "bonus": "不坏之身"}
+      ],
+      "effects": {
+        "cultivation_speed": 2.0,
+        "breakthrough_bonus": 0.3,
+        "element_affinity": 1.5,
+        "combo_skills": true
+      },
+      "special_abilities": ["属性融合", "双元领域"]
+    },
+    {
+      "id": "triple_root",
+      "name": "三灵根",
+      "description": "较为平衡的灵根，可走多种修炼路线。",
+      "effects": {
+        "cultivation_speed": 1.2,
+        "breakthrough_bonus": 0.1,
+        "versatility": 1.5,
+        "technique_compatibility": 1.3
+      },
+      "special_abilities": ["三才阵法", "平衡之道"]
+    },
+    {
+      "id": "mixed_root",
+      "name": "杂灵根",
+      "description": "最常见的灵根，修炼缓慢但潜力未必差。",
+      "types": [
+        {"name": "四灵根", "desc": "四属性混杂"},
+        {"name": "五行俱全", "desc": "五行均衡"}
+      ],
+      "effects": {
+        "cultivation_speed": 0.8,
+        "breakthrough_bonus": -0.1,
+        "stability_bonus": 0.5,
+        "comprehension_bonus": 0.2,
+        "adaptation": 1.5
+      },
+      "special_abilities": ["厚积薄发", "万法归宗", "后期爆发"]
+    },
+    {
+      "id": "mutant_root",
+      "name": "变异灵根",
+      "description": "罕见的特殊灵根，掌控常人难以触及的力量。",
+      "types": [
+        {"element": "雷", "desc": "天雷之力，至刚至阳", "bonus": "雷法威力+50%"},
+        {"element": "冰", "desc": "极寒之力，冻结万物", "bonus": "控制能力+50%"},
+        {"element": "风", "desc": "无形之力，来去如风", "bonus": "速度+50%"},
+        {"element": "暗", "desc": "阴影之力，诡秘莫测", "bonus": "隐匿+50%"},
+        {"element": "光", "desc": "圣光之力，净化一切", "bonus": "治愈+50%"},
+        {"element": "空间", "desc": "空间之力，撕裂虚空", "bonus": "传送能力"},
+        {"element": "时间", "desc": "时间之力，逆转因果", "bonus": "时间感知"}
+      ],
+      "effects": {
+        "cultivation_speed": 1.8,
+        "special_technique_affinity": 3.0,
+        "breakthrough_difficulty": 0.3,
+        "unique_cultivation_method": true
+      },
+      "special_abilities": ["属性觉醒", "法则亲和", "元素主宰"]
+    },
+    {
+      "id": "void_root",
+      "name": "虚无灵根",
+      "description": "传说中的灵根，无属性即全属性，返璞归真。",
+      "effects": {
+        "cultivation_speed": "variable",
+        "all_element_affinity": 1.0,
+        "technique_creation": 2.0,
+        "enlightenment_bonus": 1.0
+      },
+      "special_abilities": ["万法不侵", "自创功法", "道法自然"],
+      "unlock_condition": "special_achievement"
+    },
+    {
+      "id": "chaos_root",
+      "name": "混沌灵根",
+      "description": "开天辟地之初的原始灵根，蕴含无限可能。",
+      "effects": {
+        "cultivation_speed": 0.5,
+        "late_game_multiplier": 10.0,
+        "chaos_energy": true,
+        "reality_manipulation": 0.1
+      },
+      "special_abilities": ["混沌初开", "演化万物", "重定法则"],
+      "unlock_condition": "hidden_quest"
+    }
+  ],
+
+  "personality_traits": [
+    {
+      "id": "kind",
+      "name": "善良仁慈",
+      "description": "心地善良，不忍见人受苦。善有善报，但有时会被人利用。",
+      "effects": {
+        "karma": 10,
+        "npc_affinity": 0.3,
+        "evil_technique_penalty": -0.8,
+        "healing_bonus": 0.2,
+        "charity_rewards": true
+      },
+      "special_interactions": ["救助任务", "善缘际遇"],
+      "incompatible": ["ruthless", "demonic"]
+    },
+    {
+      "id": "cold",
+      "name": "冷漠无情",
+      "description": "心如止水，不为外物所动。修炼专注，但人缘欠佳。",
+      "effects": {
+        "cultivation_focus": 0.3,
+        "npc_affinity": -0.3,
+        "mental_resistance": 0.5,
+        "emotion_control": 0.4
+      },
+      "special_interactions": ["独行任务", "心境考验"],
+      "incompatible": ["passionate", "kind"]
+    },
+    {
+      "id": "decisive",
+      "name": "杀伐果断",
+      "description": "该出手时就出手，绝不拖泥带水。容易树敌，但也令人敬畏。",
+      "effects": {
+        "combat_decision": 0.4,
+        "breakthrough_determination": 0.3,
+        "first_strike_bonus": 0.3,
+        "enemy_generation": 0.2
+      },
+      "special_interactions": ["决断时刻", "生死抉择"],
+      "incompatible": ["hesitant", "peaceful"]
+    },
+    {
+      "id": "cautious",
+      "name": "谨小慎微",
+      "description": "三思而后行，稳健前进。避免了许多危险，但也可能错失良机。",
+      "effects": {
+        "danger_perception": 0.4,
+        "trap_avoidance": 0.5,
+        "opportunity_recognition": -0.2,
+        "survival_rate": 0.3
+      },
+      "special_interactions": ["危机预感", "稳健选择"],
+      "incompatible": ["reckless", "decisive"]
+    },
+    {
+      "id": "ambitious",
+      "name": "野心勃勃",
+      "description": "志存高远，誓要站在世界之巅。动力十足，但容易急功近利。",
+      "effects": {
+        "cultivation_drive": 0.4,
+        "resource_competition": 0.3,
+        "risk_taking": 0.2,
+        "contentment": -0.5,
+        "breakthrough_attempts": 0.3
+      },
+      "special_interactions": ["权力斗争", "称霸之路"],
+      "incompatible": ["content", "humble"]
+    },
+    {
+      "id": "scholarly",
+      "name": "博学多才",
+      "description": "知识渊博，善于思考。理论强于实践，但往往能找到巧妙解法。",
+      "effects": {
+        "comprehension": 0.4,
+        "technique_learning": 0.3,
+        "puzzle_solving": 0.5,
+        "combat_instinct": -0.2,
+        "research_bonus": 0.4
+      },
+      "special_interactions": ["解密任务", "知识传承"],
+      "incompatible": ["simple", "brutal"]
+    },
+    {
+      "id": "cunning",
+      "name": "狡诈多谋",
+      "description": "诡计多端，善于算计。不择手段达到目的，但也容易引火烧身。",
+      "effects": {
+        "scheme_success": 0.4,
+        "deception": 0.5,
+        "trust_penalty": -0.3,
+        "information_gathering": 0.3,
+        "backstab_damage": 0.5
+      },
+      "special_interactions": ["阴谋任务", "幕后操控"],
+      "incompatible": ["honest", "straightforward"]
+    },
+    {
+      "id": "passionate",
+      "name": "热血豪情",
+      "description": "满腔热血，重情重义。为朋友两肋插刀，但容易感情用事。",
+      "effects": {
+        "friendship_bonus": 0.5,
+        "morale_boost": 0.3,
+        "impulse_actions": 0.3,
+        "team_synergy": 0.4,
+        "emotion_vulnerability": -0.2
+      },
+      "special_interactions": ["兄弟情深", "义薄云天"],
+      "incompatible": ["cold", "calculating"]
+    },
+    {
+      "id": "loner",
+      "name": "特立独行",
+      "description": "我行我素，不喜群居。独来独往反而让修炼更加纯粹。",
+      "effects": {
+        "solo_cultivation": 0.4,
+        "self_reliance": 0.5,
+        "team_penalty": -0.3,
+        "unique_encounters": 0.3,
+        "independent_comprehension": 0.3
+      },
+      "special_interactions": ["独行侠任务", "隐世高人"],
+      "incompatible": ["social", "leader"]
+    },
+    {
+      "id": "greedy",
+      "name": "贪婪成性",
+      "description": "见钱眼开，嗜宝如命。容易获得财富，但也容易因财招祸。",
+      "effects": {
+        "treasure_finding": 0.5,
+        "negotiation_penalty": -0.2,
+        "greed_temptation": 0.4,
+        "resource_hoarding": 0.3,
+        "robbery_victim": 0.2
+      },
+      "special_interactions": ["寻宝任务", "财富诱惑"],
+      "incompatible": ["generous", "ascetic"]
+    },
+    {
+      "id": "proud",
+      "name": "傲骨铮铮",
+      "description": "宁折不弯，绝不低头。自尊心极强，这既是力量也是弱点。",
+      "effects": {
+        "willpower": 0.5,
+        "humiliation_rage": 0.4,
+        "submission_penalty": -0.8,
+        "respect_generation": 0.3,
+        "pride_fall_risk": 0.2
+      },
+      "special_interactions": ["尊严之战", "傲骨考验"],
+      "incompatible": ["humble", "flexible"]
+    },
+    {
+      "id": "vengeful",
+      "name": "睚眦必报",
+      "description": "有仇必报，记忆力惊人。恩怨分明，让敌人闻风丧胆。",
+      "effects": {
+        "revenge_power": 0.5,
+        "grudge_memory": 1.0,
+        "enemy_tracking": 0.4,
+        "vendetta_quests": true,
+        "forgiveness_penalty": -0.8
+      },
+      "special_interactions": ["复仇任务", "恩怨了结"],
+      "incompatible": ["forgiving", "peaceful"]
+    }
+  ],
+
+  "initial_talents": [
+    {
+      "id": "sword_heart",
+      "name": "天生剑心",
+      "description": "生而知剑，剑即是我。对剑道有着超乎常人的领悟。",
+      "category": "combat",
+      "rarity": "rare",
+      "effects": {
+        "sword_technique_bonus": 0.8,
+        "sword_comprehension": 0.5,
+        "sword_qi_generation": 0.3,
+        "sword_spirit_communication": true
+      },
+      "unlock_skills": ["基础剑术", "剑意雏形", "人剑合一"],
+      "evolution_path": "剑仙之路",
+      "special_requirements": "需要本命飞剑"
+    },
+    {
+      "id": "alchemy_genius",
+      "name": "丹道奇才",
+      "description": "天生对药性敏感，炼丹如有神助。是天生的炼丹师。",
+      "category": "production",
+      "rarity": "rare",
+      "effects": {
+        "alchemy_success_rate": 0.5,
+        "pill_quality_bonus": 0.3,
+        "herb_recognition": 0.6,
+        "pill_innovation": 0.2,
+        "poison_immunity": 0.3
+      },
+      "unlock_skills": ["基础炼丹", "药性辨识", "创新丹方"],
+      "evolution_path": "丹帝之路",
+      "special_requirements": "需要丹炉"
+    },
+    {
+      "id": "body_refinement",
+      "name": "天生神力",
+      "description": "肉身天赋异禀，力大无穷。注定走上炼体之路。",
+      "category": "combat",
+      "rarity": "uncommon",
+      "effects": {
+        "physical_resistance": 0.4,
+        "body_tempering_efficiency": 0.5,
+        "vitality_recovery": 0.3,
+        "pain_tolerance": 0.6,
+        "physical_breakthrough": 0.2
+      },
+      "unlock_skills": ["金刚体", "气血如龙", "不灭金身"],
+      "evolution_path": "战神之路",
+      "special_requirements": "需要炼体资源"
+    },
+    {
+      "id": "formation_prodigy",
+      "name": "阵法天赋",
+      "description": "天生对空间和能量流动敏感，是布阵破阵的天才。",
+      "category": "support",
+      "rarity": "rare",
+      "effects": {
+        "formation_comprehension": 0.6,
+        "formation_breaking": 0.4,
+        "spatial_perception": 0.3,
+        "formation_efficiency": 0.4,
+        "trap_creation": 0.3
+      },
+      "unlock_skills": ["阵法入门", "破阵之眼", "虚空挪移"],
+      "evolution_path": "阵道宗师",
+      "special_requirements": "需要阵法材料"
+    },
+    {
+      "id": "beast_whisperer",
+      "name": "万兽亲和",
+      "description": "灵兽天生亲近你，易于沟通和驯服。是天生的御兽师。",
+      "category": "special",
+      "rarity": "rare",
+      "effects": {
+        "beast_taming_success": 0.6,
+        "beast_loyalty": 0.4,
+        "beast_communication": 0.5,
+        "beast_evolution_bonus": 0.3,
+        "mount_speed": 0.2
+      },
+      "unlock_skills": ["驯兽术", "兽语通", "血脉共鸣"],
+      "evolution_path": "御兽宗师",
+      "special_requirements": "需要灵兽蛋"
+    },
+    {
+      "id": "divine_calculation",
+      "name": "天机神算",
+      "description": "能够推演天机，预测吉凶。常能趋吉避凶，把握机缘。",
+      "category": "special",
+      "rarity": "epic",
+      "effects": {
+        "fortune_telling": 0.5,
+        "danger_prediction": 0.4,
+        "opportunity_sensing": 0.4,
+        "karma_manipulation": 0.2,
+        "fate_glimpse": true
+      },
+      "unlock_skills": ["占卜术", "趋吉避凶", "改命之法"],
+      "evolution_path": "天机掌控者",
+      "special_requirements": "需要天机玉"
+    },
+    {
+      "id": "photographic_memory",
+      "name": "过目不忘",
+      "description": "记忆力超群，看过的东西永不忘记。学习能力极强。",
+      "category": "mental",
+      "rarity": "uncommon",
+      "effects": {
+        "learning_speed": 0.6,
+        "technique_memorization": 1.0,
+        "knowledge_retention": 1.0,
+        "multi_technique_mastery": 0.4
+      },
+      "unlock_skills": ["速读", "融会贯通", "举一反三"],
+      "evolution_path": "博学大师",
+      "special_requirements": "需要大量书籍"
+    },
+    {
+      "id": "treasure_hunter",
+      "name": "寻宝直觉",
+      "description": "对宝物有着惊人的直觉，总能在别人忽略的地方发现宝贝。",
+      "category": "special",
+      "rarity": "uncommon",
+      "effects": {
+        "treasure_detection": 0.5,
+        "hidden_room_finding": 0.4,
+        "trap_sensing": 0.3,
+        "archaeology_bonus": 0.4,
+        "luck_encounters": 0.2
+      },
+      "unlock_skills": ["寻宝术", "鉴宝", "福缘深厚"],
+      "evolution_path": "寻宝大师",
+      "special_requirements": "需要寻宝罗盘"
+    },
+    {
+      "id": "spiritual_awakening",
+      "name": "灵识早慧",
+      "description": "精神力天生强大，神识覆盖范围远超同辈。",
+      "category": "mental",
+      "rarity": "rare",
+      "effects": {
+        "spiritual_sense_range": 2.0,
+        "mental_attack_power": 0.4,
+        "illusion_resistance": 0.5,
+        "soul_strength": 0.3,
+        "divine_sense_evolution": true
+      },
+      "unlock_skills": ["神识扫描", "精神攻击", "灵魂防御"],
+      "evolution_path": "神识主宰",
+      "special_requirements": "需要养神丹"
+    },
+    {
+      "id": "elemental_affinity",
+      "name": "元素亲和",
+      "description": "对各种元素力量都有不错的亲和力，容易掌握元素法术。",
+      "category": "magic",
+      "rarity": "uncommon",
+      "effects": {
+        "element_control": 0.4,
+        "spell_power": 0.3,
+        "mana_efficiency": 0.3,
+        "element_fusion": 0.2
+      },
+      "unlock_skills": ["元素操控", "法术精通", "元素融合"],
+      "evolution_path": "元素法师",
+      "special_requirements": "需要元素结晶"
+    },
+    {
+      "id": "battle_frenzy",
+      "name": "战斗狂人",
+      "description": "越战越勇，在战斗中能激发出超常的潜力。",
+      "category": "combat",
+      "rarity": "uncommon",
+      "effects": {
+        "battle_growth": 0.5,
+        "berserk_mode": true,
+        "pain_to_power": 0.3,
+        "combat_regeneration": 0.2,
+        "killing_intent": 0.4
+      },
+      "unlock_skills": ["狂战士", "浴血奋战", "不死战意"],
+      "evolution_path": "战神化身",
+      "special_requirements": "需要经历生死战"
+    },
+    {
+      "id": "none",
+      "name": "平平无奇",
+      "description": "没有特殊天赋，但这意味着没有桎梏，未来充满无限可能。",
+      "category": "neutral",
+      "rarity": "common",
+      "effects": {
+        "flexibility": 0.3,
+        "adaptation": 0.2,
+        "all_round_development": 0.1,
+        "no_restrictions": true
+      },
+      "unlock_skills": ["自由发展"],
+      "evolution_path": "自创道路",
+      "special_requirements": "无"
+    }
+  ],
+
+  "creation_weights": {
+    "origins": {
+      "peasant_family": 30,
+      "fallen_nobility": 20,
+      "mysterious_origin": 5,
+      "merchant_family": 20,
+      "martial_family": 15,
+      "orphan_wanderer": 25,
+      "scholar_family": 15,
+      "spirit_beast_raised": 2,
+      "cursed_bloodline": 1,
+      "reincarnator": 0.5
+    },
+    "spiritual_roots": {
+      "single_root": 1,
+      "dual_root": 9,
+      "triple_root": 20,
+      "mixed_root": 65,
+      "mutant_root": 5,
+      "void_root": 0.1,
+      "chaos_root": 0.01
+    },
+    "personality_max_selection": 2,
+    "personality_min_selection": 1,
+    "talents": {
+      "sword_heart": 5,
+      "alchemy_genius": 5,
+      "body_refinement": 10,
+      "formation_prodigy": 3,
+      "beast_whisperer": 4,
+      "divine_calculation": 1,
+      "photographic_memory": 8,
+      "treasure_hunter": 8,
+      "spiritual_awakening": 4,
+      "elemental_affinity": 10,
+      "battle_frenzy": 7,
+      "none": 35
+    }
+  },
+
+  "synergy_bonuses": {
+    "origin_root_synergy": [
+      {
+        "origin": "mysterious_origin",
+        "root": "void_root",
+        "bonus": "命运之子觉醒",
+        "effects": {"all_stats": 5, "special_event_rate": 2.0}
+      },
+      {
+        "origin": "martial_family",
+        "root": "single_root",
+        "bonus": "武道通神",
+        "effects": {"combat_power": 1.5, "martial_enlightenment": true}
+      }
+    ],
+    "personality_talent_synergy": [
+      {
+        "personality": ["ambitious", "cunning"],
+        "talent": "divine_calculation",
+        "bonus": "谋定后动",
+        "effects": {"scheme_success": 0.8, "power_grab": true}
+      },
+      {
+        "personality": ["kind", "passionate"],
+        "talent": "beast_whisperer",
+        "bonus": "万灵之友",
+        "effects": {"all_beast_affinity": 1.0, "legendary_pet_chance": 0.1}
+      }
+    ],
+    "full_synergy": [
+      {
+        "origin": "reincarnator",
+        "root": "chaos_root",
+        "personality": ["ambitious", "loner"],
+        "talent": "spiritual_awakening",
+        "bonus": "轮回主宰",
+        "effects": {
+          "transcendence_path": true,
+          "reality_control": 0.1,
+          "immortal_soul": true
+        }
+      }
+    ]
+  },
+
+  "mode_config": {
+    "dev": {
+      "show_all_options": true,
+      "enable_custom_stats": true,
+      "max_stat_value": 999,
+      "unlock_all_talents": true,
+      "show_hidden_origins": true,
+      "enable_debug_panel": true,
+      "instant_creation": true,
+      "god_mode_available": true
+    },
+    "player": {
+      "show_all_options": false,
+      "enable_custom_stats": false,
+      "max_stat_value": 20,
+      "unlock_all_talents": false,
+      "show_hidden_origins": false,
+      "enable_debug_panel": false,
+      "instant_creation": false,
+      "achievement_unlocks": true
+    }
+  },
+
+  "random_generation_rules": {
+    "stat_generation": {
+      "method": "point_buy",
+      "total_points": 50,
+      "min_value": 3,
+      "max_value": 18,
+      "racial_modifiers": true
+    },
+    "name_generation": {
+      "use_culture_appropriate": true,
+      "allow_custom_input": true,
+      "generate_title": true
+    },
+    "background_generation": {
+      "generate_family": true,
+      "generate_childhood_events": true,
+      "generate_motivations": true
+    }
+  }
+}

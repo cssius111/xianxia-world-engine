@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xianxia-engine.com/schemas/npc_template.json",
+  "title": "NPC Template Schema",
+  "description": "Schema for NPC template definitions",
+  "type": "object",
+  "required": ["meta", "npc_archetypes", "npc_templates"],
+  "properties": {
+    "meta": {"$ref": "#/$defs/metaInfo"},
+    "npc_archetypes": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["id", "name", "base_stats"],
+        "properties": {
+          "id": {"type": "string"},
+          "name": {"type": "string"},
+          "base_stats": {"type": "object"},
+          "personality_pool": {"type": "array", "items": {"type": "string"}},
+          "skills": {"type": "array", "items": {"type": "string"}},
+          "role": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    },
+    "npc_templates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "archetype", "gender", "race", "base_stats"],
+        "properties": {
+          "id": {"type": "string"},
+          "name": {"type": "string"},
+          "archetype": {"type": "string"},
+          "gender": {"type": "string"},
+          "race": {"type": "string"},
+          "portrait_id": {"type": "string"},
+          "base_stats": {"$ref": "#/$defs/npcStats"},
+          "attributes": {"type": "object"},
+          "traits": {"type": "array", "items": {"type": "string"}},
+          "skills": {"type": "array"},
+          "inventory": {"type": "object"},
+          "dialogue": {"type": "object"},
+          "behavior_tree": {"$ref": "#/$defs/behaviorTree"},
+          "schedule": {"type": "object"},
+          "relationships": {"type": "object"},
+          "event_hooks": {"type": "object"},
+          "romance_data": {"type": "object"},
+          "special_mechanics": {"type": "object"}
+        }
+      }
+    },
+    "npc_generation_rules": {"type": "object"},
+    "npc_interaction_system": {"type": "object"},
+    "npc_memory_system": {"type": "object"},
+    "_custom_tags": {"$ref": "#/$defs/customTags"}
+  },
+  "$defs": {
+    "metaInfo": {
+      "type": "object",
+      "required": ["version", "description", "schema_version"],
+      "properties": {
+        "version": {"type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$"},
+        "description": {"type": "string"},
+        "schema_version": {"type": "string"},
+        "last_modified": {"type": "string", "format": "date"}
+      }
+    },
+    "npcStats": {
+      "type": "object",
+      "properties": {
+        "hp": {"type": "integer"},
+        "mp": {"type": "integer"},
+        "atk": {"type": "integer"},
+        "def": {"type": "integer"},
+        "speed": {"type": "integer"},
+        "realm": {"type": "string"},
+        "level": {"type": "integer"}
+      }
+    },
+    "behaviorTree": {
+      "type": "object",
+      "required": ["root", "nodes"],
+      "properties": {
+        "root": {"type": "string"},
+        "nodes": {"type": "object"}
+      }
+    },
+    "customTags": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  }
+}

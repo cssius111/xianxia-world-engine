@@ -1,0 +1,776 @@
+<!-- 优化版帮助模态框 -->
+<div class="help-container">
+    <div class="help-search-section">
+        <input type="text" 
+               class="help-search" 
+               placeholder="搜索帮助内容..." 
+               onkeyup="searchHelp(this.value)">
+    </div>
+    
+    <div class="help-content-wrapper">
+        <!-- 帮助主题导航 -->
+        <div class="help-sidebar">
+            <div class="help-topic active" data-topic="basic" onclick="showHelpTopic('basic')">
+                🎮 基础操作
+            </div>
+            <div class="help-topic" data-topic="commands" onclick="showHelpTopic('commands')">
+                💬 命令大全
+            </div>
+            <div class="help-topic" data-topic="cultivation" onclick="showHelpTopic('cultivation')">
+                🧘 修炼系统
+            </div>
+            <div class="help-topic" data-topic="combat" onclick="showHelpTopic('combat')">
+                ⚔️ 战斗系统
+            </div>
+            <div class="help-topic" data-topic="items" onclick="showHelpTopic('items')">
+                📦 物品装备
+            </div>
+            <div class="help-topic" data-topic="world" onclick="showHelpTopic('world')">
+                🗺️ 世界探索
+            </div>
+            <div class="help-topic" data-topic="faq" onclick="showHelpTopic('faq')">
+                ❓ 常见问题
+            </div>
+            <div class="help-topic" data-topic="shortcuts" onclick="showHelpTopic('shortcuts')">
+                ⌨️ 快捷键
+            </div>
+        </div>
+        
+        <!-- 帮助内容 -->
+        <div class="help-main">
+            <!-- 基础操作 -->
+            <div class="help-section active" id="help-basic">
+                <h3>🎮 基础操作指南</h3>
+                
+                <div class="help-card">
+                    <h4>如何开始游戏</h4>
+                    <ul>
+                        <li>在底部输入框中输入命令，按回车执行</li>
+                        <li>点击左侧菜单可以快速访问各种功能</li>
+                        <li>尝试输入 <code>探索</code> 开始你的第一次冒险</li>
+                        <li>使用 <code>查看状态</code> 了解角色信息</li>
+                    </ul>
+                </div>
+                
+                <div class="help-card">
+                    <h4>界面说明</h4>
+                    <ul>
+                        <li><strong>左侧栏</strong>：显示角色状态和快捷功能菜单</li>
+                        <li><strong>中央区域</strong>：游戏日志和故事情节显示</li>
+                        <li><strong>底部输入框</strong>：输入游戏命令的地方</li>
+                        <li><strong>模态框</strong>：点击菜单项会弹出详细信息窗口</li>
+                    </ul>
+                </div>
+                
+                <div class="help-card">
+                    <h4>游戏保存</h4>
+                    <ul>
+                        <li>游戏会自动保存进度，无需担心数据丢失</li>
+                        <li>也可以手动保存：点击 "保存加载" 菜单</li>
+                        <li>支持导出/导入存档文件</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 命令大全 -->
+            <div class="help-section" id="help-commands">
+                <h3>💬 命令大全</h3>
+                
+                <div class="help-card">
+                    <h4>基础命令</h4>
+                    <div class="command-list">
+                        <div class="command-item">
+                            <code>帮助</code> 或 <code>help</code>
+                            <span>显示帮助信息</span>
+                        </div>
+                        <div class="command-item">
+                            <code>查看状态</code> 或 <code>状态</code>
+                            <span>查看角色详细信息</span>
+                        </div>
+                        <div class="command-item">
+                            <code>查看背包</code> 或 <code>背包</code>
+                            <span>查看物品和装备</span>
+                        </div>
+                        <div class="command-item">
+                            <code>保存游戏</code> 或 <code>保存</code>
+                            <span>手动保存游戏进度</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="help-card">
+                    <h4>探索命令</h4>
+                    <div class="command-list">
+                        <div class="command-item">
+                            <code>探索</code> 或 <code>冒险</code>
+                            <span>探索当前区域，发现新事物</span>
+                        </div>
+                        <div class="command-item">
+                            <code>前往 [地点]</code>
+                            <span>移动到指定地点</span>
+                        </div>
+                        <div class="command-item">
+                            <code>查看地图</code> 或 <code>地图</code>
+                            <span>查看已知区域地图</span>
+                        </div>
+                        <div class="command-item">
+                            <code>搜索</code>
+                            <span>在当前区域仔细搜索</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="help-card">
+                    <h4>修炼命令</h4>
+                    <div class="command-list">
+                        <div class="command-item">
+                            <code>修炼</code> 或 <code>打坐</code>
+                            <span>进行修炼，提升境界</span>
+                        </div>
+                        <div class="command-item">
+                            <code>突破</code>
+                            <span>尝试突破到更高境界</span>
+                        </div>
+                        <div class="command-item">
+                            <code>学习 [技能]</code>
+                            <span>学习新的功法或技能</span>
+                        </div>
+                        <div class="command-item">
+                            <code>修炼 [功法]</code>
+                            <span>修炼指定功法</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="help-card">
+                    <h4>战斗命令</h4>
+                    <div class="command-list">
+                        <div class="command-item">
+                            <code>攻击 [目标]</code>
+                            <span>攻击指定目标</span>
+                        </div>
+                        <div class="command-item">
+                            <code>防御</code> 或 <code>格挡</code>
+                            <span>进入防御姿态</span>
+                        </div>
+                        <div class="command-item">
+                            <code>使用 [技能]</code>
+                            <span>使用特定技能攻击</span>
+                        </div>
+                        <div class="command-item">
+                            <code>逃跑</code> 或 <code>撤退</code>
+                            <span>尝试逃离战斗</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="help-card">
+                    <h4>物品命令</h4>
+                    <div class="command-list">
+                        <div class="command-item">
+                            <code>使用 [物品]</code>
+                            <span>使用指定物品</span>
+                        </div>
+                        <div class="command-item">
+                            <code>装备 [装备]</code>
+                            <span>装备武器或防具</span>
+                        </div>
+                        <div class="command-item">
+                            <code>卸下 [装备]</code>
+                            <span>卸下已装备的物品</span>
+                        </div>
+                        <div class="command-item">
+                            <code>丢弃 [物品]</code>
+                            <span>丢弃不需要的物品</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 修炼系统 -->
+            <div class="help-section" id="help-cultivation">
+                <h3>🧘 修炼系统详解</h3>
+                
+                <div class="help-card">
+                    <h4>境界等级</h4>
+                    <p>修仙之路分为多个境界，每个境界都有多个层次：</p>
+                    <div class="realm-list">
+                        <div class="realm-item">
+                            <span class="realm-name">炼气期</span>
+                            <span class="realm-desc">修炼入门，吸收天地灵气</span>
+                        </div>
+                        <div class="realm-item">
+                            <span class="realm-name">筑基期</span>
+                            <span class="realm-desc">筑建修炼基础，丹田成形</span>
+                        </div>
+                        <div class="realm-item">
+                            <span class="realm-name">结丹期</span>
+                            <span class="realm-desc">凝聚金丹，修为大幅提升</span>
+                        </div>
+                        <div class="realm-item">
+                            <span class="realm-name">元婴期</span>
+                            <span class="realm-desc">元婴成形，拥有强大神识</span>
+                        </div>
+                        <div class="realm-item">
+                            <span class="realm-name">化神期</span>
+                            <span class="realm-desc">化身成神，移山填海</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="help-card">
+                    <h4>修炼方法</h4>
+                    <ul>
+                        <li><strong>打坐修炼</strong>：基础修炼方法，安全稳定</li>
+                        <li><strong>吸收灵石</strong>：消耗灵石加速修炼</li>
+                        <li><strong>服用丹药</strong>：使用丹药快速提升</li>
+                        <li><strong>洞府修炼</strong>：在特殊地点修炼效果更佳</li>
+                    </ul>
+                </div>
+                
+                <div class="help-card">
+                    <h4>突破瓶颈</h4>
+                    <p>当修为达到当前境界上限时，需要突破到下一境界：</p>
+                    <ul>
+                        <li>修为必须达到当前境界的满值</li>
+                        <li>某些境界需要特殊物品辅助突破</li>
+                        <li>突破有一定失败概率，失败可能损失修为</li>
+                        <li>悟性和气运会影响突破成功率</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 战斗系统 -->
+            <div class="help-section" id="help-combat">
+                <h3>⚔️ 战斗系统说明</h3>
+                
+                <div class="help-card">
+                    <h4>战斗基础</h4>
+                    <ul>
+                        <li>战斗采用回合制，根据速度决定行动顺序</li>
+                        <li>每回合可以选择攻击、防御、使用技能或逃跑</li>
+                        <li>不同的行动会消耗不同的体力或灵力</li>
+                        <li>血量归零即战败，需要治疗恢复</li>
+                    </ul>
+                </div>
+                
+                <div class="help-card">
+                    <h4>属性影响</h4>
+                    <ul>
+                        <li><strong>攻击力</strong>：影响造成的伤害</li>
+                        <li><strong>防御力</strong>：减少受到的伤害</li>
+                        <li><strong>速度</strong>：决定行动顺序和闪避率</li>
+                        <li><strong>暴击率</strong>：造成额外伤害的概率</li>
+                    </ul>
+                </div>
+                
+                <div class="help-card">
+                    <h4>技能战斗</h4>
+                    <ul>
+                        <li>学习的武功和法术可以在战斗中使用</li>
+                        <li>高级技能威力更大，但消耗更多灵力</li>
+                        <li>某些技能有特殊效果，如眩晕、中毒等</li>
+                        <li>合理使用技能是战胜强敌的关键</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 物品装备 -->
+            <div class="help-section" id="help-items">
+                <h3>📦 物品装备系统</h3>
+                
+                <div class="help-card">
+                    <h4>物品分类</h4>
+                    <ul>
+                        <li><strong>武器</strong>：提升攻击力的装备</li>
+                        <li><strong>防具</strong>：提升防御力的装备</li>
+                        <li><strong>丹药</strong>：回复生命值或灵力的消耗品</li>
+                        <li><strong>材料</strong>：用于炼制的原材料</li>
+                        <li><strong>法宝</strong>：拥有特殊能力的珍贵物品</li>
+                    </ul>
+                </div>
+                
+                <div class="help-card">
+                    <h4>装备品质</h4>
+                    <div class="quality-list">
+                        <div class="quality-item common">普通 - 基础装备</div>
+                        <div class="quality-item rare">稀有 - 较好属性</div>
+                        <div class="quality-item epic">史诗 - 优秀装备</div>
+                        <div class="quality-item legendary">传说 - 顶级装备</div>
+                        <div class="quality-item mythic">神话 - 传说级装备</div>
+                    </div>
+                </div>
+                
+                <div class="help-card">
+                    <h4>装备强化</h4>
+                    <ul>
+                        <li>使用强化石可以提升装备属性</li>
+                        <li>强化等级越高，成功率越低</li>
+                        <li>失败可能导致装备损坏或等级下降</li>
+                        <li>某些特殊材料可以提高成功率</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 世界探索 -->
+            <div class="help-section" id="help-world">
+                <h3>🗺️ 世界探索指南</h3>
+                
+                <div class="help-card">
+                    <h4>探索机制</h4>
+                    <ul>
+                        <li>每次探索都可能遇到不同的事件</li>
+                        <li>可能发现宝物、遇到NPC或触发战斗</li>
+                        <li>某些地区需要特定条件才能进入</li>
+                        <li>探索消耗体力，注意合理安排</li>
+                    </ul>
+                </div>
+                
+                <div class="help-card">
+                    <h4>主要区域</h4>
+                    <ul>
+                        <li><strong>青云城</strong>：新手城市，各种商铺和NPC</li>
+                        <li><strong>青云山</strong>：修炼圣地，可以加入门派</li>
+                        <li><strong>迷雾森林</strong>：危险区域，有珍贵材料</li>
+                        <li><strong>古洞秘境</strong>：隐秘地点，藏有宝藏</li>
+                    </ul>
+                </div>
+                
+                <div class="help-card">
+                    <h4>NPC交互</h4>
+                    <ul>
+                        <li>与NPC对话可以获得任务和信息</li>
+                        <li>某些NPC可以教授技能或出售物品</li>
+                        <li>提升好感度可以获得更多好处</li>
+                        <li>加入门派后可以接受门派任务</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 常见问题 -->
+            <div class="help-section" id="help-faq">
+                <h3>❓ 常见问题解答</h3>
+                
+                <div class="help-card">
+                    <div class="faq-item">
+                        <h4>Q: 如何快速提升修为？</h4>
+                        <p>A: 可以通过以下方式：1) 持续打坐修炼；2) 使用灵石加速；3) 服用提升修为的丹药；4) 在灵气浓郁的地方修炼。</p>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h4>Q: 战斗失败了怎么办？</h4>
+                        <p>A: 战败后角色会重伤，需要休息或使用治疗物品恢复。也可以找医师治疗，但需要支付费用。</p>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h4>Q: 如何获得更好的装备？</h4>
+                        <p>A: 可以通过：1) 击败强敌掉落；2) 完成任务奖励；3) 商店购买；4) 自己炼制；5) 探索发现。</p>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h4>Q: 灵根有什么作用？</h4>
+                        <p>A: 灵根决定修炼速度和上限。单属性灵根修炼最快，五行灵根最慢但最全面。变异灵根非常稀有且强大。</p>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h4>Q: 游戏数据会丢失吗？</h4>
+                        <p>A: 游戏有自动保存功能，数据存储在浏览器本地。建议定期使用"导出存档"功能备份数据。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 快捷键 -->
+            <div class="help-section" id="help-shortcuts">
+                <h3>⌨️ 快捷键大全</h3>
+                
+                <div class="help-card">
+                    <h4>全局快捷键</h4>
+                    <div class="shortcut-list">
+                        <div class="shortcut-item">
+                            <kbd>F1</kbd>
+                            <span>显示帮助文档</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <kbd>Esc</kbd>
+                            <span>关闭当前模态框</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <kbd>Ctrl + Enter</kbd>
+                            <span>提交当前命令</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <kbd>↑</kbd> <kbd>↓</kbd>
+                            <span>浏览命令历史</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <kbd>Tab</kbd>
+                            <span>命令自动补全</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="help-card">
+                    <h4>开发者快捷键</h4>
+                    <div class="shortcut-list">
+                        <div class="shortcut-item">
+                            <kbd>F12</kbd>
+                            <span>切换开发者模式</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <kbd>Ctrl + D</kbd>
+                            <span>导出调试信息</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <kbd>Ctrl + R</kbd>
+                            <span>强制刷新状态</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.help-container {
+    max-height: 70vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.help-search-section {
+    margin-bottom: 20px;
+}
+
+.help-search {
+    width: 100%;
+    padding: 10px 15px;
+    border: 2px solid var(--ink-lighter);
+    border-radius: 8px;
+    background: var(--paper-white);
+    color: var(--ink-black);
+    font-size: 14px;
+    outline: none;
+}
+
+.help-search:focus {
+    border-color: var(--brush-gold);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+}
+
+.help-content-wrapper {
+    display: flex;
+    flex: 1;
+    gap: 20px;
+    min-height: 0;
+}
+
+.help-sidebar {
+    width: 200px;
+    flex-shrink: 0;
+    border-right: 1px solid var(--cloud-gray);
+    padding-right: 15px;
+}
+
+.help-topic {
+    padding: 10px 15px;
+    margin: 5px 0;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    font-size: 14px;
+    color: var(--ink-black);
+    border: 1px solid transparent;
+}
+
+.help-topic:hover {
+    background: rgba(212, 175, 55, 0.1);
+    border-color: var(--brush-gold);
+}
+
+.help-topic.active {
+    background: var(--brush-gold);
+    color: var(--ink-black);
+    font-weight: bold;
+}
+
+.help-main {
+    flex: 1;
+    overflow-y: auto;
+    padding-left: 15px;
+}
+
+.help-section {
+    display: none;
+}
+
+.help-section.active {
+    display: block;
+}
+
+.help-section h3 {
+    color: var(--brush-gold);
+    margin-bottom: 20px;
+    font-size: 18px;
+    border-bottom: 2px solid var(--brush-gold);
+    padding-bottom: 10px;
+}
+
+.help-card {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-left: 4px solid var(--brush-gold);
+}
+
+.help-card h4 {
+    color: var(--ink-black);
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.help-card ul {
+    list-style: none;
+    padding: 0;
+}
+
+.help-card li {
+    padding: 5px 0;
+    color: var(--ink-lighter);
+    line-height: 1.5;
+}
+
+.help-card li:before {
+    content: "▸ ";
+    color: var(--brush-gold);
+    font-weight: bold;
+}
+
+.command-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.command-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 6px;
+    border: 1px solid var(--cloud-gray);
+}
+
+.command-item code {
+    background: var(--ink-black);
+    color: var(--brush-gold);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+}
+
+.command-item span {
+    color: var(--ink-lighter);
+    font-size: 14px;
+}
+
+.realm-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.realm-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: rgba(212, 175, 55, 0.1);
+    border-radius: 6px;
+    border-left: 3px solid var(--brush-gold);
+}
+
+.realm-name {
+    font-weight: bold;
+    color: var(--brush-gold);
+}
+
+.realm-desc {
+    color: var(--ink-lighter);
+    font-size: 13px;
+}
+
+.quality-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.quality-item {
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.quality-item.common { background: #808080; color: white; }
+.quality-item.rare { background: #1e90ff; color: white; }
+.quality-item.epic { background: #9932cc; color: white; }
+.quality-item.legendary { background: #ff8c00; color: white; }
+.quality-item.mythic { background: #ff1493; color: white; }
+
+.faq-item {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--cloud-gray);
+}
+
+.faq-item:last-child {
+    border-bottom: none;
+}
+
+.faq-item h4 {
+    color: var(--brush-gold);
+    margin-bottom: 8px;
+}
+
+.faq-item p {
+    color: var(--ink-lighter);
+    line-height: 1.6;
+}
+
+.shortcut-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.shortcut-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 6px;
+}
+
+.shortcut-item kbd {
+    background: var(--ink-black);
+    color: var(--brush-gold);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    margin: 0 2px;
+}
+
+.shortcut-item span {
+    color: var(--ink-lighter);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .help-content-wrapper {
+        flex-direction: column;
+    }
+    
+    .help-sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--cloud-gray);
+        padding-right: 0;
+        padding-bottom: 15px;
+        margin-bottom: 15px;
+    }
+    
+    .help-main {
+        padding-left: 0;
+    }
+    
+    .command-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 5px;
+    }
+    
+    .shortcut-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 5px;
+    }
+}
+</style>
+
+<script>
+function showHelpTopic(topic) {
+    // 移除所有active类
+    document.querySelectorAll('.help-topic').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.help-section').forEach(s => s.classList.remove('active'));
+    
+    // 添加active类到选中的主题
+    document.querySelector(`[data-topic="${topic}"]`).classList.add('active');
+    document.getElementById(`help-${topic}`).classList.add('active');
+}
+
+function searchHelp(query) {
+    const sections = document.querySelectorAll('.help-section');
+    const topics = document.querySelectorAll('.help-topic');
+    
+    if (!query) {
+        // 重置显示
+        sections.forEach(s => s.style.display = 'none');
+        topics.forEach(t => t.style.display = 'block');
+        
+        // 显示第一个主题
+        showHelpTopic('basic');
+        return;
+    }
+    
+    query = query.toLowerCase();
+    let hasResults = false;
+    
+    sections.forEach(section => {
+        const content = section.textContent.toLowerCase();
+        if (content.includes(query)) {
+            section.style.display = 'block';
+            hasResults = true;
+        } else {
+            section.style.display = 'none';
+        }
+    });
+    
+    // 隐藏侧边栏主题
+    topics.forEach(t => t.style.display = hasResults ? 'none' : 'block');
+    
+    if (!hasResults) {
+        // 显示无结果提示
+        const noResults = document.createElement('div');
+        noResults.className = 'no-results';
+        noResults.innerHTML = `
+            <h3>😔 没有找到相关内容</h3>
+            <p>尝试使用其他关键词搜索，或浏览左侧的帮助主题。</p>
+        `;
+        
+        // 移除之前的无结果提示
+        const existing = document.querySelector('.no-results');
+        if (existing) {
+            existing.remove();
+        }
+        
+        document.querySelector('.help-main').appendChild(noResults);
+    } else {
+        // 移除无结果提示
+        const existing = document.querySelector('.no-results');
+        if (existing) {
+            existing.remove();
+        }
+    }
+}
+
+// 初始化显示第一个主题
+document.addEventListener('DOMContentLoaded', function() {
+    showHelpTopic('basic');
+});
+</script>

@@ -1,0 +1,43 @@
+<!-- 保存游戏模态框 -->
+<div class="text-gray-200">
+    <h2 class="text-2xl font-light mb-6 tracking-wider">保存游戏</h2>
+    
+    <div class="text-center py-8">
+        <div class="inline-block">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-400 mx-auto"></div>
+            <p class="mt-4 text-gray-400">正在保存游戏进度...</p>
+        </div>
+    </div>
+    
+    <div id="save-result" class="hidden">
+        <div class="bg-green-900 bg-opacity-50 border border-green-600 rounded p-4 text-center">
+            <p class="text-green-400">✓ 游戏已成功保存</p>
+        </div>
+    </div>
+</div>
+
+<script>
+// 页面加载时自动执行保存
+setTimeout(async () => {
+    try {
+        const response = await fetch('/save_game', { method: 'POST' });
+        const data = await response.json();
+        
+        document.querySelector('.animate-spin').parentElement.style.display = 'none';
+        document.getElementById('save-result').classList.remove('hidden');
+        
+        if (!data.success) {
+            document.getElementById('save-result').innerHTML = `
+                <div class="bg-red-900 bg-opacity-50 border border-red-600 rounded p-4 text-center">
+                    <p class="text-red-400">✗ 保存失败：${data.error || '未知错误'}</p>
+                </div>
+            `;
+        }
+        
+        // 2秒后自动关闭
+        setTimeout(() => closeModal(), 2000);
+    } catch (error) {
+        console.error('保存失败:', error);
+    }
+}, 500);
+</script>
