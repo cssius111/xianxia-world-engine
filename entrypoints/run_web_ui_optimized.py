@@ -4,8 +4,9 @@ from pathlib import Path
 
 from flask import Flask, jsonify, render_template, request, session, redirect, url_for
 
-from api import register_api
-from routes import character, intel, lore
+# 注释掉可能不存在的模块
+# from api import register_api
+# from routes import character, intel, lore
 from xwe.core.cultivation_system import CultivationSystem
 
 # 导入游戏核心
@@ -16,15 +17,11 @@ from xwe.features.narrative_system import NarrativeSystem
 from xwe.features.technical_ops import TechnicalOps
 
 # 使用项目根目录下的 templates 目录
-templates_path = Path(__file__).resolve().parent.parent / "templates"
-app = Flask(__name__, static_folder="static", template_folder=str(templates_path))
+project_root = Path(__file__).resolve().parent.parent
+templates_path = project_root / "templates"
+static_path = project_root / "static"
+app = Flask(__name__, static_folder=str(static_path), template_folder=str(templates_path))
 app.secret_key = "xianxia_world_secret_key_2025"
-register_api(app)
-
-# 注册路由蓝图
-app.register_blueprint(lore.bp)
-app.register_blueprint(character.bp)
-app.register_blueprint(intel.bp)
 
 # 全局游戏实例管理
 game_instances = {}
@@ -117,8 +114,8 @@ def cleanup_old_instances():
 
 @app.route("/")
 def index():
-    """主页面 - 重定向到欢迎页面"""
-    return redirect(url_for('welcome'))
+    """主页面 - 显示开始页面"""
+    return render_template("screens/start_screen.html")
 
 
 @app.route("/welcome")
@@ -131,6 +128,19 @@ def welcome():
     save_exists = Path("saves/autosave.json").exists()
     
     return render_template("welcome.html", save_exists=save_exists)
+
+
+@app.route("/choose")
+def choose_start():
+    """选择开局方式页面"""
+    return render_template("screens/choose_start.html")
+
+
+@app.route("/roll")
+def roll_screen():
+    """抽卡页面"""
+    mode = request.args.get('mode', 'random')
+    return render_template("screens/roll_screen.html", mode=mode)
 
 
 @app.route("/intro")
@@ -169,9 +179,9 @@ def game():
         session['dev_mode'] = True
         app.logger.info("[DEV MODE] Game page accessed in development mode")
 
-    # 传递是否是新会话的标志
+    # 使用我们的水墨风格游戏页面
     return render_template(
-        "game_enhanced_optimized.html",
+        "screens/game.html",
         player=player,
         location=game.game_state.current_location,
         buffs=[],
@@ -402,6 +412,91 @@ def load_modal(modal_name):
     except Exception:
         # 如果模板不存在，返回占位内容
         return f"<h3>{modal_name.title()}</h3><p>功能开发中...</p>"
+
+
+@app.route("/api/roll", methods=["POST"])
+def api_roll():
+    """抽卡API"""
+    import sys
+    sys.path.append(str(Path(__file__).parent.parent))
+    from scripts.gen_character import gen_random, gen_template, gen_from_prompt, save_character
+    
+    data = request.get_json()
+    mode = data.get('mode', 'random')
+    
+    # 根据模式生成角色
+    if mode == 'random':
+        character = gen_random()
+    elif mode == 'template':
+        template_type = data.get('type', 'sword')
+        character = gen_template(template_type)
+    elif mode == 'custom':
+        prompt = data.get('prompt', '')
+        character = gen_from_prompt(prompt)
+    else:
+        character = gen_random()
+    
+    # 保存角色记录
+    save_character(character)
+    
+    return jsonify({
+        "success": True,
+        "character": character
+    })
+
+
+@app.route("/api/confirm_character", methods=["POST"])
+def api_confirm_character():
+    """确认角色API"""
+    if "session_id" not in session:
+        session["session_id"] = str(time.time())
+    
+    data = request.get_json()
+    character_data = data.get('character')
+    
+    if not character_data:
+        return jsonify({"success": False, "error": "没有角色数据"})
+    
+    # 获取游戏实例
+    instance = get_game_instance(session["session_id"])
+    game = instance["game"]
+    
+    # 更新玩家属性
+    if game.game_state.player:
+        player = game.game_state.player
+        player.name = character_data.get('name', '无名侠客')
+        
+        # 将抽卡属性转换为游戏属性
+        # TODO: 根据8维属性计算实际游戏属性
+        attrs = character_data.get('attributes', {})
+        player.attributes.attack_power = 5 + attrs.get('constitution', 5)
+        player.attributes.defense = 3 + attrs.get('willpower', 5)
+        player.attributes.max_health = 80 + attrs.get('constitution', 5) * 4
+        player.attributes.current_health = player.attributes.max_health
+        player.attributes.max_mana = 40 + attrs.get('comprehension', 5) * 2
+        player.attributes.current_mana = player.attributes.max_mana
+        
+        # 保存原始属性
+        player.extra_data = {
+            'spiritual_root': character_data.get('spiritual_root', '无'),
+            'raw_attributes': attrs,
+            'generation_type': character_data.get('generation_type', 'unknown')
+        }
+        
+        # 重新计算衍生属性
+        player.attributes.calculate_derived_attributes()
+    
+    instance["need_refresh"] = True
+    
+    return jsonify({"success": True})
+
+
+# 注册路由蓝图 - 放在最后以避免覆盖我们的路由
+# 暂时注释掉可能不存在的模块
+# register_api(app)
+# app.register_blueprint(lore.bp)
+# app.register_blueprint(character.bp)
+# app.register_blueprint(intel.bp)
 
 
 if __name__ == "__main__":

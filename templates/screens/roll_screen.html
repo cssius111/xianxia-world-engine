@@ -1,14 +1,174 @@
-{% extends 'base.html' %}
-{% block title %}属性抽取{% endblock %}
-{% block body %}
-<div class="roll-screen">
-  <h1>属性抽取</h1>
-  <div id="roll-cards" class="roll-cards"></div>
-  <div class="actions">
-    <button id="roll-btn" class="btn-primary">重新随机</button>
-  </div>
+{% extends "base.html" %}
+
+{% block title %}修仙世界 - 天命抽取{% endblock %}
+
+{% block content %}
+<div class="game-container">
+    <!-- 左侧属性面板 -->
+    <div class="sidebar p-24">
+        <h2 class="text-2xl mb-24">角色属性</h2>
+        
+        <div id="attributes-panel">
+            <!-- 基础信息 -->
+            <div class="attribute-section mb-24">
+                <h3 class="text-lg mb-16">基础信息</h3>
+                <div class="attribute-row">
+                    <span class="attribute-label">姓名</span>
+                    <span class="attribute-value" id="char-name">-</span>
+                </div>
+                <div class="attribute-row">
+                    <span class="attribute-label">年龄</span>
+                    <span class="attribute-value" id="char-age">-</span>
+                </div>
+                <div class="attribute-row">
+                    <span class="attribute-label">灵根</span>
+                    <span class="attribute-value" id="char-spiritual-root">-</span>
+                </div>
+            </div>
+            
+            <!-- 八维属性 -->
+            <div class="attribute-section mb-24">
+                <h3 class="text-lg mb-16">天赋属性</h3>
+                <div class="attribute-row">
+                    <span class="attribute-label">悟性</span>
+                    <span class="attribute-value" id="attr-comprehension">-</span>
+                </div>
+                <div class="attribute-row">
+                    <span class="attribute-label">根骨</span>
+                    <span class="attribute-value" id="attr-constitution">-</span>
+                </div>
+                <div class="attribute-row">
+                    <span class="attribute-label">气运</span>
+                    <span class="attribute-value" id="attr-fortune">-</span>
+                </div>
+                <div class="attribute-row">
+                    <span class="attribute-label">魅力</span>
+                    <span class="attribute-value" id="attr-charisma">-</span>
+                </div>
+                <div class="attribute-row">
+                    <span class="attribute-label">毅力</span>
+                    <span class="attribute-value" id="attr-willpower">-</span>
+                </div>
+                <div class="attribute-row">
+                    <span class="attribute-label">感知</span>
+                    <span class="attribute-value" id="attr-perception">-</span>
+                </div>
+                <div class="attribute-row">
+                    <span class="attribute-label">天命</span>
+                    <span class="attribute-value" id="attr-destiny">-</span>
+                </div>
+                <div class="attribute-row">
+                    <span class="attribute-label">机缘</span>
+                    <span class="attribute-value" id="attr-opportunity">-</span>
+                </div>
+            </div>
+            
+            <!-- 操作按钮 -->
+            <div class="mt-32">
+                <button id="roll-btn" class="ink-button w-full mb-16">
+                    抽取天命
+                </button>
+                <button id="confirm-btn" class="ink-button w-full" style="display: none;">
+                    确认开局
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 右侧抽取区域 -->
+    <div class="content flex flex-center">
+        <div id="roll-area" class="text-center">
+            <div id="roll-animation" class="roll-result">
+                <p class="text-2xl text-accent">点击"抽取天命"开始</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Jackpot 模态框 -->
+<div id="jackpot-modal" class="modal">
+    <div class="modal-content text-center">
+        <span class="modal-close">&times;</span>
+        <h2 id="jackpot-title" class="text-3xl mb-24">✨ 触发小保底！</h2>
+        <p id="jackpot-desc" class="text-xl">你的角色拥有超凡天赋！</p>
+    </div>
 </div>
 {% endblock %}
-{% block head_extra %}
-<script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+
+{% block extra_css %}
+<style>
+    .attribute-section {
+        border: 1px solid var(--ink-border);
+        padding: 16px;
+        background-color: rgba(255, 255, 255, 0.5);
+    }
+    
+    .roll-result {
+        min-height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+    
+    /* 属性值颜色 */
+    .attr-value-1, .attr-value-2, .attr-value-3 {
+        color: var(--ink-tier-ren);
+    }
+    
+    .attr-value-4, .attr-value-5 {
+        color: var(--ink-tier-huang);
+    }
+    
+    .attr-value-6, .attr-value-7 {
+        color: var(--ink-tier-xuan);
+    }
+    
+    .attr-value-8, .attr-value-9 {
+        color: var(--ink-tier-di);
+    }
+    
+    .attr-value-10 {
+        color: var(--ink-tier-tian);
+        font-weight: bold;
+    }
+    
+    /* 抽取动画 */
+    @keyframes rollNumber {
+        0% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        50% {
+            transform: translateY(-20px);
+            opacity: 0.5;
+        }
+        100% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+    
+    .rolling {
+        animation: rollNumber 0.3s ease-in-out;
+    }
+    
+    /* Jackpot 效果 */
+    @keyframes jackpotGlow {
+        0%, 100% {
+            text-shadow: 0 0 10px var(--ink-tier-tian);
+        }
+        50% {
+            text-shadow: 0 0 20px var(--ink-tier-tian), 0 0 30px var(--ink-tier-tian);
+        }
+    }
+    
+    .jackpot-glow {
+        animation: jackpotGlow 2s ease-in-out infinite;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/roll.js') }}"></script>
 {% endblock %}

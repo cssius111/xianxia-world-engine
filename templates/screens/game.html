@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block title %}修仙世界 - 游戏主界面{% endblock %}
+
+{% block content %}
+<div class="game-container">
+    <!-- 侧边栏 -->
+    <div class="sidebar">
+        <h2 class="text-xl p-16 border-bottom">修仙世界</h2>
+        
+        <ul class="sidebar-menu">
+            <li><a href="#" onclick="showPanel('status')" class="sidebar-item">状态</a></li>
+            <li><a href="#" onclick="showPanel('inventory')" class="sidebar-item">背包</a></li>
+            <li><a href="#" onclick="showPanel('cultivation')" class="sidebar-item">修炼</a></li>
+            <li><a href="#" onclick="showPanel('achievement')" class="sidebar-item">成就</a></li>
+            <li><a href="#" onclick="showPanel('exploration')" class="sidebar-item">探索</a></li>
+            <li><a href="#" onclick="showPanel('map')" class="sidebar-item">地图</a></li>
+            <li><a href="#" onclick="showPanel('quest')" class="sidebar-item">任务</a></li>
+            <li><a href="#" onclick="showPanel('save')" class="sidebar-item">保存</a></li>
+            <li><a href="#" onclick="showPanel('load')" class="sidebar-item">加载</a></li>
+            <li><a href="#" onclick="showPanel('help')" class="sidebar-item">帮助</a></li>
+            <li><a href="#" onclick="showPanel('settings')" class="sidebar-item">设定</a></li>
+            <li><a href="#" onclick="showPanel('exit')" class="sidebar-item">退出</a></li>
+        </ul>
+        
+        <!-- 基础状态显示 -->
+        <div class="p-16 border-top">
+            <div class="attribute-row">
+                <span class="attribute-label">气血</span>
+                <span class="attribute-value">{{ player.attributes.current_health }}/{{ player.attributes.max_health }}</span>
+            </div>
+            <div class="attribute-row">
+                <span class="attribute-label">灵力</span>
+                <span class="attribute-value">{{ player.attributes.current_mana }}/{{ player.attributes.max_mana }}</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 主内容区 -->
+    <div class="content">
+        <div class="panel">
+            <h3 class="text-lg mb-16">当前位置：{{ location }}</h3>
+            
+            <!-- 叙事日志 -->
+            <div id="narrative-log" class="narrative-log">
+                <p class="text-accent">欢迎来到修仙世界...</p>
+            </div>
+            
+            <!-- 命令输入 -->
+            <div class="command-area mt-24">
+                <input type="text" id="command-input" class="w-full" placeholder="输入命令..." />
+                <button onclick="sendCommand()" class="ink-button mt-8">执行</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .sidebar-menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .sidebar-item {
+        display: block;
+        padding: 12px 16px;
+        color: var(--ink-font);
+        text-decoration: none;
+        border-bottom: 1px solid var(--ink-border);
+        transition: background-color 0.3s ease;
+    }
+    
+    .sidebar-item:hover {
+        background-color: var(--ink-border);
+    }
+    
+    .border-bottom {
+        border-bottom: 2px solid var(--ink-border);
+    }
+    
+    .border-top {
+        border-top: 2px solid var(--ink-border);
+    }
+    
+    .narrative-log {
+        min-height: 400px;
+        max-height: 60vh;
+        overflow-y: auto;
+        padding: 16px;
+        background-color: rgba(255, 255, 255, 0.5);
+        border: 1px solid var(--ink-border);
+    }
+    
+    .command-area {
+        border-top: 1px solid var(--ink-border);
+        padding-top: 16px;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script>
+    function showPanel(panelName) {
+        // TODO: 实现面板显示逻辑
+        console.log('Show panel:', panelName);
+    }
+</script>
+{% endblock %}

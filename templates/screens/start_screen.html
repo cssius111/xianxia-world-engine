@@ -1,13 +1,80 @@
-{% extends 'base.html' %}
-{% block title %}修仙世界{% endblock %}
-{% block body %}
-<div class="start-screen">
-  <h1>修仙世界</h1>
-  <p class="subtitle">凡人修仙，从此刻开始</p>
-  <div class="actions">
-    <a href="/choose" class="btn-primary">开始游戏</a>
-    <a href="/dev" class="btn-secondary">开发者模式</a>
-  </div>
-  <footer class="version">版本 {{ build_time if build_time else '' }}</footer>
+{% extends "base.html" %}
+
+{% block title %}修仙世界 - 开始{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex flex-col flex-center">
+    <div class="text-center fade-in">
+        <h1 class="text-3xl mb-24">修仙世界</h1>
+        <p class="subtitle text-xl mb-32 text-accent">凡人修仙，从此刻开始</p>
+        
+        <div class="flex flex-col gap-24 items-center">
+            <a href="{{ url_for('choose_start') }}" class="ink-button">
+                开始游戏
+            </a>
+            
+            <a href="{{ url_for('game', mode='dev') }}" class="ink-button">
+                开发者模式
+            </a>
+        </div>
+    </div>
+    
+    <div class="absolute bottom-0 w-full text-center p-16 text-sm text-accent">
+        <p>仙道漫漫，唯心可渡</p>
+    </div>
 </div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .subtitle {
+        color: var(--ink-accent);
+    }
+    
+    .text-accent {
+        color: var(--ink-accent);
+    }
+    
+    /* 淡入动画 */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .fade-in {
+        animation: fadeIn 1s ease-out;
+    }
+    
+    /* 按钮悬停效果 */
+    .ink-button {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .ink-button::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background-color: var(--ink-border);
+        transform: translate(-50%, -50%);
+        transition: all 0.5s ease;
+        border-radius: 50%;
+        z-index: -1;
+    }
+    
+    .ink-button:hover::before {
+        width: 300px;
+        height: 300px;
+    }
+</style>
 {% endblock %}

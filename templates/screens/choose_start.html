@@ -1,12 +1,106 @@
-{% extends 'base.html' %}
-{% block title %}选择开局{% endblock %}
-{% block body %}
-<div class="choose-start">
-  <h1>选择开局</h1>
-  <div class="options">
-    <a href="/roll" class="btn-primary">随机天命</a>
-    <a href="/start/typical" class="btn-primary">典型开局</a>
-    <a href="/start/custom" class="btn-primary">自定义文字</a>
-  </div>
+{% extends "base.html" %}
+
+{% block title %}修仙世界 - 选择开局{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex flex-col flex-center">
+    <div class="text-center fade-in max-w-800 mx-auto">
+        <h1 class="text-3xl mb-32">选择开局</h1>
+        
+        <div class="flex flex-col gap-32 items-center">
+            <div class="start-option">
+                <a href="{{ url_for('roll_screen', mode='random') }}" class="ink-button large-button">
+                    随机天命
+                </a>
+                <p class="option-desc mt-16">听天由命，随机生成角色属性</p>
+            </div>
+            
+            <div class="start-option">
+                <a href="{{ url_for('roll_screen', mode='template') }}" class="ink-button large-button">
+                    典型模板
+                </a>
+                <p class="option-desc mt-16">选择剑修、体修、符修等经典模板</p>
+            </div>
+            
+            <div class="start-option">
+                <a href="{{ url_for('roll_screen', mode='custom') }}" class="ink-button large-button">
+                    自定义文本
+                </a>
+                <p class="option-desc mt-16">输入角色描述，AI为你生成独特角色</p>
+            </div>
+        </div>
+        
+        <div class="mt-32">
+            <a href="{{ url_for('index') }}" class="ink-button small-button">
+                返回
+            </a>
+        </div>
+    </div>
 </div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .large-button {
+        min-width: 200px;
+        padding: 16px 32px;
+        font-size: 1.5rem;
+    }
+    
+    .small-button {
+        padding: 8px 16px;
+        font-size: 1rem;
+    }
+    
+    .option-desc {
+        color: var(--ink-accent);
+        font-size: 1rem;
+    }
+    
+    .start-option {
+        text-align: center;
+    }
+    
+    /* 选项悬停效果 */
+    .start-option:hover .ink-button {
+        transform: translateY(-2px);
+    }
+    
+    .start-option:hover .option-desc {
+        color: var(--ink-font);
+    }
+    
+    /* 淡入动画 */
+    .fade-in > * {
+        opacity: 0;
+        animation: fadeInUp 0.6s ease-out forwards;
+    }
+    
+    .fade-in > *:nth-child(1) {
+        animation-delay: 0.1s;
+    }
+    
+    .fade-in > *:nth-child(2) > *:nth-child(1) {
+        animation-delay: 0.2s;
+    }
+    
+    .fade-in > *:nth-child(2) > *:nth-child(2) {
+        animation-delay: 0.3s;
+    }
+    
+    .fade-in > *:nth-child(2) > *:nth-child(3) {
+        animation-delay: 0.4s;
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
 {% endblock %}

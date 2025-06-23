@@ -1,14 +1,30 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}修仙世界{% endblock %}</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/ink_theme.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
-  {% block head_extra %}{% endblock %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}修仙世界{% endblock %}</title>
+    
+    <!-- Google Fonts - LongCang -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Long+Cang&display=swap" rel="stylesheet">
+    
+    <!-- 水墨主题样式 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ink_theme.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+    
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
-  {% block body %}{% endblock %}
+    {% block content %}{% endblock %}
+    
+    <!-- 基础 JavaScript -->
+    <script>
+        // 全局命名空间
+        window.XianXia = window.XianXia || {};
+    </script>
+    
+    {% block extra_js %}{% endblock %}
 </body>
 </html>
