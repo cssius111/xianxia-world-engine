@@ -58,6 +58,8 @@ class XianxiaWebServer:
         # 创建日志目录
         log_dir = Path("logs")
         log_dir.mkdir(exist_ok=True)
+        # 子目录用于角色创建日志
+        (log_dir / "char_gen").mkdir(parents=True, exist_ok=True)
         
         # 配置日志格式
         log_format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
@@ -507,7 +509,28 @@ class XianxiaWebServer:
                     self.logger.info(f"角色创建成功: {player.name}, 属性: {data.get('attrs', {})}")
                     
                 instance["need_refresh"] = True
-                return jsonify({"success": True})
+
+                game_mode = os.getenv("GAME_MODE", "player")
+                dev_mode_flag = os.getenv("DEV_MODE", "false").lower() in ["1", "true", "yes"]
+
+                if game_mode != "player" or dev_mode_flag:
+                    char_dir = Path("logs/char_gen")
+                    char_dir.mkdir(parents=True, exist_ok=True)
+                    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                    log_path = char_dir / f"{timestamp}.jsonl"
+                    try:
+                        with open(log_path, "w", encoding="utf-8") as f:
+                            json.dump({"request": data}, f, ensure_ascii=False)
+                            f.write("\n")
+                            json.dump({"character": player.to_dict()}, f, ensure_ascii=False)
+                            f.write("\n")
+                    except Exception as log_err:
+                        self.logger.warning(f"角色创建日志写入失败: {log_err}")
+
+                    return jsonify({"success": True, "character": player.to_dict()})
+                else:
+                    narrative = f"{player.name} 的修仙之旅由此开始。"
+                    return jsonify({"success": True, "narrative": narrative})
                 
             except Exception as e:
                 self.logger.error(f"创建角色失败: {e}")
@@ -697,7 +720,7 @@ class XianxiaWebServer:
             debug = config.debug_mode
             
         # 确保必要目录存在
-        for directory in ["saves", "logs", "static/audio"]:
+        for directory in ["saves", "logs", "static/audio", "logs/char_gen"]:
             Path(directory).mkdir(parents=True, exist_ok=True)
         
         # 记录启动时间
