@@ -22,6 +22,8 @@
 
 参考 `PROJECT_STRUCTURE.md` 获取更详细的目录说明。
 
+> **注意**：旧的 `xwe_v2` 目录已移除，相关功能现统一在 `xwe` 下实现。
+
 ## 测试
 
 项目使用 [pytest](https://docs.pytest.org/) 进行单元测试：
