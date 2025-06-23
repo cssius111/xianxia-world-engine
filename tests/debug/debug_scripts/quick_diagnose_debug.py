@@ -147,7 +147,7 @@ else:
     
     if any("不存在" in issue for issue in issues_found):
         print("\n2. 运行完整测试获取详细信息:")
-        print("   python tests/debug/run_all_tests.py")
+        print("   python tests/debug/debug_scripts/run_all_tests_debug.py")
     
     if ".env 文件不存在" in issues_found:
         print("\n3. 创建配置文件:")

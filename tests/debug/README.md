@@ -4,11 +4,11 @@
 
 ## 📁 测试脚本说明
 
-### 1. 快速诊断 (`quick_diagnose.py`)
+### 1. 快速诊断 (`quick_diagnose_debug.py`)
 **用途**: 快速检查最常见的问题  
 **运行方式**:
 ```bash
-python tests/debug/quick_diagnose.py
+python tests/debug/debug_scripts/quick_diagnose_debug.py
 ```
 **检查内容**:
 - Python版本
@@ -18,47 +18,47 @@ python tests/debug/quick_diagnose.py
 - 配置文件存在性
 - 端口可用性
 
-### 2. 导入测试 (`test_imports.py`)
+### 2. 导入测试 (`imports_debug.py`)
 **用途**: 测试所有Python模块导入  
 **运行方式**:
 ```bash
-python tests/debug/test_imports.py
+python tests/debug/debug_scripts/imports_debug.py
 ```
 **输出文件**: `import_test_results.json`
 
-### 3. 文件系统测试 (`test_filesystem.py`)
+### 3. 文件系统测试 (`filesystem_debug.py`)
 **用途**: 验证项目文件和目录结构  
 **运行方式**:
 ```bash
-python tests/debug/test_filesystem.py
+python tests/debug/debug_scripts/filesystem_debug.py
 ```
 **输出文件**: 
 - `filesystem_test_results.json`
 - `fix_missing_files.py` (如果有缺失文件)
 
-### 4. Flask应用测试 (`test_flask_app.py`)
+### 4. Flask应用测试 (`flask_app_debug.py`)
 **用途**: 测试Flask应用初始化和路由  
 **运行方式**:
 ```bash
-python tests/debug/test_flask_app.py
+python tests/debug/debug_scripts/flask_app_debug.py
 ```
 **输出文件**: `flask_test_results.json`
 
-### 5. 数据文件验证 (`test_data_files.py`)
+### 5. 数据文件验证 (`data_files_debug.py`)
 **用途**: 验证游戏数据文件的完整性和格式  
 **运行方式**:
 ```bash
-python tests/debug/test_data_files.py
+python tests/debug/debug_scripts/data_files_debug.py
 ```
 **输出文件**: 
 - `data_validation_results.json`
 - `data_fix_suggestions.txt` (如果有问题)
 
-### 6. 综合测试运行器 (`run_all_tests.py`)
+### 6. 综合测试运行器 (`run_all_tests_debug.py`)
 **用途**: 运行所有测试并生成综合报告  
 **运行方式**:
 ```bash
-python tests/debug/run_all_tests.py
+python tests/debug/debug_scripts/run_all_tests_debug.py
 ```
 **输出文件**: 
 - `test_report.json`
@@ -77,13 +77,13 @@ python tests/debug/run_all_tests.py
 
 1. **快速诊断**
    ```bash
-   python tests/debug/quick_diagnose.py
+   python tests/debug/debug_scripts/quick_diagnose_debug.py
    ```
    这会快速识别最常见的问题。
 
 2. **如果快速诊断发现问题，运行综合测试**
    ```bash
-   python tests/debug/run_all_tests.py
+   python tests/debug/debug_scripts/run_all_tests_debug.py
    ```
    这会生成详细的测试报告。
 
@@ -97,7 +97,7 @@ python tests/debug/run_all_tests.py
 
 5. **重新运行测试确认修复**
    ```bash
-   python tests/debug/quick_diagnose.py
+   python tests/debug/debug_scripts/quick_diagnose_debug.py
    ```
 
 ## 🔧 常见问题解决
@@ -151,7 +151,7 @@ cp .env.example .env
 
 ## 💡 开发提示
 
-1. **添加新测试**: 创建新的测试脚本并在 `run_all_tests.py` 中注册。
+1. **添加新测试**: 创建新的测试脚本并在 `run_all_tests_debug.py` 中注册。
 
 2. **自定义测试**: 可以修改现有测试脚本添加特定的检查。
 

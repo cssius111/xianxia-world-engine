@@ -198,7 +198,7 @@ else:
         print("   - 文件是否被意外删除")
     
     print("\n📝 如果问题持续，请运行完整的测试套件:")
-    print("   python tests/debug/run_all_tests.py")
+    print("   python tests/debug/debug_scripts/run_all_tests_debug.py")
 
 # 保存检查结果
 report = {
