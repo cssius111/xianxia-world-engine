@@ -11,7 +11,8 @@ from pathlib import Path
 from datetime import datetime
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
-TEST_DIR = PROJECT_ROOT / "tests" / "debug"
+RESULT_DIR = PROJECT_ROOT / "tests" / "debug"
+SCRIPT_DIR = RESULT_DIR / "debug_scripts"
 
 print("=" * 70)
 print("🚀 修仙世界引擎 - 综合测试运行器")
@@ -24,22 +25,22 @@ print("=" * 70)
 test_scripts = [
     {
         "name": "导入测试",
-        "script": "test_imports.py",
+        "script": "imports_debug.py",
         "result_file": "import_test_results.json"
     },
     {
-        "name": "文件系统测试", 
-        "script": "test_filesystem.py",
+        "name": "文件系统测试",
+        "script": "filesystem_debug.py",
         "result_file": "filesystem_test_results.json"
     },
     {
         "name": "Flask应用测试",
-        "script": "test_flask_app.py", 
+        "script": "flask_app_debug.py",
         "result_file": "flask_test_results.json"
     },
     {
         "name": "数据文件验证",
-        "script": "test_data_files.py",
+        "script": "data_files_debug.py",
         "result_file": "data_validation_results.json"
     }
 ]
@@ -62,7 +63,7 @@ for test_info in test_scripts:
     print(f"\n📝 运行测试: {test_info['name']}")
     print("-" * 50)
     
-    script_path = TEST_DIR / test_info["script"]
+    script_path = SCRIPT_DIR / test_info["script"]
     
     try:
         # 运行测试脚本
@@ -94,7 +95,7 @@ for test_info in test_scripts:
             )
         
         # 读取测试结果文件
-        result_file = TEST_DIR / test_info["result_file"]
+        result_file = RESULT_DIR / test_info["result_file"]
         if result_file.exists():
             try:
                 with open(result_file, 'r', encoding='utf-8') as f:
@@ -159,7 +160,7 @@ if "文件系统测试" in overall_results["tests"]:
         if missing_items:
             print(f"\n❌ 有 {len(missing_items)} 个文件/目录缺失")
             print("  运行以下命令可以创建缺失的文件:")
-            print(f"  python {TEST_DIR}/fix_missing_files.py")
+            print(f"  python {RESULT_DIR}/fix_missing_files.py")
 
 # 3. Flask应用问题
 if "Flask应用测试" in overall_results["tests"]:
@@ -181,15 +182,15 @@ if "数据文件验证" in overall_results["tests"]:
         if total_data_errors > 0:
             print(f"\n❌ 数据文件有 {total_data_errors} 个验证错误")
             print("  查看修复建议:")
-            print(f"  cat {TEST_DIR}/data_fix_suggestions.txt")
+            print(f"  cat {RESULT_DIR}/data_fix_suggestions.txt")
 
 # 保存综合报告
-report_file = TEST_DIR / "test_report.json"
+report_file = RESULT_DIR / "test_report.json"
 with open(report_file, 'w', encoding='utf-8') as f:
     json.dump(overall_results, f, indent=2, ensure_ascii=False)
 
 # 生成HTML报告
-html_report_file = TEST_DIR / "test_report.html"
+html_report_file = RESULT_DIR / "test_report.html"
 with open(html_report_file, 'w', encoding='utf-8') as f:
     f.write("""<!DOCTYPE html>
 <html>
