@@ -1,0 +1,732 @@
+    <!-- CSS样式 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ink_style.css') }}">
+    
+    <!-- 网站图标 -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    
+    <style>
+        /* 水墨风格基础 */
+        body {
+            background: #0a0a0a;
+            color: var(--ink-lighter);
+            overflow-y: auto;
+        }
+        
+        /* 水墨背景层 */
+        .ink-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(20, 20, 20, 0) 0%, rgba(0, 0, 0, 0.9) 100%);
+            z-index: -2;
+        }
+        
+        /* 主容器 */
+        .creation-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* 标题 */
+        .page-title {
+            font-size: 3rem;
+            color: var(--brush-gold);
+            text-align: center;
+            margin-bottom: 20px;
+            letter-spacing: 0.5rem;
+            font-weight: 300;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+        
+        .page-subtitle {
+            text-align: center;
+            color: var(--ink-lighter);
+            margin-bottom: 60px;
+            letter-spacing: 0.2rem;
+            opacity: 0.8;
+        }
+        
+        /* 开局模式选择 */
+        .mode-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        .mode-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .mode-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--brush-gold), transparent, var(--brush-gold));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+        
+        .mode-card:hover::before {
+            opacity: 0.3;
+        }
+        
+        .mode-card.selected {
+            border-color: var(--brush-gold);
+            background: rgba(212, 175, 55, 0.1);
+        }
+        
+        .mode-title {
+            font-size: 1.5rem;
+            color: var(--brush-gold);
+            margin-bottom: 15px;
+            letter-spacing: 0.2rem;
+        }
+        
+        .mode-description {
+            color: var(--ink-lighter);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+        
+        /* 属性显示面板 */
+        .attributes-panel {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 40px;
+            margin-bottom: 40px;
+            display: none;
+        }
+        
+        .panel-title {
+            font-size: 1.5rem;
+            color: var(--brush-gold);
+            margin-bottom: 30px;
+            text-align: center;
+            letter-spacing: 0.3rem;
+        }
+        
+        /* 属性网格 - 竖排布局 */
+        .attributes-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .attribute-item {
+            text-align: center;
+            padding: 20px 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .attribute-name {
+            font-size: 1.1rem;
+            color: var(--ink-lighter);
+            margin-bottom: 10px;
+            letter-spacing: 0.2rem;
+        }
+        
+        .attribute-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .attribute-tier {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            letter-spacing: 0.1rem;
+        }
+        
+        /* 阶位颜色 */
+        .tier-tian { color: #D4AF37; } /* 天 - 金色 */
+        .tier-di { color: #8B5A2B; }   /* 地 - 棕色 */
+        .tier-xuan { color: #4B0082; } /* 玄 - 靛色 */
+        .tier-huang { color: #B8860B; }/* 黄 - 暗金 */
+        .tier-ren { color: #555555; }  /* 人 - 灰色 */
+        
+        /* 命格和气运 */
+        .destiny-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .destiny-item {
+            text-align: center;
+            padding: 20px;
+            background: rgba(212, 175, 55, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+        
+        .destiny-label {
+            font-size: 1.2rem;
+            color: var(--brush-gold);
+            margin-bottom: 10px;
+            letter-spacing: 0.3rem;
+        }
+        
+        .destiny-value {
+            font-size: 1.5rem;
+            color: var(--ink-lighter);
+            letter-spacing: 0.2rem;
+        }
+        
+        /* 自定义输入区域 */
+        .custom-input-section {
+            margin-bottom: 40px;
+            display: none;
+        }
+        
+        .custom-textarea {
+            width: 100%;
+            min-height: 200px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            color: var(--ink-lighter);
+            padding: 20px;
+            font-size: 1rem;
+            line-height: 1.8;
+            resize: vertical;
+        }
+        
+        .custom-hint {
+            color: var(--ink-lighter);
+            font-size: 0.9rem;
+            margin-top: 10px;
+            opacity: 0.7;
+        }
+        
+        /* 操作按钮 */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+        }
+        
+        .action-button {
+            padding: 15px 40px;
+            background: transparent;
+            color: var(--brush-gold);
+            border: 1px solid var(--brush-gold);
+            cursor: pointer;
+            font-size: 1.1rem;
+            letter-spacing: 0.2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .action-button:hover {
+            background: rgba(212, 175, 55, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .action-button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        
+        .action-button.primary {
+            background: rgba(212, 175, 55, 0.2);
+        }
+        
+        /* 加载动画 */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top-color: var(--brush-gold);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .mode-selection {
+                grid-template-columns: 1fr;
+            }
+            
+            .attributes-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+            
+            .destiny-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .action-button {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+    <!-- 水墨背景 -->
+    <div class="ink-background"></div>
+    
+    <!-- 墨晕过渡效果 -->
+    <div class="ink-transition" id="inkTransition"></div>
+    
+    <!-- 主容器 -->
+    <div class="creation-container">
+        <h1 class="page-title">入世</h1>
+        <p class="page-subtitle">万物有灵 · 缘起性空</p>
+        
+        <!-- 开局模式选择 -->
+        <div class="mode-selection">
+            <div class="mode-card" onclick="selectMode('random')">
+                <h3 class="mode-title">随机天命</h3>
+                <p class="mode-description">
+                    任凭天意安排<br>
+                    命运如骰子般随机<br>
+                    或凡或仙，一念之间
+                </p>
+            </div>
+            
+            <div class="mode-card" onclick="selectMode('template')">
+                <h3 class="mode-title">典型开局</h3>
+                <p class="mode-description">
+                    选择经典模板<br>
+                    快速开始修行<br>
+                    后续自由发展
+                </p>
+            </div>
+            
+            <div class="mode-card" onclick="selectMode('custom')">
+                <h3 class="mode-title">自定文字</h3>
+                <p class="mode-description">
+                    描述你的来历<br>
+                    系统解析生成属性<br>
+                    独一无二的开局
+                </p>
+            </div>
+        </div>
+        
+        <!-- 自定义输入区域 -->
+        <div class="custom-input-section" id="customInputSection">
+            <textarea class="custom-textarea" id="customBackground" placeholder="在此描述你的角色背景...
+
+例如：我是一个出身书香门第的少年，自幼聪慧过人，但体弱多病。家族曾经显赫，如今已经没落。我渴望通过修仙改变命运，重振家族荣光..."></textarea>
+            <p class="custom-hint">
+                提示：描述你的出身、性格、经历、志向等。系统会根据你的描述生成相应的属性。
+            </p>
+        </div>
+        
+        <!-- 属性显示面板 -->
+        <div class="attributes-panel" id="attributesPanel">
+            <h2 class="panel-title">天命已定</h2>
+            
+            <!-- 基础信息 -->
+            <div style="text-align: center; margin-bottom: 30px;">
+                <span style="font-size: 1.5rem; color: var(--brush-gold);" id="characterName">-</span>
+                <span style="margin-left: 20px; color: var(--ink-lighter);">
+                    <span id="characterAge">-</span>岁
+                </span>
+            </div>
+            
+            <!-- 八大属性 -->
+            <div class="attributes-grid">
+                <div class="attribute-item">
+                    <div class="attribute-name">根骨</div>
+                    <div class="attribute-value" id="attrRoot">-</div>
+                    <div class="attribute-tier" id="tierRoot">-</div>
+                </div>
+                
+                <div class="attribute-item">
+                    <div class="attribute-name">悟性</div>
+                    <div class="attribute-value" id="attrComprehension">-</div>
+                    <div class="attribute-tier" id="tierComprehension">-</div>
+                </div>
+                
+                <div class="attribute-item">
+                    <div class="attribute-name">体魄</div>
+                    <div class="attribute-value" id="attrPhysique">-</div>
+                    <div class="attribute-tier" id="tierPhysique">-</div>
+                </div>
+                
+                <div class="attribute-item">
+                    <div class="attribute-name">神识</div>
+                    <div class="attribute-value" id="attrSpirit">-</div>
+                    <div class="attribute-tier" id="tierSpirit">-</div>
+                </div>
+                
+                <div class="attribute-item">
+                    <div class="attribute-name">灵感</div>
+                    <div class="attribute-value" id="attrInsight">-</div>
+                    <div class="attribute-tier" id="tierInsight">-</div>
+                </div>
+                
+                <div class="attribute-item">
+                    <div class="attribute-name">意志</div>
+                    <div class="attribute-value" id="attrWill">-</div>
+                    <div class="attribute-tier" id="tierWill">-</div>
+                </div>
+                
+                <div class="attribute-item">
+                    <div class="attribute-name">魅力</div>
+                    <div class="attribute-value" id="attrCharisma">-</div>
+                    <div class="attribute-tier" id="tierCharisma">-</div>
+                </div>
+                
+                <div class="attribute-item">
+                    <div class="attribute-name">机缘</div>
+                    <div class="attribute-value" id="attrFortune">-</div>
+                    <div class="attribute-tier" id="tierFortune">-</div>
+                </div>
+            </div>
+            
+            <!-- 命格和气运 -->
+            <div class="destiny-section">
+                <div class="destiny-item">
+                    <div class="destiny-label">命格</div>
+                    <div class="destiny-value" id="destinyValue">-</div>
+                </div>
+                
+                <div class="destiny-item">
+                    <div class="destiny-label">气运</div>
+                    <div class="destiny-value" id="fortuneValue">-</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 操作按钮 -->
+        <div class="action-buttons">
+            <button class="action-button" id="rollButton" onclick="rollCharacter()" style="display: none;">
+                投掷命运
+            </button>
+            
+            <button class="action-button" id="selectTemplateButton" onclick="showTemplates()" style="display: none;">
+                选择模板
+            </button>
+            
+            <button class="action-button" id="parseButton" onclick="parseCustom()" style="display: none;">
+                解析文字
+            </button>
+            
+            <button class="action-button" id="rerollButton" onclick="reroll()" style="display: none;">
+                重新投掷
+            </button>
+            
+            <button class="action-button primary" id="confirmButton" onclick="confirmCharacter()" style="display: none;">
+                踏入此界
+            </button>
+            
+            <a href="{{ url_for('welcome') }}" class="action-button">
+                返回
+            </a>
+        </div>
+    </div>
+    
+    <!-- JavaScript -->
+    <script>
+        // 全局变量
+        let selectedMode = null;
+        let characterData = null;
+        let isDevMode = {{ dev_mode | tojson if dev_mode else 'false' }};
+        
+        // 属性阶位映射
+        const TIERS = [
+            { threshold: 10, name: '天', class: 'tier-tian' },
+            { threshold: 8, name: '地', class: 'tier-di' },
+            { threshold: 6, name: '玄', class: 'tier-xuan' },
+            { threshold: 4, name: '黄', class: 'tier-huang' },
+            { threshold: 0, name: '人', class: 'tier-ren' }
+        ];
+        
+        // 命格池
+        const DESTINIES = [
+            '孤星入世', '福泽深厚', '赤子守心', '剑心通明',
+            '道法自然', '天纵奇才', '命途多舛', '贵人相助',
+            '桃花满天', '财源广进', '武曲守命', '文昌入宫'
+        ];
+        
+        // 气运池
+        const FORTUNES = {
+            'tian': ['鸿运齐天', '天命所归', '紫气东来', '龙凤呈祥'],
+            'di': ['风调雨顺', '地利人和', '吉星高照', '瑞气盈门'],
+            'xuan': ['玄机暗藏', '否极泰来', '云开见日', '柳暗花明'],
+            'huang': ['平安是福', '细水长流', '中规中矩', '稳中求进'],
+            'ren': ['时运不济', '坎坷难行', '雾里看花', '步履维艰']
+        };
+        
+        // 姓名库
+        const SURNAMES = ['李', '王', '张', '刘', '陈', '杨', '赵', '黄', '周', '吴'];
+        const GIVEN_NAMES = {
+            male: ['辰', '轩', '宇', '泽', '豪', '杰', '霖', '浩', '博', '涛'],
+            female: ['雨', '琪', '梦', '雪', '霜', '露', '月', '云', '诗', '画']
+        };
+        
+        // 获取阶位
+        function getTier(value) {
+            for (const tier of TIERS) {
+                if (value >= tier.threshold) {
+                    return tier;
+                }
+            }
+            return TIERS[TIERS.length - 1];
+        }
+        
+        // 选择模式
+        function selectMode(mode) {
+            selectedMode = mode;
+            
+            // 更新UI
+            document.querySelectorAll('.mode-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+            
+            // 隐藏所有按钮
+            document.querySelectorAll('.action-button').forEach(btn => {
+                if (!btn.href) btn.style.display = 'none';
+            });
+            
+            // 隐藏面板
+            document.getElementById('attributesPanel').style.display = 'none';
+            document.getElementById('customInputSection').style.display = 'none';
+            
+            // 根据模式显示相应内容
+            switch(mode) {
+                case 'random':
+                    document.getElementById('rollButton').style.display = 'inline-block';
+                    break;
+                case 'template':
+                    document.getElementById('selectTemplateButton').style.display = 'inline-block';
+                    break;
+                case 'custom':
+                    document.getElementById('customInputSection').style.display = 'block';
+                    document.getElementById('parseButton').style.display = 'inline-block';
+                    break;
+            }
+        }
+        
+        // 生成随机值
+        function randInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        
+        // 生成随机角色
+        function generateRandomCharacter() {
+            const isMale = Math.random() > 0.5;
+            const surname = SURNAMES[randInt(0, SURNAMES.length - 1)];
+            const givenName = isMale ? 
+                GIVEN_NAMES.male[randInt(0, GIVEN_NAMES.male.length - 1)] :
+                GIVEN_NAMES.female[randInt(0, GIVEN_NAMES.female.length - 1)];
+            
+            // 生成八大属性
+            const attrs = {
+                root: randInt(1, 10),
+                comprehension: randInt(1, 10),
+                physique: randInt(1, 10),
+                spirit: randInt(1, 10),
+                insight: randInt(1, 10),
+                will: randInt(1, 10),
+                charisma: randInt(1, 10),
+                fortune_val: randInt(1, 10)
+            };
+            
+            // 确定气运阶位
+            const fortuneTier = getTier(attrs.fortune_val).name.toLowerCase();
+            const fortuneList = FORTUNES[fortuneTier] || FORTUNES['ren'];
+            
+            return {
+                name: surname + givenName,
+                age: randInt(14, 30),
+                attrs: attrs,
+                destiny: [DESTINIES[randInt(0, DESTINIES.length - 1)]],
+                fortune: fortuneList[randInt(0, fortuneList.length - 1)],
+                fortune_tier: fortuneTier
+            };
+        }
+        
+        // 投掷角色
+        function rollCharacter() {
+            const button = document.getElementById('rollButton');
+            button.innerHTML = '<span class="loading-spinner"></span>投掷中...';
+            button.disabled = true;
+            
+            setTimeout(() => {
+                characterData = generateRandomCharacter();
+                displayCharacter(characterData);
+                
+                // 更新按钮
+                button.style.display = 'none';
+                document.getElementById('rerollButton').style.display = 'inline-block';
+                document.getElementById('confirmButton').style.display = 'inline-block';
+                
+                // 显示面板
+                document.getElementById('attributesPanel').style.display = 'block';
+            }, 1000);
+        }
+        
+        // 重新投掷
+        function reroll() {
+            rollCharacter();
+            document.getElementById('rerollButton').style.display = 'inline-block';
+        }
+        
+        // 显示角色
+        function displayCharacter(data) {
+            // 基础信息
+            document.getElementById('characterName').textContent = data.name;
+            document.getElementById('characterAge').textContent = data.age;
+            
+            // 八大属性
+            const attrKeys = ['root', 'comprehension', 'physique', 'spirit', 'insight', 'will', 'charisma', 'fortune_val'];
+            const attrNames = ['Root', 'Comprehension', 'Physique', 'Spirit', 'Insight', 'Will', 'Charisma', 'Fortune'];
+            
+            attrKeys.forEach((key, index) => {
+                const value = data.attrs[key];
+                const tier = getTier(value);
+                const elementName = attrNames[index];
+                
+                document.getElementById(`attr${elementName}`).textContent = value;
+                document.getElementById(`attr${elementName}`).className = `attribute-value ${tier.class}`;
+                document.getElementById(`tier${elementName}`).textContent = `〔${tier.name}〕`;
+                document.getElementById(`tier${elementName}`).className = `attribute-tier ${tier.class}`;
+            });
+            
+            // 命格和气运
+            document.getElementById('destinyValue').textContent = data.destiny[0];
+            document.getElementById('fortuneValue').textContent = data.fortune;
+            document.getElementById('fortuneValue').className = `destiny-value ${getTier(data.attrs.fortune_val).class}`;
+        }
+        
+        // 显示模板选择
+        function showTemplates() {
+            // TODO: 实现模板选择界面
+            alert('模板功能开发中...');
+        }
+        
+        // 解析自定义文字
+        async function parseCustom() {
+            const text = document.getElementById('customBackground').value.trim();
+            if (!text) {
+                alert('请先输入角色背景描述');
+                return;
+            }
+            
+            const button = document.getElementById('parseButton');
+            button.innerHTML = '<span class="loading-spinner"></span>解析中...';
+            button.disabled = true;
+            
+            try {
+                // TODO: 调用DeepSeek API解析文字
+                // 暂时使用随机生成代替
+                setTimeout(() => {
+                    characterData = generateRandomCharacter();
+                    characterData.custom_background = text;
+                    displayCharacter(characterData);
+                    
+                    // 更新按钮
+                    button.style.display = 'none';
+                    document.getElementById('confirmButton').style.display = 'inline-block';
+                    
+                    // 显示面板
+                    document.getElementById('attributesPanel').style.display = 'block';
+                }, 2000);
+            } catch (error) {
+                alert('解析失败：' + error.message);
+                button.innerHTML = '解析文字';
+                button.disabled = false;
+            }
+        }
+        
+        // 确认角色
+        async function confirmCharacter() {
+            if (!characterData) {
+                alert('请先生成角色');
+                return;
+            }
+            
+            const button = document.getElementById('confirmButton');
+            button.innerHTML = '<span class="loading-spinner"></span>创建中...';
+            button.disabled = true;
+            
+            try {
+                const response = await fetch('/create_character', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: characterData.name,
+                        ...characterData
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // 墨晕过渡
+                    const inkTransition = document.getElementById('inkTransition');
+                    inkTransition.classList.add('active');
+                    
+                    setTimeout(() => {
+                        window.location.href = '/game' + (isDevMode ? '?mode=dev' : '');
+                    }, 500);
+                } else {
+                    throw new Error(result.error || '创建失败');
+                }
+            } catch (error) {
+                alert('创建角色失败：' + error.message);
+                button.innerHTML = '踏入此界';
+                button.disabled = false;
+            }
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 页面淡入
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                document.body.style.transition = 'opacity 1s ease';
+                document.body.style.opacity = '1';
+            }, 100);
+            
+            // 键盘快捷键
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && characterData) {
+                    confirmCharacter();
+                }
+                
+                if (e.key === 'r' && selectedMode === 'random' && characterData) {
+                    reroll();
+                }
+            });
+        });
+    </script>

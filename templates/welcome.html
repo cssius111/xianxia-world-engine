@@ -67,6 +67,46 @@
             width: 300px;
             height: 300px;
         }
+
+        /* 通用模态框 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+        }
+
+        .modal-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(30, 30, 30, 0.95);
+            border: 1px solid rgba(200, 200, 200, 0.2);
+            border-radius: 8px;
+            padding: 30px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            color: #888;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .modal-close:hover {
+            color: #d8d8d8;
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-300">
@@ -150,6 +190,14 @@
     
     <!-- 背景音乐 -->
     <audio id="bgMusic" loop></audio>
+
+    <!-- 通用模态框 -->
+    <div id="modal" class="modal">
+        <div class="modal-container">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <div id="modal-content"></div>
+        </div>
+    </div>
     
     <script>
         // 初始化背景音乐
@@ -175,9 +223,32 @@
             }
         }
         
+        // 打开模态框
+        async function openModal(modalName) {
+            const modal = document.getElementById('modal');
+            const modalContent = document.getElementById('modal-content');
+            if (!modal || !modalContent) return;
+
+            modalContent.innerHTML = '加载中...';
+            modal.style.display = 'block';
+
+            try {
+                const response = await fetch(`/modal/${modalName}`);
+                if (!response.ok) throw new Error('加载失败');
+                modalContent.innerHTML = await response.text();
+            } catch (e) {
+                modalContent.innerHTML = '<p class="text-red-500">加载失败</p>';
+            }
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            if (modal) modal.style.display = 'none';
+        }
+
         // 新游戏
         function startNewGame() {
-            window.location.href = '/intro';
+            openModal('character_creation');
         }
         
         // 继续游戏

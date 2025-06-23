@@ -379,9 +379,9 @@ def load_modal(modal_name):
     """加载模态框内容"""
     # 白名单验证
     allowed_modals = [
-        'status', 'inventory', 'cultivation', 'achievement', 
-        'exploration', 'map', 'quest', 'save', 'load', 
-        'help', 'settings', 'exit'
+        'status', 'inventory', 'cultivation', 'achievement',
+        'exploration', 'map', 'quest', 'save', 'load',
+        'help', 'settings', 'exit', 'character_creation'
     ]
     
     if modal_name not in allowed_modals:
