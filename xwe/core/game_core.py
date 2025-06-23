@@ -32,6 +32,7 @@ from xwe.core.immersive_event_system import (
 from xwe.core.inventory import Inventory
 from xwe.core.item_system import item_system
 from xwe.core.nlp import NLPProcessor
+from event_system.initial_fate import select_initial_fate
 
 # from xwe.npc import NPCManager, DialogueSystem, TradingSystem  # 移到使用时导入，避免循环依赖
 from xwe.core.roll_system import CharacterRoller  # 导入Roll系统
@@ -418,6 +419,14 @@ class GameCore:
 
         # 初始化游戏世界
         self._init_world()
+
+        # 选择开局命运节点
+        try:
+            events = [{"id": "relic_waterfall"}]
+            fate_id = select_initial_fate(self.game_state.player, events)
+            self.game_state.player.extra_data["initial_fate"] = fate_id
+        except Exception as e:
+            logger.error(f"选择初始命运节点失败: {e}")
 
         # 解锁第一个成就
         self.achievement_system.check_achievement("first_step", 1)
