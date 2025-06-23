@@ -492,22 +492,6 @@ class XianxiaWebServer:
                         player.extra_data['fortune'] = data.get('fortune', '平安是福')
                         player.extra_data['fortune_tier'] = data.get('fortune_tier', 'huang')
                         player.extra_data['age'] = data.get('age', 18)
-                    else:
-                        # 兼容旧的职业系统
-                        character_type = data.get('type', 'random')
-                        if character_type == 'sword':  # 剑修
-                            player.attributes.attack_power += 5
-                            player.attributes.defense = max(1, player.attributes.defense - 2)
-                            player.extra_data.update({'faction': '剑宗', 'spiritual_root': '金'})
-                        elif character_type == 'body':  # 体修
-                            player.attributes.defense += 5
-                            player.attributes.speed = max(1, getattr(player.attributes, 'speed', 10) - 2)
-                            player.extra_data.update({'faction': '炼体宗', 'spiritual_root': '土'})
-                        elif character_type == 'magic':  # 法修
-                            player.attributes.max_mana += 20
-                            player.attributes.current_mana += 20
-                            player.attributes.max_health = max(10, player.attributes.max_health - 10)
-                            player.extra_data.update({'faction': '玄天宗', 'spiritual_root': '水'})
                     
                     # 初始境界设定
                     player.attributes.realm_name = "炼气期"
