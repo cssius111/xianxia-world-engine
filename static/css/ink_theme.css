@@ -7,7 +7,8 @@
 }
 
 body {
-  background: var(--bg-color) url('../img/ink_paper.jpg');
+  /* 移除不存在的背景图，避免请求 404 */
+  background: var(--bg-color);
   color: var(--text-color);
   font-family: 'Noto Serif SC', serif;
 }
