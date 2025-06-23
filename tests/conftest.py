@@ -3,6 +3,7 @@ from flask import Flask
 import importlib.util
 from pathlib import Path
 import werkzeug
+import os
 
 if not hasattr(werkzeug, "__version__"):
     werkzeug.__version__ = "0"
@@ -16,13 +17,24 @@ def _load_module(path, name):
 game_bp = _load_module('api/v1/game.py', 'game').game_bp
 system_bp = _load_module('api/v1/system.py', 'system').system_bp
 
+@pytest.fixture(autouse=True)
+def test_env(monkeypatch):
+    monkeypatch.setenv("FLASK_ENV", "testing")
+    monkeypatch.setenv("DEBUG", "false")
+    yield
+
+
 @pytest.fixture
-def app():
+def app(tmp_path):
     app = Flask(__name__)
     app.secret_key = "test_secret"
     app.register_blueprint(game_bp, url_prefix='/api/v1/game')
     app.register_blueprint(system_bp, url_prefix='/api/v1/system')
-    app.config.update(TESTING=True)
+    app.config.update(
+        TESTING=True,
+        VERSION="1.0.0",
+        LOG_PATH=str(tmp_path)
+    )
     return app
 
 @pytest.fixture
