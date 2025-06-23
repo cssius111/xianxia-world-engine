@@ -1,0 +1,31 @@
+:root {
+  --bg-color: #f7f7f5;
+  --text-color: #222;
+  --text-light: #444;
+  --border-color: #8884;
+  --hover-bg: #8882;
+}
+
+body {
+  background: var(--bg-color) url('../img/ink_paper.jpg');
+  color: var(--text-color);
+  font-family: 'Noto Serif SC', serif;
+}
+
+.btn-primary,
+.btn-secondary {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+.btn-primary:hover,
+.btn-secondary:hover {
+  background: var(--hover-bg);
+}
+
+.btn-secondary {
+  color: var(--text-light);
+}

@@ -179,20 +179,41 @@ class XianxiaWebServer:
         @self.app.route("/")
         def index():
             """主页面 - 重定向到欢迎页面"""
-            return redirect(url_for('welcome'))
+            return redirect(url_for('start_screen'))
 
         @self.app.route("/welcome")
         def welcome():
             """欢迎页面"""
             try:
-                # 检查是否有存档
                 save_exists = (Path("saves") / "autosave.json").exists()
-                return render_template("welcome_optimized.html", 
-                                     save_exists=save_exists,
-                                     build_time=datetime.now().strftime('%Y.%m.%d'))
+                return render_template(
+                    "welcome_optimized.html",
+                    save_exists=save_exists,
+                    build_time=datetime.now().strftime("%Y.%m.%d"),
+                )
             except Exception as e:
                 self.logger.error(f"加载欢迎页面失败: {e}")
                 return "页面加载失败", 500
+
+        @self.app.route("/start")
+        def start_screen():
+            """新的启动页面"""
+            save_exists = (Path("saves") / "autosave.json").exists()
+            return render_template(
+                "screens/start_screen.html",
+                save_exists=save_exists,
+                build_time=datetime.now().strftime("%Y.%m.%d"),
+            )
+
+        @self.app.route("/choose")
+        def choose_start():
+            """开局选择页面"""
+            return render_template("screens/choose_start.html")
+
+        @self.app.route("/roll")
+        def roll_screen():
+            """属性随机页面"""
+            return render_template("screens/roll_screen.html")
 
         @self.app.route("/intro")
         def intro():
@@ -234,7 +255,11 @@ class XianxiaWebServer:
                 if player:
                     player_data = {
                         'name': player.name,
-                        'character_type': player.character_type.value if hasattr(player.character_type, 'value') else str(player.character_type),
+                        'character_type': (
+                            player.character_type.value
+                            if hasattr(player.character_type, 'value')
+                            else str(player.character_type)
+                        ),
                         'attributes': player.attributes,
                         'extra_data': getattr(player, 'extra_data', {}),
                         'state': player.state.value if hasattr(player.state, 'value') else str(player.state),
@@ -452,11 +477,10 @@ class XianxiaWebServer:
                 game_obj = instance["game"]
                 
                 # 加载平衡配置
-                balance_config = {}
                 try:
                     import json
                     with open('config/balance.json', 'r', encoding='utf-8') as f:
-                        balance_config = json.load(f)
+                        json.load(f)
                 except Exception as e:
                     self.logger.warning(f"无法加载balance.json: {e}")
                 
