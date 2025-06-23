@@ -10,7 +10,8 @@ import json
 from pathlib import Path
 from datetime import datetime
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+# 脚本位于 tests/debug/debug_scripts，需要向上四级定位项目根目录
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
 RESULT_DIR = PROJECT_ROOT / "tests" / "debug"
 SCRIPT_DIR = RESULT_DIR / "debug_scripts"
 

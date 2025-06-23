@@ -8,7 +8,8 @@ import os
 from pathlib import Path
 from collections import defaultdict
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+# 脚本位于 tests/debug/debug_scripts，需要向上四级到项目根目录
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
 
 print("=" * 60)
 print("📊 修仙世界引擎 - 数据文件验证")

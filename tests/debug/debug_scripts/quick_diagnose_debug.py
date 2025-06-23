@@ -9,7 +9,8 @@ from pathlib import Path
 import json
 import subprocess
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+# 脚本位于 tests/debug/debug_scripts，需要向上四级得到项目根目录
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
 os.chdir(PROJECT_ROOT)
 
 print("=" * 60)
