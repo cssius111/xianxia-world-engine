@@ -18,7 +18,8 @@ from flask import Flask, jsonify, render_template, request, session, redirect, u
 from werkzeug.exceptions import HTTPException
 
 # 确保项目根目录在Python路径中
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
+# 该脚本位于项目根目录，使用其所在目录作为项目根路径
+PROJECT_ROOT = Path(__file__).resolve().parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
