@@ -14,26 +14,17 @@
                 <p class="subtitle-small">一念成仙，一念成魔</p>
             </div>
 
-            <div class="game-intro">
-                <h3>游戏玩法</h3>
-                <p>这是一个文字修仙游戏，通过输入命令来进行游戏。</p>
-                <p>你将扮演一名修仙者，从凡人开始，历经劫难，最终飞升成仙。</p>
-                <p>探索世界、修炼功法、结交道友、寻找机缘...</p>
-            </div>
 
             <div class="welcome-buttons">
-                <button class="welcome-btn welcome-btn-primary" onclick="GameLauncher.startNewGame()">
-                    <span class="btn-icon">🌟</span>
+                <button class="welcome-btn welcome-btn-primary icon-star" onclick="GameLauncher.startNewGame()">
                     <span class="btn-text">开始游戏</span>
                 </button>
 
-                <button class="welcome-btn welcome-btn-secondary" onclick="GameLauncher.continueGame()">
-                    <span class="btn-icon">📖</span>
+                <button class="welcome-btn welcome-btn-secondary icon-book" onclick="GameLauncher.continueGame()">
                     <span class="btn-text">继续游戏</span>
                 </button>
 
-                <button class="welcome-btn welcome-btn-dev" onclick="GameLauncher.enterDevMode()">
-                    <span class="btn-icon">🔧</span>
+                <button class="welcome-btn welcome-btn-dev icon-wrench" onclick="GameLauncher.enterDevMode()">
                     <span class="btn-text">开发者模式</span>
                 </button>
             </div>
@@ -138,29 +129,6 @@
     color: rgba(180, 180, 180, 0.6) !important;
 }
 
-/* 游戏介绍 */
-.game-intro {
-    max-width: 600px;
-    margin: 0 auto 40px;
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(180, 180, 180, 0.3);
-    border-radius: 10px;
-    animation: introFadeIn 2s ease-out;
-}
-
-.game-intro h3 {
-    color: #bbb;
-    margin: 0 0 15px 0;
-    font-size: 24px;
-}
-
-.game-intro p {
-    color: #e0e0e0;
-    line-height: 1.6;
-    margin: 10px 0;
-}
-
 /* 按钮组 */
 .welcome-buttons {
     display: flex;
@@ -191,9 +159,18 @@
     transform: translateY(-2px);
 }
 
-.btn-icon {
+/* 按钮图标样式 */
+.icon-star::before,
+.icon-book::before,
+.icon-wrench::before {
     font-size: 24px;
+    margin-right: 10px;
 }
+
+.icon-star::before { content: '★'; }
+.icon-book::before { content: '📖'; }
+.icon-wrench::before { content: '🔧'; }
+
 
 .welcome-btn-primary {
     background: linear-gradient(135deg, #bbb 0%, #ddd 100%);
