@@ -355,9 +355,9 @@ const WelcomeSystem = {
         setTimeout(() => {
             LoreSystem.showLore(() => {
                 LoreSystem.markIntroSeen();
-                // 世界观介绍完成后，显示Roll面板
+                // 世界观介绍完成后，打开角色创建模态框
                 setTimeout(() => {
-                    RollSystem.show();
+                    openModal('character_creation');
                 }, 300);
             });
         }, 300);
