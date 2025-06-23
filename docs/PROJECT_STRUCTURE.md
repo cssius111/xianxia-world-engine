@@ -5,6 +5,7 @@
 - /xwe/models - 数据模型
 - /xwe/world - 世界系统  
 - /xwe/features - 功能模块
+- /xwe_v2 - （已删除）早期 v2 重构目录，内容已合并到 /xwe
 - /api - API接口
 - /routes - 路由
 - /templates - HTML模板
