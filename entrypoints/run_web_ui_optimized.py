@@ -143,7 +143,7 @@ def intro():
     # 检查是否是开发模式
     dev_mode = request.args.get('mode') == 'dev'
     
-    return render_template("intro.html", dev_mode=dev_mode)
+    return render_template("intro_optimized.html", dev_mode=dev_mode)
 
 
 @app.route("/game")
