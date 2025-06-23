@@ -6,6 +6,10 @@
 import sys
 import os
 from pathlib import Path
+import pytest
+if __name__ != "__main__":
+    pytest.skip("debug script", allow_module_level=True)
+
 
 # 添加项目根目录到路径
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
