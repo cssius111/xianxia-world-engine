@@ -26,6 +26,12 @@ body {
     line-height: 1.6;
 }
 
+/* 深色起始界面背景 */
+body.start-bg {
+    background-color: #0a0a0a;
+    color: #f0f0f0;
+}
+
 /* 宣纸纹理背景 */
 body::before {
     content: '';
