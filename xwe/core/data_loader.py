@@ -210,6 +210,14 @@ class DataLoader:
         return self.load_json("events/event_definitions.json", {
             "events": []
         })
+
+    def get_destinies(self) -> Dict[str, Any]:
+        """获取命格数据"""
+        return self.load_json("character/destiny.json", {})
+
+    def get_fortunes(self) -> Dict[str, Any]:
+        """获取气运数据"""
+        return self.load_json("character/fortune.json", {})
         
     def clear_cache(self) -> None:
         """清除缓存"""
