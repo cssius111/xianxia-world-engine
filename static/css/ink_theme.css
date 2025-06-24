@@ -18,7 +18,31 @@
     box-sizing: border-box;
 }
 
-/* 字体导入 - 在base.html中通过Google Fonts引入 */
+/* 本地字体导入 */
+@font-face {
+    font-family: 'LongCang';
+    src: url('/static/font/LongCang-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'MaShanZheng';
+    src: url('/static/font/MaShanZheng-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'ZCOOLXiaoWei';
+    src: url('/static/font/ZCOOL-XiaoWei.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 body {
     font-family: 'LongCang', 'KaiTi', serif;
     color: var(--ink-font);
