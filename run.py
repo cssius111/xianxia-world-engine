@@ -199,6 +199,34 @@ def get_fortune_data():
     """返回气运数据"""
     return jsonify(data_loader.get_fortunes())
 
+
+@app.route("/data/templates")
+def get_templates_data():
+    """返回角色模板数据"""
+    return jsonify(data_loader.get_character_templates())
+
+
+@app.route("/api/parse_custom", methods=["POST"])
+def parse_custom_text():
+    """使用LLM解析自定义背景"""
+    try:
+        data = request.get_json()
+        text = data.get("text", "")
+        from xwe.core.nlp import LLMClient
+        import json as pyjson
+
+        llm = LLMClient()
+        result = llm.chat(text)
+
+        try:
+            parsed = pyjson.loads(result)
+        except Exception:
+            parsed = {"result": result}
+
+        return jsonify({"success": True, "data": parsed})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)})
+
 # ========== 工具路由 ==========
 
 @app.route('/favicon.ico')
