@@ -298,3 +298,23 @@ textarea:focus {
         color: #f0f0f0;
     }
 }
+
+/* 竖排角色名 */
+.vertical-name {
+    writing-mode: vertical-rl;
+}
+
+/* 属性网格默认竖排单列布局 */
+.attributes-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+/* 窄屏下回退为横向布局 */
+@media (max-width: 768px) {
+    .attributes-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
