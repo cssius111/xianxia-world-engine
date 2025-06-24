@@ -108,12 +108,12 @@ for file_path in required_files:
 # 3. 检查数据文件
 print("\n3. 检查游戏数据文件:")
 data_files = [
-    "data/restructured/attribute_model.json",
-    "data/restructured/cultivation_realm.json",
-    "data/restructured/skill_library.json",
-    "data/restructured/spiritual_root.json",
-    "data/restructured/faction_data.json",
-    "data/restructured/achievement.json"
+    "data/game_data/templates/attribute_model.json",
+    "data/game_configs/cultivation/cultivation_realm.json",
+    "data/game_configs/skills/skill_library.json",
+    "data/game_configs/cultivation/spiritual_root.json",
+    "data/game_data/templates/faction_data.json",
+    "data/game_configs/system/achievement.json"
 ]
 
 for data_file in data_files:

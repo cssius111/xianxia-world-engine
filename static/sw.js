@@ -13,7 +13,8 @@ const STATIC_ASSETS = [
     '/welcome',
     '/intro',
     '/game',
-    '/static/css/ink_style.css',
+    '/static/css/ink_theme.css',
+    '/static/css/layout.css',
     '/static/js/game_controller.js',
     '/static/js/modules/ui_controller.js',
     '/static/js/modules/audio_controller.js',
@@ -361,8 +362,8 @@ function isStaticAsset(pathname) {
            pathname.endsWith('.js') ||
            pathname.endsWith('.png') ||
            pathname.endsWith('.jpg') ||
-           pathname.endsWith('.svg') ||
-           pathname.endsWith('.ico');
+           pathname.endsWith('.svg');
+           // .ico 已移除
 }
 
 /**
@@ -447,7 +448,8 @@ async function preloadCriticalResources() {
     const criticalUrls = [
         '/static/js/game_controller.js',
         '/static/js/modules/ui_controller.js',
-        '/static/css/ink_style.css'
+        '/static/css/ink_theme.css',
+        '/static/css/layout.css'
     ];
     
     const cache = await caches.open(STATIC_CACHE);

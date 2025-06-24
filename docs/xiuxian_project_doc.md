@@ -290,51 +290,6 @@ class Character:
 
 ---
 
-## 6. 项目清理计划
-
-### 6.1 需要删除的文件
-
-#### 修复脚本
-```bash
-# 根目录
-complete_fix.py
-final_fix.sh
-one_click_fix_and_run.py
-ultimate_fix.py
-cleanup.py
-
-# scripts目录
-scripts/comprehensive_fix.py
-scripts/final_complete_fix.py
-scripts/fix_typos.py
-scripts/run_all_fixes.py
-```
-
-#### 修复文档
-```bash
-FIX_README.md
-FIX_STEPS.md
-FIX_SUMMARY.md
-REPAIR_GUIDE.md
-FINAL_STEP.md
-```
-
-#### 临时文件
-```bash
-missing.log
-project_snapshot.json
-test_webui.py
-quick_start.py
-```
-
-### 6.2 需要保留的核心文件
-- `entrypoints/run_web_ui_optimized.py` - 主入口
-- `templates/` - 所有模板文件
-- `static/` - 静态资源
-- `xwe/` - 核心游戏逻辑
-- `requirements.txt` - 依赖管理
-- `.env.example` - 环境变量模板
-
 ## 附录
 
 ### A. 开发规范
