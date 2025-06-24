@@ -464,21 +464,30 @@
             { threshold: 0, name: '人', class: 'tier-ren' }
         ];
         
-        // 命格池
-        const DESTINIES = [
-            '孤星入世', '福泽深厚', '赤子守心', '剑心通明',
-            '道法自然', '天纵奇才', '命途多舛', '贵人相助',
-            '桃花满天', '财源广进', '武曲守命', '文昌入宫'
-        ];
-        
-        // 气运池
-        const FORTUNES = {
-            'tian': ['鸿运齐天', '天命所归', '紫气东来', '龙凤呈祥'],
-            'di': ['风调雨顺', '地利人和', '吉星高照', '瑞气盈门'],
-            'xuan': ['玄机暗藏', '否极泰来', '云开见日', '柳暗花明'],
-            'huang': ['平安是福', '细水长流', '中规中矩', '稳中求进'],
-            'ren': ['时运不济', '坎坷难行', '雾里看花', '步履维艰']
-        };
+        // 命格和气运数据
+        let DESTINIES = [];
+        let FORTUNES = {};
+
+        async function loadCharacterData() {
+            try {
+                const destRes = await fetch('/data/destiny');
+                if (destRes.ok) {
+                    const data = await destRes.json();
+                    if (Array.isArray(data.destiny_grades)) {
+                        DESTINIES = data.destiny_grades.map(d => d.name);
+                    } else if (Array.isArray(data)) {
+                        DESTINIES = data;
+                    }
+                }
+
+                const fortRes = await fetch('/data/fortune');
+                if (fortRes.ok) {
+                    FORTUNES = await fortRes.json();
+                }
+            } catch (e) {
+                console.error('加载角色数据失败', e);
+            }
+        }
         
         // 姓名库
         const SURNAMES = ['李', '王', '张', '刘', '陈', '杨', '赵', '黄', '周', '吴'];
@@ -708,6 +717,7 @@
         
         // 初始化
         document.addEventListener('DOMContentLoaded', function() {
+            loadCharacterData();
             // 页面淡入
             document.body.style.opacity = '0';
             setTimeout(() => {

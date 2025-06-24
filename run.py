@@ -5,6 +5,7 @@
 """
 
 from flask import Flask, render_template, request, redirect, url_for, jsonify, session
+from xwe.core.data_loader import DataLoader
 import logging
 from pathlib import Path
 from datetime import datetime
@@ -31,6 +32,9 @@ logger = logging.getLogger("XianxiaEngine")
 # 确保必要目录存在
 for directory in ["saves", "logs"]:
     Path(directory).mkdir(parents=True, exist_ok=True)
+
+# 初始化数据加载器
+data_loader = DataLoader()
 
 # ========== 页面路由 ==========
 
@@ -182,6 +186,18 @@ def get_log():
             "输入'帮助'查看可用命令。"
         ]
     })
+
+# 数据接口
+@app.route("/data/destiny")
+def get_destiny_data():
+    """返回命格数据"""
+    return jsonify(data_loader.get_destinies())
+
+
+@app.route("/data/fortune")
+def get_fortune_data():
+    """返回气运数据"""
+    return jsonify(data_loader.get_fortunes())
 
 # ========== 工具路由 ==========
 
