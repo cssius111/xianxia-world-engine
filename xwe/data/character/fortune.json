@@ -1,7 +1,32 @@
 {
-  "tian": ["鸿运齐天", "天命所归", "紫气东来", "龙凤呈祥"],
-  "di": ["风调雨顺", "地利人和", "吉星高照", "瑞气盈门"],
-  "xuan": ["玄机暗藏", "否极泰来", "云开见日", "柳暗花明"],
-  "huang": ["平安是福", "细水长流", "中规中矩", "稳中求进"],
-  "ren": ["时运不济", "坎坷难行", "雾里看花", "步履维艰"]
+  "tian": [
+    { "name": "鸿运齐天", "description": "气运极旺，遇事皆顺" },
+    { "name": "天命所归", "description": "天意所指，事半功倍" },
+    { "name": "紫气东来", "description": "贵人相助，机缘不断" },
+    { "name": "龙凤呈祥", "description": "吉兆降临，前程似锦" }
+  ],
+  "di": [
+    { "name": "风调雨顺", "description": "顺风顺水，行动无阻" },
+    { "name": "地利人和", "description": "得天时地利，众人拥戴" },
+    { "name": "吉星高照", "description": "好运连连，喜事频临" },
+    { "name": "瑞气盈门", "description": "祥瑞满门，凡事顺遂" }
+  ],
+  "xuan": [
+    { "name": "玄机暗藏", "description": "福祸难料，变化莫测" },
+    { "name": "否极泰来", "description": "困境逢生，转机渐显" },
+    { "name": "云开见日", "description": "迷雾散去，前途明朗" },
+    { "name": "柳暗花明", "description": "绝处逢生，终有转机" }
+  ],
+  "huang": [
+    { "name": "平安是福", "description": "平稳为主，不求有功" },
+    { "name": "细水长流", "description": "运势平平，贵在持久" },
+    { "name": "中规中矩", "description": "无大起伏，按部就班" },
+    { "name": "稳中求进", "description": "步步为营，稳扎稳打" }
+  ],
+  "ren": [
+    { "name": "时运不济", "description": "诸事不顺，常遇阻碍" },
+    { "name": "坎坷难行", "description": "步履维艰，多遭挫折" },
+    { "name": "雾里看花", "description": "前路迷茫，难辨方向" },
+    { "name": "步履维艰", "description": "困难重重，进展缓慢" }
+  ]
 }

@@ -509,9 +509,16 @@
 
                 const fortRes = await fetch('/data/fortune');
                 if (fortRes.ok) {
-                    FORTUNES = await fortRes.json();
-                    Object.values(FORTUNES).forEach(list => {
-                        list.forEach(name => fortuneInfo[name] = name);
+                    const data = await fortRes.json();
+                    FORTUNES = {};
+                    Object.entries(data).forEach(([tier, list]) => {
+                        if (list.length && typeof list[0] === 'string') {
+                            FORTUNES[tier] = list;
+                            list.forEach(name => fortuneInfo[name] = name);
+                        } else {
+                            FORTUNES[tier] = list.map(f => f.name);
+                            list.forEach(f => fortuneInfo[f.name] = f.description);
+                        }
                     });
                 }
             } catch (e) {
