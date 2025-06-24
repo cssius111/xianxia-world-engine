@@ -175,11 +175,7 @@ class ProjectRestructurer:
         # 旧版本文件
         if '_old' in filename or '_backup' in filename:
             return True
-        
-        # 嵌套的重复目录中的文件
-        if 'xwe/data/character/xwe' in filepath:
-            return True
-        
+
         return False
     
     def _identify_merge_candidates(self):

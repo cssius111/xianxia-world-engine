@@ -64,7 +64,6 @@ chmod +x run_cleanup.sh
 
 将混乱的结构：
 ```
-xwe/data/character/xwe/data/character/
 data/restructured/
 xwe/data/restructured/
 xwe/data/refactored/

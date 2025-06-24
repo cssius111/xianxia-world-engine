@@ -149,7 +149,6 @@ class ProjectCleaner:
         
         # 查找可疑的嵌套模式
         suspicious_patterns = [
-            "xwe/data/character/xwe",
             "data/restructured",
             "xwe/data/restructured",
             "xwe/data/refactored"
@@ -209,11 +208,6 @@ class ProjectCleaner:
                     "xwe/data/refactored"
                 ],
                 "suggested_location": "data/game_configs"
-            },
-            {
-                "description": "清理嵌套的xwe目录",
-                "affected_dirs": ["xwe/data/character/xwe"],
-                "action": "删除嵌套目录"
             }
         ]
         
