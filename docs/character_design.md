@@ -104,3 +104,7 @@
 
 请根据描述合理分配属性值，确保角色特色鲜明。
 ```
+
+## 数据格式校验
+
+使用 `xwe/data/restructured/character_schema.json` 可对生成的角色 JSON 文件进行校验，各字段支持 `null` 值。
