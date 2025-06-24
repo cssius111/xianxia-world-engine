@@ -10,6 +10,8 @@ from typing import Dict, List, Any
 from datetime import datetime
 from pathlib import Path
 
+from scripts.name_cn import random_name
+
 # 8个核心属性
 ATTRIBUTES = [
     "comprehension",  # 悟性
@@ -81,7 +83,7 @@ def gen_random() -> Dict[str, Any]:
     每个属性1-10随机
     """
     character = {
-        "name": f"无名侠客{random.randint(1000, 9999)}",
+        "name": random_name(),
         "age": random.randint(16, 25),
         "spiritual_root": random.choice(SPIRITUAL_ROOTS),
         "attributes": {}
@@ -106,7 +108,7 @@ def gen_template(template_type: str) -> Dict[str, Any]:
     
     template = TEMPLATES[template_type]
     character = {
-        "name": f"{template['name']}_{random.randint(1000, 9999)}",
+        "name": random_name(),
         "age": random.randint(16, 25),
         "spiritual_root": random.choice(template["spiritual_root"]),
         "attributes": {},
