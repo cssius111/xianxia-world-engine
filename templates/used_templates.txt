@@ -1,0 +1,114 @@
+# 主游戏界面
+game_enhanced_optimized_v2.html     [主界面]
+- 说明：当前唯一保留的主游戏模板，整合所有面板与交互
+- 引用：components/*.html, modals/*.html
+
+# 公共组件 (components/)
+components/command_input.html       [组件]
+- 说明：底部输入框与提交按钮
+- 被引用于：game_enhanced_optimized_v2.html
+
+components/game_panels.html         [组件]
+- 说明：整合所有面板区域，如状态、修炼、地图等
+- 被引用于：game_enhanced_optimized_v2.html
+
+components/header.html              [组件]
+- 说明：顶部标题栏
+- 被引用于：game_enhanced_optimized_v2.html
+
+components/lore_modal.html         [组件]
+- 说明：世界观简介弹窗
+- 被引用于：start_screen.html / 游戏内帮助系统
+
+components/narrative_log.html       [组件]
+- 说明：中央叙事区域，输出游戏文本
+- 被引用于：game_enhanced_optimized_v2.html
+
+components/roll_modal.html          [组件]
+- 说明：角色开局抽取面板
+- 被引用于：roll_screen.html
+
+components/sidebar.html / sidebar_v2.html   [组件]
+- 说明：左侧人物状态栏（两种风格）
+- 被引用于：game_enhanced_optimized_v2.html
+
+components/welcome_modal.html / welcome_modal_v2.html  [组件]
+- 说明：首次进入游戏的欢迎弹窗
+- 被引用于：start_screen.html
+
+components/world_intro.html         [组件]
+- 说明：世界观故事模态弹窗
+- 被引用于：start_screen.html / 游戏内介绍
+
+# 弹窗模组 (modals/)
+modals/achievement.html             [弹窗]
+- 说明：成就系统窗口
+- 被引用于：game_panels.html
+
+modals/character_creation.html      [弹窗]
+- 说明：角色自定义界面
+- 被引用于：roll_screen.html / 游戏初始化
+
+modals/cultivation.html             [弹窗]
+- 说明：修炼系统 UI 面板
+- 被引用于：game_panels.html
+
+modals/exploration.html             [弹窗]
+- 说明：探索模块弹窗
+- 被引用于：game_panels.html
+
+modals/help.html                    [弹窗]
+- 说明：帮助系统内容页
+- 被引用于：start_screen.html / 游戏主界面
+
+modals/inventory.html               [弹窗]
+- 说明：背包系统 UI
+- 被引用于：game_panels.html
+
+modals/load.html / save.html        [弹窗]
+- 说明：读档 / 存档界面
+- 被引用于：菜单按钮组
+
+modals/map.html                     [弹窗]
+- 说明：游戏地图窗口
+- 被引用于：游戏右上角控制菜单
+
+modals/quest.html                   [弹窗]
+- 说明：任务追踪 UI
+- 被引用于：game_panels.html
+
+modals/settings.html                [弹窗]
+- 说明：设置界面
+- 被引用于：start_screen.html / 游戏右上角
+
+modals/status.html                  [弹窗]
+- 说明：详细人物状态窗口
+- 被引用于：sidebar/sidebar_v2.html
+
+# 屏幕页 (screens/)
+screens/choose_start.html           [页面]
+- 说明：游戏开始模式选择页面（自定义 or 快速开始）
+
+screens/start_screen.html           [页面]
+- 说明：游戏欢迎页，展示世界观、欢迎弹窗
+
+screens/roll_screen.html            [页面]
+- 说明：进入角色 roll 或创建流程的页面
+
+# used_templates.txt
+
+# 主模板
+game_enhanced_optimized_v2.html
+
+# 已内联实现的模板组件
+components/header.html         [已内联于<head>]
+components/sidebar_v2.html     [已整合为侧边栏]
+components/narrative_log.html  [已整合为 game-log]
+components/command_input.html  [已整合为 input-area]
+
+# 模态框组件（推测通过 JS 加载控制）
+components/lore_modal.html
+components/welcome_modal.html
+components/welcome_modal_v2.html
+components/roll_modal.html
+components/world_intro.html

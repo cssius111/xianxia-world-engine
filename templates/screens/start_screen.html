@@ -1,82 +1,49 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="沉浸式修仙世界模拟器 - 探索、修炼、突破命运。" />
+    <meta name="theme-color" content="#f5f5f5" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon" />
 
-{% block title %}修仙世界 - 开始{% endblock %}
+    <!-- 水墨风格主题样式 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ink_theme.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}" />
 
-{% block body_class %}start-bg{% endblock %}
-
-{% block content %}
-<div class="min-h-screen flex flex-col flex-center">
-    <div class="text-center fade-in">
-        <h1 class="text-3xl mb-24">修仙世界</h1>
-        <p class="subtitle text-xl mb-32 text-accent">凡人修仙，从此刻开始</p>
-        
-        <div class="flex flex-col gap-24 items-center">
-            <a href="{{ url_for('choose_start') }}" class="ink-button">
-                开始游戏
-            </a>
-            
-            <a href="{{ url_for('game', mode='dev') }}" class="ink-button">
-                开发者模式
-            </a>
-        </div>
-    </div>
-    
-    <div class="absolute bottom-0 w-full text-center p-16 text-sm text-accent">
-        <p>仙道漫漫，唯心可渡</p>
-    </div>
-</div>
-{% endblock %}
-
-{% block extra_css %}
-<style>
-    .subtitle {
+    <style>
+    :root {
+        --ink-bg: #121212;
+        --ink-border: #444;
+        --ink-accent: #ccc;
+        --ink-hover-bg: #1e1e1e;
+        --ink-hover-text: #fff;
+        --ink-title: #f8f8f8;
+        --ink-subtitle: #cfcfcf;
+        --ink-muted: #888;
+    }
+    body {
+        background-color: var(--ink-bg);
         color: var(--ink-accent);
     }
-    
-    .text-accent {
-        color: var(--ink-accent);
-    }
-    
-    /* 淡入动画 */
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(-20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-    
-    .fade-in {
-        animation: fadeIn 1s ease-out;
-    }
-    
-    /* 按钮悬停效果 */
-    .ink-button {
-        position: relative;
-        overflow: hidden;
-        transition: all 0.3s ease;
-    }
-    
-    .ink-button::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 0;
-        height: 0;
-        background-color: var(--ink-border);
-        transform: translate(-50%, -50%);
-        transition: all 0.5s ease;
-        border-radius: 50%;
-        z-index: -1;
-    }
-    
-    .ink-button:hover::before {
-        width: 300px;
-        height: 300px;
-    }
-</style>
-{% endblock %}
+    </style>
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="{{ body_class|default('') }}">
+    {% block content %}{% endblock %}
+
+    <!-- 全局命名空间和动态入口 -->
+    <script>
+        window.XianXia = window.XianXia || {};
+        document.addEventListener("DOMContentLoaded", function () {
+            if (typeof XianXia.init === "function") {
+                XianXia.init();
+            }
+        });
+    </script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

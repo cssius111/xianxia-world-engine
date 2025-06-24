@@ -1,108 +1,102 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>选择你的开局</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Noto Serif SC", serif;
+      background: linear-gradient(to bottom right, #f5f5f5, #dcdcdc);
+      background-image: url('/static/img/ink_bg.jpg'); /* 可选墨水风背景图 */
+      background-size: cover;
+      background-position: center;
+      color: #222;
+    }
 
-{% block title %}修仙世界 - 选择开局{% endblock %}
+    .container {
+      max-width: 600px;
+      margin: 10vh auto;
+      padding: 2rem;
+      background-color: rgba(255, 255, 255, 0.75);
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
 
-{% block body_class %}start-bg{% endblock %}
+    h1 {
+      font-size: 2rem;
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #333;
+    }
 
-{% block content %}
-<div class="min-h-screen flex flex-col flex-center">
-    <div class="text-center fade-in max-w-800 mx-auto">
-        <h1 class="text-3xl mb-32">选择开局</h1>
-        
-        <div class="flex flex-col gap-32 items-center">
-            <div class="start-option">
-                <a href="{{ url_for('roll_screen', mode='random') }}" class="ink-button large-button">
-                    随机天命
-                </a>
-                <p class="option-desc mt-16">听天由命，随机生成角色属性</p>
-            </div>
-            
-            <div class="start-option">
-                <a href="{{ url_for('roll_screen', mode='template') }}" class="ink-button large-button">
-                    典型模板
-                </a>
-                <p class="option-desc mt-16">选择剑修、体修、符修等经典模板</p>
-            </div>
-            
-            <div class="start-option">
-                <a href="{{ url_for('roll_screen', mode='custom') }}" class="ink-button large-button">
-                    自定义文本
-                </a>
-                <p class="option-desc mt-16">输入角色描述，AI为你生成独特角色</p>
-            </div>
-        </div>
-        
-        <div class="mt-32">
-            <a href="{{ url_for('index') }}" class="ink-button small-button">
-                返回
-            </a>
-        </div>
+    .option {
+      display: block;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      background-color: #eee;
+      border-left: 5px solid #888;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .option:hover {
+      background-color: #ddd;
+      border-left-color: #444;
+    }
+
+    .label-title {
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .label-desc {
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    .back-link {
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 0.9rem;
+    }
+
+    .back-link a {
+      color: #666;
+      text-decoration: none;
+    }
+
+    .back-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>你愿以何种方式步入修途？</h1>
+
+    <div class="option" onclick="location.href='roll_screen.html'">
+      <div class="label-title">随机天命</div>
+      <div class="label-desc">由天意决定你的命格、气运与资质。</div>
     </div>
-</div>
-{% endblock %}
 
-{% block extra_css %}
-<style>
-    .large-button {
-        min-width: 200px;
-        padding: 16px 32px;
-        font-size: 1.5rem;
-    }
-    
-    .small-button {
-        padding: 8px 16px;
-        font-size: 1rem;
-    }
-    
-    .option-desc {
-        color: var(--ink-accent);
-        font-size: 1rem;
-    }
-    
-    .start-option {
-        text-align: center;
-    }
-    
-    /* 选项悬停效果 */
-    .start-option:hover .ink-button {
-        transform: translateY(-2px);
-    }
-    
-    .start-option:hover .option-desc {
-        color: var(--ink-font);
-    }
-    
-    /* 淡入动画 */
-    .fade-in > * {
-        opacity: 0;
-        animation: fadeInUp 0.6s ease-out forwards;
-    }
-    
-    .fade-in > *:nth-child(1) {
-        animation-delay: 0.1s;
-    }
-    
-    .fade-in > *:nth-child(2) > *:nth-child(1) {
-        animation-delay: 0.2s;
-    }
-    
-    .fade-in > *:nth-child(2) > *:nth-child(2) {
-        animation-delay: 0.3s;
-    }
-    
-    .fade-in > *:nth-child(2) > *:nth-child(3) {
-        animation-delay: 0.4s;
-    }
-    
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-</style>
-{% endblock %}
+    <div class="option" onclick="location.href='template_select.html'">
+      <div class="label-title">典型模板</div>
+      <div class="label-desc">选择一个现成修仙者模板快速开始。</div>
+    </div>
+
+    <div class="option" onclick="location.href='text_input.html'">
+      <div class="label-title">自定义文本</div>
+      <div class="label-desc">用一段描述，让天道为你生成角色命运。</div>
+    </div>
+
+    <div class="back-link">
+      <a href="start_screen.html">← 返回主界面</a>
+    </div>
+  </div>
+</body>
+</html>
