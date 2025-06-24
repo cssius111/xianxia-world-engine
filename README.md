@@ -12,14 +12,20 @@
    pip install -r requirements.txt
    ```
 
-2. 复制并编辑环境配置
+2. 安装 Git 钩子（pre-commit）
+
+   ```bash
+   pre-commit install
+   ```
+
+3. 复制并编辑环境配置
 
    ```bash
    cp .env.example .env
    # 打开 .env 填写 DEEPSEEK_API_KEY 等变量
    ```
 
-3. 选择运行模式
+4. 选择运行模式
 
    - **控制台模式**
 

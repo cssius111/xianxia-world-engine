@@ -19,8 +19,11 @@ jobs:
           pip install -r requirements.txt
           pip install ruff
           pip install pytest
+          pip install pre-commit
       - name: Lint with ruff
         run: ruff check . --output-format=github --exit-zero
+      - name: Run pre-commit
+        run: pre-commit run --all-files
       - name: Run tests
         run: |
           pytest --junitxml=pytest-report.xml
