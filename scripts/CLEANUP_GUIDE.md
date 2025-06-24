@@ -12,7 +12,6 @@
    - 同样的配置文件散布在多个目录
 
 2. **混乱的目录结构**
-   - 存在嵌套的重复目录：`xwe/data/character/xwe/data/character/`
    - 三个不同的restructured目录
    - 没有清晰的文件组织规范
 
