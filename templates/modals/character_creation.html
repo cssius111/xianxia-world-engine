@@ -291,6 +291,26 @@
                 max-width: 300px;
             }
         }
+
+        /* 浮动提示 */
+        .tooltip {
+            position: fixed;
+            background: rgba(40, 40, 40, 0.95);
+            border: 1px solid rgba(200, 200, 200, 0.2);
+            padding: var(--spacing-sm) var(--spacing-md);
+            font-size: 13px;
+            color: #d8d8d8;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity var(--transition-speed) ease;
+            z-index: 1000;
+            border-radius: 4px;
+            backdrop-filter: blur(5px);
+        }
+
+        .tooltip.show {
+            opacity: 1;
+        }
     </style>
     <!-- 水墨背景 -->
     <div class="ink-background"></div>
@@ -447,8 +467,11 @@
             </a>
         </div>
     </div>
-    
+
+    <div id="tooltip" class="tooltip"></div>
+
     <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/modules/tooltip_data.js') }}"></script>
     <script>
         // 全局变量
         let selectedMode = null;
@@ -475,6 +498,7 @@
                     const data = await destRes.json();
                     if (Array.isArray(data.destiny_grades)) {
                         DESTINIES = data.destiny_grades.map(d => d.name);
+                        data.destiny_grades.forEach(d => destinyInfo[d.name] = d.description);
                     } else if (Array.isArray(data)) {
                         DESTINIES = data;
                     }
@@ -483,6 +507,9 @@
                 const fortRes = await fetch('/data/fortune');
                 if (fortRes.ok) {
                     FORTUNES = await fortRes.json();
+                    Object.values(FORTUNES).forEach(list => {
+                        list.forEach(name => fortuneInfo[name] = name);
+                    });
                 }
             } catch (e) {
                 console.error('加载角色数据失败', e);
@@ -627,9 +654,14 @@
             });
             
             // 命格和气运
-            document.getElementById('destinyValue').textContent = data.destiny[0];
-            document.getElementById('fortuneValue').textContent = data.fortune;
-            document.getElementById('fortuneValue').className = `destiny-value ${getTier(data.attrs.fortune_val).class}`;
+            const destinyEl = document.getElementById('destinyValue');
+            destinyEl.textContent = data.destiny[0];
+            destinyEl.dataset.tooltip = destinyInfo[data.destiny[0]] || '';
+
+            const fortuneEl = document.getElementById('fortuneValue');
+            fortuneEl.textContent = data.fortune;
+            fortuneEl.className = `destiny-value ${getTier(data.attrs.fortune_val).class}`;
+            fortuneEl.dataset.tooltip = fortuneInfo[data.fortune] || '';
         }
         
         // 显示模板选择
@@ -714,7 +746,25 @@
                 button.disabled = false;
             }
         }
-        
+
+        function showTooltip(event) {
+            const tooltip = document.getElementById('tooltip');
+            const text = event.currentTarget.dataset.tooltip;
+            if (!tooltip || !text) return;
+            const rect = event.currentTarget.getBoundingClientRect();
+            tooltip.textContent = text;
+            tooltip.style.left = rect.left + 'px';
+            tooltip.style.top = (rect.top - 30) + 'px';
+            tooltip.classList.add('show');
+        }
+
+        function hideTooltip() {
+            const tooltip = document.getElementById('tooltip');
+            if (tooltip) {
+                tooltip.classList.remove('show');
+            }
+        }
+
         // 初始化
         document.addEventListener('DOMContentLoaded', function() {
             loadCharacterData();
@@ -724,6 +774,11 @@
                 document.body.style.transition = 'opacity 1s ease';
                 document.body.style.opacity = '1';
             }, 100);
+
+            document.getElementById('destinyValue').addEventListener('mouseenter', showTooltip);
+            document.getElementById('destinyValue').addEventListener('mouseleave', hideTooltip);
+            document.getElementById('fortuneValue').addEventListener('mouseenter', showTooltip);
+            document.getElementById('fortuneValue').addEventListener('mouseleave', hideTooltip);
             
             // 键盘快捷键
             document.addEventListener('keydown', function(e) {
