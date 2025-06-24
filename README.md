@@ -56,3 +56,7 @@ A: 默认监听 `5001` 端口，可在 `.env` 中设置 `FLASK_ENV` 为 `develop
 ```bash
 pytest
 ```
+
+## 许可
+
+本项目采用 [MIT](LICENSE) 许可证。
