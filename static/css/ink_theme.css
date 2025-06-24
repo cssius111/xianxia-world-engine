@@ -21,7 +21,8 @@
 /* 本地字体导入 */
 @font-face {
     font-family: 'LongCang';
-    src: url('/static/font/LongCang-Regular.woff2') format('woff2');
+    src: url('/static/font/LongCang-Regular.woff2') format('woff2'),
+         url('/static/font/LongCang-Regular.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -286,5 +287,13 @@ textarea:focus {
     .modal-content {
         width: 90%;
         padding: 20px;
+    }
+}
+
+/* 暗色模式兼容 */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #0a0a0a;
+        color: #f0f0f0;
     }
 }
