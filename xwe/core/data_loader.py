@@ -145,6 +145,10 @@ class DataLoader:
                 }
             ]
         })
+
+    def get_character_templates(self) -> Dict[str, Any]:
+        """获取角色模板"""
+        return self.load_json("character/templates.json", {})
         
     def get_skill_definitions(self) -> Dict[str, Any]:
         """获取技能定义"""

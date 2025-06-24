@@ -472,6 +472,9 @@
 
     <!-- JavaScript -->
     <script src="{{ url_for('static', filename='js/modules/tooltip_data.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/random_generator.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/template_loader.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/deepseek_bridge.js') }}"></script>
     <script>
         // 全局变量
         let selectedMode = null;
@@ -515,13 +518,6 @@
                 console.error('加载角色数据失败', e);
             }
         }
-        
-        // 姓名库
-        const SURNAMES = ['李', '王', '张', '刘', '陈', '杨', '赵', '黄', '周', '吴'];
-        const GIVEN_NAMES = {
-            male: ['辰', '轩', '宇', '泽', '豪', '杰', '霖', '浩', '博', '涛'],
-            female: ['雨', '琪', '梦', '雪', '霜', '露', '月', '云', '诗', '画']
-        };
         
         // 获取阶位
         function getTier(value) {
@@ -567,44 +563,6 @@
             }
         }
         
-        // 生成随机值
-        function randInt(min, max) {
-            return Math.floor(Math.random() * (max - min + 1)) + min;
-        }
-        
-        // 生成随机角色
-        function generateRandomCharacter() {
-            const isMale = Math.random() > 0.5;
-            const surname = SURNAMES[randInt(0, SURNAMES.length - 1)];
-            const givenName = isMale ? 
-                GIVEN_NAMES.male[randInt(0, GIVEN_NAMES.male.length - 1)] :
-                GIVEN_NAMES.female[randInt(0, GIVEN_NAMES.female.length - 1)];
-            
-            // 生成八大属性
-            const attrs = {
-                root: randInt(1, 10),
-                comprehension: randInt(1, 10),
-                physique: randInt(1, 10),
-                spirit: randInt(1, 10),
-                insight: randInt(1, 10),
-                will: randInt(1, 10),
-                charisma: randInt(1, 10),
-                fortune_val: randInt(1, 10)
-            };
-            
-            // 确定气运阶位
-            const fortuneTier = getTier(attrs.fortune_val).name.toLowerCase();
-            const fortuneList = FORTUNES[fortuneTier] || FORTUNES['ren'];
-            
-            return {
-                name: surname + givenName,
-                age: randInt(14, 30),
-                attrs: attrs,
-                destiny: [DESTINIES[randInt(0, DESTINIES.length - 1)]],
-                fortune: fortuneList[randInt(0, fortuneList.length - 1)],
-                fortune_tier: fortuneTier
-            };
-        }
         
         // 投掷角色
         function rollCharacter() {
@@ -613,7 +571,7 @@
             button.disabled = true;
             
             setTimeout(() => {
-                characterData = generateRandomCharacter();
+                characterData = randomGenerator.generateRandomCharacter();
                 displayCharacter(characterData);
                 
                 // 更新按钮
@@ -665,9 +623,21 @@
         }
         
         // 显示模板选择
-        function showTemplates() {
-            // TODO: 实现模板选择界面
-            alert('模板功能开发中...');
+        async function showTemplates() {
+            try {
+                const templates = await templateLoader.loadTemplates();
+                const names = Object.keys(templates);
+                const choice = prompt('请选择模板:\n' + names.map((n, i) => `${i + 1}. ${n}`).join('\n')); 
+                const index = parseInt(choice);
+                if (!index || index < 1 || index > names.length) return;
+                characterData = randomGenerator.generateRandomCharacter();
+                characterData.template = names[index - 1];
+                displayCharacter(characterData);
+                document.getElementById('confirmButton').style.display = 'inline-block';
+                document.getElementById('attributesPanel').style.display = 'block';
+            } catch (e) {
+                alert('加载模板失败：' + e.message);
+            }
         }
         
         // 解析自定义文字
@@ -683,20 +653,17 @@
             button.disabled = true;
             
             try {
-                // TODO: 调用DeepSeek API解析文字
-                // 暂时使用随机生成代替
-                setTimeout(() => {
-                    characterData = generateRandomCharacter();
-                    characterData.custom_background = text;
-                    displayCharacter(characterData);
-                    
-                    // 更新按钮
-                    button.style.display = 'none';
-                    document.getElementById('confirmButton').style.display = 'inline-block';
-                    
-                    // 显示面板
-                    document.getElementById('attributesPanel').style.display = 'block';
-                }, 2000);
+                const result = await deepSeekBridge.parseCustomText(text);
+                characterData = result;
+                characterData.custom_background = text;
+                displayCharacter(characterData);
+
+                // 更新按钮
+                button.style.display = 'none';
+                document.getElementById('confirmButton').style.display = 'inline-block';
+
+                // 显示面板
+                document.getElementById('attributesPanel').style.display = 'block';
             } catch (error) {
                 alert('解析失败：' + error.message);
                 button.innerHTML = '解析文字';
