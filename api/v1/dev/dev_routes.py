@@ -14,7 +14,7 @@ dev_bp = Blueprint('dev', __name__)
 def debug_info():
     """获取调试信息"""
     return jsonify({
-        "environment": os.environ.dict,
+        "environment": dict(os.environ),
         "python_version": "3.10",
         "flask_version": "2.3.2"
     })
