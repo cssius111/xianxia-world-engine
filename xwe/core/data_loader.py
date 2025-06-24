@@ -221,7 +221,14 @@ class DataLoader:
 
     def get_fortunes(self) -> Dict[str, Any]:
         """获取气运数据"""
-        return self.load_json("character/fortune.json", {})
+        data = self.load_json("character/fortune.json", {})
+
+        # 兼容旧格式，若列表中仍为字符串则转为包含描述的对象
+        for tier, fortunes in data.items():
+            if fortunes and isinstance(fortunes[0], str):
+                data[tier] = [{"name": name, "description": name} for name in fortunes]
+
+        return data
         
     def clear_cache(self) -> None:
         """清除缓存"""
