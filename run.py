@@ -41,6 +41,7 @@ def is_dev_request(req) -> bool:
         or str(req.headers.get("dev", "")).lower() == "true"
     )
 
+
 # 确保项目根目录在Python路径中
 PROJECT_ROOT = Path(__file__).resolve().parent
 if str(PROJECT_ROOT) not in sys.path:
@@ -280,7 +281,6 @@ def create_character():
     dev_mode = is_dev_request(request)
     data = request.get_json()
 
-    # 保存角色名到会话
     if data and "name" in data:
         player_name = data.get("name", "无名侠客")
         session["player_name"] = player_name
@@ -291,7 +291,10 @@ def create_character():
         inventory_system.create_initial_inventory(session["player_id"])
 
         logger.info(f"创建角色: {player_name}")
-        session["player_created"] = True
+
+        if not session.get("player_created"):
+            session["player_created"] = True
+
         if "destiny" in data:
             session["destiny"] = data["destiny"]
 
@@ -364,14 +367,14 @@ def api_roll():
     import sys as _sys
 
     _sys.path.append(str(Path(__file__).parent))
+    import random
+
     from scripts.gen_character import (
         gen_from_prompt,
         gen_random,
         gen_template,
         save_character,
     )
-
-    import random
 
     data = request.get_json()
     mode = data.get("mode", "random")
@@ -395,43 +398,6 @@ def api_roll():
     save_character(character)
 
     return jsonify({"success": True, "character": character, "destiny": destiny})
-
-
-@app.route("/api/confirm_character", methods=["POST"])
-def api_confirm_character():
-    """确认角色API"""
-    if "session_id" not in session:
-        session["session_id"] = str(time.time())
-
-    data = request.get_json()
-    character_data = data.get("character")
-
-    if not character_data:
-        return jsonify({"success": False, "error": "没有角色数据"})
-
-    instance = get_game_instance(session["session_id"])
-    game = instance["game"]
-
-    if game.game_state.player:
-        player = game.game_state.player
-        player.name = character_data.get("name", "无名侠客")
-        attrs = character_data.get("attributes", {})
-        player.attributes.attack_power = 5 + attrs.get("constitution", 5)
-        player.attributes.defense = 3 + attrs.get("willpower", 5)
-        player.attributes.max_health = 80 + attrs.get("constitution", 5) * 4
-        player.attributes.current_health = player.attributes.max_health
-        player.attributes.max_mana = 40 + attrs.get("comprehension", 5) * 2
-        player.attributes.current_mana = player.attributes.max_mana
-        player.extra_data = {
-            "spiritual_root": character_data.get("spiritual_root", "无"),
-            "raw_attributes": attrs,
-            "generation_type": character_data.get("generation_type", "unknown"),
-        }
-        player.attributes.calculate_derived_attributes()
-
-    instance["need_refresh"] = True
-
-    return jsonify({"success": True})
 
 
 @app.route("/command", methods=["POST"])
@@ -703,8 +669,6 @@ def clear_nlp_cache():
 def get_destiny_data():
     """返回命格数据"""
     return jsonify(data_loader.get_destinies())
-
-
 
 
 @app.route("/data/fortune")
