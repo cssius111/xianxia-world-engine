@@ -22,7 +22,6 @@
     /* 功能色彩 */
     --health-color: #dc3545;
     --mana-color: #17a2b8;
-    --stamina-color: #28a745;
     --exp-color: #ffc107;
     
     /* 特殊色彩 */
@@ -295,10 +294,6 @@ body::before {
     box-shadow: 0 0 10px rgba(23, 162, 184, 0.3);
 }
 
-.progress-fill.stamina {
-    background: linear-gradient(90deg, var(--stamina-color), #5cb85c);
-    box-shadow: 0 0 10px rgba(40, 167, 69, 0.3);
-}
 
 .progress-fill.exp {
     background: linear-gradient(90deg, var(--exp-color), #ffdf00);

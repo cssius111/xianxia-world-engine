@@ -496,7 +496,6 @@ class XianxiaGameClient {
         // 确保数值在合理范围内
         const curHealth = Math.max(0, Math.min(attrs.current_health || 0, attrs.max_health || 0));
         const curMana = Math.max(0, Math.min(attrs.current_mana || 0, attrs.max_mana || 0));
-        const curStamina = Math.max(0, Math.min(attrs.current_stamina || 0, attrs.max_stamina || 0));
 
         this.updateElement('health', `${curHealth} / ${attrs.max_health || 0}`);
         this.updateElement('mana', `${curMana} / ${attrs.max_mana || 0}`);
