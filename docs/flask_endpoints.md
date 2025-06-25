@@ -31,7 +31,7 @@
 
 | URL 路径 | 端点名称（函数名） | 说明 |
 |---------|------------------|------|
-| `/favicon.ico` | `favicon` | 避免favicon 404错误 |
+| `/favicon.ico` | `favicon` | 提供站点图标 |
 | `/sw.js` | `service_worker` | Service Worker |
 
 ## 使用示例

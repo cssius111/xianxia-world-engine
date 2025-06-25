@@ -4,7 +4,7 @@
 集成 DeepSeek NLP 命令处理
 """
 
-from flask import Flask, render_template, request, redirect, url_for, jsonify, session, make_response
+from flask import Flask, render_template, request, redirect, url_for, jsonify, session, make_response, send_from_directory
 from xwe.core.data_loader import DataLoader
 from xwe.core.command_router import CommandRouter
 from xwe.features import ExplorationSystem, InventorySystem
@@ -592,8 +592,12 @@ def get_nlp_config():
 
 @app.route('/favicon.ico')
 def favicon():
-    """避免favicon 404错误"""
-    return '', 204
+    """返回站点图标"""
+    return send_from_directory(
+        os.path.join(app.root_path, 'static', 'favicon_io'),
+        'favicon.ico',
+        mimetype='image/vnd.microsoft.icon'
+    )
 
 @app.route("/sw.js")
 def service_worker():
