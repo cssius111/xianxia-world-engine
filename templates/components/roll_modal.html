@@ -33,18 +33,13 @@
 
             <!-- 属性分配 -->
             <div class="roll-section">
-                <h3 class="section-title">
-                    初始属性
-                    <span class="section-info">剩余点数：<span id="remainingPoints">10</span></span>
-                </h3>
+                <h3 class="section-title">初始属性</h3>
 
                 <div class="attributes-grid">
                     <div class="attribute-item">
                         <label>根骨</label>
                         <div class="attribute-control">
-                            <button class="attr-btn" onclick="RollSystem.adjustAttribute('constitution', -1)">-</button>
                             <span class="attr-value" id="attrConstitution">5</span>
-                            <button class="attr-btn" onclick="RollSystem.adjustAttribute('constitution', 1)">+</button>
                         </div>
                         <p class="attr-desc">影响生命值和防御力</p>
                     </div>
@@ -52,9 +47,7 @@
                     <div class="attribute-item">
                         <label>悟性</label>
                         <div class="attribute-control">
-                            <button class="attr-btn" onclick="RollSystem.adjustAttribute('comprehension', -1)">-</button>
                             <span class="attr-value" id="attrComprehension">5</span>
-                            <button class="attr-btn" onclick="RollSystem.adjustAttribute('comprehension', 1)">+</button>
                         </div>
                         <p class="attr-desc">影响修炼速度和技能领悟</p>
                     </div>
@@ -62,9 +55,7 @@
                     <div class="attribute-item">
                         <label>神识</label>
                         <div class="attribute-control">
-                            <button class="attr-btn" onclick="RollSystem.adjustAttribute('spirit', -1)">-</button>
                             <span class="attr-value" id="attrSpirit">5</span>
-                            <button class="attr-btn" onclick="RollSystem.adjustAttribute('spirit', 1)">+</button>
                         </div>
                         <p class="attr-desc">影响法力值和法术威力</p>
                     </div>
@@ -72,9 +63,7 @@
                     <div class="attribute-item">
                         <label>机缘</label>
                         <div class="attribute-control">
-                            <button class="attr-btn" onclick="RollSystem.adjustAttribute('luck', -1)">-</button>
                             <span class="attr-value" id="attrLuck">5</span>
-                            <button class="attr-btn" onclick="RollSystem.adjustAttribute('luck', 1)">+</button>
                         </div>
                         <p class="attr-desc">影响奇遇概率和物品掉落</p>
                     </div>
@@ -586,32 +575,13 @@ const RollSystem = {
         document.getElementById('attrSpirit').textContent = this.currentStats.spirit;
         document.getElementById('attrLuck').textContent = this.currentStats.luck;
 
-        // 更新剩余点数
-        document.getElementById('remainingPoints').textContent = this.totalPoints - this.usedPoints;
-
-        // 更新按钮状态
-        this.updateButtonStates();
+        // 不再显示剩余点数或调整按钮
     },
 
     /**
      * 更新按钮状态
      */
-    updateButtonStates() {
-        const remainingPoints = this.totalPoints - this.usedPoints;
-        const buttons = document.querySelectorAll('.attr-btn');
-
-        buttons.forEach(btn => {
-            const isPlus = btn.textContent === '+';
-            const attrElement = btn.parentElement.querySelector('.attr-value');
-            const value = parseInt(attrElement.textContent);
-
-            if (isPlus) {
-                btn.disabled = remainingPoints <= 0 || value >= 10;
-            } else {
-                btn.disabled = value <= 1;
-            }
-        });
-    },
+    updateButtonStates() {},
 
     /**
      * 随机姓名
@@ -628,31 +598,48 @@ const RollSystem = {
     /**
      * 随机所有
      */
-    randomAll() {
-        // 随机姓名
+    async randomAll() {
         this.randomName();
+        const nameField = document.getElementById('characterName');
+        const chosenName = nameField.value.trim();
 
-        // 随机属性分配
-        this.resetStats();
-        let remainingPoints = 10;
+        try {
+            const res = await fetch('/api/roll', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ mode: 'random' })
+            });
+            const data = await res.json();
+            if (!data.success) return;
 
-        while (remainingPoints > 0) {
-            const attrs = Object.keys(this.currentStats);
-            const randomAttr = attrs[Math.floor(Math.random() * attrs.length)];
+            this.currentStats = data.character.attributes || {};
+            this.updateDisplay();
 
-            if (this.currentStats[randomAttr] < 10) {
-                this.currentStats[randomAttr]++;
-                remainingPoints--;
-                this.usedPoints++;
+            const payload = {
+                name: chosenName || data.character.name,
+                gender: document.querySelector('input[name="gender"]:checked').value,
+                background: document.querySelector('input[name="background"]:checked').value,
+                attributes: { ...this.currentStats },
+                destiny: data.destiny && (data.destiny.id || data.destiny.name)
+            };
+
+            const createRes = await fetch('/create_character', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const createResult = await createRes.json();
+            if (createResult.success) {
+                this.hide();
+                if (typeof GameInitFlow !== 'undefined' && GameInitFlow.showWorldIntro) {
+                    setTimeout(() => GameInitFlow.showWorldIntro(), 300);
+                }
+            } else {
+                alert('创建角色失败: ' + (createResult.error || '未知错误'));
             }
+        } catch (e) {
+            console.error('随机创建角色失败', e);
         }
-
-        // 随机背景
-        const backgrounds = ['poor', 'merchant', 'scholar', 'martial'];
-        const randomBg = backgrounds[Math.floor(Math.random() * backgrounds.length)];
-        document.querySelector(`input[name="background"][value="${randomBg}"]`).checked = true;
-
-        this.updateDisplay();
     },
 
     /**
