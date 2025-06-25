@@ -10,7 +10,6 @@ const DYNAMIC_CACHE = 'xianxia-dynamic-v2.0.0';
 // 需要缓存的静态资源
 const STATIC_ASSETS = [
     '/',
-    '/welcome',
     '/intro',
     '/game',
     '/static/css/ink_theme.css',
