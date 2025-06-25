@@ -297,7 +297,8 @@ class XianxiaUIController {
         
         try {
             // 发送命令到服务器
-            const response = await fetch('/command', {
+            const devParam = localStorage.getItem('dev') === 'true' ? '?dev=true' : '';
+            const response = await fetch(`/command${devParam}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

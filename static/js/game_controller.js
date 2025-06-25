@@ -59,9 +59,14 @@ class XianxiaGameController {
      */
     checkDebugMode() {
         const urlParams = new URLSearchParams(window.location.search);
+        const storageDebug = localStorage.getItem('dev');
         const sessionDebug = sessionStorage.getItem('dev_mode');
-        
-        this.isDebugMode = urlParams.get('mode') === 'dev' || sessionDebug === 'true';
+
+        this.isDebugMode =
+            urlParams.get('dev') === 'true' ||
+            storageDebug === 'true' ||
+            urlParams.get('mode') === 'dev' ||
+            sessionDebug === 'true';
         
         if (this.isDebugMode) {
             document.body.classList.add('dev-mode');
@@ -497,9 +502,11 @@ class XianxiaGameController {
         if (this.isDebugMode) {
             this.enableDebugMode();
             sessionStorage.setItem('dev_mode', 'true');
+            localStorage.setItem('dev', 'true');
         } else {
             this.disableDebugMode();
             sessionStorage.removeItem('dev_mode');
+            localStorage.removeItem('dev');
         }
     }
     

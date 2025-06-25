@@ -33,6 +33,14 @@ from xwe.features.community_system import CommunitySystem
 from xwe.features.narrative_system import NarrativeSystem
 from xwe.features.technical_ops import TechnicalOps
 
+
+def is_dev_request(req) -> bool:
+    """检查请求是否开启开发模式"""
+    return (
+        req.args.get("dev") == "true"
+        or str(req.headers.get("dev", "")).lower() == "true"
+    )
+
 # 确保项目根目录在Python路径中
 PROJECT_ROOT = Path(__file__).resolve().parent
 if str(PROJECT_ROOT) not in sys.path:
@@ -269,6 +277,7 @@ def need_refresh():
 @app.route("/create_character", methods=["POST"])
 def create_character():
     """创建角色"""
+    dev_mode = is_dev_request(request)
     data = request.get_json()
 
     # 保存角色名到会话
@@ -285,6 +294,9 @@ def create_character():
         session["player_created"] = True
         if "destiny" in data:
             session["destiny"] = data["destiny"]
+
+    if dev_mode:
+        session["dev"] = True
 
     return jsonify(
         {
@@ -425,9 +437,13 @@ def api_confirm_character():
 @app.route("/command", methods=["POST"])
 def process_command():
     """处理游戏命令（集成NLP）"""
+    dev_mode = is_dev_request(request)
     data = request.get_json()
     user_input = data.get("text", data.get("command", ""))  # 兼容两种字段名
     player_id = session.get("player_id", "default")
+
+    if dev_mode:
+        session["dev"] = True
 
     # 使用命令路由器处理
     command_handler, params = command_router.route_command(user_input)

@@ -44,6 +44,8 @@ python run.py
 
 1. 在开始页面点击"开发者模式"
 2. 输入密码：`dev123`
+3. 或在地址栏添加 `?dev=true`
+4. 也可以在浏览器控制台执行 `localStorage.setItem('dev', 'true')`
 
 ### 开发模式快捷键
 

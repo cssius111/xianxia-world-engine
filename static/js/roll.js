@@ -121,7 +121,8 @@ async function performRoll() {
             attributes: currentCharacter.attributes,
             destiny: data.destiny && (data.destiny.id || data.destiny.name)
         };
-        await fetch('/create_character', {
+        const devParam = localStorage.getItem('dev') === 'true' ? '?dev=true' : '';
+        await fetch(`/create_character${devParam}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
