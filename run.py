@@ -227,10 +227,9 @@ def index():
 
 @app.route("/welcome")
 def welcome():
-    """欢迎页面 - 新游戏或继续游戏"""
+    """旧版欢迎页面兼容，重定向至角色创建"""
     cleanup_old_instances()
-    save_exists = Path("saves/autosave.json").exists()
-    return render_template("welcome.html", save_exists=save_exists)
+    return redirect(url_for("intro_screen"))
 
 
 @app.route("/intro")
@@ -240,12 +239,14 @@ def intro_screen():
     return render_template("intro_optimized.html", dev_mode=dev_mode)
 
 
-# 新的开始页面路由，渲染角色创建并显示欢迎模态框
+# 兼容旧链接的 /start 路由
 @app.route("/start")
 def start_screen():
-    """开始页面"""
+    """开始页面重定向至角色创建"""
     dev_mode = request.args.get("mode") == "dev"
-    return render_template("intro_optimized.html", dev_mode=dev_mode)
+    if dev_mode:
+        return redirect(url_for("intro_screen", mode="dev"))
+    return redirect(url_for("intro_screen"))
 
 
 @app.route("/game")

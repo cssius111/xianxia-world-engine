@@ -874,7 +874,7 @@ class XianxiaGameClient {
                 <h3 style="font-size: 20px; margin-bottom: 20px; color: #d8d8d8;">确认退出</h3>
                 <p style="margin-bottom: 30px; color: #b8b8b8;">确定要退出游戏吗？未保存的进度将丢失。</p>
                 <div style="display: flex; gap: 20px; justify-content: center;">
-                    <button onclick="window.location.href='/welcome'" 
+                    <button onclick="window.location.href='/intro'"
                         style="padding: 12px 24px; background: #8b0000; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px;">确定退出</button>
                     <button onclick="gameClient.closeModal()" 
                         style="padding: 12px 24px; background: #6b6b6b; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px;">取消</button>
