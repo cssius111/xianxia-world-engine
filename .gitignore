@@ -6,3 +6,5 @@ logs/
 saves/
 .env
 .venv/
+project_snapshot.json
+game_settings.json
