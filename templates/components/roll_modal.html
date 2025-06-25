@@ -623,7 +623,8 @@ const RollSystem = {
                 destiny: data.destiny && (data.destiny.id || data.destiny.name)
             };
 
-            const createRes = await fetch('/create_character', {
+            const devParam = localStorage.getItem('dev') === 'true' ? '?dev=true' : '';
+            const createRes = await fetch(`/create_character${devParam}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
@@ -669,7 +670,8 @@ const RollSystem = {
 
         // 发送到后端创建角色
         try {
-            const response = await fetch('/create_character', {
+            const devParam = localStorage.getItem('dev') === 'true' ? '?dev=true' : '';
+            const response = await fetch(`/create_character${devParam}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -4,6 +4,7 @@
 """
 
 from flask import Blueprint, current_app, jsonify, request, session
+from run import is_dev_request
 
 from xwe.core.attributes import CharacterAttributes
 from xwe.core.character import Character, CharacterType
@@ -45,6 +46,7 @@ BACKGROUND_BONUSES = {
 def create_character():
     """创建新角色"""
     try:
+        dev_mode = is_dev_request(request)
         data = request.get_json()
 
         # 验证必需字段
@@ -84,7 +86,10 @@ def create_character():
         attrs.max_cultivation = 100
 
         # 根据Roll的属性点分配计算实际属性
-        roll_attrs = panel.sanitize_attributes(data["attributes"])
+        if dev_mode:
+            roll_attrs = {k: int(v) for k, v in data["attributes"].items()}
+        else:
+            roll_attrs = panel.sanitize_attributes(data["attributes"])
 
         # 根骨影响生命值和防御
         constitution = roll_attrs.get("constitution", 5)

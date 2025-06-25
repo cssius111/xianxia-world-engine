@@ -380,7 +380,8 @@ class XianxiaGameClient {
 
     // 发送命令到服务器
     async sendCommand(command) {
-        const response = await fetch('/command', {
+        const devParam = localStorage.getItem('dev') === 'true' ? '?dev=true' : '';
+        const response = await fetch(`/command${devParam}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ command })

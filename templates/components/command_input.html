@@ -284,7 +284,8 @@ const CommandInput = {
         
         try {
             // 发送命令到服务器（使用 text 字段以支持 NLP）
-            const response = await fetch('/command', {
+            const devParam = localStorage.getItem('dev') === 'true' ? '?dev=true' : '';
+            const response = await fetch(`/command${devParam}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
