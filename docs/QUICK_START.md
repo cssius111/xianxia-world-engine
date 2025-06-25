@@ -12,7 +12,7 @@
 
 ```bash
 # Web UI 版本
-python entrypoints/run_web_ui_optimized.py
+python run.py
 
 # 命令行版本
 python main_menu.py

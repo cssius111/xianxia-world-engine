@@ -3,9 +3,8 @@
 快速诊断脚本 - 检查最常见的问题
 """
 
-import json
 import os
-import subprocess
+import socket
 import sys
 from pathlib import Path
 
@@ -58,7 +57,7 @@ critical_paths = {
     "templates": "模板目录",
     "static": "静态资源目录",
     "data/restructured": "数据目录",
-    "entrypoints/run_web_ui_optimized.py": "启动脚本",
+    "run.py": "启动脚本",
 }
 
 for path, description in critical_paths.items():
@@ -85,7 +84,6 @@ else:
 
 # 6. 检查端口可用性
 print("\n6. 检查端口5001...")
-import socket
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 result = sock.connect_ex(("localhost", 5001))
@@ -130,7 +128,7 @@ print("📊 诊断结果:")
 if not issues_found:
     print("\n🎉 太好了！没有发现明显问题。")
     print("\n可以尝试启动项目:")
-    print("  python entrypoints/run_web_ui_optimized.py")
+    print("  python run.py")
 else:
     print(f"\n⚠️  发现 {len(issues_found)} 个问题:")
     for i, issue in enumerate(issues_found, 1):

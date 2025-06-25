@@ -12,7 +12,7 @@
 - `run.py` - 简化版Flask应用
 - `start_game.py` - 启动脚本（调用终端版本）
 - `main_menu.py` - 终端主菜单
-- `entrypoints/run_web_ui_optimized.py` - 完整版Web UI
+- `run.py` - Web UI 入口
 
 ### 3. **架构不一致**
 - 有些代码使用 `core` 模块

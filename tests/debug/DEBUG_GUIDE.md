@@ -12,7 +12,7 @@ python tests/debug/startup_check.py
 
 如果所有检查都通过，您可以直接启动项目：
 ```bash
-python entrypoints/run_web_ui_optimized.py
+python run.py
 ```
 
 ### 2. 如果启动检查失败
@@ -84,7 +84,7 @@ python tests/debug/test_data_files.py
 ### 5. 前端测试
 
 启动服务器后，可以在浏览器中运行前端测试：
-1. 启动服务器: `python entrypoints/run_web_ui_optimized.py`
+1. 启动服务器: `python run.py`
 2. 访问: `http://localhost:5001/static/../tests/debug/frontend_test.html`
 
 ## 🛠️ 调试工具说明
@@ -136,7 +136,7 @@ python tests/debug/test_data_files.py
 
 ```bash
 cd /path/to/xianxia_world_engine
-python entrypoints/run_web_ui_optimized.py
+python run.py
 ```
 
 然后访问：

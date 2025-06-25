@@ -9,4 +9,4 @@ echo -e "\n测试角色生成器..."
 python scripts/gen_character.py
 
 echo -e "\n完成! 现在可以运行:"
-echo "python entrypoints/run_web_ui_optimized.py"
+echo "python run.py"

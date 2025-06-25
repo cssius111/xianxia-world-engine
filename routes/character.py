@@ -64,9 +64,9 @@ def create_character():
 
         # 这里需要从主应用获取游戏实例
         # 使用current_app来避免循环引用
-        from entrypoints import run_web_ui_optimized
+        from run import get_game_instance
 
-        instance = run_web_ui_optimized.get_game_instance(session["session_id"])
+        instance = get_game_instance(session["session_id"])
         game = instance["game"]
 
         # 根据当前模式加载角色面板配置
@@ -124,7 +124,10 @@ def create_character():
 
         # 创建角色
         player = Character(
-            id="player", name=name, character_type=CharacterType.PLAYER, attributes=attrs
+            id="player",
+            name=name,
+            character_type=CharacterType.PLAYER,
+            attributes=attrs,
         )
 
         # 设置额外数据
@@ -134,7 +137,9 @@ def create_character():
             "background_name": BACKGROUND_BONUSES[background]["name"],
             "comprehension": comprehension,
             "luck": luck,
-            "created_at": str(current_app.config.get("SERVER_START_TIME", "2025-01-01")),
+            "created_at": str(
+                current_app.config.get("SERVER_START_TIME", "2025-01-01")
+            ),
         }
 
         # 初始化背包和金币
@@ -143,7 +148,10 @@ def create_character():
             player.inventory.gold = int(100 * gold_multiplier)
 
             # 武林世家初始剑法
-            if background == "martial" and "initial_skills" in BACKGROUND_BONUSES[background]:
+            if (
+                background == "martial"
+                and "initial_skills" in BACKGROUND_BONUSES[background]
+            ):
                 # TODO: 添加初始技能
                 pass
 
@@ -156,7 +164,9 @@ def create_character():
             {
                 "type": "system",
                 "message": f"欢迎来到修仙世界，{name}！",
-                "timestamp": current_app.config.get("CURRENT_TIME", "2025-01-01 00:00:00"),
+                "timestamp": current_app.config.get(
+                    "CURRENT_TIME", "2025-01-01 00:00:00"
+                ),
             }
         )
 
@@ -164,7 +174,9 @@ def create_character():
             {
                 "type": "story",
                 "message": f'作为{BACKGROUND_BONUSES[background]["name"]}，你怀揣着对修仙的向往，踏上了这条充满未知的道路...',
-                "timestamp": current_app.config.get("CURRENT_TIME", "2025-01-01 00:00:01"),
+                "timestamp": current_app.config.get(
+                    "CURRENT_TIME", "2025-01-01 00:00:01"
+                ),
             }
         )
 
@@ -195,9 +207,9 @@ def get_character_info():
         if "session_id" not in session:
             return jsonify({"success": False, "error": "会话已过期"}), 401
 
-        from entrypoints import run_web_ui_optimized
+        from run import get_game_instance
 
-        instance = run_web_ui_optimized.get_game_instance(session["session_id"])
+        instance = get_game_instance(session["session_id"])
         game = instance["game"]
 
         player = game.game_state.player
