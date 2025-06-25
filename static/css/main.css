@@ -4,6 +4,15 @@
 @import url('ink_theme.css');
 @import url('layout.css');
 
+/* 字体定义 */
+@font-face {
+    font-family: 'LongCang';
+    src: url('../font/LongCang-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 /* 全局重置 */
 * {
     margin: 0;
@@ -465,4 +474,15 @@ tbody + tbody {
     h3 {
         page-break-after: avoid;
     }
+}
+
+/* 标题样式 */
+.title-lg {
+    font-family: 'LongCang', 'KaiTi', serif;
+    font-size: 3rem;
+}
+
+.title-sm {
+    font-family: 'LongCang', 'KaiTi', serif;
+    font-size: 1.5rem;
 }

@@ -175,6 +175,14 @@ def intro_screen():
     return render_template("intro_optimized.html", dev_mode=dev_mode)
 
 
+# 新的开始页面路由，渲染角色创建并显示欢迎模态框
+@app.route("/start")
+def start_screen():
+    """开始页面"""
+    dev_mode = request.args.get("mode") == "dev"
+    return render_template("intro_optimized.html", dev_mode=dev_mode)
+
+
 @app.route("/game")
 def game_screen():
     """游戏主界面"""
