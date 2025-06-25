@@ -57,17 +57,7 @@ def index():
     """首页"""
     if session.get("player_created"):
         return redirect(url_for("game_screen"))
-    return redirect(url_for("start_screen"))
-
-@app.route("/start")
-def start_screen():
-    """开始页面"""
-    save_exists = Path("saves/autosave.json").exists()
-    return render_template(
-        "screens/start_screen.html",
-        save_exists=save_exists,
-        build_time=datetime.now().strftime("%Y.%m.%d")
-    )
+    return redirect(url_for("intro_screen"))
 
 @app.route("/intro")
 def intro_screen():

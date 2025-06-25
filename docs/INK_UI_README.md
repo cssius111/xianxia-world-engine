@@ -52,7 +52,6 @@ xianxia_world_engine/
 ├── templates/
 │   ├── base.html            # 基础模板
 │   └── screens/
-│       ├── start_screen.html # 开始页面
 │       ├── choose_start.html # 选择页面
 │       ├── roll_screen.html  # 抽卡页面
 │       └── game.html        # 游戏主界面
