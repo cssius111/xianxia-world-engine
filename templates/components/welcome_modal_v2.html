@@ -266,23 +266,30 @@ const GameLauncher = {
      */
     initMusic() {
         const audio = document.getElementById('bgMusic');
-        if (audio && this.musicList.length > 0) {
-            // 随机选择一首音乐
-            const randomIndex = Math.floor(Math.random() * this.musicList.length);
-            audio.src = this.musicList[randomIndex];
-
-            // 设置音量
-            audio.volume = 0.3;
-
-            // 尝试自动播放
-            audio.play().catch(e => {
-                console.log('音乐自动播放被阻止，等待用户交互');
-                // 在用户第一次点击时播放
-                document.addEventListener('click', () => {
-                    audio.play();
-                }, { once: true });
-            });
+        if (!audio || this.musicList.length === 0) {
+            return;
         }
+
+        // 若音频已初始化则直接返回，避免重复加载
+        if (audio.src) {
+            return;
+        }
+
+        // 随机选择一首音乐
+        const randomIndex = Math.floor(Math.random() * this.musicList.length);
+        audio.src = this.musicList[randomIndex];
+
+        // 设置音量
+        audio.volume = 0.3;
+
+        // 尝试自动播放
+        audio.play().catch(e => {
+            console.log('音乐自动播放被阻止，等待用户交互');
+            // 在用户第一次点击时播放
+            document.addEventListener('click', () => {
+                audio.play();
+            }, { once: true });
+        });
     },
 
     /**
