@@ -21,7 +21,11 @@ from flask import (
     send_from_directory,
     session,
     url_for,
+    Response,
+    stream_with_context,
 )
+
+import json
 
 from xwe.core.command_router import CommandRouter
 from xwe.core.cultivation_system import CultivationSystem
@@ -72,6 +76,9 @@ inventory_system = InventorySystem()
 # ---------------- 游戏实例管理 -----------------
 # Web UI 优化版中提供的多会话支持
 game_instances = {}
+
+# 保存上一次发送给每个会话的状态数据，用于Server-Sent Events
+status_cache = {}
 
 
 def get_game_instance(session_id):
@@ -148,6 +155,55 @@ def cleanup_old_instances():
             pass
 
         del game_instances[sid]
+
+
+def build_status_data():
+    """构建玩家状态数据"""
+    player_id = session.get("player_id", "default")
+    inventory_data = inventory_system.get_inventory_data(player_id)
+
+    player_name = session.get("player_name", "无名侠客")
+    realm_name = "炼气期"
+    realm_level = 1
+    current_health = 100
+    max_health = 100
+    current_mana = 50
+    max_mana = 50
+    location = session.get("location", "青云城")
+
+    if "session_id" in session:
+        try:
+            instance = get_game_instance(session["session_id"])
+            game = instance["game"]
+            player = getattr(game.game_state, "player", None)
+            if player:
+                player_name = player.name
+                realm_name = player.attributes.realm_name
+                realm_level = player.attributes.realm_level
+                current_health = player.attributes.current_health
+                max_health = player.attributes.max_health
+                current_mana = player.attributes.current_mana
+                max_mana = player.attributes.max_mana
+                location = game.game_state.current_location
+        except Exception as e:
+            logger.error(f"读取游戏状态失败: {e}")
+
+    return {
+        "player": {
+            "name": player_name,
+            "attributes": {
+                "realm_name": realm_name,
+                "realm_level": realm_level,
+                "current_health": current_health,
+                "max_health": max_health,
+                "current_mana": current_mana,
+                "max_mana": max_mana,
+            },
+        },
+        "location": location,
+        "gold": inventory_data["gold"],
+        "inventory": inventory_data,
+    }
 
 
 # 初始化命令路由器（带NLP支持）
@@ -610,53 +666,26 @@ def process_command():
 @app.route("/status")
 def get_status():
     """获取游戏状态"""
-    player_id = session.get("player_id", "default")
-    inventory_data = inventory_system.get_inventory_data(player_id)
+    return jsonify(build_status_data())
 
-    player_name = session.get("player_name", "无名侠客")
-    realm_name = "炼气期"
-    realm_level = 1
-    current_health = 100
-    max_health = 100
-    current_mana = 50
-    max_mana = 50
-    location = session.get("location", "青云城")
 
-    if "session_id" in session:
-        try:
-            instance = get_game_instance(session["session_id"])
-            game = instance["game"]
-            player = getattr(game.game_state, "player", None)
-            if player:
-                player_name = player.name
-                realm_name = player.attributes.realm_name
-                realm_level = player.attributes.realm_level
-                current_health = player.attributes.current_health
-                max_health = player.attributes.max_health
-                current_mana = player.attributes.current_mana
-                max_mana = player.attributes.max_mana
-                location = game.game_state.current_location
-        except Exception as e:
-            logger.error(f"读取游戏状态失败: {e}")
+@app.route("/status/stream")
+def stream_status():
+    """SSE 推送玩家状态更新"""
 
-    return jsonify(
-        {
-            "player": {
-                "name": player_name,
-                "attributes": {
-                    "realm_name": realm_name,
-                    "realm_level": realm_level,
-                    "current_health": current_health,
-                    "max_health": max_health,
-                    "current_mana": current_mana,
-                    "max_mana": max_mana,
-                },
-            },
-            "location": location,
-            "gold": inventory_data["gold"],
-            "inventory": inventory_data,
-        }
-    )
+    @stream_with_context
+    def event_stream():
+        session_id = session.get("session_id", "default")
+        last_data = status_cache.get(session_id)
+        while True:
+            data = build_status_data()
+            if data != last_data:
+                last_data = data
+                status_cache[session_id] = data
+                yield f"data: {json.dumps(data, ensure_ascii=False)}\n\n"
+            time.sleep(2)
+
+    return Response(event_stream(), mimetype="text/event-stream")
 
 
 @app.route("/log")
