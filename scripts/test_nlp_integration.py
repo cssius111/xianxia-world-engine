@@ -53,7 +53,7 @@ def check_environment():
     return True
 
 
-def test_nlp_processor():
+def run_nlp_processor():
     """测试 NLP 处理器"""
     print("\n=== 测试 NLP 处理器 ===")
     
@@ -98,8 +98,11 @@ def test_nlp_processor():
         traceback.print_exc()
         return False
 
+def test_nlp_processor():
+    assert run_nlp_processor()
 
-def test_command_router():
+
+def run_command_router():
     """测试命令路由器"""
     print("\n=== 测试命令路由器 ===")
     
@@ -130,8 +133,11 @@ def test_command_router():
         print(f"❌ 命令路由器测试失败: {e}")
         return False
 
+def test_command_router():
+    assert run_command_router()
 
-def test_monitor():
+
+def run_monitor():
     """测试性能监控"""
     print("\n=== 测试性能监控 ===")
     
@@ -165,8 +171,11 @@ def test_monitor():
         print(f"❌ 性能监控测试失败: {e}")
         return False
 
+def test_monitor():
+    assert run_monitor()
 
-def test_flask_integration():
+
+def run_flask_integration():
     """测试 Flask 集成"""
     print("\n=== 测试 Flask 集成 ===")
     
@@ -195,6 +204,9 @@ def test_flask_integration():
         print(f"❌ Flask 集成测试失败: {e}")
         return False
 
+def test_flask_integration():
+    assert run_flask_integration()
+
 
 def main():
     """主测试流程"""
@@ -208,10 +220,10 @@ def main():
     # 执行测试
     tests = [
         ("环境检查", check_environment),
-        ("NLP处理器", test_nlp_processor),
-        ("命令路由", test_command_router),
-        ("性能监控", test_monitor),
-        ("Flask集成", test_flask_integration)
+        ("NLP处理器", run_nlp_processor),
+        ("命令路由", run_command_router),
+        ("性能监控", run_monitor),
+        ("Flask集成", run_flask_integration)
     ]
     
     results = []
