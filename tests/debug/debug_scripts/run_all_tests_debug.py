@@ -3,12 +3,12 @@
 综合测试运行器 - 运行所有测试并生成报告
 """
 
+import json
+import os
 import subprocess
 import sys
-import os
-import json
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
 
 # 脚本位于 tests/debug/debug_scripts，需要向上四级定位项目根目录
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
@@ -27,23 +27,23 @@ test_scripts = [
     {
         "name": "导入测试",
         "script": "imports_debug.py",
-        "result_file": "import_test_results.json"
+        "result_file": "import_test_results.json",
     },
     {
         "name": "文件系统测试",
         "script": "filesystem_debug.py",
-        "result_file": "filesystem_test_results.json"
+        "result_file": "filesystem_test_results.json",
     },
     {
         "name": "Flask应用测试",
         "script": "flask_app_debug.py",
-        "result_file": "flask_test_results.json"
+        "result_file": "flask_test_results.json",
     },
     {
         "name": "数据文件验证",
         "script": "data_files_debug.py",
-        "result_file": "data_validation_results.json"
-    }
+        "result_file": "data_validation_results.json",
+    },
 ]
 
 # 运行结果汇总
@@ -55,32 +55,32 @@ overall_results = {
         "total_tests": len(test_scripts),
         "passed": 0,
         "failed": 0,
-        "errors": []
-    }
+        "errors": [],
+    },
 }
 
 # 运行每个测试
 for test_info in test_scripts:
     print(f"\n📝 运行测试: {test_info['name']}")
     print("-" * 50)
-    
+
     script_path = SCRIPT_DIR / test_info["script"]
-    
+
     try:
         # 运行测试脚本
         result = subprocess.run(
             [sys.executable, str(script_path)],
             capture_output=True,
             text=True,
-            cwd=str(PROJECT_ROOT)
+            cwd=str(PROJECT_ROOT),
         )
-        
+
         # 检查返回码
         if result.returncode == 0:
             print(f"✅ {test_info['name']} - 通过")
             overall_results["tests"][test_info["name"]] = {
                 "status": "passed",
-                "return_code": 0
+                "return_code": 0,
             }
             overall_results["summary"]["passed"] += 1
         else:
@@ -88,40 +88,38 @@ for test_info in test_scripts:
             overall_results["tests"][test_info["name"]] = {
                 "status": "failed",
                 "return_code": result.returncode,
-                "error": result.stderr if result.stderr else "未知错误"
+                "error": result.stderr if result.stderr else "未知错误",
             }
             overall_results["summary"]["failed"] += 1
             overall_results["summary"]["errors"].append(
                 f"{test_info['name']}: 返回码 {result.returncode}"
             )
-        
+
         # 读取测试结果文件
         result_file = RESULT_DIR / test_info["result_file"]
         if result_file.exists():
             try:
-                with open(result_file, 'r', encoding='utf-8') as f:
+                with open(result_file, "r", encoding="utf-8") as f:
                     test_result = json.load(f)
                 overall_results["tests"][test_info["name"]]["details"] = test_result
             except Exception as e:
                 print(f"  ⚠️  无法读取结果文件: {e}")
-        
+
         # 显示测试输出的最后几行
         if result.stdout:
-            lines = result.stdout.strip().split('\n')
+            lines = result.stdout.strip().split("\n")
             print("  输出摘要:")
             for line in lines[-5:]:  # 最后5行
                 print(f"    {line}")
-                
+
     except Exception as e:
         print(f"❌ {test_info['name']} - 执行错误: {e}")
         overall_results["tests"][test_info["name"]] = {
             "status": "error",
-            "error": str(e)
+            "error": str(e),
         }
         overall_results["summary"]["failed"] += 1
-        overall_results["summary"]["errors"].append(
-            f"{test_info['name']}: {str(e)}"
-        )
+        overall_results["summary"]["errors"].append(f"{test_info['name']}: {str(e)}")
 
 # 生成综合报告
 print("\n" + "=" * 70)
@@ -187,13 +185,14 @@ if "数据文件验证" in overall_results["tests"]:
 
 # 保存综合报告
 report_file = RESULT_DIR / "test_report.json"
-with open(report_file, 'w', encoding='utf-8') as f:
+with open(report_file, "w", encoding="utf-8") as f:
     json.dump(overall_results, f, indent=2, ensure_ascii=False)
 
 # 生成HTML报告
 html_report_file = RESULT_DIR / "test_report.html"
-with open(html_report_file, 'w', encoding='utf-8') as f:
-    f.write("""<!DOCTYPE html>
+with open(html_report_file, "w", encoding="utf-8") as f:
+    f.write(
+        """<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -219,46 +218,58 @@ with open(html_report_file, 'w', encoding='utf-8') as f:
 <body>
     <div class="container">
         <h1>🚀 修仙世界引擎 - 测试报告</h1>
-        <p class="timestamp">生成时间: """ + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + """</p>
+        <p class="timestamp">生成时间: """
+        + datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        + """</p>
         
         <div class="summary">
             <div class="summary-card total">
                 <h3>总测试数</h3>
-                <h2>""" + str(summary['total_tests']) + """</h2>
+                <h2>"""
+        + str(summary["total_tests"])
+        + """</h2>
             </div>
             <div class="summary-card passed">
                 <h3>通过</h3>
-                <h2>""" + str(summary['passed']) + """</h2>
+                <h2>"""
+        + str(summary["passed"])
+        + """</h2>
             </div>
             <div class="summary-card failed">
                 <h3>失败</h3>
-                <h2>""" + str(summary['failed']) + """</h2>
+                <h2>"""
+        + str(summary["failed"])
+        + """</h2>
             </div>
         </div>
         
         <h2>测试详情</h2>
-""")
-    
+"""
+    )
+
     for test_name, test_result in overall_results["tests"].items():
         status = test_result.get("status", "unknown")
         css_class = "test-passed" if status == "passed" else "test-failed"
-        f.write(f"""
+        f.write(
+            f"""
         <div class="test-result {css_class}">
             <h3>{'✅' if status == 'passed' else '❌'} {test_name}</h3>
             <p>状态: {status}</p>
-""")
-        
+"""
+        )
+
         if "error" in test_result:
             f.write(f'<p class="error">错误: {test_result["error"]}</p>')
-        
+
         if "details" in test_result and status == "failed":
             f.write("<details><summary>查看详情</summary><pre>")
             f.write(json.dumps(test_result["details"], indent=2, ensure_ascii=False))
             f.write("</pre></details>")
-        
+
         f.write("</div>")
-    
-    f.write("""
+
+    f.write(
+        """
         <h2>建议操作</h2>
         <ol>
             <li>如果有模块导入失败，运行: <code>pip install -r requirements.txt</code></li>
@@ -269,7 +280,8 @@ with open(html_report_file, 'w', encoding='utf-8') as f:
     </div>
 </body>
 </html>
-""")
+"""
+    )
 
 print(f"\n📄 报告已生成:")
 print(f"  - JSON报告: {report_file}")
@@ -281,7 +293,7 @@ if summary["failed"] == 0:
     print("\n🎉 恭喜！所有测试都通过了！项目可以正常运行。")
     print("\n启动项目:")
     print(f"  cd {PROJECT_ROOT}")
-    print("  python run_web_ui_v2.py")
+    print("  python entrypoints/run_web_ui_optimized.py")
 else:
     print("\n⚠️  有测试失败，请根据上面的建议修复问题后再运行项目。")
 

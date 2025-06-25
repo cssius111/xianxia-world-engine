@@ -16,7 +16,7 @@
 
 #### 步骤1: 运行自动修复
 ```bash
-cd /Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine
+cd /path/to/xianxia_world_engine
 python scripts/auto_fix_imports.py
 ```
 

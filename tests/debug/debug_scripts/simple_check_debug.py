@@ -44,14 +44,14 @@ for name, import_statement in tests:
 print("\n检查关键文件:")
 
 files_to_check = [
-    "run_web_ui_v2.py",
+    "entrypoints/run_web_ui_optimized.py",
     "requirements.txt",
     "templates/welcome_optimized.html",
     "templates/intro_optimized.html",
     "templates/game_enhanced_optimized_v2.html",
     "static/css/ink_style.css",
     "static/js/game_controller.js",
-    ".env"
+    ".env",
 ]
 
 missing_files = []
@@ -72,19 +72,19 @@ if not failed_imports and not missing_files:
     print("\n✅ 所有检查都通过！项目应该可以正常运行。")
     print("\n启动命令:")
     print(f"cd {PROJECT_ROOT}")
-    print("python run_web_ui_v2.py")
+    print("python entrypoints/run_web_ui_optimized.py")
 else:
     if failed_imports:
         print(f"\n❌ 有 {len(failed_imports)} 个导入失败:")
         for name, error in failed_imports:
             print(f"  - {name}: {error}")
         print("\n建议: pip install -r requirements.txt")
-    
+
     if missing_files:
         print(f"\n❌ 有 {len(missing_files)} 个文件缺失:")
         for file in missing_files:
             print(f"  - {file}")
-        
+
         if ".env" in missing_files and (PROJECT_ROOT / ".env.example").exists():
             print("\n建议: cp .env.example .env")
 
@@ -93,6 +93,7 @@ print("\n" + "=" * 60)
 # 如果可能，尝试导入并显示配置
 try:
     from game_config import config
+
     print("\n游戏配置信息:")
     print(f"  游戏名称: {config.game_name}")
     print(f"  版本: {config.version}")

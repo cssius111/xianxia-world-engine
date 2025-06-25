@@ -11,7 +11,7 @@
 
 1. **启动服务器**
    ```bash
-   cd /Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine
+   cd /path/to/xianxia_world_engine
    python run.py
    ```
    - [ ] 服务器成功启动

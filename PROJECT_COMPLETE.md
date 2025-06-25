@@ -8,20 +8,20 @@
 
 ### macOS/Linux:
 ```bash
-cd /Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine
+cd /path/to/xianxia_world_engine
 chmod +x start.sh  # 首次运行需要添加执行权限
 ./start.sh
 ```
 
 ### Windows:
 ```cmd
-cd /Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine
+cd /path/to/xianxia_world_engine
 start.bat
 ```
 
 ### 手动启动:
 ```bash
-cd /Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine
+cd /path/to/xianxia_world_engine
 pip install -r requirements.txt  # 安装依赖
 python run.py  # 启动服务器
 ```

@@ -31,7 +31,7 @@
 我已经创建了一个综合的清理和重构脚本：
 
 ```bash
-cd /Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine
+cd /path/to/xianxia_world_engine
 python scripts/cleanup_and_refactor.py
 ```
 

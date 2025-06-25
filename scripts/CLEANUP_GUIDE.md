@@ -26,7 +26,7 @@
 运行清理脚本来删除完全重复的文件：
 
 ```bash
-cd /Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine
+cd /path/to/xianxia_world_engine
 python scripts/cleanup_duplicates.py
 ```
 
