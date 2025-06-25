@@ -9,7 +9,7 @@
 
 2. **启动服务器**
    ```bash
-   python entrypoints/run_web_ui_optimized.py
+   python run.py
    ```
 
 3. **访问页面**

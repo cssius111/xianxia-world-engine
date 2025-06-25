@@ -7,7 +7,7 @@
 python scripts/quick_fix.py
 
 # 2. 启动服务器
-python entrypoints/run_web_ui_optimized.py
+python run.py
 
 # 3. 打开浏览器访问
 http://localhost:5001

@@ -3,7 +3,6 @@
 简单的项目状态检查
 """
 
-import os
 import sys
 from pathlib import Path
 
@@ -44,7 +43,7 @@ for name, import_statement in tests:
 print("\n检查关键文件:")
 
 files_to_check = [
-    "entrypoints/run_web_ui_optimized.py",
+    "run.py",
     "requirements.txt",
     "templates/welcome_optimized.html",
     "templates/intro_optimized.html",
@@ -72,7 +71,7 @@ if not failed_imports and not missing_files:
     print("\n✅ 所有检查都通过！项目应该可以正常运行。")
     print("\n启动命令:")
     print(f"cd {PROJECT_ROOT}")
-    print("python entrypoints/run_web_ui_optimized.py")
+    print("python run.py")
 else:
     if failed_imports:
         print(f"\n❌ 有 {len(failed_imports)} 个导入失败:")
@@ -98,5 +97,5 @@ try:
     print(f"  游戏名称: {config.game_name}")
     print(f"  版本: {config.version}")
     print(f"  调试模式: {config.debug_mode}")
-except:
+except Exception:
     pass

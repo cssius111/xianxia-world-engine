@@ -67,7 +67,7 @@ mkdir -p static/js/utils
 
 ### 4. 更新Flask应用
 
-在 `run_web_ui_optimized.py` 中添加：
+在 `run.py` 中添加：
 
 ```python
 from api.integrated_routes import integrated_bp
@@ -264,7 +264,7 @@ server {
 
 3. **使用Gunicorn**
 ```bash
-gunicorn -w 4 -b 0.0.0.0:5000 run_web_ui_optimized:app
+gunicorn -w 4 -b 0.0.0.0:5000 run:app
 ```
 
 ## 八、维护建议

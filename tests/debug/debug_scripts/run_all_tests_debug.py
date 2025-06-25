@@ -4,7 +4,6 @@
 """
 
 import json
-import os
 import subprocess
 import sys
 from datetime import datetime
@@ -199,7 +198,14 @@ with open(html_report_file, "w", encoding="utf-8") as f:
     <title>修仙世界引擎 - 测试报告</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
-        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
         h1 { color: #333; border-bottom: 2px solid #4CAF50; padding-bottom: 10px; }
         h2 { color: #666; margin-top: 30px; }
         .summary { display: flex; gap: 20px; margin: 20px 0; }
@@ -283,7 +289,7 @@ with open(html_report_file, "w", encoding="utf-8") as f:
 """
     )
 
-print(f"\n📄 报告已生成:")
+print("\n📄 报告已生成:")
 print(f"  - JSON报告: {report_file}")
 print(f"  - HTML报告: {html_report_file}")
 print("\n💡 提示: 在浏览器中打开 HTML 报告可以获得更好的阅读体验")
@@ -293,7 +299,7 @@ if summary["failed"] == 0:
     print("\n🎉 恭喜！所有测试都通过了！项目可以正常运行。")
     print("\n启动项目:")
     print(f"  cd {PROJECT_ROOT}")
-    print("  python entrypoints/run_web_ui_optimized.py")
+    print("  python run.py")
 else:
     print("\n⚠️  有测试失败，请根据上面的建议修复问题后再运行项目。")
 

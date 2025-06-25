@@ -70,7 +70,7 @@ cp .env.example .env
 ### 4. 启动项目
 ```bash
 # 运行开发服务器
-python entrypoints/run_web_ui_optimized.py
+python run.py
 
 # 访问游戏
 # http://localhost:5001/welcome

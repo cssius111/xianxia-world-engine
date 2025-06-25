@@ -12,7 +12,7 @@
 
 3. **运行项目**
    ```bash
-   python entrypoints/run_web_ui_optimized.py
+   python run.py
    ```
 
 ## 📖 文档结构

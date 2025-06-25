@@ -4,7 +4,6 @@
 """
 
 import json
-import os
 from pathlib import Path
 
 # 项目根目录
@@ -66,7 +65,7 @@ for dir_path in required_dirs:
 # 2. 检查必要的文件
 print("\n2. 检查关键文件:")
 required_files = [
-    "entrypoints/run_web_ui_optimized.py",
+    "run.py",
     "game_config.py",
     "requirements.txt",
     "README.md",
@@ -119,7 +118,7 @@ for data_file in data_files:
             # 尝试加载JSON确保格式正确
             with open(full_path, "r", encoding="utf-8") as f:
                 json.load(f)
-            print(f"   JSON格式: ✅")
+            print("   JSON格式: ✅")
         except json.JSONDecodeError as e:
             print(f"   JSON格式: ❌ 错误: {e}")
             check_results["missing"].append(f"JSON错误: {data_file}")

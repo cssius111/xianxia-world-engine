@@ -27,10 +27,9 @@ try:
     os.environ["FLASK_ENV"] = "testing"
     os.environ["FLASK_SECRET_KEY"] = "test_secret_key"
 
-    from entrypoints.run_web_ui_optimized import XianxiaWebServer
+    import run
 
-    server = XianxiaWebServer()
-    app = server.app
+    app = run.app
 
     if app is not None:
         print("✅ Flask应用创建成功")
@@ -125,11 +124,11 @@ if test_results["flask_app"]:
     bp_count = len(test_results["blueprints"])
     bp_ok = sum(1 for v in test_results["blueprints"].values() if v)
 
-    print(f"Flask应用: ✅")
+    print("Flask应用: ✅")
     print(f"路由注册: {route_ok}/{route_count}")
     print(f"蓝图注册: {bp_ok}/{bp_count}")
 else:
-    print(f"Flask应用: ❌")
+    print("Flask应用: ❌")
 
 if test_results["errors"]:
     print(f"\n错误数: {len(test_results['errors'])}")

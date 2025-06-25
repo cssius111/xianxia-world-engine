@@ -77,7 +77,7 @@
 xiuxian-simulator/
 ├── README.md                    # 项目说明
 ├── requirements.txt             # Python依赖
-├── run_web_ui_optimized.py      # 主程序入口
+├── run.py                       # 主程序入口
 ├── config.py                    # 配置文件
 │
 ├── xwe/                         # 核心游戏逻辑
@@ -185,7 +185,7 @@ pip install flask-cors
 
 #### 5.1.2 创建主程序文件
 ```python
-# run_web_ui_optimized.py
+# run.py
 from flask import Flask, render_template, jsonify, request
 import json
 import os

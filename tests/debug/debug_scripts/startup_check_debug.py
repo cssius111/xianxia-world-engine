@@ -6,7 +6,6 @@
 
 import json
 import os
-import subprocess
 import sys
 from pathlib import Path
 
@@ -116,7 +115,7 @@ for import_statement, description in import_tests:
 # 6. 检查关键文件
 print("\n6. 检查关键文件...")
 critical_files = {
-    "entrypoints/run_web_ui_optimized.py": "启动脚本",
+    "run.py": "启动脚本",
     "templates/welcome_optimized.html": "欢迎页面",
     "templates/intro_optimized.html": "角色创建页面",
     "templates/game_enhanced_optimized_v2.html": "游戏主页面",
@@ -137,9 +136,9 @@ try:
     os.environ["FLASK_ENV"] = "testing"
     os.environ["FLASK_SECRET_KEY"] = "test_key"
 
-    from entrypoints.run_web_ui_optimized import XianxiaWebServer
+    import run
 
-    server = XianxiaWebServer()
+    server = type("obj", (), {"app": run.app})()
 
     if server.app is not None:
         print("✅ Flask应用初始化成功")
@@ -164,7 +163,7 @@ if not errors and not warnings:
     print("\n✅ 所有检查都通过！项目已准备就绪。")
     print("\n🎮 启动游戏:")
     print(f"cd {PROJECT_ROOT}")
-    print("python entrypoints/run_web_ui_optimized.py")
+    print("python run.py")
     print("\n然后在浏览器中访问: http://localhost:5001")
 else:
     if errors:
@@ -214,7 +213,7 @@ try:
     with open(report_file, "w", encoding="utf-8") as f:
         json.dump(report, f, indent=2, ensure_ascii=False)
     print(f"\n检查报告已保存到: {report_file}")
-except:
+except Exception:
     pass
 
 print("=" * 70)
