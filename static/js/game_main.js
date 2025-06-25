@@ -103,12 +103,6 @@ const GameUI = {
         };
         this.updateStatBar('mana', mana.current, mana.max);
         
-        // 更新体力值
-        const stamina = {
-            current: attrs.current_stamina || 100,
-            max: attrs.max_stamina || 100
-        };
-        this.updateStatBar('stamina', stamina.current, stamina.max);
     },
     
     /**

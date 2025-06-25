@@ -54,7 +54,6 @@ class XianxiaUIController {
             // 属性条
             healthBar: document.querySelector('[data-attribute="health"]'),
             manaBar: document.querySelector('[data-attribute="mana"]'),
-            staminaBar: document.querySelector('[data-attribute="stamina"]'),
             cultivationBar: document.querySelector('[data-attribute="cultivation"]'),
             
             // 功能菜单
@@ -655,7 +654,6 @@ class XianxiaUIController {
         const attributes = [
             { name: 'health', current: 'current_health', max: 'max_health' },
             { name: 'mana', current: 'current_mana', max: 'max_mana' },
-            { name: 'stamina', current: 'current_stamina', max: 'max_stamina' },
             { name: 'cultivation', current: 'cultivation_level', max: 'max_cultivation' }
         ];
         
