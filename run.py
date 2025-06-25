@@ -607,12 +607,8 @@ def process_command():
         )
 
 
-@app.route("/status")
-def get_status():
-    """获取游戏状态"""
-    player_id = session.get("player_id", "default")
-    inventory_data = inventory_system.get_inventory_data(player_id)
-
+def _get_player_status():
+    """从当前会话或游戏实例获取玩家状态"""
     player_name = session.get("player_name", "无名侠客")
     realm_name = "炼气期"
     realm_level = 1
@@ -638,6 +634,35 @@ def get_status():
                 location = game.game_state.current_location
         except Exception as e:
             logger.error(f"读取游戏状态失败: {e}")
+
+    return (
+        player_name,
+        realm_name,
+        realm_level,
+        current_health,
+        max_health,
+        current_mana,
+        max_mana,
+        location,
+    )
+
+
+@app.route("/status")
+def get_status():
+    """获取游戏状态"""
+    player_id = session.get("player_id", "default")
+    inventory_data = inventory_system.get_inventory_data(player_id)
+
+    (
+        player_name,
+        realm_name,
+        realm_level,
+        current_health,
+        max_health,
+        current_mana,
+        max_mana,
+        location,
+    ) = _get_player_status()
 
     return jsonify(
         {
