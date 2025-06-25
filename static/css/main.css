@@ -478,11 +478,11 @@ tbody + tbody {
 
 /* 标题样式 */
 .title-lg {
-    font-family: 'LongCang', 'KaiTi', serif;
+    font-family: 'LongCang', serif;
     font-size: 3rem;
 }
 
 .title-sm {
-    font-family: 'LongCang', 'KaiTi', serif;
+    font-family: 'LongCang', serif;
     font-size: 1.5rem;
 }
