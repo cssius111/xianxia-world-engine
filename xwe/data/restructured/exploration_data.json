@@ -1,0 +1,219 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "description": "探索系统数据配置",
+    "last_updated": "2025-06-25"
+  },
+  "locations": {
+    "青云城": {
+      "description": "繁华的修仙城市，人来人往，机缘众多",
+      "exploration_events": [
+        {
+          "id": "city_herb_find",
+          "weight": 25,
+          "narration": "你在青云城郊外的草药园发现了一株百年人参，小心翼翼地将其采下。",
+          "items": [
+            {
+              "name": "百年人参",
+              "qty": 1,
+              "rarity": "rare",
+              "value": 1000
+            }
+          ]
+        },
+        {
+          "id": "city_merchant_gift",
+          "weight": 20,
+          "narration": "一位神秘商人看你骨骼清奇，赠送了你一颗丹药。",
+          "items": [
+            {
+              "name": "回春丹",
+              "qty": 1,
+              "rarity": "common",
+              "value": 100
+            }
+          ]
+        },
+        {
+          "id": "city_stone_find",
+          "weight": 30,
+          "narration": "你在城中古玩摊位上发现了一块蕴含灵气的石头。",
+          "items": [
+            {
+              "name": "下品灵石",
+              "qty": 1,
+              "rarity": "common",
+              "value": 50
+            }
+          ]
+        },
+        {
+          "id": "city_book_find",
+          "weight": 15,
+          "narration": "你在旧书摊上翻到了一本残缺的功法秘籍。",
+          "items": [
+            {
+              "name": "残缺功法",
+              "qty": 1,
+              "rarity": "uncommon",
+              "value": 500
+            }
+          ]
+        },
+        {
+          "id": "city_nothing",
+          "weight": 10,
+          "narration": "你在城中漫步许久，欣赏着繁华景象，但没有特别的收获。",
+          "items": []
+        }
+      ]
+    },
+    "青云山": {
+      "description": "青云城外的灵山，灵气充沛，妖兽出没",
+      "exploration_events": [
+        {
+          "id": "mountain_rare_herb",
+          "weight": 20,
+          "narration": "你在悬崖峭壁上发现了一株千年灵芝，历经艰险终于将其采摘。",
+          "items": [
+            {
+              "name": "千年灵芝",
+              "qty": 1,
+              "rarity": "epic",
+              "value": 5000
+            }
+          ]
+        },
+        {
+          "id": "mountain_beast_core",
+          "weight": 25,
+          "narration": "你遭遇了一只受伤的妖兽，将其击退后获得了它掉落的内丹。",
+          "items": [
+            {
+              "name": "妖兽内丹",
+              "qty": 1,
+              "rarity": "rare",
+              "value": 2000
+            }
+          ]
+        },
+        {
+          "id": "mountain_ore_vein",
+          "weight": 30,
+          "narration": "你在一处隐秘山洞中发现了玄铁矿脉，采集了一些矿石。",
+          "items": [
+            {
+              "name": "玄铁矿",
+              "qty": 2,
+              "rarity": "uncommon",
+              "value": 800
+            }
+          ]
+        },
+        {
+          "id": "mountain_spring",
+          "weight": 15,
+          "narration": "你发现了一处灵泉，饮用后感觉神清气爽，并装了一些泉水。",
+          "items": [
+            {
+              "name": "灵泉水",
+              "qty": 3,
+              "rarity": "uncommon",
+              "value": 300
+            }
+          ]
+        },
+        {
+          "id": "mountain_danger",
+          "weight": 10,
+          "narration": "你感受到了强大妖兽的气息，明智地选择了撤退，避免了危险。",
+          "items": []
+        }
+      ]
+    },
+    "万妖森林": {
+      "description": "危险的原始森林，机缘与危机并存",
+      "exploration_events": [
+        {
+          "id": "forest_ancient_tree",
+          "weight": 15,
+          "narration": "你发现了一棵万年古树，从树下采集到了一些灵果。",
+          "items": [
+            {
+              "name": "灵果",
+              "qty": 2,
+              "rarity": "rare",
+              "value": 1500
+            }
+          ]
+        },
+        {
+          "id": "forest_poison_herb",
+          "weight": 25,
+          "narration": "你小心翼翼地采集了一些剧毒草药，或许能派上用场。",
+          "items": [
+            {
+              "name": "毒草",
+              "qty": 3,
+              "rarity": "uncommon",
+              "value": 400
+            }
+          ]
+        },
+        {
+          "id": "forest_beast_remains",
+          "weight": 30,
+          "narration": "你发现了妖兽的遗骸，从中搜寻到了一些有用的材料。",
+          "items": [
+            {
+              "name": "妖兽骨",
+              "qty": 2,
+              "rarity": "common",
+              "value": 200
+            }
+          ]
+        },
+        {
+          "id": "forest_lost",
+          "weight": 30,
+          "narration": "你在森林中迷失了方向，耗费了大量时间才走出来，一无所获。",
+          "items": []
+        }
+      ]
+    }
+  },
+  "default_events": [
+    {
+      "id": "default_small_find",
+      "weight": 60,
+      "narration": "你在探索中发现了一些普通的物资。",
+      "items": [
+        {
+          "name": "灵石碎片",
+          "qty": 2,
+          "rarity": "common",
+          "value": 20
+        }
+      ]
+    },
+    {
+      "id": "default_nothing",
+      "weight": 40,
+      "narration": "你仔细搜索了周围，但这次运气不佳，一无所获。",
+      "items": []
+    }
+  ],
+  "special_events": {
+    "first_exploration": {
+      "narration": "初次踏上修仙之路的你，在路边发现了一块发光的石头。虽然只是最普通的灵石，但对你来说意义非凡。",
+      "items": [
+        {
+          "name": "下品灵石",
+          "qty": 3,
+          "rarity": "common",
+          "value": 50
+        }
+      ]
+    }
+  }
+}

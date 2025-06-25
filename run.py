@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 """
 修仙世界引擎 - 统一启动器
-简化版本，保留核心功能
+集成 DeepSeek NLP 命令处理
 """
 
-from flask import Flask, render_template, request, redirect, url_for, jsonify, session
+from flask import Flask, render_template, request, redirect, url_for, jsonify, session, make_response
 from xwe.core.data_loader import DataLoader
+from xwe.core.command_router import CommandRouter
+from xwe.features import ExplorationSystem, InventorySystem
 import logging
 from pathlib import Path
 from datetime import datetime
@@ -35,6 +37,18 @@ for directory in ["saves", "logs"]:
 
 # 初始化数据加载器
 data_loader = DataLoader()
+
+# 初始化游戏系统
+exploration_system = ExplorationSystem()
+inventory_system = InventorySystem()
+
+# 初始化命令路由器（带NLP支持）
+try:
+    command_router = CommandRouter(use_nlp=True)
+    logger.info("命令路由器初始化成功（NLP模式）")
+except Exception as e:
+    logger.warning(f"NLP模式初始化失败: {e}, 使用传统模式")
+    command_router = CommandRouter(use_nlp=False)
 
 # ========== 页面路由 ==========
 
@@ -121,6 +135,14 @@ def modal(modal_name):
 
 # ========== API路由 ==========
 
+@app.route("/need_refresh")
+def need_refresh():
+    """前端轮询热更新/断线检测"""
+    return jsonify({
+        "refresh": False,
+        "version": "2025-06-25"
+    })
+
 @app.route("/create_character", methods=["POST"])
 def create_character():
     """创建角色"""
@@ -128,8 +150,15 @@ def create_character():
     
     # 保存角色名到会话
     if data and 'name' in data:
-        session['player_name'] = data.get('name', '无名侠客')
-        logger.info(f"创建角色: {session['player_name']}")
+        player_name = data.get('name', '无名侠客')
+        session['player_name'] = player_name
+        session['player_id'] = f"player_{player_name}"  # 简单的玩家ID生成
+        session['location'] = "青云城"  # 初始位置
+        
+        # 创建初始背包
+        inventory_system.create_initial_inventory(session['player_id'])
+        
+        logger.info(f"创建角色: {player_name}")
     
     return jsonify({
         "success": True,
@@ -138,28 +167,210 @@ def create_character():
 
 @app.route("/command", methods=["POST"])
 def process_command():
-    """处理游戏命令"""
+    """处理游戏命令（集成NLP）"""
     data = request.get_json()
-    command = data.get("command", "")
+    user_input = data.get("text", data.get("command", ""))  # 兼容两种字段名
+    player_id = session.get("player_id", "default")
     
-    # 模拟响应
-    responses = {
-        "帮助": "可用命令：查看状态、修炼、探索、背包、地图",
-        "查看状态": f"【{session.get('player_name', '无名侠客')}】\n境界：炼气期一层\n生命：100/100\n法力：50/50",
-        "修炼": "你开始打坐修炼，感受天地灵气缓缓流入体内...",
-        "探索": "你在青云城中漫步，发现了一家丹药铺...",
-        "背包": "你的背包中有：\n- 灵石 x10\n- 回气丹 x3",
-        "地图": "当前位置：青云城\n可去往：城主府、丹药铺、任务大厅、城外"
-    }
+    # 使用命令路由器处理
+    command_handler, params = command_router.route_command(user_input)
     
-    result = responses.get(command, f"你输入了：{command}")
-    logger.info(f"处理命令: {command}")
+    # 记录解析结果
+    if "explanation" in params:
+        logger.info(f"命令解析: {user_input} -> {command_handler} ({params.get('explanation')})")
+    else:
+        logger.info(f"命令解析: {user_input} -> {command_handler}")
     
-    return jsonify({"success": True, "result": result})
+    # 根据不同的命令类型处理
+    if command_handler == "explore":
+        # 执行探索
+        location = session.get("location", "青云城")
+        explore_result = exploration_system.explore(location)
+        
+        # 将获得的物品加入背包
+        result_text = explore_result["narration"]
+        if explore_result["items"]:
+            added_items = inventory_system.add_items(player_id, explore_result["items"])
+            if added_items:
+                items_text = "、".join([f"{name}x{qty}" for name, qty in added_items.items()])
+                result_text += f"\n\n获得物品：{items_text}"
+                
+        return jsonify({
+            "success": True,
+            "result": result_text,
+            "bag_updated": bool(explore_result["items"]),
+            "explore_result": explore_result,
+            "parsed_command": {
+                "handler": command_handler,
+                "params": params
+            }
+        })
+    
+    elif command_handler == "inventory":
+        # 查看背包
+        inventory_data = inventory_system.get_inventory_data(player_id)
+        
+        if inventory_data["items"]:
+            items_text = "\n".join([f"- {item['name']} x{item['quantity']}" for item in inventory_data["items"]])
+            result_text = f"你的背包中有：\n{items_text}\n\n金币：{inventory_data['gold']}\n容量：{inventory_data['used']}/{inventory_data['capacity']}"
+        else:
+            result_text = "你的背包空空如也。"
+            
+        return jsonify({
+            "success": True, 
+            "result": result_text,
+            "parsed_command": {
+                "handler": command_handler,
+                "params": params
+            }
+        })
+    
+    elif command_handler == "status":
+        # 查看状态
+        result_text = f"【{session.get('player_name', '无名侠客')}】\n境界：炼气期一层\n生命：100/100\n法力：50/50\n体力：100/100"
+        return jsonify({
+            "success": True,
+            "result": result_text,
+            "parsed_command": {
+                "handler": command_handler,
+                "params": params
+            }
+        })
+    
+    elif command_handler == "cultivate":
+        # 修炼
+        duration = params.get("duration", "")
+        if duration:
+            result_text = f"你开始{params.get('mode', '打坐')}修炼{duration}，感受天地灵气缓缓流入体内..."
+        else:
+            result_text = "你开始打坐修炼，感受天地灵气缓缓流入体内..."
+            
+        return jsonify({
+            "success": True,
+            "result": result_text,
+            "parsed_command": {
+                "handler": command_handler,
+                "params": params
+            }
+        })
+    
+    elif command_handler == "move":
+        # 移动
+        location = params.get("location", params.get("target", ""))
+        if location:
+            # 更新位置
+            session['location'] = location
+            result_text = f"你来到了{location}。"
+        else:
+            result_text = "你想去哪里？（可用地点：城主府、丹药铺、任务大厅、城外）"
+            
+        return jsonify({
+            "success": True,
+            "result": result_text,
+            "parsed_command": {
+                "handler": command_handler,
+                "params": params
+            }
+        })
+    
+    elif command_handler == "use_item":
+        # 使用物品
+        item_name = params.get("item", params.get("target", ""))
+        if item_name:
+            # 检查并使用物品
+            if inventory_system.has_item(player_id, item_name):
+                inventory_system.remove_item(player_id, item_name, 1)
+                result_text = f"你使用了{item_name}。"
+            else:
+                result_text = f"你没有{item_name}。"
+        else:
+            result_text = "请指定要使用的物品。"
+            
+        return jsonify({
+            "success": True,
+            "result": result_text,
+            "parsed_command": {
+                "handler": command_handler,
+                "params": params
+            }
+        })
+    
+    elif command_handler == "talk":
+        # 对话
+        target = params.get("target", "")
+        if target:
+            result_text = f"你与{target}交谈。\n{target}：少侠好，有什么可以帮助你的吗？"
+        else:
+            result_text = "附近没有可以交谈的人。"
+            
+        return jsonify({
+            "success": True,
+            "result": result_text,
+            "parsed_command": {
+                "handler": command_handler,
+                "params": params
+            }
+        })
+    
+    elif command_handler == "help":
+        # 帮助
+        result_text = command_router.get_help_text()
+        return jsonify({
+            "success": True,
+            "result": result_text,
+            "parsed_command": {
+                "handler": command_handler,
+                "params": params
+            }
+        })
+    
+    elif command_handler == "unknown":
+        # 未知命令
+        confidence = params.get("confidence", 0.5)
+        if confidence < 0.5:
+            result_text = f"抱歉，我不太理解'{user_input}'的意思。请尝试其他表达方式。"
+        else:
+            result_text = f"命令'{user_input}'暂未实现。"
+            
+        return jsonify({
+            "success": True,
+            "result": result_text,
+            "parsed_command": {
+                "handler": command_handler,
+                "params": params
+            }
+        })
+    
+    elif command_handler == "context_error":
+        # 上下文错误
+        result_text = f"在当前场景下，{params.get('message', '该命令不可用')}。"
+        return jsonify({
+            "success": False,
+            "result": result_text,
+            "parsed_command": {
+                "handler": command_handler,
+                "params": params
+            }
+        })
+    
+    else:
+        # 其他命令
+        result_text = f"命令'{command_handler}'功能开发中..."
+        return jsonify({
+            "success": True,
+            "result": result_text,
+            "parsed_command": {
+                "handler": command_handler,
+                "params": params
+            }
+        })
 
 @app.route("/status")
 def get_status():
     """获取游戏状态"""
+    player_id = session.get("player_id", "default")
+    inventory_data = inventory_system.get_inventory_data(player_id)
+    
     return jsonify({
         "player": {
             "name": session.get('player_name', '无名侠客'),
@@ -172,8 +383,9 @@ def get_status():
                 "max_mana": 50
             }
         },
-        "location": "青云城",
-        "gold": 100
+        "location": session.get("location", "青云城"),
+        "gold": inventory_data["gold"],
+        "inventory": inventory_data
     })
 
 @app.route("/log")
@@ -185,6 +397,30 @@ def get_log():
             "你出生在青云城，开始了修仙之旅。",
             "输入'帮助'查看可用命令。"
         ]
+    })
+
+@app.route("/nlp_cache_info")
+def get_nlp_cache_info():
+    """获取NLP缓存信息"""
+    cache_info = command_router.get_nlp_cache_info()
+    if cache_info:
+        return jsonify({
+            "success": True,
+            "cache_info": cache_info
+        })
+    else:
+        return jsonify({
+            "success": False,
+            "message": "NLP未启用或不支持缓存"
+        })
+
+@app.route("/clear_nlp_cache", methods=["POST"])
+def clear_nlp_cache():
+    """清除NLP缓存"""
+    command_router.clear_nlp_cache()
+    return jsonify({
+        "success": True,
+        "message": "NLP缓存已清除"
     })
 
 # 数据接口
@@ -212,20 +448,145 @@ def parse_custom_text():
     try:
         data = request.get_json()
         text = data.get("text", "")
-        from xwe.core.nlp import LLMClient
-        import json as pyjson
-
-        llm = LLMClient()
-        result = llm.chat(text)
-
+        
         try:
-            parsed = pyjson.loads(result)
-        except Exception:
-            parsed = {"result": result}
+            from xwe.core.nlp import LLMClient
+            import json as pyjson
 
-        return jsonify({"success": True, "data": parsed})
+            llm = LLMClient()
+            result = llm.chat(text)
+
+            try:
+                parsed = pyjson.loads(result)
+            except Exception:
+                parsed = {"result": result}
+
+            return jsonify({"success": True, "data": parsed})
+        
+        except ImportError:
+            # NLP模块不可用
+            return jsonify({
+                "success": False,
+                "error": "NLP功能未启用或不可用"
+            })
+            
     except Exception as e:
         return jsonify({"success": False, "error": str(e)})
+
+# ========== NLP监控路由 ==========
+
+@app.route("/nlp_monitor")
+def nlp_monitor():
+    """NLP监控面板"""
+    return render_template("nlp_monitor.html")
+
+@app.route("/api/nlp/stats")
+def get_nlp_stats():
+    """获取NLP统计数据"""
+    try:
+        from xwe.core.nlp.monitor import get_nlp_monitor
+        monitor = get_nlp_monitor()
+        stats = monitor.get_stats()
+        return jsonify({
+            "success": True,
+            "stats": stats
+        })
+    except ImportError:
+        # NLP模块不可用
+        return jsonify({
+            "success": False,
+            "error": "NLP功能未安装或不可用"
+        })
+    except Exception as e:
+        logger.error(f"获取NLP统计失败: {e}")
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        })
+
+@app.route("/api/nlp/export")
+def export_nlp_metrics():
+    """导出NLP性能数据"""
+    try:
+        from xwe.core.nlp.monitor import get_nlp_monitor
+        import tempfile
+        import os
+        
+        monitor = get_nlp_monitor()
+        
+        # 创建临时文件
+        fd, path = tempfile.mkstemp(suffix='.json')
+        try:
+            # 导出数据
+            monitor.export_metrics(path)
+            
+            # 读取文件内容
+            with open(path, 'rb') as f:
+                data = f.read()
+                
+            # 返回文件
+            response = make_response(data)
+            response.headers['Content-Type'] = 'application/json'
+            response.headers['Content-Disposition'] = f'attachment; filename=nlp_metrics_{datetime.now().strftime("%Y%m%d_%H%M%S")}.json'
+            return response
+            
+        finally:
+            # 清理临时文件
+            os.close(fd)
+            os.unlink(path)
+    
+    except ImportError:
+        return jsonify({
+            "success": False,
+            "error": "NLP功能未安装或不可用"
+        }), 500
+    except Exception as e:
+        logger.error(f"导出NLP数据失败: {e}")
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
+
+@app.route("/api/nlp/config")
+def get_nlp_config():
+    """获取NLP配置"""
+    try:
+        from xwe.core.nlp.config import get_nlp_config
+        config = get_nlp_config()
+        
+        # 不暴露敏感信息
+        safe_config = {
+            "enabled": config.is_enabled(),
+            "provider": config.get("provider"),
+            "model": config.get("model"),
+            "cache_size": config.get("cache_size"),
+            "fallback_enabled": config.get("fallback_enabled"),
+            "performance_monitoring": config.get("performance_monitoring")
+        }
+        
+        return jsonify({
+            "success": True,
+            "config": safe_config
+        })
+    except ImportError:
+        # NLP模块不可用，返回默认配置
+        return jsonify({
+            "success": True,
+            "config": {
+                "enabled": False,
+                "provider": "none",
+                "model": "none",
+                "cache_size": 0,
+                "fallback_enabled": True,
+                "performance_monitoring": False
+            }
+        })
+    except Exception as e:
+        logger.error(f"获取NLP配置失败: {e}")
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        })
 
 # ========== 工具路由 ==========
 
@@ -271,6 +632,13 @@ def main():
     print(f"🔧 调试模式: {'开启' if debug else '关闭'}")
     print(f"📝 日志目录: {Path('logs').absolute()}")
     print(f"💾 存档目录: {Path('saves').absolute()}")
+    
+    # 显示NLP状态
+    if hasattr(command_router, 'use_nlp') and command_router.use_nlp:
+        print(f"🤖 DeepSeek NLP: 已启用")
+    else:
+        print(f"🤖 DeepSeek NLP: 未启用（使用传统解析）")
+        
     print("=" * 60)
     print("使用 Ctrl+C 停止服务器")
     print("=" * 60)

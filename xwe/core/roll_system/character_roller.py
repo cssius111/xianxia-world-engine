@@ -8,6 +8,8 @@
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional
 import random
+import json
+from pathlib import Path
 
 from .roll_data import ROLL_DATA
 
@@ -37,6 +39,25 @@ class RollResult:
 
 class CharacterRoller:
     """最基础的角色生成器"""
+    
+    def __init__(self):
+        """初始化角色生成器"""
+        self.attribute_config = self._load_attribute_config()
+        self.remaining_points = 0  # 不留可分配点数
+    
+    def _load_attribute_config(self) -> Dict:
+        """加载属性配置"""
+        try:
+            config_path = Path(__file__).parent.parent.parent / "data" / "restructured" / "attribute_model.json"
+            with open(config_path, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception as e:
+            # 如果加载失败，返回默认配置
+            return {
+                "core": ["根骨", "悟性", "神识", "机缘"],
+                "advanced": ["体魄", "灵根", "意志", "魅力", "气运"],
+                "range": {"min": 1, "max": 10}
+            }
 
     def roll(self) -> RollResult:
         """生成一个新的 ``RollResult``"""
@@ -48,17 +69,26 @@ class CharacterRoller:
         talents = random.sample(ROLL_DATA["talents"], k=min(2, len(ROLL_DATA["talents"])))
         system = random.choice(ROLL_DATA["systems"])
 
-        attributes = {
-            "attack": random.randint(10, 20),
-            "defense": random.randint(5, 15),
-            "health": random.randint(100, 200),
-            "mana": random.randint(50, 100),
-            "speed": random.randint(5, 15),
-            "comprehension": random.randint(5, 15),
-            "luck": random.randint(5, 15),
-            "constitution": random.randint(5, 15),
-            "charm": random.randint(5, 15),
-        }
+        # 全随机：一次性生成全部属性，不留加点入口
+        cfg = self.attribute_config
+        pool = cfg["core"] + cfg["advanced"]
+        attributes = {name: random.randint(cfg["range"]["min"], cfg["range"]["max"]) for name in pool}
+        
+        # 计算衍生属性（保留兼容性）
+        base_formulas = cfg.get("base_attributes", {})
+        
+        # 添加一些基础属性以保持兼容
+        attributes["attack"] = 10 + attributes.get("体魄", 5) * 2 + attributes.get("神识", 5)
+        attributes["defense"] = 5 + attributes.get("体魄", 5) + attributes.get("根骨", 5)
+        attributes["health"] = 100 + attributes.get("根骨", 5) * 20 + attributes.get("体魄", 5) * 10
+        attributes["mana"] = 50 + attributes.get("灵根", 5) * 15 + attributes.get("悟性", 5) * 5
+        attributes["speed"] = 10 + attributes.get("根骨", 5) // 2 + attributes.get("悟性", 5) // 2
+        
+        # 保留原有的一些属性以保持兼容
+        attributes["comprehension"] = attributes.get("悟性", 5)
+        attributes["luck"] = attributes.get("机缘", 5)
+        attributes["constitution"] = attributes.get("根骨", 5)
+        attributes["charm"] = attributes.get("魅力", 5)
 
         combat_power = (
             attributes["attack"]

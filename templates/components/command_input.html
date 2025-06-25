@@ -6,7 +6,7 @@
                 type="text" 
                 id="commandInput" 
                 class="command-input" 
-                placeholder="输入命令... (例如：探索、修炼、查看状态)" 
+                placeholder="随便说点什么... (例如：四处看看、休息一会儿、去丹药铺)" 
                 autocomplete="off"
                 autofocus
             />
@@ -21,11 +21,11 @@
     </form>
     
     <div class="quick-commands">
-        <button class="quick-cmd" onclick="CommandInput.executeCommand('探索')">探索</button>
-        <button class="quick-cmd" onclick="CommandInput.executeCommand('修炼')">修炼</button>
-        <button class="quick-cmd" onclick="CommandInput.executeCommand('查看状态')">状态</button>
-        <button class="quick-cmd" onclick="CommandInput.executeCommand('背包')">背包</button>
-        <button class="quick-cmd" onclick="CommandInput.executeCommand('地图')">地图</button>
+        <button class="quick-cmd" onclick="CommandInput.executeCommand('四处看看')">探索</button>
+        <button class="quick-cmd" onclick="CommandInput.executeCommand('打坐修炼')">修炼</button>
+        <button class="quick-cmd" onclick="CommandInput.executeCommand('查看我的状态')">状态</button>
+        <button class="quick-cmd" onclick="CommandInput.executeCommand('打开背包')">背包</button>
+        <button class="quick-cmd" onclick="CommandInput.executeCommand('看看地图')">地图</button>
     </div>
 </div>
 
@@ -152,6 +152,26 @@
     transform: translateY(-1px);
 }
 
+/* NLP提示标记 */
+.nlp-indicator {
+    position: absolute;
+    top: -25px;
+    right: 0;
+    font-size: 12px;
+    color: #bbb;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 4px 10px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.nlp-indicator::before {
+    content: '🤖';
+    font-size: 14px;
+}
+
 /* 响应式 */
 @media (max-width: 768px) {
     .command-input {
@@ -172,25 +192,22 @@
 
 <script>
 /**
- * 命令输入管理器
+ * 命令输入管理器（支持 NLP 自然语言处理）
  */
 const CommandInput = {
-    // 命令列表
-    commands: [
-        { cmd: '探索', desc: '探索当前区域' },
-        { cmd: '修炼', desc: '进行修炼' },
-        { cmd: '查看状态', desc: '查看角色状态' },
-        { cmd: '背包', desc: '打开背包' },
-        { cmd: '地图', desc: '查看地图' },
-        { cmd: '任务', desc: '查看任务列表' },
-        { cmd: '帮助', desc: '显示帮助信息' },
-        { cmd: '保存', desc: '保存游戏' },
-        { cmd: '前往', desc: '前往指定地点 (例：前往 青云峰)' },
-        { cmd: '交谈', desc: '与NPC交谈 (例：交谈 张三)' },
-        { cmd: '使用', desc: '使用物品 (例：使用 回春丹)' },
-        { cmd: '购买', desc: '购买物品 (例：购买 回春丹)' },
-        { cmd: '出售', desc: '出售物品 (例：出售 灵石)' },
-        { cmd: '修炼', desc: '修炼功法 (例：修炼 3小时)' }
+    // 命令示例（用于提示）
+    examples: [
+        { text: '四处看看', desc: '探索当前区域' },
+        { text: '随便走走', desc: '闲逛一下' },
+        { text: '休息一会儿', desc: '打坐修炼' },
+        { text: '修炼三个时辰', desc: '指定时间修炼' },
+        { text: '查看我的状态', desc: '查看角色信息' },
+        { text: '打开背包看看', desc: '查看物品' },
+        { text: '去丹药铺', desc: '前往指定地点' },
+        { text: '和掌柜聊聊天', desc: '与NPC交谈' },
+        { text: '使用回春丹', desc: '使用物品' },
+        { text: '帮助', desc: '显示帮助信息' },
+        { text: '保存游戏', desc: '保存进度' }
     ],
     
     /**
@@ -233,6 +250,21 @@ const CommandInput = {
                 this.navigateHistory(1);
             }
         });
+        
+        // 添加NLP状态指示器
+        this.addNLPIndicator();
+    },
+    
+    /**
+     * 添加NLP状态指示器
+     */
+    addNLPIndicator() {
+        const container = document.querySelector('.command-input-container');
+        const indicator = document.createElement('div');
+        indicator.className = 'nlp-indicator';
+        indicator.innerHTML = '智能解析已启用';
+        container.style.position = 'relative';
+        container.appendChild(indicator);
     },
     
     /**
@@ -251,21 +283,53 @@ const CommandInput = {
         }
         
         try {
-            // 发送命令到服务器
+            // 发送命令到服务器（使用 text 字段以支持 NLP）
             const response = await fetch('/command', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ command })
+                body: JSON.stringify({ 
+                    text: command,  // 使用 text 字段
+                    command: command  // 保持向后兼容
+                })
             });
             
             const data = await response.json();
             
-            if (data.success && window.NarrativeLog) {
-                NarrativeLog.addResult(data.result);
-            } else if (window.NarrativeLog) {
-                NarrativeLog.addError(data.error || '命令执行失败');
+            if (data.success) {
+                // 显示结果
+                if (window.NarrativeLog) {
+                    NarrativeLog.addResult(data.result);
+                    
+                    // 如果有解析信息，显示在日志中（调试模式）
+                    if (data.parsed_command && window.debugMode) {
+                        const parsed = data.parsed_command;
+                        NarrativeLog.addSystem(
+                            `[解析器] ${parsed.handler} - ${parsed.params.explanation || '传统解析'}`
+                        );
+                    }
+                }
+                
+                // 如果背包更新了，刷新背包UI
+                if (data.bag_updated && window.GameUI) {
+                    // 刷新状态（包含背包数据）
+                    window.GameUI.refreshStatus();
+                    
+                    // 如果背包面板是打开的，也刷新它
+                    if (window.GamePanels && window.GamePanels.currentPanel === 'inventory') {
+                        window.GamePanels.refreshCurrentPanel();
+                    }
+                    
+                    // 显示获得物品的特效
+                    if (data.explore_result && data.explore_result.items && data.explore_result.items.length > 0) {
+                        this.showItemGainEffect(data.explore_result.items);
+                    }
+                }
+            } else {
+                if (window.NarrativeLog) {
+                    NarrativeLog.addError(data.result || data.error || '命令执行失败');
+                }
             }
             
         } catch (error) {
@@ -282,26 +346,33 @@ const CommandInput = {
     showHints(input) {
         const hintsDiv = document.getElementById('commandHints');
         
-        if (!input) {
+        if (!input || input.length < 1) {
             this.hideHints();
             return;
         }
         
-        // 过滤匹配的命令
-        const matches = this.commands.filter(cmd => 
-            cmd.cmd.toLowerCase().includes(input.toLowerCase())
+        // 过滤匹配的示例
+        const matches = this.examples.filter(example => 
+            example.text.toLowerCase().includes(input.toLowerCase()) ||
+            example.desc.toLowerCase().includes(input.toLowerCase())
         );
         
         if (matches.length === 0) {
-            this.hideHints();
+            // 如果没有匹配，显示一个提示
+            hintsDiv.innerHTML = `
+                <div class="hint-item">
+                    <span class="hint-desc">💡 试试自然语言，比如"四处看看"、"休息一会儿"</span>
+                </div>
+            `;
+            hintsDiv.style.display = 'block';
             return;
         }
         
         // 生成提示HTML
-        hintsDiv.innerHTML = matches.map(cmd => `
-            <div class="hint-item" onclick="CommandInput.selectHint('${cmd.cmd}')">
-                <span class="hint-command">${cmd.cmd}</span>
-                <span class="hint-desc">${cmd.desc}</span>
+        hintsDiv.innerHTML = matches.slice(0, 5).map(example => `
+            <div class="hint-item" onclick="CommandInput.selectHint('${example.text}')">
+                <span class="hint-command">${example.text}</span>
+                <span class="hint-desc">${example.desc}</span>
             </div>
         `).join('');
         
@@ -343,6 +414,73 @@ const CommandInput = {
         }
         
         input.value = this.commandHistory[this.historyIndex];
+    },
+    
+    /**
+     * 显示物品获得特效
+     */
+    showItemGainEffect(items) {
+        // 创建特效容器
+        const effectContainer = document.createElement('div');
+        effectContainer.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10000;
+            pointer-events: none;
+        `;
+        
+        // 为每个物品创建特效
+        items.forEach((item, index) => {
+            const itemEffect = document.createElement('div');
+            itemEffect.style.cssText = `
+                background: linear-gradient(135deg, #ffd700 0%, #fff8dc 100%);
+                color: #1a1a2e;
+                padding: 15px 30px;
+                border-radius: 25px;
+                font-size: 18px;
+                font-weight: bold;
+                margin: 10px;
+                box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+                animation: itemGain 2s ease-out forwards;
+                animation-delay: ${index * 0.2}s;
+                opacity: 0;
+            `;
+            itemEffect.textContent = `+ ${item.name} x${item.qty}`;
+            effectContainer.appendChild(itemEffect);
+        });
+        
+        // 添加动画CSS
+        if (!document.getElementById('itemGainAnimation')) {
+            const style = document.createElement('style');
+            style.id = 'itemGainAnimation';
+            style.textContent = `
+                @keyframes itemGain {
+                    0% {
+                        opacity: 0;
+                        transform: translateY(20px) scale(0.8);
+                    }
+                    50% {
+                        opacity: 1;
+                        transform: translateY(-10px) scale(1.1);
+                    }
+                    100% {
+                        opacity: 0;
+                        transform: translateY(-30px) scale(1);
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        // 添加到页面
+        document.body.appendChild(effectContainer);
+        
+        // 移除特效
+        setTimeout(() => {
+            document.body.removeChild(effectContainer);
+        }, 3000);
     }
 };
 

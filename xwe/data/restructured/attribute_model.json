@@ -1,64 +1,99 @@
 {
   "meta": {
-    "version": "2.0.0",
-    "description": "角色属性系统配置",
-    "last_updated": "2025-06-22"
+    "version": "3.0.0",
+    "description": "修仙世界角色属性系统配置",
+    "last_updated": "2025-06-25"
+  },
+  "core": ["根骨", "悟性", "神识", "机缘"],
+  "advanced": ["体魄", "灵根", "意志", "魅力", "气运"],
+  "range": {
+    "min": 1,
+    "max": 10
+  },
+  "tier_ranges": {
+    "天": { "min": 9, "max": 10 },
+    "地": { "min": 7, "max": 8 },
+    "玄": { "min": 5, "max": 6 },
+    "黄": { "min": 3, "max": 4 },
+    "凡": { "min": 1, "max": 2 }
+  },
+  "attribute_descriptions": {
+    "根骨": "决定修炼速度和生命力上限，影响体质和恢复能力",
+    "悟性": "影响功法学习速度和突破瓶颈的概率",
+    "神识": "影响神念强度和法术威力，探索隐秘的能力",
+    "机缘": "影响奇遇触发概率和宝物获取几率",
+    "体魄": "影响物理攻击和防御力，以及负重能力",
+    "灵根": "决定灵气亲和度和修炼上限",
+    "意志": "影响心魔抵抗和困境突破能力",
+    "魅力": "影响NPC好感度和交易价格",
+    "气运": "影响各种随机事件的结果倾向"
   },
   "base_attributes": {
     "health": {
       "name": "气血",
       "base_value": 100,
       "growth_rate": 20,
+      "formula": "100 + 根骨 * 20 + 体魄 * 10",
       "description": "角色的生命值，决定角色的生存能力"
     },
     "mana": {
       "name": "灵力",
       "base_value": 50,
       "growth_rate": 10,
+      "formula": "50 + 灵根 * 15 + 悟性 * 5",
       "description": "角色的法力值，用于施展法术和功法"
     },
     "stamina": {
       "name": "体力",
       "base_value": 100,
       "growth_rate": 15,
+      "formula": "100 + 体魄 * 15 + 根骨 * 5",
       "description": "角色的耐力值，影响持续战斗能力"
     },
     "attack_power": {
       "name": "攻击力",
       "base_value": 10,
       "growth_rate": 2,
+      "formula": "10 + 体魄 * 2 + 神识 * 1",
       "description": "角色的攻击能力"
     },
     "defense": {
       "name": "防御力",
       "base_value": 5,
       "growth_rate": 1,
+      "formula": "5 + 体魄 * 1 + 根骨 * 1",
       "description": "角色的防护能力"
     },
     "speed": {
       "name": "速度",
       "base_value": 10,
       "growth_rate": 0.5,
+      "formula": "10 + 根骨 * 0.5 + 悟性 * 0.5",
       "description": "角色的敏捷度，影响战斗先手和闪避"
     }
   },
   "derived_attributes": {
     "crit_chance": {
       "name": "暴击率",
-      "formula": "speed * 0.1",
+      "formula": "(机缘 + 悟性) * 2",
       "max_value": 50,
       "description": "触发暴击的概率"
     },
     "dodge_chance": {
       "name": "闪避率",
-      "formula": "speed * 0.15",
+      "formula": "(根骨 + 体魄) * 1.5",
       "max_value": 40,
       "description": "闪避攻击的概率"
     },
     "spell_power": {
       "name": "法术强度",
-      "formula": "mana * 0.2 + attack_power * 0.5",
+      "formula": "神识 * 5 + 灵根 * 3",
       "description": "法术伤害的增幅"
+    },
+    "fortune_rate": {
+      "name": "福缘值",
+      "formula": "机缘 * 3 + 气运 * 2",
+      "description": "获得机缘和宝物的概率修正"
     }
   },
   "attribute_limits": {

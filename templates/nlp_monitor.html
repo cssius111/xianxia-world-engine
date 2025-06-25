@@ -1,0 +1,450 @@
+{% extends "base.html" %}
+
+{% block title %}NLP监控面板 - 修仙世界引擎{% endblock %}
+
+{% block content %}
+<div class="nlp-monitor-container">
+    <h1>🤖 NLP 监控面板</h1>
+    
+    <div class="monitor-grid">
+        <!-- 概览卡片 -->
+        <div class="monitor-card overview">
+            <h2>系统概览</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-label">运行时间</div>
+                    <div class="stat-value" id="uptime">--</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">总请求数</div>
+                    <div class="stat-value" id="totalRequests">--</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">成功率</div>
+                    <div class="stat-value" id="successRate">--%</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">缓存命中率</div>
+                    <div class="stat-value" id="cacheHitRate">--%</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 性能指标 -->
+        <div class="monitor-card performance">
+            <h2>性能指标</h2>
+            <div class="perf-stats">
+                <div class="perf-item">
+                    <span class="perf-label">平均响应时间</span>
+                    <span class="perf-value" id="avgDuration">--ms</span>
+                </div>
+                <div class="perf-item">
+                    <span class="perf-label">最近5分钟平均</span>
+                    <span class="perf-value" id="recentAvgDuration">--ms</span>
+                </div>
+                <div class="perf-item">
+                    <span class="perf-label">每分钟请求数</span>
+                    <span class="perf-value" id="rpm">--</span>
+                </div>
+                <div class="perf-item">
+                    <span class="perf-label">Token使用量</span>
+                    <span class="perf-value" id="totalTokens">--</span>
+                </div>
+                <div class="perf-item">
+                    <span class="perf-label">预估成本</span>
+                    <span class="perf-value" id="estimatedCost">$--</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 热门命令 -->
+        <div class="monitor-card commands">
+            <h2>热门命令 TOP 10</h2>
+            <div id="topCommands" class="command-list">
+                <!-- 动态生成 -->
+            </div>
+        </div>
+        
+        <!-- 处理器使用情况 -->
+        <div class="monitor-card handlers">
+            <h2>处理器使用情况</h2>
+            <div id="handlerUsage" class="handler-list">
+                <!-- 动态生成 -->
+            </div>
+        </div>
+        
+        <!-- 错误统计 -->
+        <div class="monitor-card errors">
+            <h2>错误统计</h2>
+            <div id="errorSummary" class="error-list">
+                <!-- 动态生成 -->
+            </div>
+        </div>
+        
+        <!-- 控制面板 -->
+        <div class="monitor-card controls">
+            <h2>控制面板</h2>
+            <div class="control-buttons">
+                <button class="control-btn" onclick="refreshStats()">
+                    🔄 刷新数据
+                </button>
+                <button class="control-btn" onclick="clearCache()">
+                    🗑️ 清除缓存
+                </button>
+                <button class="control-btn" onclick="exportMetrics()">
+                    📥 导出数据
+                </button>
+                <button class="control-btn toggle" onclick="toggleAutoRefresh()">
+                    ⏸️ 自动刷新
+                </button>
+            </div>
+            
+            <div class="config-section">
+                <h3>配置状态</h3>
+                <div id="configStatus" class="config-status">
+                    <!-- 动态生成 -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.nlp-monitor-container {
+    padding: 20px;
+    background: #1a1a2e;
+    color: #e0e0e0;
+    min-height: 100vh;
+}
+
+.nlp-monitor-container h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.5em;
+    background: linear-gradient(135deg, #bbb 0%, #ddd 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.monitor-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.monitor-card {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(180, 180, 180, 0.2);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.monitor-card h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #bbb;
+    font-size: 1.3em;
+}
+
+/* 概览卡片 */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.stat-item {
+    background: rgba(180, 180, 180, 0.1);
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.stat-label {
+    font-size: 0.9em;
+    color: #888;
+    margin-bottom: 5px;
+}
+
+.stat-value {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #bbb;
+}
+
+/* 性能指标 */
+.perf-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.perf-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 15px;
+    background: rgba(180, 180, 180, 0.05);
+    border-radius: 8px;
+}
+
+.perf-label {
+    color: #999;
+}
+
+.perf-value {
+    font-weight: bold;
+    color: #bbb;
+}
+
+/* 命令列表 */
+.command-list, .handler-list, .error-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.command-item, .handler-item, .error-item {
+    padding: 10px;
+    border-bottom: 1px solid rgba(180, 180, 180, 0.1);
+    display: flex;
+    justify-content: space-between;
+}
+
+.command-item:last-child,
+.handler-item:last-child,
+.error-item:last-child {
+    border-bottom: none;
+}
+
+.command-text, .handler-name, .error-type {
+    color: #e0e0e0;
+}
+
+.command-count, .handler-count, .error-count {
+    color: #bbb;
+    font-weight: bold;
+}
+
+/* 控制按钮 */
+.control-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.control-btn {
+    padding: 12px 20px;
+    background: rgba(180, 180, 180, 0.1);
+    border: 1px solid rgba(180, 180, 180, 0.3);
+    border-radius: 10px;
+    color: #e0e0e0;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.control-btn:hover {
+    background: rgba(180, 180, 180, 0.2);
+    transform: translateY(-2px);
+}
+
+.control-btn.active {
+    background: rgba(180, 180, 180, 0.3);
+    border-color: #bbb;
+}
+
+/* 配置状态 */
+.config-status {
+    background: rgba(180, 180, 180, 0.05);
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 0.9em;
+}
+
+.config-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.config-key {
+    color: #999;
+}
+
+.config-value {
+    color: #bbb;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(180, 180, 180, 0.3);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(180, 180, 180, 0.5);
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+    .monitor-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .control-buttons {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
+<script>
+let autoRefreshInterval = null;
+let isAutoRefresh = true;
+
+// 刷新统计数据
+async function refreshStats() {
+    try {
+        const response = await fetch('/api/nlp/stats');
+        const data = await response.json();
+        
+        if (data.success) {
+            updateUI(data.stats);
+        }
+    } catch (error) {
+        console.error('获取统计数据失败:', error);
+    }
+}
+
+// 更新UI
+function updateUI(stats) {
+    // 更新概览
+    document.getElementById('uptime').textContent = stats.uptime_readable || '--';
+    document.getElementById('totalRequests').textContent = stats.total_requests || '0';
+    document.getElementById('successRate').textContent = (stats.success_rate || 0) + '%';
+    document.getElementById('cacheHitRate').textContent = (stats.cache_hit_rate || 0) + '%';
+    
+    // 更新性能指标
+    document.getElementById('avgDuration').textContent = (stats.avg_duration_ms || 0).toFixed(2) + 'ms';
+    document.getElementById('recentAvgDuration').textContent = (stats.recent_avg_duration_ms || 0).toFixed(2) + 'ms';
+    document.getElementById('rpm').textContent = (stats.requests_per_minute || 0).toFixed(1);
+    document.getElementById('totalTokens').textContent = stats.total_tokens || '0';
+    document.getElementById('estimatedCost').textContent = '$' + (stats.estimated_cost || 0).toFixed(4);
+    
+    // 更新热门命令
+    const topCommandsDiv = document.getElementById('topCommands');
+    if (stats.top_commands) {
+        topCommandsDiv.innerHTML = stats.top_commands.map(([cmd, count], i) => `
+            <div class="command-item">
+                <span class="command-text">${i + 1}. ${cmd}</span>
+                <span class="command-count">${count}次</span>
+            </div>
+        `).join('');
+    }
+    
+    // 更新处理器使用情况
+    const handlerUsageDiv = document.getElementById('handlerUsage');
+    if (stats.handler_usage) {
+        handlerUsageDiv.innerHTML = stats.handler_usage.map(([handler, count]) => `
+            <div class="handler-item">
+                <span class="handler-name">${handler}</span>
+                <span class="handler-count">${count}次</span>
+            </div>
+        `).join('');
+    }
+}
+
+// 清除缓存
+async function clearCache() {
+    if (!confirm('确定要清除NLP缓存吗？')) return;
+    
+    try {
+        const response = await fetch('/clear_nlp_cache', {
+            method: 'POST'
+        });
+        const data = await response.json();
+        
+        if (data.success) {
+            alert('缓存已清除');
+            refreshStats();
+        }
+    } catch (error) {
+        console.error('清除缓存失败:', error);
+    }
+}
+
+// 导出数据
+async function exportMetrics() {
+    try {
+        const response = await fetch('/api/nlp/export');
+        const blob = await response.blob();
+        
+        // 创建下载链接
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `nlp_metrics_${new Date().toISOString()}.json`;
+        a.click();
+        
+        window.URL.revokeObjectURL(url);
+    } catch (error) {
+        console.error('导出数据失败:', error);
+    }
+}
+
+// 切换自动刷新
+function toggleAutoRefresh() {
+    isAutoRefresh = !isAutoRefresh;
+    const btn = document.querySelector('.toggle');
+    
+    if (isAutoRefresh) {
+        btn.textContent = '⏸️ 自动刷新';
+        btn.classList.add('active');
+        startAutoRefresh();
+    } else {
+        btn.textContent = '▶️ 自动刷新';
+        btn.classList.remove('active');
+        stopAutoRefresh();
+    }
+}
+
+// 开始自动刷新
+function startAutoRefresh() {
+    if (autoRefreshInterval) return;
+    
+    autoRefreshInterval = setInterval(() => {
+        refreshStats();
+    }, 5000); // 每5秒刷新一次
+}
+
+// 停止自动刷新
+function stopAutoRefresh() {
+    if (autoRefreshInterval) {
+        clearInterval(autoRefreshInterval);
+        autoRefreshInterval = null;
+    }
+}
+
+// 页面加载完成后初始化
+document.addEventListener('DOMContentLoaded', () => {
+    refreshStats();
+    startAutoRefresh();
+});
+
+// 页面卸载时清理
+window.addEventListener('beforeunload', () => {
+    stopAutoRefresh();
+});
+</script>
+{% endblock %}

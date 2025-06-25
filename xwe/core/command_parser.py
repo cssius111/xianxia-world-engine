@@ -72,6 +72,8 @@ class CommandParser:
     """
     
     def __init__(self):
+        # 初始化同义词表
+        self._init_synonyms()
         # 命令别名映射
         self.command_aliases = {
             # 状态
@@ -131,6 +133,11 @@ class CommandParser:
             "search": CommandType.EXPLORE,
             "搜索": CommandType.EXPLORE,
             "查看周围": CommandType.EXPLORE,
+            "四处游玩": CommandType.EXPLORE,
+            "四处闲逛": CommandType.EXPLORE,
+            "随便走走": CommandType.EXPLORE,
+            "逛逛": CommandType.EXPLORE,
+            "转转": CommandType.EXPLORE,
             
             # 攻击
             "攻击": CommandType.ATTACK,
@@ -212,6 +219,39 @@ class CommandParser:
             (r"^give\s+(.+?)\s+to\s+(.+)$", CommandType.GIVE, ["item", "target"]),
         ]
         
+    def _init_synonyms(self):
+        """初始化同义词表"""
+        self.synonyms = {
+            "探索": ["探索", "四处游玩", "四处闲逛", "随便走走", "逛逛", "转转", "游玩", "闲逛"],
+            "修炼": ["修炼", "打坐", "闭关", "炼功", "修行", "练功"],
+            "攻击": ["攻击", "打", "揍", "击打", "出手", "动手"],
+            "对话": ["对话", "交谈", "说话", "聊天", "沟通", "聊"],
+            "移动": ["移动", "去", "前往", "走", "过去", "进入"],
+            "查看": ["查看", "看", "检查", "观察", "察看"],
+        }
+        
+    def normalize_command(self, text: str) -> str:
+        """
+        归一化命令文本
+        
+        Args:
+            text: 原始命令文本
+            
+        Returns:
+            归一化后的命令
+        """
+        text = text.strip().lower()
+        
+        # 查找同义词
+        for key, synonyms in self.synonyms.items():
+            for synonym in synonyms:
+                if synonym in text:
+                    # 替换为标准命令
+                    text = text.replace(synonym, key)
+                    break
+                    
+        return text
+        
     def parse(self, text: str) -> ParsedCommand:
         """
         解析命令文本
@@ -225,17 +265,20 @@ class CommandParser:
         # 清理输入
         text = text.strip().lower()
         
+        # 归一化命令
+        normalized_text = self.normalize_command(text)
+        
         if not text:
             return ParsedCommand(text, CommandType.UNKNOWN)
             
         # 尝试直接匹配命令别名
         for alias, cmd_type in self.command_aliases.items():
-            if text == alias:
+            if normalized_text == alias:
                 return ParsedCommand(text, cmd_type)
                 
         # 尝试匹配带参数的命令模式
         for pattern, cmd_type, param_names in self.command_patterns:
-            match = re.match(pattern, text, re.IGNORECASE)
+            match = re.match(pattern, normalized_text, re.IGNORECASE)
             if match:
                 params = {}
                 

@@ -267,7 +267,10 @@ const WorldIntroSystem = {
      * 下一步
      */
     next() {
-        this.close();
+        // 获取当前模式
+        const mode = new URLSearchParams(window.location.search).get('mode') || 'player';
+        // 跳转到游戏页面
+        window.location.href = `/game?mode=${mode}`;
     },
 
     /**
