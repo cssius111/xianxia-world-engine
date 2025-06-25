@@ -26,6 +26,12 @@
 ### 📁 tools/ - 工具文档
 - [SNAPSHOT_README.md](tools/SNAPSHOT_README.md) - 项目快照系统使用说明
 
+### 📁 archive/ - 历史文档
+- 早期清理和重构报告
+
+### ROADMAP
+- [ROADMAP.md](ROADMAP.md) - 后续开发计划
+
 ## 🔧 实用工具
 
 ### 项目健康检查
