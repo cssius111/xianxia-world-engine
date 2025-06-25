@@ -55,6 +55,8 @@ except Exception as e:
 @app.route("/")
 def index():
     """首页"""
+    if session.get("player_created"):
+        return redirect(url_for("game_screen"))
     return redirect(url_for("start_screen"))
 
 @app.route("/start")
@@ -157,8 +159,9 @@ def create_character():
         
         # 创建初始背包
         inventory_system.create_initial_inventory(session['player_id'])
-        
+
         logger.info(f"创建角色: {player_name}")
+        session['player_created'] = True
     
     return jsonify({
         "success": True,
