@@ -61,15 +61,6 @@
                         <div class="mini-progress-fill mana" style="width: {{ (player.attributes.current_mana / player.attributes.max_mana * 100) if player.attributes.max_mana > 0 else 0 }}%"></div>
                     </div>
                 </div>
-                {% if player.attributes.current_stamina %}
-                <div class="status-item with-bar">
-                    <span class="label">体力</span>
-                    <span class="value">{{ player.attributes.current_stamina }} / {{ player.attributes.max_stamina }}</span>
-                    <div class="mini-progress-bar">
-                        <div class="mini-progress-fill stamina" style="width: {{ (player.attributes.current_stamina / player.attributes.max_stamina * 100) if player.attributes.max_stamina > 0 else 0 }}%"></div>
-                    </div>
-                </div>
-                {% endif %}
             </div>
         </div>
 
@@ -256,9 +247,6 @@
     background: linear-gradient(90deg, #17a2b8, #5bc0de);
 }
 
-.mini-progress-fill.stamina {
-    background: linear-gradient(90deg, #28a745, #5cb85c);
-}
 
 .error-message {
     display: flex;

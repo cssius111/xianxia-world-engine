@@ -136,7 +136,6 @@ class XianxiaPlayerProfile {
         // 更新数值属性
         this.updateAttributeBar('health', attributes.current_health, attributes.max_health);
         this.updateAttributeBar('mana', attributes.current_mana, attributes.max_mana);
-        this.updateAttributeBar('stamina', attributes.current_stamina, attributes.max_stamina);
         this.updateAttributeBar('cultivation', attributes.cultivation_level, attributes.max_cultivation);
         
         // 更新其他属性显示
@@ -191,7 +190,6 @@ class XianxiaPlayerProfile {
         const nameMap = {
             'health': '气血',
             'mana': '灵力',
-            'stamina': '体力',
             'cultivation': '修为'
         };
         
@@ -555,7 +553,6 @@ class XianxiaPlayerProfile {
             attributes: {
                 health: `${attributes.current_health}/${attributes.max_health}`,
                 mana: `${attributes.current_mana}/${attributes.max_mana}`,
-                stamina: `${attributes.current_stamina}/${attributes.max_stamina}`,
                 cultivation: `${attributes.cultivation_level}/${attributes.max_cultivation}`,
                 attack: attributes.attack_power,
                 defense: attributes.defense,
