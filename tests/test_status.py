@@ -1,5 +1,10 @@
+import os
 import pytest
 from run import app, get_game_instance
+
+pytestmark = pytest.mark.skipif(
+    not os.getenv("DEEPSEEK_API_KEY"), reason="DeepSeek API key not set"
+)
 
 
 def test_status_uses_game_session():

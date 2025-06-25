@@ -8,6 +8,11 @@ import os
 import sys
 import logging
 from pathlib import Path
+import pytest
+
+pytestmark = pytest.mark.skipif(
+    not os.getenv("DEEPSEEK_API_KEY"), reason="DeepSeek API key not set"
+)
 
 # 添加项目根目录到 Python 路径
 project_root = Path(__file__).parent.parent

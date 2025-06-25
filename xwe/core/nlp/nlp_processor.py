@@ -465,11 +465,13 @@ class NLPProcessor:
     """向后兼容的NLP处理器"""
     
     def __init__(self):
-        # 检查配置是否启用NLP
+        """向后兼容的 NLPProcessor 初始化"""
         config = get_nlp_config()
+        api_key = config.get_api_key()
+
         if config.is_enabled() and config.validate_config():
             try:
-                self.processor = DeepSeekNLPProcessor()
+                self.processor = DeepSeekNLPProcessor(api_key=api_key)
                 self.enabled = True
             except Exception as e:
                 logger.error(f"初始化DeepSeekNLPProcessor失败: {e}")
@@ -478,15 +480,23 @@ class NLPProcessor:
         else:
             self.processor = None
             self.enabled = False
-            
-        self.llm = LLMClient()
+
+        if api_key:
+            self.llm = LLMClient(api_key=api_key)
+        else:
+            self.llm = None
+            logger.warning("\u26a0\ufe0f DeepSeek NLP disabled (missing API key)")
         
     def chat(self, prompt: str) -> str:
         """聊天功能"""
+        if not self.llm:
+            raise RuntimeError("DeepSeek LLM client not initialized")
         return self.llm.chat(prompt)
         
     def analyze(self, text: str) -> dict:
         """分析文本"""
+        if not self.llm:
+            raise RuntimeError("DeepSeek LLM client not initialized")
         return {
             "summary": self.llm.chat("请帮我总结以下内容:" + text),
             "keywords": [],
