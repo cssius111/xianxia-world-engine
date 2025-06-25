@@ -1,320 +1,141 @@
-/* 水墨主题 CSS 变量 */
-:root {
-    --ink-bg: #f7f7f5;        /* 宣纸背景色 */
-    --ink-font: #222222;      /* 主文字色 */
-    --ink-accent: #555555;    /* 次要文字色 */
-    --ink-border: #88888866;  /* 40%透明度的灰边框 */
-    --ink-tier-tian: #d4af37;   /* 天品金色 */
-    --ink-tier-di: #8b5a2b;     /* 地品棕色 */
-    --ink-tier-xuan: #4b0082;   /* 玄品紫色 */
-    --ink-tier-huang: #b8860b;  /* 黄品金棕色 */
-    --ink-tier-ren: #555555;    /* 人品灰色 */
-}
+/* 水墨风格主题 */
 
-/* 全局样式重置 */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* 本地字体导入 */
+/* 字体定义 */
 @font-face {
     font-family: 'LongCang';
-    src: url('../font/LongCang-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
+    src: local('KaiTi'), local('STKaiti'), local('BiauKai');
 }
 
-@font-face {
-    font-family: 'MaShanZheng';
-    src: url('../font/MaShanZheng-Regular.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
+/* 水墨效果 */
+.ink-effect {
+    position: relative;
+    overflow: hidden;
 }
 
-@font-face {
-    font-family: 'ZCOOLXiaoWei';
-    src: url('../font/ZCOOL-XiaoWei.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-}
-
-body {
-    font-family: 'LongCang', 'KaiTi', serif;
-    color: var(--ink-font);
-    background-color: var(--ink-bg);
-    line-height: 1.6;
-}
-
-/* 深色起始界面背景 */
-body.start-bg {
-    background-color: #0a0a0a;
-    color: #f0f0f0;
-}
-
-/* 宣纸纹理背景 */
-body::before {
+.ink-effect::before {
     content: '';
-    position: fixed;
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.1) 0%, transparent 70%);
+    animation: inkSpread 3s ease-out;
+}
+
+@keyframes inkSpread {
+    from {
+        transform: scale(0);
+        opacity: 1;
+    }
+    to {
+        transform: scale(1);
+        opacity: 0;
+    }
+}
+
+/* 毛笔字效果 */
+.brush-text {
+    font-family: 'LongCang', 'KaiTi', serif;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* 卷轴效果 */
+.scroll-effect {
+    background: linear-gradient(to bottom, 
+        rgba(245, 235, 220, 0.1) 0%,
+        rgba(245, 235, 220, 0.2) 50%,
+        rgba(245, 235, 220, 0.1) 100%);
+    border: 2px solid rgba(139, 69, 19, 0.3);
+    border-radius: 5px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+/* 山水背景 */
+.mountain-bg {
+    background-image: 
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.9)),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><path d="M0,300 Q300,200 600,250 T1200,200 L1200,600 L0,600 Z" fill="rgba(50,50,50,0.3)"/></svg>');
+    background-size: cover;
+    background-position: bottom;
+}
+
+/* 仙气缭绕效果 */
+@keyframes mistFlow {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.mist-effect {
+    position: relative;
+}
+
+.mist-effect::after {
+    content: '';
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    /* 使用渐变作为fallback */
-    background: 
-        linear-gradient(45deg, rgba(0, 0, 0, 0.02) 25%, transparent 25%),
-        linear-gradient(-45deg, rgba(0, 0, 0, 0.02) 25%, transparent 25%),
-        linear-gradient(45deg, transparent 75%, rgba(0, 0, 0, 0.02) 75%),
-        linear-gradient(-45deg, transparent 75%, rgba(0, 0, 0, 0.02) 75%);
-    background-size: 20px 20px;
-    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-    opacity: 0.5;
-    z-index: -1;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(255, 255, 255, 0.1) 50%, 
+        transparent 100%);
+    animation: mistFlow 10s linear infinite;
     pointer-events: none;
 }
 
-/* 如果图片存在，使用图片 - 已禁用避免404错误 */
-/*
-body.has-texture::before {
-    background-image: url('../img/ink_paper.jpg');
-    background-repeat: repeat;
-    background-size: auto;
-    opacity: 0.12;
-}
-*/
-
-/* 标题样式 */
-h1, h2, h3, h4, h5, h6 {
-    font-family: 'LongCang', 'KaiTi', serif;
-    color: var(--ink-font);
-    margin-bottom: 1rem;
-}
-
-h1 {
-    font-size: 3rem;
-    text-align: center;
-}
-
-h2 {
-    font-size: 2.5rem;
-}
-
-h3 {
-    font-size: 2rem;
-}
-
-/* 水墨按钮样式 */
-.ink-button {
-    background-color: transparent;
-    color: var(--ink-font);
-    border: 2px solid var(--ink-border);
-    padding: 12px 24px;
-    font-family: 'LongCang', 'KaiTi', serif;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    text-decoration: none;
-    display: inline-block;
-    margin: 8px;
-}
-
-.ink-button:hover {
-    background-color: var(--ink-border);
-    color: var(--ink-font);
-}
-
-/* 主容器 */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-/* 面板样式 */
-.panel {
-    background-color: rgba(247, 247, 245, 0.8);
-    border: 1px solid var(--ink-border);
-    padding: 20px;
-    margin-bottom: 20px;
-}
-
-/* 属性显示样式 */
-.attribute-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 8px 0;
-    border-bottom: 1px solid var(--ink-border);
-}
-
-.attribute-label {
-    font-weight: bold;
-    color: var(--ink-accent);
-}
-
-.attribute-value {
-    color: var(--ink-font);
-}
-
-/* 品阶颜色 */
-.tier-tian {
-    color: var(--ink-tier-tian);
-}
-
-.tier-di {
-    color: var(--ink-tier-di);
-}
-
-.tier-xuan {
-    color: var(--ink-tier-xuan);
-}
-
-.tier-huang {
-    color: var(--ink-tier-huang);
-}
-
-.tier-ren {
-    color: var(--ink-tier-ren);
-}
-
-/* 输入框样式 */
-input[type="text"],
-input[type="number"],
-textarea {
-    background-color: transparent;
-    border: 1px solid var(--ink-border);
-    padding: 8px 12px;
-    font-family: 'LongCang', 'KaiTi', serif;
-    font-size: 1rem;
-    color: var(--ink-font);
-    width: 100%;
-}
-
-input[type="text"]:focus,
-input[type="number"]:focus,
-textarea:focus {
-    outline: none;
-    border-color: var(--ink-font);
-}
-
-/* 滚动条样式 */
-::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background: var(--ink-bg);
-}
-
-::-webkit-scrollbar-thumb {
-    background: var(--ink-border);
-    border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: var(--ink-accent);
-}
-
-/* 禁用金属高光效果 */
-* {
-    text-shadow: none !important;
-    box-shadow: none !important;
-}
-
-/* 模态框样式 */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-}
-
-.modal-content {
+/* 金色装饰边框 */
+.golden-border {
+    border: 2px solid #d4af37;
     position: relative;
-    background-color: var(--ink-bg);
-    margin: 5% auto;
-    padding: 30px;
-    border: 2px solid var(--ink-border);
-    width: 80%;
-    max-width: 600px;
 }
 
-.modal-close {
+.golden-border::before,
+.golden-border::after {
+    content: '';
     position: absolute;
-    top: 10px;
-    right: 20px;
-    font-size: 2rem;
-    cursor: pointer;
-    color: var(--ink-accent);
+    width: 20px;
+    height: 20px;
+    border: 2px solid #d4af37;
 }
 
-/* 动画效果 */
+.golden-border::before {
+    top: -2px;
+    left: -2px;
+    border-right: none;
+    border-bottom: none;
+}
+
+.golden-border::after {
+    bottom: -2px;
+    right: -2px;
+    border-left: none;
+    border-top: none;
+}
+
+/* 按钮悬浮效果 */
+.float-effect {
+    transition: all 0.3s ease;
+}
+
+.float-effect:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* 淡入动画 */
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
-.fade-in {
-    animation: fadeIn 0.5s ease-in;
+/* 呼吸灯效果 */
+@keyframes breathe {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
 }
 
-/* 响应式设计 */
-@media (max-width: 768px) {
-    h1 {
-        font-size: 2rem;
-    }
-    
-    h2 {
-        font-size: 1.5rem;
-    }
-    
-    .ink-button {
-        font-size: 1rem;
-        padding: 10px 20px;
-    }
-    
-    .modal-content {
-        width: 90%;
-        padding: 20px;
-    }
-}
-
-/* 暗色模式兼容 */
-@media (prefers-color-scheme: dark) {
-    body {
-        background-color: #0a0a0a;
-        color: #f0f0f0;
-    }
-}
-
-/* 竖排角色名 */
-.vertical-name {
-    writing-mode: vertical-rl;
-}
-
-/* 属性网格默认竖排单列布局 */
-.attributes-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 30px;
-    margin-bottom: 30px;
-}
-
-/* 窄屏下回退为横向布局 */
-@media (max-width: 768px) {
-    .attributes-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+.breathe-effect {
+    animation: breathe 3s ease-in-out infinite;
 }

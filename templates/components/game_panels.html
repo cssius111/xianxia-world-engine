@@ -751,22 +751,22 @@ const GamePanels = {
      */
     async loadStatusData() {
         try {
-            const response = await fetch('/api/character/info');
+            const response = await fetch('/status');
             const data = await response.json();
 
-            if (data.success) {
-                const char = data.character;
-                document.getElementById('status-name').textContent = char.name || '-';
-                document.getElementById('status-realm').textContent = char.attributes.realm_name || '-';
-                document.getElementById('status-cultivation').textContent = `${char.attributes.cultivation_level || 0}/${char.attributes.max_cultivation || 100}`;
-                document.getElementById('status-faction').textContent = char.extra_data?.faction || '散修';
-                document.getElementById('status-constitution').textContent = char.extra_data?.constitution || '5';
-                document.getElementById('status-comprehension').textContent = char.extra_data?.comprehension || '5';
-                document.getElementById('status-spirit').textContent = char.attributes.defense || '5';
-                document.getElementById('status-luck').textContent = char.extra_data?.luck || '5';
-                document.getElementById('status-gold').textContent = char.inventory?.gold || '0';
-                document.getElementById('status-lifespan').textContent = char.extra_data?.lifespan || '100/100';
-                document.getElementById('status-reputation').textContent = char.extra_data?.reputation || '0';
+            if (data.player) {
+                const player = data.player;
+                document.getElementById('status-name').textContent = player.name || '-';
+                document.getElementById('status-realm').textContent = player.attributes?.realm_name || '-';
+                document.getElementById('status-cultivation').textContent = `${player.attributes?.cultivation_level || 0}/${player.attributes?.max_cultivation || 100}`;
+                document.getElementById('status-faction').textContent = player.faction || '散修';
+                document.getElementById('status-constitution').textContent = player.constitution || '5';
+                document.getElementById('status-comprehension').textContent = player.comprehension || '5';
+                document.getElementById('status-spirit').textContent = player.attributes?.defense || '5';
+                document.getElementById('status-luck').textContent = player.luck || '5';
+                document.getElementById('status-gold').textContent = data.gold || '0';
+                document.getElementById('status-lifespan').textContent = player.lifespan || '100/100';
+                document.getElementById('status-reputation').textContent = player.reputation || '0';
             }
         } catch (error) {
             console.error('加载状态失败:', error);
@@ -912,6 +912,14 @@ const GamePanels = {
      * 加载情报数据
      */
     async loadIntelData(tab = 'world') {
+        // TODO: 实现情报 API
+        const list = document.getElementById('intelList');
+        list.innerHTML = '<p style="color: #aaa; text-align: center; padding: 20px;">情报系统开发中...</p>';
+        
+        document.getElementById('intelTabWorld').classList.toggle('active', tab === 'world');
+        document.getElementById('intelTabPersonal').classList.toggle('active', tab === 'personal');
+        
+        /* 原始代码，待 API 实现后启用
         try {
             const resp = await fetch('/api/intel');
             const data = await resp.json();
@@ -930,6 +938,7 @@ const GamePanels = {
         } catch (e) {
             console.error('加载情报失败', e);
         }
+        */
     },
 
     switchIntelTab(tab) {
@@ -988,6 +997,11 @@ const GamePanels = {
      * 保存游戏
      */
     async saveGame() {
+        const msg = document.getElementById('saveLoadMessage');
+        msg.textContent = '保存功能开发中...';
+        msg.style.color = '#aaa';
+        
+        /* TODO: 实现保存功能
         try {
             const response = await fetch('/save_game', { method: 'POST' });
             const data = await response.json();
@@ -1003,12 +1017,18 @@ const GamePanels = {
         } catch (error) {
             console.error('保存失败:', error);
         }
+        */
     },
 
     /**
      * 加载游戏
      */
     async loadGame() {
+        const msg = document.getElementById('saveLoadMessage');
+        msg.textContent = '加载功能开发中...';
+        msg.style.color = '#aaa';
+        
+        /* TODO: 实现加载功能
         try {
             const response = await fetch('/load_game', { method: 'POST' });
             const data = await response.json();
@@ -1029,6 +1049,7 @@ const GamePanels = {
         } catch (error) {
             console.error('加载失败:', error);
         }
+        */
     }
 };
 

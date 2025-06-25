@@ -138,7 +138,7 @@
         <p class="game-subtitle">踏入仙途，逆天改命</p>
         
         <div class="menu-buttons">
-            <a href="{{ url_for('intro') }}" class="start-button">
+            <a href="{{ url_for('intro_screen') }}" class="start-button">
                 开始新游戏
             </a>
             
@@ -148,7 +148,7 @@
             </button>
             {% endif %}
             
-            <a href="{{ url_for('intro', mode='dev') }}" class="start-button">
+            <a href="{{ url_for('intro_screen', mode='dev') }}" class="start-button">
                 开发者模式
             </a>
         </div>
@@ -161,7 +161,7 @@
     <script>
     function loadGame() {
         // 直接跳转到游戏页面，游戏会自动尝试加载存档
-        window.location.href = "{{ url_for('game') }}";
+        window.location.href = "{{ url_for('game_screen') }}";
     }
     </script>
 </body>

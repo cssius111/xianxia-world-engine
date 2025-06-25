@@ -1,0 +1,224 @@
+<!-- 叙事日志区域 -->
+<div class="narrative-log" id="narrativeLog">
+    <div class="log-content" id="logContent">
+        <!-- 初始欢迎信息 -->
+        <div class="log-entry welcome-entry">
+            <p>欢迎来到修仙世界！</p>
+            <p>你是<strong>{{ player.name|default('无名侠客') }}</strong>，一个刚刚踏入修仙之路的{{ player.attributes.realm_name|default('炼气期') }}修士。</p>
+            <p>你现在位于<strong>{{ location|default('青云城') }}</strong>，这是一座繁华的修真城市，无数修士在此交易、修炼、探索。</p>
+            <p class="tip">输入命令开始你的冒险，或点击左侧菜单查看更多功能。</p>
+        </div>
+    </div>
+</div>
+
+<style>
+.narrative-log {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    padding: 20px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+}
+
+.log-content {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #e0e0e0;
+}
+
+.log-entry {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    border-left: 3px solid rgba(180, 180, 180, 0.5);
+    animation: fadeIn 0.5s ease;
+}
+
+.log-entry p {
+    margin: 10px 0;
+}
+
+.log-entry strong {
+    color: #bbb;
+}
+
+.welcome-entry {
+    border-left-color: #bbb;
+    background: rgba(180, 180, 180, 0.05);
+}
+
+.log-entry.command {
+    border-left-color: #4169E1;
+    font-style: italic;
+}
+
+.log-entry.result {
+    border-left-color: #32CD32;
+}
+
+.log-entry.error {
+    border-left-color: #DC143C;
+    color: #ff6b6b;
+}
+
+.log-entry.system {
+    border-left-color: #FFD700;
+    background: rgba(255, 215, 0, 0.05);
+}
+
+.tip {
+    color: #aaa;
+    font-size: 14px;
+    font-style: italic;
+}
+
+/* 时间戳 */
+.log-timestamp {
+    font-size: 12px;
+    color: #666;
+    float: right;
+}
+
+/* 滚动条 */
+.narrative-log::-webkit-scrollbar {
+    width: 8px;
+}
+
+.narrative-log::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.narrative-log::-webkit-scrollbar-thumb {
+    background: rgba(180, 180, 180, 0.5);
+    border-radius: 4px;
+}
+
+/* 动画 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 特殊效果类 */
+.highlight {
+    color: #FFD700;
+    font-weight: bold;
+}
+
+.damage {
+    color: #DC143C;
+}
+
+.heal {
+    color: #32CD32;
+}
+
+.reward {
+    color: #4169E1;
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+    .log-content {
+        font-size: 14px;
+    }
+}
+</style>
+
+<script>
+/**
+ * 叙事日志管理器
+ */
+const NarrativeLog = {
+    /**
+     * 添加日志条目
+     * @param {string} content - 日志内容
+     * @param {string} type - 日志类型 (normal, command, result, error, system)
+     */
+    addEntry(content, type = 'normal') {
+        const logContent = document.getElementById('logContent');
+        const entry = document.createElement('div');
+        entry.className = `log-entry ${type}`;
+        
+        // 添加时间戳
+        const timestamp = new Date().toLocaleTimeString('zh-CN', { 
+            hour: '2-digit', 
+            minute: '2-digit' 
+        });
+        
+        entry.innerHTML = `
+            <span class="log-timestamp">${timestamp}</span>
+            ${content}
+        `;
+        
+        logContent.appendChild(entry);
+        
+        // 自动滚动到底部
+        const narrativeLog = document.getElementById('narrativeLog');
+        narrativeLog.scrollTop = narrativeLog.scrollHeight;
+        
+        // 限制日志条目数量
+        this.limitEntries();
+    },
+    
+    /**
+     * 限制日志条目数量
+     */
+    limitEntries() {
+        const logContent = document.getElementById('logContent');
+        const entries = logContent.getElementsByClassName('log-entry');
+        
+        // 保留最多50条记录
+        while (entries.length > 50) {
+            logContent.removeChild(entries[0]);
+        }
+    },
+    
+    /**
+     * 清空日志
+     */
+    clear() {
+        const logContent = document.getElementById('logContent');
+        logContent.innerHTML = '';
+    },
+    
+    /**
+     * 添加命令日志
+     */
+    addCommand(command) {
+        this.addEntry(`<p>> ${command}</p>`, 'command');
+    },
+    
+    /**
+     * 添加结果日志
+     */
+    addResult(result) {
+        this.addEntry(`<p>${result}</p>`, 'result');
+    },
+    
+    /**
+     * 添加错误日志
+     */
+    addError(error) {
+        this.addEntry(`<p>❌ ${error}</p>`, 'error');
+    },
+    
+    /**
+     * 添加系统消息
+     */
+    addSystem(message) {
+        this.addEntry(`<p>📢 ${message}</p>`, 'system');
+    }
+};
+
+// 导出到全局
+window.NarrativeLog = NarrativeLog;
+</script>

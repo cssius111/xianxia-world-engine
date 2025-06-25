@@ -1,31 +1,89 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="沉浸式修仙世界模拟器 - 探索、修炼、突破命运。" />
-    <meta name="theme-color" content="#f5f5f5" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="mobile-web-app-capable" content="yes" />
-    <!-- Favicon已移除以避免404错误 -->
-
-    <!-- 水墨风格主题样式 -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/ink_theme.css') }}" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}" />
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}修仙世界引擎{% endblock %}</title>
+    
+    <!-- 基础样式 -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            overflow: hidden;
+        }
+        
+        .game-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .main-layout {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+        
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            overflow: hidden;
+        }
+        
+        /* 全局滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(180, 180, 180, 0.5);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(180, 180, 180, 0.7);
+        }
+    </style>
+    
     {% block extra_css %}{% endblock %}
 </head>
-<body class="{{ body_class|default('') }}">
+<body>
     {% block content %}{% endblock %}
-
-    <!-- 全局命名空间和动态入口 -->
+    
+    <!-- 基础脚本 -->
     <script>
-        window.XianXia = window.XianXia || {};
-        document.addEventListener("DOMContentLoaded", function () {
-            if (typeof XianXia.init === "function") {
-                XianXia.init();
-            }
-        });
+        // 全局配置
+        window.GAME_CONFIG = {
+            debug: {{ 'true' if dev_mode else 'false' }},
+            version: '1.0.0',
+            apiBase: ''
+        };
+        
+        // 控制台美化
+        console.log(
+            '%c修仙世界引擎 v1.0.0',
+            'color: #bbb; font-size: 20px; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);'
+        );
+        
+        if (window.GAME_CONFIG.debug) {
+            console.log('%c[调试模式已启用]', 'color: #FFD700;');
+        }
     </script>
     
     {% block extra_js %}{% endblock %}

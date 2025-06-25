@@ -1,33 +1,23 @@
-# Web框架
-flask==2.3.2
-flask-cors==4.0.0
+# 修仙世界引擎依赖列表
 
-# API文档
-flask-swagger-ui==4.11.1
+# Web框架
+Flask==2.3.3
+Werkzeug==2.3.7
 
 # 环境变量管理
 python-dotenv==1.0.0
 
-# 数据验证
-pydantic<2.0
+# 日期时间处理
+python-dateutil==2.8.2
 
-# 数据库（如果需要）
-sqlalchemy==2.0.0
+# JSON处理增强
+simplejson==3.19.1
 
-# 异步文件操作
-aiofiles==23.1.0
-
-# 系统监控
-psutil==5.9.5
-
-# 日志和工具
+# 请求处理
 requests==2.31.0
 
-# AI/LLM 相关
-openai>=1.0.0  # 用于访问 DeepSeek API（兼容 OpenAI 格式）
+# 路径处理
+pathlib==1.0.1
 
-# 监控和性能
-prometheus-client>=0.19.0  # 性能监控
-
-# 缓存
-cachetools>=5.3.0  # 缓存工具
+# 开发工具（可选）
+flask-cors==4.0.0  # 跨域支持

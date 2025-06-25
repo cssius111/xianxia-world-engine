@@ -1,74 +1,63 @@
-<!-- 世界观展示模态框 -->
+<!-- 世界观/传说模态框 -->
 <div id="loreModal" class="lore-modal" style="display: none;">
-    <div class="lore-modal-content">
+    <div class="lore-content">
         <div class="lore-header">
-            <h2 class="lore-title">修仙世界</h2>
-            <button class="lore-close-btn" onclick="LoreSystem.closeLore()">&times;</button>
+            <h2 class="lore-title">修仙世界传说</h2>
+            <button class="lore-close" onclick="LoreSystem.hide()">&times;</button>
         </div>
-
+        
         <div class="lore-body">
-            <article id="loreContent" class="lore-content">
-                <!-- 内容将通过JavaScript动态加载 -->
-            </article>
-        </div>
-
-        <div class="lore-footer">
-            <div class="lore-progress">
-                <span id="loreProgress">第 1 页 / 共 1 页</span>
+            <div class="lore-tabs">
+                <button class="lore-tab active" onclick="LoreSystem.switchTab('history')">历史</button>
+                <button class="lore-tab" onclick="LoreSystem.switchTab('realms')">境界</button>
+                <button class="lore-tab" onclick="LoreSystem.switchTab('sects')">门派</button>
+                <button class="lore-tab" onclick="LoreSystem.switchTab('legends')">传说</button>
             </div>
-
-            <div class="lore-controls">
-                <button id="prevLore" class="lore-btn lore-btn-secondary" onclick="LoreSystem.previousPage()">
-                    上一页
-                </button>
-
-                <button id="skipLore" class="lore-btn lore-btn-tertiary" onclick="LoreSystem.skipLore()">
-                    跳过引导
-                </button>
-
-                <button id="nextLore" class="lore-btn lore-btn-primary" onclick="LoreSystem.nextPage()">
-                    下一页
-                </button>
+            
+            <div class="lore-content-area" id="loreContentArea">
+                <!-- 默认显示历史内容 -->
+                <div class="lore-section" data-tab="history">
+                    <h3>修仙界历史</h3>
+                    <p>上古时期，天地初开，灵气充沛。先贤们观天地之道，悟阴阳之理，开创了修仙之法。</p>
+                    <p>三千年前，修仙界迎来了黄金时代。各大宗门林立，天才辈出，甚至有人飞升成仙。</p>
+                    <p>然而，两千年前的天地大劫降临，灵气枯竭，修仙界进入了漫长的末法时代。</p>
+                    <p>如今，灵气复苏的迹象初现，新的时代即将来临...</p>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <style>
-/* 世界观模态框样式 */
+/* 世界观模态框 */
 .lore-modal {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.95);
-    z-index: 10000;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 5000;
     display: flex;
     align-items: center;
     justify-content: center;
     animation: fadeIn 0.3s ease;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-.lore-modal-content {
+.lore-content {
     width: 90%;
     max-width: 800px;
     max-height: 90vh;
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
     border: 2px solid #bbb;
-    border-radius: 10px;
+    border-radius: 15px;
     display: flex;
     flex-direction: column;
     box-shadow: 0 0 50px rgba(180, 180, 180, 0.3);
 }
 
 .lore-header {
-    padding: 20px;
+    padding: 20px 30px;
     border-bottom: 1px solid rgba(180, 180, 180, 0.3);
     display: flex;
     justify-content: space-between;
@@ -78,205 +67,211 @@
 .lore-title {
     margin: 0;
     color: #bbb;
-    font-size: 24px;
-    font-weight: bold;
-    text-shadow: 0 0 10px rgba(180, 180, 180, 0.5);
+    font-size: 28px;
 }
 
-.lore-close-btn {
+.lore-close {
     background: none;
     border: none;
     color: #bbb;
-    font-size: 28px;
+    font-size: 30px;
     cursor: pointer;
     opacity: 0.7;
     transition: opacity 0.2s;
 }
 
-.lore-close-btn:hover {
+.lore-close:hover {
     opacity: 1;
 }
 
 .lore-body {
     flex: 1;
-    overflow-y: auto;
-    padding: 30px;
-}
-
-.lore-content {
-    color: #e0e0e0;
-    line-height: 1.8;
-    font-size: 16px;
-}
-
-/* Markdown样式 */
-.lore-content h1 {
-    color: #bbb;
-    font-size: 28px;
-    margin: 30px 0 20px 0;
-    text-align: center;
-    text-shadow: 0 0 10px rgba(180, 180, 180, 0.3);
-}
-
-.lore-content h2 {
-    color: #ddd;
-    font-size: 22px;
-    margin: 25px 0 15px 0;
-}
-
-.lore-content h3 {
-    color: #ddd;
-    font-size: 18px;
-    margin: 20px 0 10px 0;
-}
-
-.lore-content p {
-    margin: 15px 0;
-    text-indent: 2em;
-}
-
-.lore-content blockquote {
-    margin: 20px 0;
-    padding: 15px 20px;
-    background: rgba(180, 180, 180, 0.1);
-    border-left: 4px solid #bbb;
-    font-style: italic;
-}
-
-.lore-content blockquote p {
-    text-indent: 0;
-    margin: 0;
-}
-
-.lore-content strong {
-    color: #ddd;
-    font-weight: bold;
-}
-
-.lore-content ul, .lore-content ol {
-    margin: 15px 0;
-    padding-left: 30px;
-}
-
-.lore-content li {
-    margin: 8px 0;
-}
-
-.lore-content hr {
-    margin: 30px 0;
-    border: none;
-    border-top: 1px solid rgba(180, 180, 180, 0.3);
-}
-
-/* 滚动条样式 */
-.lore-body::-webkit-scrollbar {
-    width: 8px;
-}
-
-.lore-body::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.3);
-}
-
-.lore-body::-webkit-scrollbar-thumb {
-    background: rgba(180, 180, 180, 0.5);
-    border-radius: 4px;
-}
-
-.lore-body::-webkit-scrollbar-thumb:hover {
-    background: rgba(180, 180, 180, 0.7);
-}
-
-/* 底部控制区 */
-.lore-footer {
-    padding: 20px;
-    border-top: 1px solid rgba(180, 180, 180, 0.3);
-}
-
-.lore-progress {
-    text-align: center;
-    color: #bbb;
-    margin-bottom: 15px;
-    font-size: 14px;
-}
-
-.lore-controls {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.lore-tabs {
+    display: flex;
+    padding: 0 30px;
     gap: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    padding-top: 20px;
 }
 
-/* 按钮样式 */
-.lore-btn {
+.lore-tab {
     padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
+    background: rgba(180, 180, 180, 0.1);
+    border: 1px solid rgba(180, 180, 180, 0.3);
+    border-bottom: none;
+    border-radius: 10px 10px 0 0;
+    color: #e0e0e0;
     cursor: pointer;
-    transition: all 0.3s ease;
-    font-weight: bold;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s;
 }
 
-.lore-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-.lore-btn-primary {
-    background: linear-gradient(135deg, #bbb 0%, #ddd 100%);
-    color: #1a1a2e;
-}
-
-.lore-btn-primary:hover:not(:disabled) {
-    background: linear-gradient(135deg, #ddd 0%, #bbb 100%);
-    box-shadow: 0 0 20px rgba(180, 180, 180, 0.5);
-}
-
-.lore-btn-secondary {
+.lore-tab:hover {
     background: rgba(180, 180, 180, 0.2);
-    color: #bbb;
-    border: 1px solid #bbb;
 }
 
-.lore-btn-secondary:hover:not(:disabled) {
+.lore-tab.active {
     background: rgba(180, 180, 180, 0.3);
+    color: #bbb;
+    font-weight: bold;
 }
 
-.lore-btn-tertiary {
-    background: rgba(255, 255, 255, 0.1);
-    color: #999;
-    border: 1px solid #666;
+.lore-content-area {
+    flex: 1;
+    padding: 30px;
+    overflow-y: auto;
 }
 
-.lore-btn-tertiary:hover:not(:disabled) {
-    background: rgba(255, 255, 255, 0.2);
-    color: #ccc;
-    border-color: #999;
+.lore-section {
+    display: none;
+    animation: fadeIn 0.3s ease;
 }
 
-/* 响应式设计 */
-@media (max-width: 768px) {
-    .lore-modal-content {
-        width: 95%;
-        max-height: 95vh;
-    }
+.lore-section.active {
+    display: block;
+}
 
-    .lore-body {
-        padding: 20px;
-    }
+.lore-section h3 {
+    color: #bbb;
+    margin: 0 0 20px 0;
+    font-size: 24px;
+}
 
-    .lore-content {
-        font-size: 14px;
-    }
+.lore-section p {
+    margin: 15px 0;
+    line-height: 1.8;
+    color: #e0e0e0;
+}
 
-    .lore-controls {
-        flex-wrap: wrap;
-    }
+.lore-section ul {
+    list-style: none;
+    padding: 0;
+}
 
-    .lore-btn {
-        flex: 1;
-        min-width: 100px;
-    }
+.lore-section li {
+    margin: 10px 0;
+    padding-left: 20px;
+    position: relative;
+    color: #e0e0e0;
+}
+
+.lore-section li::before {
+    content: '◆';
+    position: absolute;
+    left: 0;
+    color: #bbb;
 }
 </style>
+
+<script>
+/**
+ * 世界观系统
+ */
+const LoreSystem = {
+    // 世界观内容
+    content: {
+        history: `
+            <h3>修仙界历史</h3>
+            <p>上古时期，天地初开，灵气充沛。先贤们观天地之道，悟阴阳之理，开创了修仙之法。</p>
+            <p>三千年前，修仙界迎来了黄金时代。各大宗门林立，天才辈出，甚至有人飞升成仙。</p>
+            <p>然而，两千年前的天地大劫降临，灵气枯竭，修仙界进入了漫长的末法时代。</p>
+            <p>如今，灵气复苏的迹象初现，新的时代即将来临...</p>
+        `,
+        
+        realms: `
+            <h3>修仙境界</h3>
+            <ul>
+                <li><strong>炼气期</strong> - 引气入体，打通经脉，奠定修仙根基</li>
+                <li><strong>筑基期</strong> - 凝炼真元，筑就道基，寿元可达二百载</li>
+                <li><strong>金丹期</strong> - 凝结金丹，御剑飞行，寿元可达五百载</li>
+                <li><strong>元婴期</strong> - 元婴出窍，神游万里，寿元可达千载</li>
+                <li><strong>化神期</strong> - 化神御物，呼风唤雨，寿元可达三千载</li>
+                <li><strong>炼虚期</strong> - 炼虚合道，返璞归真，寿元可达万载</li>
+                <li><strong>合体期</strong> - 天人合一，掌控法则，寿元无尽</li>
+                <li><strong>大乘期</strong> - 参悟天道，一念成界，准备飞升</li>
+                <li><strong>渡劫期</strong> - 历经天劫，褪去凡体，飞升成仙</li>
+            </ul>
+        `,
+        
+        sects: `
+            <h3>主要门派</h3>
+            <ul>
+                <li><strong>青云宗</strong> - 正道魁首，以剑道闻名，门下弟子众多</li>
+                <li><strong>天机阁</strong> - 精通阵法机关，掌握诸多上古秘术</li>
+                <li><strong>百花谷</strong> - 医道圣地，炼丹术冠绝天下</li>
+                <li><strong>万兽山</strong> - 御兽宗门，与灵兽为伴</li>
+                <li><strong>魔道六宗</strong> - 行事不拘一格，功法诡异强大</li>
+                <li><strong>散修联盟</strong> - 散修聚集之地，自由自在</li>
+            </ul>
+            <p>除此之外，还有无数小门派和隐世宗门，各有各的传承和特色。</p>
+        `,
+        
+        legends: `
+            <h3>上古传说</h3>
+            <p><strong>仙界之门</strong> - 传说在天地交界之处，有一扇通往仙界的大门，只有渡劫成功的修士才能推开。</p>
+            <p><strong>九天玄女</strong> - 上古大能，留下了无数功法传承，据说她的道场至今还隐藏在某处秘境之中。</p>
+            <p><strong>天道之眼</strong> - 天地间最神秘的存在，据说能看透一切因果，掌控万物命运。</p>
+            <p><strong>轮回之井</strong> - 传说中连接生死的神秘之地，据说能让人重活一世，但代价极其惨重。</p>
+            <p><strong>诸神黄昏</strong> - 两千年前的大劫，无数大能陨落，真相至今是谜。</p>
+        `
+    },
+    
+    /**
+     * 显示世界观
+     */
+    show() {
+        const modal = document.getElementById('loreModal');
+        if (modal) {
+            modal.style.display = 'flex';
+            this.switchTab('history');
+        }
+    },
+    
+    /**
+     * 隐藏世界观
+     */
+    hide() {
+        const modal = document.getElementById('loreModal');
+        if (modal) {
+            modal.style.display = 'none';
+        }
+    },
+    
+    /**
+     * 切换标签
+     */
+    switchTab(tab) {
+        // 更新标签状态
+        const tabs = document.querySelectorAll('.lore-tab');
+        tabs.forEach(t => {
+            t.classList.toggle('active', t.textContent.toLowerCase() === this.getTabName(tab));
+        });
+        
+        // 更新内容
+        const contentArea = document.getElementById('loreContentArea');
+        if (contentArea && this.content[tab]) {
+            contentArea.innerHTML = `<div class="lore-section active">${this.content[tab]}</div>`;
+        }
+    },
+    
+    /**
+     * 获取标签名称
+     */
+    getTabName(tab) {
+        const names = {
+            history: '历史',
+            realms: '境界',
+            sects: '门派',
+            legends: '传说'
+        };
+        return names[tab] || tab;
+    }
+};
+
+// 导出到全局
+window.LoreSystem = LoreSystem;
+</script>

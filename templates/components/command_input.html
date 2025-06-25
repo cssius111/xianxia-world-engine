@@ -1,0 +1,356 @@
+<!-- 命令输入区域 -->
+<div class="command-input-container">
+    <form id="commandForm" class="command-form">
+        <div class="input-wrapper">
+            <input 
+                type="text" 
+                id="commandInput" 
+                class="command-input" 
+                placeholder="输入命令... (例如：探索、修炼、查看状态)" 
+                autocomplete="off"
+                autofocus
+            />
+            <button type="submit" class="command-submit">
+                <span>执行</span>
+            </button>
+        </div>
+        
+        <div class="command-hints" id="commandHints" style="display: none;">
+            <!-- 动态生成的命令提示 -->
+        </div>
+    </form>
+    
+    <div class="quick-commands">
+        <button class="quick-cmd" onclick="CommandInput.executeCommand('探索')">探索</button>
+        <button class="quick-cmd" onclick="CommandInput.executeCommand('修炼')">修炼</button>
+        <button class="quick-cmd" onclick="CommandInput.executeCommand('查看状态')">状态</button>
+        <button class="quick-cmd" onclick="CommandInput.executeCommand('背包')">背包</button>
+        <button class="quick-cmd" onclick="CommandInput.executeCommand('地图')">地图</button>
+    </div>
+</div>
+
+<style>
+.command-input-container {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.command-form {
+    margin-bottom: 15px;
+}
+
+.input-wrapper {
+    display: flex;
+    gap: 10px;
+}
+
+.command-input {
+    flex: 1;
+    padding: 12px 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(180, 180, 180, 0.3);
+    border-radius: 25px;
+    color: #e0e0e0;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+.command-input:focus {
+    outline: none;
+    border-color: #bbb;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.command-input::placeholder {
+    color: rgba(224, 224, 224, 0.5);
+}
+
+.command-submit {
+    padding: 12px 30px;
+    background: linear-gradient(135deg, #bbb 0%, #ddd 100%);
+    color: #1a1a2e;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.command-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(180, 180, 180, 0.3);
+}
+
+.command-submit:active {
+    transform: translateY(0);
+}
+
+/* 命令提示 */
+.command-hints {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(26, 26, 46, 0.98);
+    border: 1px solid rgba(180, 180, 180, 0.3);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.5);
+}
+
+.hint-item {
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background 0.2s;
+    border-bottom: 1px solid rgba(180, 180, 180, 0.1);
+}
+
+.hint-item:hover {
+    background: rgba(180, 180, 180, 0.1);
+}
+
+.hint-item:last-child {
+    border-bottom: none;
+}
+
+.hint-command {
+    color: #bbb;
+    font-weight: bold;
+}
+
+.hint-desc {
+    color: #888;
+    font-size: 14px;
+    margin-left: 10px;
+}
+
+/* 快捷命令 */
+.quick-commands {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.quick-cmd {
+    padding: 8px 16px;
+    background: rgba(180, 180, 180, 0.1);
+    border: 1px solid rgba(180, 180, 180, 0.3);
+    border-radius: 20px;
+    color: #e0e0e0;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.quick-cmd:hover {
+    background: rgba(180, 180, 180, 0.2);
+    border-color: #bbb;
+    transform: translateY(-1px);
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+    .command-input {
+        font-size: 14px;
+        padding: 10px 15px;
+    }
+    
+    .command-submit {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+    
+    .quick-commands {
+        justify-content: center;
+    }
+}
+</style>
+
+<script>
+/**
+ * 命令输入管理器
+ */
+const CommandInput = {
+    // 命令列表
+    commands: [
+        { cmd: '探索', desc: '探索当前区域' },
+        { cmd: '修炼', desc: '进行修炼' },
+        { cmd: '查看状态', desc: '查看角色状态' },
+        { cmd: '背包', desc: '打开背包' },
+        { cmd: '地图', desc: '查看地图' },
+        { cmd: '任务', desc: '查看任务列表' },
+        { cmd: '帮助', desc: '显示帮助信息' },
+        { cmd: '保存', desc: '保存游戏' },
+        { cmd: '前往', desc: '前往指定地点 (例：前往 青云峰)' },
+        { cmd: '交谈', desc: '与NPC交谈 (例：交谈 张三)' },
+        { cmd: '使用', desc: '使用物品 (例：使用 回春丹)' },
+        { cmd: '购买', desc: '购买物品 (例：购买 回春丹)' },
+        { cmd: '出售', desc: '出售物品 (例：出售 灵石)' },
+        { cmd: '修炼', desc: '修炼功法 (例：修炼 3小时)' }
+    ],
+    
+    /**
+     * 初始化
+     */
+    init() {
+        const form = document.getElementById('commandForm');
+        const input = document.getElementById('commandInput');
+        
+        // 表单提交
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const command = input.value.trim();
+            if (command) {
+                this.executeCommand(command);
+                input.value = '';
+            }
+        });
+        
+        // 输入提示
+        input.addEventListener('input', (e) => {
+            this.showHints(e.target.value);
+        });
+        
+        // 失去焦点时隐藏提示
+        input.addEventListener('blur', () => {
+            setTimeout(() => this.hideHints(), 200);
+        });
+        
+        // 命令历史 (上下键)
+        this.commandHistory = [];
+        this.historyIndex = -1;
+        
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                this.navigateHistory(-1);
+            } else if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                this.navigateHistory(1);
+            }
+        });
+    },
+    
+    /**
+     * 执行命令
+     */
+    async executeCommand(command) {
+        if (!command) return;
+        
+        // 添加到历史
+        this.commandHistory.push(command);
+        this.historyIndex = this.commandHistory.length;
+        
+        // 显示命令
+        if (window.NarrativeLog) {
+            NarrativeLog.addCommand(command);
+        }
+        
+        try {
+            // 发送命令到服务器
+            const response = await fetch('/command', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ command })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success && window.NarrativeLog) {
+                NarrativeLog.addResult(data.result);
+            } else if (window.NarrativeLog) {
+                NarrativeLog.addError(data.error || '命令执行失败');
+            }
+            
+        } catch (error) {
+            console.error('命令执行失败:', error);
+            if (window.NarrativeLog) {
+                NarrativeLog.addError('网络错误，请稍后重试');
+            }
+        }
+    },
+    
+    /**
+     * 显示命令提示
+     */
+    showHints(input) {
+        const hintsDiv = document.getElementById('commandHints');
+        
+        if (!input) {
+            this.hideHints();
+            return;
+        }
+        
+        // 过滤匹配的命令
+        const matches = this.commands.filter(cmd => 
+            cmd.cmd.toLowerCase().includes(input.toLowerCase())
+        );
+        
+        if (matches.length === 0) {
+            this.hideHints();
+            return;
+        }
+        
+        // 生成提示HTML
+        hintsDiv.innerHTML = matches.map(cmd => `
+            <div class="hint-item" onclick="CommandInput.selectHint('${cmd.cmd}')">
+                <span class="hint-command">${cmd.cmd}</span>
+                <span class="hint-desc">${cmd.desc}</span>
+            </div>
+        `).join('');
+        
+        hintsDiv.style.display = 'block';
+    },
+    
+    /**
+     * 隐藏命令提示
+     */
+    hideHints() {
+        document.getElementById('commandHints').style.display = 'none';
+    },
+    
+    /**
+     * 选择提示
+     */
+    selectHint(command) {
+        document.getElementById('commandInput').value = command;
+        this.hideHints();
+        document.getElementById('commandInput').focus();
+    },
+    
+    /**
+     * 导航历史记录
+     */
+    navigateHistory(direction) {
+        const input = document.getElementById('commandInput');
+        
+        if (this.commandHistory.length === 0) return;
+        
+        this.historyIndex += direction;
+        
+        if (this.historyIndex < 0) {
+            this.historyIndex = 0;
+        } else if (this.historyIndex >= this.commandHistory.length) {
+            this.historyIndex = this.commandHistory.length;
+            input.value = '';
+            return;
+        }
+        
+        input.value = this.commandHistory[this.historyIndex];
+    }
+};
+
+// 页面加载完成后初始化
+document.addEventListener('DOMContentLoaded', () => {
+    CommandInput.init();
+});
+
+// 导出到全局
+window.CommandInput = CommandInput;
+</script>

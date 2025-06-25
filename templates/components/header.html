@@ -1,0 +1,55 @@
+<!-- 游戏头部 -->
+<header class="game-header">
+    <div class="header-left">
+        <h1 class="game-logo">修仙世界引擎</h1>
+    </div>
+    <div class="header-center">
+        <span class="location-info">
+            <i class="icon-location"></i>
+            当前位置：<span id="currentLocation">{{ location|default('青云城') }}</span>
+        </span>
+    </div>
+    <div class="header-right">
+        <span class="player-info">
+            <i class="icon-user"></i>
+            <span id="playerName">{{ player.name|default('无名侠客') }}</span>
+        </span>
+        <span class="realm-info">
+            <i class="icon-star"></i>
+            <span id="playerRealm">{{ player.attributes.realm_name|default('炼气期') }}</span>
+        </span>
+    </div>
+</header>
+
+<style>
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border-bottom: 1px solid rgba(180, 180, 180, 0.3);
+}
+
+.header-left, .header-center, .header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.game-logo {
+    margin: 0;
+    font-size: 24px;
+    color: #bbb;
+    font-weight: bold;
+}
+
+.location-info, .player-info, .realm-info {
+    color: #e0e0e0;
+    font-size: 14px;
+}
+
+.icon-location::before { content: '📍'; }
+.icon-user::before { content: '👤'; }
+.icon-star::before { content: '⭐'; }
+</style>

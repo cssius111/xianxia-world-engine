@@ -682,7 +682,7 @@ const RollSystem = {
 
         // 发送到后端创建角色
         try {
-            const response = await fetch('/api/character/create', {
+            const response = await fetch('/create_character', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>修仙世界引擎 - 角色创建</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* 加载动画 */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 30000;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading-content {
+            text-align: center;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(180, 180, 180, 0.3);
+            border-top-color: #bbb;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: #bbb;
+            font-size: 18px;
+        }
+
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 加载画面 -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">正在加载修仙世界...</div>
+        </div>
+    </div>
+
+    <!-- 引入各个组件 -->
+    {% include 'components/welcome_modal_v2.html' %}
+    {% include 'components/roll_modal.html' %}
+    {% include 'components/world_intro.html' %}
+
+    <script>
+        /**
+         * 游戏初始化流程控制器
+         */
+        const GameInitFlow = {
+            // 开发模式标志
+            devMode: {{ 'true' if dev_mode else 'false' }},
+
+            /**
+             * 初始化游戏
+             */
+            init() {
+                console.log('初始化游戏流程...');
+                
+                // 隐藏加载画面
+                setTimeout(() => {
+                    const loadingScreen = document.getElementById('loadingScreen');
+                    if (loadingScreen) {
+                        loadingScreen.style.opacity = '0';
+                        setTimeout(() => {
+                            loadingScreen.style.display = 'none';
+                        }, 500);
+                    }
+                    
+                    // 显示欢迎页面
+                    this.showWelcome();
+                }, 1000);
+            },
+
+            /**
+             * 显示欢迎页面
+             */
+            showWelcome() {
+                console.log('显示欢迎页面');
+                
+                // 修改 GameLauncher 的 startNewGame 方法
+                const originalStartNewGame = GameLauncher.startNewGame;
+                GameLauncher.startNewGame = () => {
+                    // 隐藏欢迎页面
+                    GameLauncher.hide();
+                    
+                    // 清除旧数据
+                    if (typeof GameUI !== 'undefined' && GameUI.clearGameData) {
+                        GameUI.clearGameData();
+                    }
+                    
+                    // 进入下一步：角色创建
+                    setTimeout(() => {
+                        this.showRollModal();
+                    }, 300);
+                };
+
+                // 显示欢迎页面
+                GameLauncher.show();
+            },
+
+            /**
+             * 显示角色创建面板
+             */
+            showRollModal() {
+                console.log('显示角色创建面板');
+                
+                // 修改确认创建的逻辑
+                const originalConfirmCharacter = RollSystem.confirmCharacter;
+                RollSystem.confirmCharacter = async function() {
+                    const name = document.getElementById('characterName').value.trim();
+
+                    if (!name) {
+                        alert('请输入角色姓名');
+                        return;
+                    }
+
+                    if (name.length > 20) {
+                        alert('角色姓名不能超过20个字符');
+                        return;
+                    }
+
+                    const characterData = {
+                        name: name,
+                        gender: document.querySelector('input[name="gender"]:checked').value,
+                        background: document.querySelector('input[name="background"]:checked').value,
+                        attributes: {...RollSystem.currentStats}
+                    };
+
+                    console.log('创建角色:', characterData);
+
+                    // 发送到后端创建角色
+                    try {
+                        const response = await fetch('/create_character', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(characterData)
+                        });
+
+                        const result = await response.json();
+
+                        if (result.success) {
+                            // 隐藏角色创建面板
+                            RollSystem.hide();
+                            
+                            // 进入下一步：世界介绍
+                            setTimeout(() => {
+                                GameInitFlow.showWorldIntro();
+                            }, 300);
+                        } else {
+                            alert('创建角色失败: ' + (result.error || '未知错误'));
+                        }
+                    } catch (error) {
+                        console.error('创建角色失败:', error);
+                        // 在开发模式下，仍然继续流程
+                        if (GameInitFlow.devMode) {
+                            RollSystem.hide();
+                            setTimeout(() => {
+                                GameInitFlow.showWorldIntro();
+                            }, 300);
+                        } else {
+                            alert('创建角色失败，请重试');
+                        }
+                    }
+                };
+
+                // 显示角色创建面板
+                RollSystem.show();
+            },
+
+            /**
+             * 显示世界介绍
+             */
+            showWorldIntro() {
+                console.log('显示世界介绍');
+                
+                WorldIntroSystem.show(() => {
+                    console.log('世界介绍完成，进入游戏主界面');
+                    
+                    // 跳转到游戏主界面
+                    window.location.href = "{{ url_for('game_screen') }}" + (this.devMode ? '?mode=dev' : '');
+                });
+            }
+        };
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            GameInitFlow.init();
+        });
+
+        // 开发模式下的快捷键
+        if (GameInitFlow.devMode) {
+            document.addEventListener('keydown', (e) => {
+                // Ctrl+Shift+S 跳过到角色创建
+                if (e.ctrlKey && e.shiftKey && e.key === 'S') {
+                    console.log('开发模式：跳过到角色创建');
+                    GameLauncher.hide();
+                    GameInitFlow.showRollModal();
+                }
+                
+                // Ctrl+Shift+W 跳过到世界介绍
+                if (e.ctrlKey && e.shiftKey && e.key === 'W') {
+                    console.log('开发模式：跳过到世界介绍');
+                    GameLauncher.hide();
+                    RollSystem.hide();
+                    GameInitFlow.showWorldIntro();
+                }
+                
+                // Ctrl+Shift+G 直接进入游戏
+                if (e.ctrlKey && e.shiftKey && e.key === 'G') {
+                    console.log('开发模式：直接进入游戏');
+                    window.location.href = "{{ url_for('game_screen', mode='dev') }}";
+                }
+            });
+        }
+    </script>
+</body>
+</html>
