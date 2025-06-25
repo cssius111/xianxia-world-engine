@@ -123,10 +123,21 @@ const GameUI = {
      * 开始自动刷新
      */
     startAutoRefresh() {
-        // 每30秒自动刷新一次状态
-        setInterval(() => {
-            this.refreshStatus();
-        }, 30000);
+        // 使用 Server-Sent Events 推送状态更新
+        if (this.eventSource) {
+            this.eventSource.close();
+        }
+        this.eventSource = new EventSource('/status/stream');
+        this.eventSource.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.player) {
+                this.updateHeader(data.player, data.location);
+                this.updateStats(data.player);
+            }
+        };
+        this.eventSource.onerror = (e) => {
+            console.error('状态更新流连接失败:', e);
+        };
     },
     
     /**
