@@ -25,5 +25,8 @@ flask-cors==4.0.0  # 跨域支持
 # NLP相关依赖
 backoff==2.2.1  # API调用重试机制
 
+# 系统性能监控
+psutil==7.0.0
+
 # 注意：DeepSeek SDK 需要单独安装
 # pip install deepseek
