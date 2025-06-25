@@ -38,7 +38,6 @@ xianxia_world_engine/
 │   ├── intro_optimized.html        # 角色创建流程
 │   ├── game_enhanced_optimized_v2.html  # 游戏主界面
 │   ├── screens/
-│   │   └── start_screen.html       # 开始页面
 │   └── components/
 │       ├── header.html             # 页头
 │       ├── sidebar_v2.html         # 侧边栏

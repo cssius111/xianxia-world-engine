@@ -114,8 +114,8 @@ def cleanup_old_instances():
 
 @app.route("/")
 def index():
-    """主页面 - 显示开始页面"""
-    return render_template("screens/start_screen.html")
+    """主页面 - 重定向到角色创建"""
+    return redirect(url_for("intro"))
 
 
 @app.route("/welcome")

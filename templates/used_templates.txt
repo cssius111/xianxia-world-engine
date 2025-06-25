@@ -18,7 +18,7 @@ components/header.html              [组件]
 
 components/lore_modal.html         [组件]
 - 说明：世界观简介弹窗
-- 被引用于：start_screen.html / 游戏内帮助系统
+- 被引用于：intro_optimized.html / 游戏内帮助系统
 
 components/narrative_log.html       [组件]
 - 说明：中央叙事区域，输出游戏文本
@@ -34,11 +34,11 @@ components/sidebar.html / sidebar_v2.html   [组件]
 
 components/welcome_modal.html / welcome_modal_v2.html  [组件]
 - 说明：首次进入游戏的欢迎弹窗
-- 被引用于：start_screen.html
+- 被引用于：intro_optimized.html
 
 components/world_intro.html         [组件]
 - 说明：世界观故事模态弹窗
-- 被引用于：start_screen.html / 游戏内介绍
+- 被引用于：intro_optimized.html / 游戏内介绍
 
 # 弹窗模组 (modals/)
 modals/achievement.html             [弹窗]
@@ -59,7 +59,7 @@ modals/exploration.html             [弹窗]
 
 modals/help.html                    [弹窗]
 - 说明：帮助系统内容页
-- 被引用于：start_screen.html / 游戏主界面
+- 被引用于：intro_optimized.html / 游戏主界面
 
 modals/inventory.html               [弹窗]
 - 说明：背包系统 UI
@@ -79,7 +79,7 @@ modals/quest.html                   [弹窗]
 
 modals/settings.html                [弹窗]
 - 说明：设置界面
-- 被引用于：start_screen.html / 游戏右上角
+- 被引用于：intro_optimized.html / 游戏右上角
 
 modals/status.html                  [弹窗]
 - 说明：详细人物状态窗口
@@ -89,8 +89,6 @@ modals/status.html                  [弹窗]
 screens/choose_start.html           [页面]
 - 说明：游戏开始模式选择页面（自定义 or 快速开始）
 
-screens/start_screen.html           [页面]
-- 说明：游戏欢迎页，展示世界观、欢迎弹窗
 
 screens/roll_screen.html            [页面]
 - 说明：进入角色 roll 或创建流程的页面

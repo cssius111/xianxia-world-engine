@@ -2,7 +2,7 @@
 
 ## 已修复的端点错误
 
-### 1. start_screen.html
+### 1. start_screen.html (已删除)
 - ✅ `url_for('intro')` → `url_for('intro_screen')`
 - ✅ `url_for('intro', mode='dev')` → `url_for('intro_screen', mode='dev')`
 - ✅ `url_for('game')` → `url_for('game_screen')`
@@ -26,12 +26,11 @@
 ## 页面流程
 
 正确的页面流程已实现：
-1. **开始页面** (`/start`) → start_screen.html
-2. **角色创建** (`/intro`) → intro_optimized.html
+1. **角色创建** (`/intro`) → intro_optimized.html
    - 自动显示欢迎页面 (welcome_modal_v2.html)
    - 点击"开始游戏"后显示角色创建 (roll_modal.html)
    - 创建完成后显示世界介绍 (world_intro.html)
-3. **游戏主界面** (`/game`) → game_enhanced_optimized_v2.html
+2. **游戏主界面** (`/game`) → game_enhanced_optimized_v2.html
 
 ## 待实现的功能
 
