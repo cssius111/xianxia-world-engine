@@ -48,6 +48,10 @@ class DeepSeekNLPProcessor:
         
         # 初始化LLM客户端
         api_key = api_key or self.config.get_api_key()
+        if not api_key:
+            raise ValueError(
+                "Missing DEEPSEEK_API_KEY. Please set it in your environment or .env file."
+            )
         self.llm = LLMClient(
             api_key=api_key,
             api_url=self.config.get("api_url"),

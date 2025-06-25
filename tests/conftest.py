@@ -4,6 +4,9 @@ import importlib.util
 from pathlib import Path
 import werkzeug
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 if not hasattr(werkzeug, "__version__"):
     werkzeug.__version__ = "0"
