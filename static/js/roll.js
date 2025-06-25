@@ -8,7 +8,6 @@ const rollMode = urlParams.get('mode') || 'random';
 
 // DOM元素
 const rollBtn = document.getElementById('roll-btn');
-const confirmBtn = document.getElementById('confirm-btn');
 const rollArea = document.getElementById('roll-area');
 const jackpotModal = document.getElementById('jackpot-modal');
 const modalClose = document.querySelector('.modal-close');
@@ -106,16 +105,28 @@ async function performRoll() {
         
         const data = await response.json();
         currentCharacter = data.character;
-        
+
         // 显示结果
         displayCharacter(currentCharacter);
         rollArea.innerHTML = '<p class="text-2xl text-accent">天命已定！</p>';
-        
+
         // 检查jackpot
         checkAndShowJackpot(currentCharacter);
-        
-        // 显示确认按钮
-        confirmBtn.style.display = 'block';
+
+        // 直接创建角色
+        const payload = {
+            name: currentCharacter.name,
+            gender: 'male',
+            background: 'auto',
+            attributes: currentCharacter.attributes,
+            destiny: data.destiny && (data.destiny.id || data.destiny.name)
+        };
+        await fetch('/create_character', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
         rollBtn.textContent = '重新抽取';
         
     } catch (error) {
@@ -139,42 +150,9 @@ function getCustomPrompt() {
     return '一个天赋异禀的少年剑客';
 }
 
-// 确认角色
-async function confirmCharacter() {
-    if (!currentCharacter) return;
-    
-    confirmBtn.disabled = true;
-    confirmBtn.textContent = '确认中...';
-    
-    try {
-        const response = await fetch('/api/confirm_character', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                character: currentCharacter
-            })
-        });
-        
-        if (!response.ok) {
-            throw new Error('确认失败');
-        }
-        
-        // 跳转到游戏页面
-        window.location.href = '/game';
-        
-    } catch (error) {
-        console.error('Confirm error:', error);
-        alert('确认失败，请重试');
-        confirmBtn.disabled = false;
-        confirmBtn.textContent = '确认开局';
-    }
-}
 
 // 事件监听
 rollBtn.addEventListener('click', performRoll);
-confirmBtn.addEventListener('click', confirmCharacter);
 
 // 模态框关闭
 modalClose.addEventListener('click', () => {

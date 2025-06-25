@@ -359,6 +359,8 @@ def api_roll():
         save_character,
     )
 
+    import random
+
     data = request.get_json()
     mode = data.get("mode", "random")
 
@@ -373,9 +375,14 @@ def api_roll():
     else:
         character = gen_random()
 
+    # 随机命格
+    destiny_data = data_loader.get_destinies()
+    options = destiny_data.get("destiny_grades", [])
+    destiny = random.choice(options) if options else None
+
     save_character(character)
 
-    return jsonify({"success": True, "character": character})
+    return jsonify({"success": True, "character": character, "destiny": destiny})
 
 
 @app.route("/api/confirm_character", methods=["POST"])
@@ -682,18 +689,6 @@ def get_destiny_data():
     return jsonify(data_loader.get_destinies())
 
 
-@app.route("/api/destiny_options")
-def get_destiny_options():
-    """随机返回若干命格供选择"""
-    import random
-
-    data = data_loader.get_destinies()
-    options = data.get("destiny_grades", data if isinstance(data, list) else [])
-    if not isinstance(options, list):
-        options = []
-    sample_size = min(len(options), random.randint(3, 5))
-    choices = random.sample(options, sample_size) if options else []
-    return jsonify({"options": choices})
 
 
 @app.route("/data/fortune")
