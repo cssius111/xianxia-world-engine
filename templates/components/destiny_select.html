@@ -1,0 +1,78 @@
+<!-- 命格选择模态框 -->
+<div id="destinySelectModal" class="destiny-modal" style="display:none;">
+    <div class="destiny-content">
+        <h2 class="destiny-title">选择命格</h2>
+        <div id="destinyOptions" class="destiny-options"></div>
+        <div class="destiny-actions">
+            <button class="destiny-confirm" onclick="DestinySelector.confirm()">确认命格</button>
+        </div>
+    </div>
+    <div id="destinyTooltip" class="tooltip"></div>
+</div>
+
+<style>
+.destiny-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+.destiny-content {
+    background: rgba(20,20,20,0.95);
+    padding: 20px 40px;
+    border: 1px solid rgba(212,175,55,0.3);
+    color: #e0e0e0;
+}
+.destiny-title {
+    text-align: center;
+    margin-bottom: 20px;
+    letter-spacing: 0.3rem;
+}
+.destiny-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(120px,1fr));
+    gap: 15px;
+}
+.destiny-card {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid rgba(212,175,55,0.3);
+    cursor: pointer;
+}
+.destiny-card.selected {
+    background: rgba(212,175,55,0.2);
+}
+.destiny-actions {
+    margin-top: 20px;
+    text-align: center;
+}
+.destiny-confirm {
+    padding: 8px 20px;
+    background: transparent;
+    color: var(--brush-gold, #d4af37);
+    border: 1px solid var(--brush-gold, #d4af37);
+    cursor: pointer;
+}
+.tooltip {
+    position: fixed;
+    background: rgba(40,40,40,0.95);
+    border: 1px solid rgba(200,200,200,0.2);
+    padding: 6px 10px;
+    font-size: 13px;
+    color: #d8d8d8;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 10001;
+    border-radius: 4px;
+}
+.tooltip.show {
+    opacity: 1;
+}
+</style>

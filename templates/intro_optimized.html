@@ -73,6 +73,8 @@
     {% include 'components/welcome_modal_v2.html' %}
     {% include 'components/roll_modal.html' %}
     {% include 'components/world_intro.html' %}
+    {% include 'components/destiny_select.html' %}
+    <script src="{{ url_for('static', filename='js/modules/destiny_selector.js') }}"></script>
 
     <script>
         /**
@@ -158,47 +160,46 @@
                         attributes: {...RollSystem.currentStats}
                     };
 
-                    console.log('创建角色:', characterData);
-
-                    // 发送到后端创建角色
-                    try {
-                        const response = await fetch('/create_character', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(characterData)
-                        });
-
-                        const result = await response.json();
-
-                        if (result.success) {
-                            // 隐藏角色创建面板
-                            RollSystem.hide();
-                            
-                            // 进入下一步：世界介绍
-                            setTimeout(() => {
-                                GameInitFlow.showWorldIntro();
-                            }, 300);
-                        } else {
-                            alert('创建角色失败: ' + (result.error || '未知错误'));
-                        }
-                    } catch (error) {
-                        console.error('创建角色失败:', error);
-                        // 在开发模式下，仍然继续流程
-                        if (GameInitFlow.devMode) {
-                            RollSystem.hide();
-                            setTimeout(() => {
-                                GameInitFlow.showWorldIntro();
-                            }, 300);
-                        } else {
-                            alert('创建角色失败，请重试');
-                        }
-                    }
+                    console.log('角色数据:', characterData);
+                    GameInitFlow.characterData = characterData;
+                    RollSystem.hide();
+                    setTimeout(() => {
+                        GameInitFlow.showDestinySelect();
+                    }, 300);
                 };
 
                 // 显示角色创建面板
                 RollSystem.show();
+            },
+
+            /**
+             * 显示命格选择
+             */
+            showDestinySelect() {
+                console.log('显示命格选择');
+                DestinySelector.show(async (destiny) => {
+                    const payload = {
+                        ...this.characterData,
+                        destiny: destiny.id || destiny.name
+                    };
+                    try {
+                        const response = await fetch('/create_character', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                        const result = await response.json();
+                        if (result.success) {
+                            setTimeout(() => {
+                                this.showWorldIntro();
+                            }, 300);
+                        } else {
+                            alert('创建角色失败: ' + (result.error || '未知错误'));
+                        }
+                    } catch (err) {
+                        alert('创建角色失败：' + err.message);
+                    }
+                });
             },
 
             /**
