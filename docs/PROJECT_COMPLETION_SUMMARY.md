@@ -137,8 +137,8 @@
 
 ### 1. **标准启动**
 ```bash
-cd /Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine
-python run_web_ui_v2.py
+cd /path/to/xianxia_world_engine
+python entrypoints/run_web_ui_optimized.py
 ```
 
 ### 2. **开发模式启动**
@@ -186,7 +186,7 @@ xianxia_world_engine/
 │       ├── status.html            # 状态查看
 │       ├── help.html              # 帮助文档
 │       └── ...                    # 其他功能模态框
-└── 🚀 run_web_ui_v2.py           # 优化启动脚本
+└── 🚀 entrypoints/run_web_ui_optimized.py           # 优化启动脚本
 ```
 
 ---

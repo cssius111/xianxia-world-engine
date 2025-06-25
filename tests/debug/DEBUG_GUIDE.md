@@ -6,13 +6,13 @@
 这是最快速的方式来确认项目是否可以运行：
 
 ```bash
-cd /Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine
+cd /path/to/xianxia_world_engine
 python tests/debug/startup_check.py
 ```
 
 如果所有检查都通过，您可以直接启动项目：
 ```bash
-python run_web_ui_v2.py
+python entrypoints/run_web_ui_optimized.py
 ```
 
 ### 2. 如果启动检查失败
@@ -84,7 +84,7 @@ python tests/debug/test_data_files.py
 ### 5. 前端测试
 
 启动服务器后，可以在浏览器中运行前端测试：
-1. 启动服务器: `python run_web_ui_v2.py`
+1. 启动服务器: `python entrypoints/run_web_ui_optimized.py`
 2. 访问: `http://localhost:5001/static/../tests/debug/frontend_test.html`
 
 ## 🛠️ 调试工具说明
@@ -135,8 +135,8 @@ python tests/debug/test_data_files.py
 如果一切正常，使用以下命令启动：
 
 ```bash
-cd /Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine
-python run_web_ui_v2.py
+cd /path/to/xianxia_world_engine
+python entrypoints/run_web_ui_optimized.py
 ```
 
 然后访问：
