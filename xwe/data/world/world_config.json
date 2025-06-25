@@ -5,28 +5,36 @@
     "description": "此文件定义了修仙世界的六层运行逻辑，用于驱动所有世界行为、成长、冲突与事件反馈。"
   },
   "energy_layer": {
-    "base_energies": ["灵气", "仙气", "本源力"],
+    "base_energies": [
+      {"id": 1, "name": "灵气"},
+      {"id": 2, "name": "仙气"},
+      {"id": 3, "name": "本源力"},
+      {"id": 4, "name": "信仰之力"}
+    ],
     "alternate_energies": [
       {
+        "id": 5,
         "name": "魔气",
         "effects": "可短期提升实力，具侵蚀性",
         "side_effect": "心魔滋生，肉身异化"
       },
       {
+        "id": 6,
         "name": "鬼气",
         "effects": "增强灵魂掌控，操控死物",
         "side_effect": "阳气衰败，容易失控"
       },
       {
+        "id": 7,
         "name": "命火",
         "effects": "以寿元换取爆发力",
         "side_effect": "不可逆生命损耗"
       }
     ],
     "plane_energy_map": {
-      "凡界": "灵气",
-      "仙界": "仙气",
-      "神界": ["本源力", "信仰之力"]
+      "凡界": 1,
+      "仙界": 2,
+      "神界": [3, 4]
     }
   },
   "cultivation_layer": {
@@ -43,7 +51,12 @@
     "system_intervention_allowed": false
   },
   "social_layer": {
-    "factions": ["宗门", "朝廷", "散修联盟", "秘境组织"],
+    "factions": [
+      {"id": 1, "name": "宗门"},
+      {"id": 2, "name": "朝廷"},
+      {"id": 3, "name": "散修联盟"},
+      {"id": 4, "name": "秘境组织"}
+    ],
     "resource_distribution": "不均，势力越强掌控越多",
     "conflict_model": {
       "modes": ["明战", "暗斗", "因果压制", "挑战制度"],
@@ -51,7 +64,14 @@
     }
   },
   "karma_layer": {
-    "trackable_behaviors": ["杀戮", "立誓", "救援", "破誓", "善意施予", "因果交易"],
+    "trackable_behaviors": [
+      {"id": 1, "name": "杀戮"},
+      {"id": 2, "name": "立誓"},
+      {"id": 3, "name": "救援"},
+      {"id": 4, "name": "破誓"},
+      {"id": 5, "name": "善意施予"},
+      {"id": 6, "name": "因果交易"}
+    ],
     "karma_accumulation": {
       "model": "行为加权评分系统",
       "impact": ["NPC态度变化", "天劫强度", "剧情概率分支"]
@@ -64,7 +84,12 @@
   },
   "behavior_layer": {
     "player_input_mode": "自然语言 + 指令关键词",
-    "action_types": ["即时行为", "时间型行为", "循环修炼", "探索型行为"],
+    "action_types": [
+      {"id": 1, "name": "即时行为"},
+      {"id": 2, "name": "时间型行为"},
+      {"id": 3, "name": "循环修炼"},
+      {"id": 4, "name": "探索型行为"}
+    ],
     "time_progression_model": "行为触发 + 世界同步更新",
     "status_visibility": ["位置", "境界", "修炼状态", "正在行动", "外部因果变化"]
   },
