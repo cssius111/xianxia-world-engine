@@ -77,8 +77,15 @@ class CacheManager {
     }
 }
 ```
+在本项目的Python代码中，同样提供了`SmartCache`装饰器（位于
+`xwe.core.optimizations`模块），可为函数调用自动缓存结果。
 
-### 2. 动态加载系统
+### 2. 表达式 JIT 编译器
+引入`ExpressionJITCompiler`，可将表达式预编译为可调用对象，
+大幅提升重复求值的效率。
+
+
+### 3. 动态加载系统
 ```javascript
 // 按需加载游戏模块
 async function loadGameModule(moduleName) {
@@ -87,7 +94,7 @@ async function loadGameModule(moduleName) {
 }
 ```
 
-### 3. 实时同步机制
+### 4. 实时同步机制
 ```javascript
 // 状态同步系统
 class StateSynchronizer {

@@ -36,6 +36,7 @@ bash cleanup.sh
 - 🗺️ 探索和修炼
 - 💾 自动保存功能
 - 📱 响应式设计
+- ⚡ 内置 `SmartCache` 与 `ExpressionJITCompiler` 提升运行效率
 
 ## 环境变量
 
