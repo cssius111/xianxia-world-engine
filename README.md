@@ -103,3 +103,5 @@ MIT License
 ## 联系方式
 
 如有问题或建议，请提交 Issue。
+
+更多文档见 [docs/INDEX.md](docs/INDEX.md)。
