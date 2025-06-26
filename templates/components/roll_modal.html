@@ -600,9 +600,6 @@ const RollSystem = {
      */
     async randomAll() {
         this.randomName();
-        const nameField = document.getElementById('characterName');
-        const chosenName = nameField.value.trim();
-
         try {
             const res = await fetch('/api/roll', {
                 method: 'POST',
@@ -614,32 +611,8 @@ const RollSystem = {
 
             this.currentStats = data.character.attributes || {};
             this.updateDisplay();
-
-            const payload = {
-                name: chosenName || data.character.name,
-                gender: document.querySelector('input[name="gender"]:checked').value,
-                background: document.querySelector('input[name="background"]:checked').value,
-                attributes: { ...this.currentStats },
-                destiny: data.destiny && (data.destiny.id || data.destiny.name)
-            };
-
-            const devParam = localStorage.getItem('dev') === 'true' ? '?dev=true' : '';
-            const createRes = await fetch(`/create_character${devParam}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            const createResult = await createRes.json();
-            if (createResult.success) {
-                this.hide();
-                if (typeof GameInitFlow !== 'undefined' && GameInitFlow.showWorldIntro) {
-                    setTimeout(() => GameInitFlow.showWorldIntro(), 300);
-                }
-            } else {
-                alert('创建角色失败: ' + (createResult.error || '未知错误'));
-            }
         } catch (e) {
-            console.error('随机创建角色失败', e);
+            console.error('随机生成属性失败', e);
         }
     },
 
