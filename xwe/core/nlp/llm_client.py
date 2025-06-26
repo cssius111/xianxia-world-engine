@@ -49,11 +49,12 @@ class LLMClient:
     提供与 DeepSeek API 通信的功能
     """
     
-    def __init__(self, 
+    def __init__(self,
                  api_key: Optional[str] = None,
                  api_url: str = "https://api.deepseek.com/v1/chat/completions",
                  model_name: str = "deepseek-chat",
-                 timeout: int = 30):
+                 timeout: int = 30,
+                 debug: bool = False):
         """
         初始化客户端
         
@@ -62,6 +63,7 @@ class LLMClient:
             api_url: API端点URL
             model_name: 模型名称
             timeout: 请求超时时间（秒）
+            debug: 是否启用调试模式
         """
         self.api_key = api_key or os.environ.get("DEEPSEEK_API_KEY")
         if not self.api_key:
@@ -70,6 +72,7 @@ class LLMClient:
         self.api_url = api_url
         self.model_name = model_name
         self.timeout = timeout
+        self.debug = debug
         
         # 请求头
         self.headers = {
@@ -168,7 +171,9 @@ class LLMClient:
         }
         
         # 记录请求
-        logger.debug(f"Sending request to DeepSeek API: {json.dumps(payload, ensure_ascii=False)[:200]}...")
+        logger.debug(
+            f"Sending request to DeepSeek API: {json.dumps(payload, ensure_ascii=False)[:200]}..."
+        )
         
         try:
             # 发送请求（带重试）
@@ -177,6 +182,10 @@ class LLMClient:
             elapsed = time() - start_time
             
             logger.debug(f"DeepSeek API response received in {elapsed:.2f}s")
+            if self.debug:
+                logger.debug(
+                    f"DeepSeek full response: {json.dumps(response, ensure_ascii=False)}"
+                )
             
             # 提取响应文本
             if "choices" in response and len(response["choices"]) > 0:
@@ -214,7 +223,11 @@ class LLMClient:
         
         try:
             response = self._make_request_with_retry(payload)
-            
+            if self.debug:
+                logger.debug(
+                    f"DeepSeek full response: {json.dumps(response, ensure_ascii=False)}"
+                )
+
             if "choices" in response and len(response["choices"]) > 0:
                 content = response["choices"][0].get("message", {}).get("content", "")
                 return content

@@ -5,6 +5,7 @@
 
 import json
 import logging
+import re
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass, asdict
 import time
@@ -56,7 +57,8 @@ class DeepSeekNLPProcessor:
             api_key=api_key,
             api_url=self.config.get("api_url"),
             model_name=self.config.get("model", "deepseek-chat"),
-            timeout=self.config.get("timeout", 30)
+            timeout=self.config.get("timeout", 30),
+            debug=self.config.get("debug_mode", False)
         )
         
         # 初始化缓存
@@ -76,7 +78,8 @@ class DeepSeekNLPProcessor:
         # 使用LRU缓存装饰器创建缓存函数
         @lru_cache(maxsize=self._cache_size)
         def _cached_parse(text: str) -> str:
-            return self._call_deepseek_api(text)
+            prompt = self.build_prompt(text)
+            return self._call_deepseek_api(prompt)
         
         self._cached_parse = _cached_parse
         
@@ -247,10 +250,13 @@ class DeepSeekNLPProcessor:
                 temperature=self.config.get("temperature", 0.0),
                 max_tokens=self.config.get("max_tokens", 256)
             )
-            
+
+            if self.config.get("debug_mode", False):
+                logger.debug(f"DeepSeek raw response: {response}")
+
             # 尝试提取JSON部分
             response = response.strip()
-            
+
             # 如果响应被包裹在代码块中，提取出来
             if response.startswith("```json"):
                 response = response[7:]
@@ -258,8 +264,21 @@ class DeepSeekNLPProcessor:
                 response = response[3:]
             if response.endswith("```"):
                 response = response[:-3]
-                
-            return response.strip()
+
+            # 若包含多余文本，尝试截取首个JSON对象
+            match = re.search(r"{.*}", response, re.DOTALL)
+            if match:
+                response = match.group(0)
+
+            response = response.strip()
+
+            if self.config.get("debug_mode", False):
+                logger.debug(f"DeepSeek sanitized JSON: {response}")
+
+            # 验证JSON格式
+            json.loads(response)
+
+            return response
             
         except Exception as e:
             logger.error(f"DeepSeek API 调用失败: {e}")
@@ -358,15 +377,24 @@ class DeepSeekNLPProcessor:
                 
             # 构建prompt
             prompt = self.build_prompt(user_input, context)
+            if self.config.get("debug_mode", False):
+                logger.debug(f"DeepSeek prompt: {prompt}")
             
             # 调用API（带缓存）
             if use_cache:
                 json_response = self._cached_parse(user_input)
             else:
                 json_response = self._call_deepseek_api(prompt)
-                
+
+            if self.config.get("debug_mode", False):
+                logger.debug(f"DeepSeek response string: {json_response}")
+
             # 解析JSON
-            result = json.loads(json_response)
+            try:
+                result = json.loads(json_response)
+            except json.JSONDecodeError as e:
+                logger.error(f"JSON解析错误: {e}; 响应内容: {json_response}")
+                raise
             
             # 验证结果格式
             if not self._validate_result(result):
