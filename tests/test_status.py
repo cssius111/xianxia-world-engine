@@ -1,5 +1,7 @@
 import os
+
 import pytest
+
 from run import app, get_game_instance
 
 pytestmark = pytest.mark.skipif(
@@ -22,6 +24,8 @@ def test_status_uses_game_session():
         player.attributes.max_health = 120
         player.attributes.current_mana = 40
         player.attributes.max_mana = 60
+        player.extra_data["destiny"] = {"name": "天命测试"}
+        player.extra_data["talents"] = [{"name": "剑修"}]
         game.game_state.current_location = "TestTown"
 
         resp = client.get("/status")
@@ -34,4 +38,5 @@ def test_status_uses_game_session():
         assert attrs["max_mana"] == 60
         assert data["player"]["name"] == "Tester"
         assert data["location"] == "TestTown"
-
+        assert data["destiny"]["name"] == "天命测试"
+        assert data["talents"][0]["name"] == "剑修"

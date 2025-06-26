@@ -187,6 +187,8 @@ def build_status_data():
         "max_mana": max_mana,
     }
     extra_data = {}
+    destiny = None
+    talents = []
 
     if "session_id" in session:
         try:
@@ -215,8 +217,13 @@ def build_status_data():
                         "max_mana": max_mana,
                     }
                 extra_data = getattr(player, "extra_data", {})
+                destiny = extra_data.get("destiny", destiny)
+                talents = extra_data.get("talents", talents)
         except Exception as e:
             logger.error(f"读取游戏状态失败: {e}")
+
+    if destiny is None:
+        destiny = session.get("destiny")
 
     return {
         "player": {
@@ -227,6 +234,8 @@ def build_status_data():
         "location": location,
         "gold": inventory_data["gold"],
         "inventory": inventory_data,
+        "destiny": destiny,
+        "talents": talents,
     }
 
 
@@ -292,6 +301,7 @@ def game_screen():
 
     return render_template(
         "game_enhanced_optimized_v2.html",
+        status=status,
         player=status["player"],
         location=status["location"],
         buffs=[],
@@ -454,12 +464,8 @@ def api_roll():
     _sys.path.append(str(Path(__file__).parent))
     import random
 
-    from scripts.gen_character import (
-        gen_from_prompt,
-        gen_random,
-        gen_template,
-        save_character,
-    )
+    from scripts.gen_character import save_character  # noqa: F401
+    from scripts.gen_character import gen_from_prompt, gen_random, gen_template
 
     data = request.get_json()
     mode = data.get("mode", "random")
@@ -482,8 +488,12 @@ def api_roll():
     frontend_attrs = {
         "constitution": backend_attrs.get("constitution", 5),
         "comprehension": backend_attrs.get("comprehension", 5),
-        "spirit": backend_attrs.get("perception", backend_attrs.get("willpower", 5)),  # 映射感知或意志力到神识
-        "luck": backend_attrs.get("fortune", backend_attrs.get("opportunity", 5))  # 映射气运或机缘到运气
+        "spirit": backend_attrs.get(
+            "perception", backend_attrs.get("willpower", 5)
+        ),  # 映射感知或意志力到神识
+        "luck": backend_attrs.get(
+            "fortune", backend_attrs.get("opportunity", 5)
+        ),  # 映射气运或机缘到运气
     }
 
     # 随机性别
@@ -504,7 +514,7 @@ def api_roll():
         "gender": gender,
         "background": background,
         "attributes": frontend_attrs,
-        "destiny": destiny
+        "destiny": destiny,
     }
 
     # 不再自动保存角色，等用户确认后再保存
@@ -658,9 +668,7 @@ def process_command():
         # 对话
         target = params.get("target", "")
         if target:
-            result_text = (
-                f"你与{target}交谈。\n{target}：少侠好，有什么可以帮助你的吗？"
-            )
+            result_text = f"你与{target}交谈。\n{target}：少侠好，有什么可以帮助你的吗？"
         else:
             result_text = "附近没有可以交谈的人。"
 
@@ -917,9 +925,9 @@ def export_nlp_metrics():
             # 返回文件
             response = make_response(data)
             response.headers["Content-Type"] = "application/json"
-            response.headers["Content-Disposition"] = (
-                f'attachment; filename=nlp_metrics_{datetime.now().strftime("%Y%m%d_%H%M%S")}.json'
-            )
+            response.headers[
+                "Content-Disposition"
+            ] = f'attachment; filename=nlp_metrics_{datetime.now().strftime("%Y%m%d_%H%M%S")}.json'
             return response
 
         finally:
