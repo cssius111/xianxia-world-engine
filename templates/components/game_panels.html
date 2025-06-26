@@ -705,6 +705,12 @@ const GamePanels = {
         }
     },
 
+    refreshCurrentPanel() {
+        if (this.currentPanel) {
+            this.loadPanelData(this.currentPanel);
+        }
+    },
+
     /**
      * 加载面板数据
      */
@@ -776,29 +782,29 @@ const GamePanels = {
     /**
      * 加载背包数据
      */
-    loadInventoryData() {
-        // 模拟背包数据
-        const inventory = [
-            { name: '筑灵石', count: 1, desc: '蕴含微弱灵气的石头，可辅助修炼' },
-            { name: '回春丹', count: 3, desc: '恢复少量气血' },
-            { name: '清心丹', count: 2, desc: '恢复少量灵力' }
-        ];
+    async loadInventoryData() {
+        try {
+            const resp = await fetch('/status');
+            const data = await resp.json();
+            const inventory = data.inventory || { items: [] };
 
-        const grid = document.getElementById('inventoryGrid');
-        grid.innerHTML = '';
+            const grid = document.getElementById('inventoryGrid');
+            grid.innerHTML = '';
 
-        // 创建24个格子
-        for (let i = 0; i < 24; i++) {
-            const slot = document.createElement('div');
-            slot.className = 'inventory-slot';
-
-            if (i < inventory.length) {
-                const item = inventory[i];
-                slot.innerHTML = `<span>${item.name}</span>`;
-                slot.onclick = () => this.showItemInfo(item);
+            const items = inventory.items || [];
+            const totalSlots = 24;
+            for (let i = 0; i < totalSlots; i++) {
+                const slot = document.createElement('div');
+                slot.className = 'inventory-slot';
+                if (i < items.length) {
+                    const item = items[i];
+                    slot.innerHTML = `<span>${item.name}</span><span class="item-qty">x${item.quantity}</span>`;
+                    slot.onclick = () => this.showItemInfo({ name: item.name, desc: item.name, count: item.quantity });
+                }
+                grid.appendChild(slot);
             }
-
-            grid.appendChild(slot);
+        } catch (e) {
+            console.error('加载背包失败:', e);
         }
     },
 
