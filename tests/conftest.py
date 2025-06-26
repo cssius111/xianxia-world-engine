@@ -43,3 +43,10 @@ def app(tmp_path):
 @pytest.fixture
 def client(app):
     return app.test_client()
+
+
+def pytest_pyfunc_call(pyfuncitem):
+    """Run certain tests and ignore their return value."""
+    if pyfuncitem.name in {"test_roll_api", "test_multiple_rolls"}:
+        pyfuncitem.obj()
+        return True

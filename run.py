@@ -178,6 +178,15 @@ def build_status_data():
     current_mana = 50
     max_mana = 50
     location = session.get("location", "青云城")
+    attributes_dict = {
+        "realm_name": realm_name,
+        "realm_level": realm_level,
+        "current_health": current_health,
+        "max_health": max_health,
+        "current_mana": current_mana,
+        "max_mana": max_mana,
+    }
+    extra_data = {}
 
     if "session_id" in session:
         try:
@@ -193,20 +202,27 @@ def build_status_data():
                 current_mana = player.attributes.current_mana
                 max_mana = player.attributes.max_mana
                 location = game.game_state.current_location
+                try:
+                    attributes_dict = player.attributes.to_dict()
+                except Exception:
+                    # Fallback to basic fields if to_dict is unavailable
+                    attributes_dict = {
+                        "realm_name": realm_name,
+                        "realm_level": realm_level,
+                        "current_health": current_health,
+                        "max_health": max_health,
+                        "current_mana": current_mana,
+                        "max_mana": max_mana,
+                    }
+                extra_data = getattr(player, "extra_data", {})
         except Exception as e:
             logger.error(f"读取游戏状态失败: {e}")
 
     return {
         "player": {
             "name": player_name,
-            "attributes": {
-                "realm_name": realm_name,
-                "realm_level": realm_level,
-                "current_health": current_health,
-                "max_health": max_health,
-                "current_mana": current_mana,
-                "max_mana": max_mana,
-            },
+            "attributes": attributes_dict,
+            "extra_data": extra_data,
         },
         "location": location,
         "gold": inventory_data["gold"],
@@ -749,38 +765,6 @@ def _get_player_status():
 @app.route("/status")
 def get_status():
     """获取游戏状态"""
-    player_id = session.get("player_id", "default")
-    inventory_data = inventory_system.get_inventory_data(player_id)
-
-    (
-        player_name,
-        realm_name,
-        realm_level,
-        current_health,
-        max_health,
-        current_mana,
-        max_mana,
-        location,
-    ) = _get_player_status()
-
-    return jsonify(
-        {
-            "player": {
-                "name": player_name,
-                "attributes": {
-                    "realm_name": realm_name,
-                    "realm_level": realm_level,
-                    "current_health": current_health,
-                    "max_health": max_health,
-                    "current_mana": current_mana,
-                    "max_mana": max_mana,
-                },
-            },
-            "location": location,
-            "gold": inventory_data["gold"],
-            "inventory": inventory_data,
-        }
-    )
     return jsonify(build_status_data())
 
 
