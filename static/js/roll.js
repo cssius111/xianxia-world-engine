@@ -11,6 +11,7 @@ const rollBtn = document.getElementById('roll-btn');
 const rollArea = document.getElementById('roll-area');
 const jackpotModal = document.getElementById('jackpot-modal');
 const modalClose = document.querySelector('.modal-close');
+const confirmBtn = document.getElementById('confirmButton');
 
 // 当前角色数据
 let currentCharacter = null;
@@ -113,20 +114,10 @@ async function performRoll() {
         // 检查jackpot
         checkAndShowJackpot(currentCharacter);
 
-        // 直接创建角色
-        const payload = {
-            name: currentCharacter.name,
-            gender: 'male',
-            background: 'auto',
-            attributes: currentCharacter.attributes,
-            destiny: data.destiny && (data.destiny.id || data.destiny.name)
-        };
-        const devParam = localStorage.getItem('dev') === 'true' ? '?dev=true' : '';
-        await fetch(`/create_character${devParam}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
+        // 显示确认按钮以等待玩家决定是否创建角色
+        if (confirmBtn) {
+            confirmBtn.style.display = 'inline-block';
+        }
 
         rollBtn.textContent = '重新抽取';
         
@@ -151,9 +142,50 @@ function getCustomPrompt() {
     return '一个天赋异禀的少年剑客';
 }
 
+// 确认创建角色
+async function confirmCharacter() {
+    if (!currentCharacter) {
+        alert('请先抽取角色');
+        return;
+    }
+
+    confirmBtn.disabled = true;
+    confirmBtn.textContent = '创建中...';
+
+    const payload = {
+        name: currentCharacter.name,
+        gender: 'male',
+        background: 'auto',
+        attributes: currentCharacter.attributes,
+    };
+    const devParam = localStorage.getItem('dev') === 'true' ? '?dev=true' : '';
+
+    try {
+        const res = await fetch(`/create_character${devParam}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+        });
+        const result = await res.json();
+        if (result.success) {
+            window.location.href = '/game' + (devParam ? '&mode=dev' : '');
+        } else {
+            alert('创建角色失败：' + (result.error || '未知错误'));
+        }
+    } catch (err) {
+        alert('创建角色失败：' + err.message);
+    } finally {
+        confirmBtn.disabled = false;
+        confirmBtn.textContent = '确认创建';
+    }
+}
+
 
 // 事件监听
 rollBtn.addEventListener('click', performRoll);
+if (confirmBtn) {
+    confirmBtn.addEventListener('click', confirmCharacter);
+}
 
 // 模态框关闭
 modalClose.addEventListener('click', () => {
