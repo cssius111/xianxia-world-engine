@@ -455,14 +455,42 @@ def api_roll():
     else:
         character = gen_random()
 
+    # 映射属性到前端期望的格式
+    # 前端期望: constitution, comprehension, spirit, luck
+    # 后端生成: comprehension, constitution, fortune, charisma, willpower, perception, destiny, opportunity
+    backend_attrs = character.get("attributes", {})
+    frontend_attrs = {
+        "constitution": backend_attrs.get("constitution", 5),
+        "comprehension": backend_attrs.get("comprehension", 5),
+        "spirit": backend_attrs.get("perception", backend_attrs.get("willpower", 5)),  # 映射感知或意志力到神识
+        "luck": backend_attrs.get("fortune", backend_attrs.get("opportunity", 5))  # 映射气运或机缘到运气
+    }
+
+    # 随机性别
+    gender = random.choice(["male", "female"])
+
+    # 随机背景
+    backgrounds = ["poor", "merchant", "scholar", "martial"]
+    background = random.choice(backgrounds)
+
     # 随机命格
     destiny_data = data_loader.get_destinies()
     options = destiny_data.get("destiny_grades", [])
     destiny = random.choice(options) if options else None
 
-    save_character(character)
+    # 构建完整的角色数据
+    roll_result = {
+        "name": character.get("name", "无名侠客"),
+        "gender": gender,
+        "background": background,
+        "attributes": frontend_attrs,
+        "destiny": destiny
+    }
 
-    return jsonify({"success": True, "character": character, "destiny": destiny})
+    # 不再自动保存角色，等用户确认后再保存
+    # save_character(character)
+
+    return jsonify({"success": True, "character": roll_result, "destiny": destiny})
 
 
 @app.route("/command", methods=["POST"])

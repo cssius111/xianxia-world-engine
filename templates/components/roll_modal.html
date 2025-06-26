@@ -81,6 +81,17 @@
                 </div>
             </div>
 
+            <!-- 命格显示 -->
+            <div class="roll-section" id="destinySection" style="display: none;">
+                <h3 class="section-title">命格</h3>
+                <div class="destiny-display">
+                    <div class="destiny-card">
+                        <h4 id="destinyName">未知</h4>
+                        <p id="destinyDesc">尚未揭晓</p>
+                    </div>
+                </div>
+            </div>
+
             <!-- 背景选择 -->
             <div class="roll-section">
                 <h3 class="section-title">出身背景</h3>
@@ -400,6 +411,35 @@
     font-size: 12px;
 }
 
+/* 命格显示 */
+.destiny-display {
+    text-align: center;
+    padding: 20px;
+}
+
+.destiny-card {
+    display: inline-block;
+    padding: 25px 40px;
+    background: linear-gradient(135deg, rgba(180, 180, 180, 0.1) 0%, rgba(180, 180, 180, 0.2) 100%);
+    border: 2px solid #bbb;
+    border-radius: 10px;
+    box-shadow: 0 0 30px rgba(180, 180, 180, 0.3);
+}
+
+.destiny-card h4 {
+    margin: 0 0 10px 0;
+    color: #ddd;
+    font-size: 24px;
+    text-shadow: 0 0 20px rgba(180, 180, 180, 0.5);
+}
+
+.destiny-card p {
+    margin: 0;
+    color: #ddd;
+    font-size: 16px;
+    opacity: 0.8;
+}
+
 /* 提示 */
 .roll-tips {
     margin-top: 20px;
@@ -521,11 +561,19 @@ const RollSystem = {
     },
 
     // 当前属性
-    currentStats: {...this.baseStats},
+    currentStats: {
+        constitution: 5,
+        comprehension: 5,
+        spirit: 5,
+        luck: 5
+    },
 
     // 总点数
     totalPoints: 30,
     usedPoints: 20,
+    
+    // 当前命格
+    currentDestiny: null,
 
     // 随机姓名库
     surnames: ['李', '王', '张', '刘', '陈', '杨', '赵', '黄', '周', '吴', '林', '徐', '孙', '马', '朱', '胡', '郭', '何', '罗', '梁'],
@@ -546,7 +594,13 @@ const RollSystem = {
     resetStats() {
         this.currentStats = {...this.baseStats};
         this.usedPoints = 20;
+        this.currentDestiny = null;
         this.updateDisplay();
+        // 隐藏命格显示
+        const section = document.getElementById('destinySection');
+        if (section) {
+            section.style.display = 'none';
+        }
     },
 
     /**
@@ -599,7 +653,6 @@ const RollSystem = {
      * 随机所有
      */
     async randomAll() {
-        this.randomName();
         try {
             const res = await fetch('/api/roll', {
                 method: 'POST',
@@ -609,8 +662,33 @@ const RollSystem = {
             const data = await res.json();
             if (!data.success) return;
 
-            this.currentStats = data.character.attributes || {};
+            // 设置角色数据
+            const character = data.character;
+            
+            // 设置姓名
+            if (character.name) {
+                document.getElementById('characterName').value = character.name;
+            }
+            
+            // 设置性别
+            if (character.gender) {
+                document.querySelector(`input[name="gender"][value="${character.gender}"]`).checked = true;
+            }
+            
+            // 设置背景
+            if (character.background) {
+                document.querySelector(`input[name="background"][value="${character.background}"]`).checked = true;
+            }
+            
+            // 设置属性
+            this.currentStats = character.attributes || {};
             this.updateDisplay();
+            
+            // 保存命格数据（如果有）
+            if (data.destiny) {
+                this.currentDestiny = data.destiny;
+                this.displayDestiny(data.destiny);
+            }
         } catch (e) {
             console.error('随机生成属性失败', e);
         }
@@ -638,6 +716,11 @@ const RollSystem = {
             background: document.querySelector('input[name="background"]:checked').value,
             attributes: {...this.currentStats}
         };
+        
+        // 如果有命格数据，也加入
+        if (this.currentDestiny) {
+            characterData.destiny = this.currentDestiny;
+        }
 
         console.log('创建角色:', characterData);
 
@@ -676,6 +759,23 @@ const RollSystem = {
         } catch (error) {
             console.error('创建角色失败:', error);
             alert('创建角色失败，请重试');
+        }
+    },
+
+    /**
+     * 显示命格
+     */
+    displayDestiny(destiny) {
+        const section = document.getElementById('destinySection');
+        const nameEl = document.getElementById('destinyName');
+        const descEl = document.getElementById('destinyDesc');
+        
+        if (destiny && destiny.name) {
+            nameEl.textContent = destiny.name;
+            descEl.textContent = destiny.description || '神秘的命格';
+            section.style.display = 'block';
+        } else {
+            section.style.display = 'none';
         }
     },
 
