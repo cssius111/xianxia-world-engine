@@ -53,12 +53,18 @@ def create_character():
         required_fields = ["name", "gender", "background", "attributes"]
         for field in required_fields:
             if field not in data:
-                return jsonify({"success": False, "error": f"缺少必需字段: {field}"}), 400
+                return (
+                    jsonify({"success": False, "error": f"缺少必需字段: {field}"}),
+                    400,
+                )
 
         # 验证角色名
         name = data["name"].strip()
         if not name or len(name) > 20:
-            return jsonify({"success": False, "error": "角色名必须在1-20个字符之间"}), 400
+            return (
+                jsonify({"success": False, "error": "角色名必须在1-20个字符之间"}),
+                400,
+            )
 
         # 获取游戏实例
         if "session_id" not in session:
@@ -93,20 +99,24 @@ def create_character():
 
         # 根骨影响生命值和防御
         constitution = roll_attrs.get("constitution", 5)
+        attrs.constitution = constitution
         attrs.max_health = 80 + constitution * 10
         attrs.current_health = attrs.max_health
         attrs.defense = 3 + constitution
 
         # 悟性影响修炼速度（存储为额外数据）
         comprehension = roll_attrs.get("comprehension", 5)
+        attrs.comprehension = comprehension
 
         # 神识影响法力值和法术威力
         spirit = roll_attrs.get("spirit", 5)
+        attrs.willpower = spirit
         attrs.max_mana = 30 + spirit * 10
         attrs.current_mana = attrs.max_mana
 
         # 机缘影响掉落率（存储为额外数据）
         luck = roll_attrs.get("luck", 5)
+        attrs.luck = luck
 
         # 基础攻击力
         attrs.attack_power = 10
@@ -146,6 +156,9 @@ def create_character():
                 current_app.config.get("SERVER_START_TIME", "2025-01-01")
             ),
         }
+        destiny = data.get("destiny")
+        if destiny is not None:
+            player.extra_data["destiny"] = destiny
 
         # 初始化背包和金币
         if hasattr(player, "inventory"):

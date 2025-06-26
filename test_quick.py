@@ -6,15 +6,19 @@
 import subprocess
 import sys
 import time
-import requests
 import json
+import pytest
+from run import app
+
+pytest.skip("仅用于手动测试，自动化执行时跳过", allow_module_level=True)
 
 def check_server():
     """检查服务器是否运行"""
     try:
-        response = requests.get("http://localhost:5001/need_refresh", timeout=2)
-        return response.status_code == 200
-    except:
+        with app.test_client() as client:
+            resp = client.get("/need_refresh")
+            return resp.status_code == 200
+    except Exception:
         return False
 
 def test_roll_api():
@@ -22,17 +26,18 @@ def test_roll_api():
     print("\n测试 /api/roll 接口...")
     
     try:
-        response = requests.post(
-            "http://localhost:5001/api/roll",
-            json={"mode": "random"},
-            headers={"Content-Type": "application/json"}
-        )
+        with app.test_client() as client:
+            response = client.post(
+                "/api/roll",
+                json={"mode": "random"},
+                headers={"Content-Type": "application/json"}
+            )
         
         if response.status_code != 200:
             print(f"❌ API返回错误状态码: {response.status_code}")
             return False
             
-        data = response.json()
+        data = response.get_json()
         
         if not data.get("success"):
             print(f"❌ API返回失败")
