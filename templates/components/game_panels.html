@@ -974,20 +974,27 @@ const GamePanels = {
     /**
      * 进行探索
      */
-    doExplore() {
-        // 发送探索命令
-        if (typeof GameUI !== 'undefined' && GameUI.sendCommand) {
-            GameUI.sendCommand('探索');
-        }
-
-        // 显示探索结果
+    async doExplore() {
         const result = document.getElementById('exploreResult');
         result.style.display = 'block';
         result.innerHTML = '<p>正在探索中...</p>';
 
-        setTimeout(() => {
-            result.innerHTML = '<p>你在附近发现了一株<span style="color: #aaa">百年人参</span>！</p>';
-        }, 1000);
+        try {
+            const response = await fetch('/command', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text: '探索', command: '探索' })
+            });
+            const data = await response.json();
+            result.innerHTML = `<p>${data.result || '探索失败'}</p>`;
+
+            if (data.bag_updated) {
+                this.loadInventoryData();
+            }
+        } catch (e) {
+            console.error('探索失败:', e);
+            result.innerHTML = '<p>探索失败，请稍后再试。</p>';
+        }
     },
 
     /**
