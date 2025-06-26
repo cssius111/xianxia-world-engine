@@ -26,6 +26,10 @@ from flask import (
 )
 
 import json
+from dotenv import load_dotenv
+
+# 加载 .env 文件中的环境变量
+load_dotenv()
 
 from xwe.core.command_router import CommandRouter
 from xwe.core.cultivation_system import CultivationSystem
@@ -61,6 +65,10 @@ logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger("XianxiaEngine")
+
+# 如果未设置 DEEPSEEK_API_KEY，记录警告
+if not os.environ.get("DEEPSEEK_API_KEY"):
+    logger.warning("DEEPSEEK_API_KEY environment variable not set after loading .env")
 
 # 确保必要目录存在
 for directory in ["saves", "logs"]:
