@@ -786,21 +786,31 @@ const GamePanels = {
     async loadInventoryData() {
         try {
             const resp = await fetch('/status');
+            if (!resp.ok) {
+                console.error('加载背包接口失败:', resp.status);
+                return;
+            }
             const data = await resp.json();
             const inventory = data.inventory || { items: [] };
 
             const grid = document.getElementById('inventoryGrid');
             grid.innerHTML = '';
 
-            const items = inventory.items || [];
+            let items = inventory.items || [];
+            if (!Array.isArray(items)) {
+                items = Object.values(items);
+            }
+
             const totalSlots = 24;
             for (let i = 0; i < totalSlots; i++) {
                 const slot = document.createElement('div');
                 slot.className = 'inventory-slot';
                 if (i < items.length) {
-                    const item = items[i];
-                    slot.innerHTML = `<span>${item.name}</span><span class="item-qty">x${item.quantity}</span>`;
-                    slot.onclick = () => this.showItemInfo({ name: item.name, desc: item.name, count: item.quantity });
+                    const item = items[i] || {};
+                    const name = item.name || item.id || '未知物品';
+                    const qty = item.quantity ?? item.qty ?? item.count ?? 1;
+                    slot.innerHTML = `<span>${name}</span><span class="item-qty">x${qty}</span>`;
+                    slot.onclick = () => this.showItemInfo({ name, desc: name, count: qty });
                 }
                 grid.appendChild(slot);
             }
