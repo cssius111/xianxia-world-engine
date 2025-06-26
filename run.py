@@ -260,28 +260,24 @@ def start_screen():
 @app.route("/game")
 def game_screen():
     """游戏主界面"""
-    # 提供默认数据
-    player_data = {
-        "name": session.get("player_name", "无名侠客"),
-        "attributes": {
-            "realm_name": "炼气期",
-            "realm_level": 1,
-            "current_health": 100,
-            "max_health": 100,
-            "current_mana": 50,
-            "max_mana": 50,
-            "current_stamina": 100,
-            "max_stamina": 100,
-            "attack_power": 10,
-            "defense": 5,
-        },
-        "extra_data": {},
-    }
+    # 初始化会话和游戏实例
+    if "session_id" not in session:
+        session["session_id"] = str(time.time())
+
+    instance = get_game_instance(session["session_id"])
+    game = instance["game"]
+
+    # 更新玩家名称
+    if game.game_state.player:
+        game.game_state.player.name = session.get("player_name", "无名侠客")
+
+    # 构建状态数据用于模板渲染
+    status = build_status_data()
 
     return render_template(
         "game_enhanced_optimized_v2.html",
-        player=player_data,
-        location="青云城",
+        player=status["player"],
+        location=status["location"],
         buffs=[],
         special_status=[],
         is_new_session=True,
@@ -362,6 +358,14 @@ def create_character():
 
         if "destiny" in data:
             session["destiny"] = data["destiny"]
+
+        # 初始化游戏实例并同步角色名称
+        if "session_id" not in session:
+            session["session_id"] = str(time.time())
+        instance = get_game_instance(session["session_id"])
+        game = instance["game"]
+        if game.game_state.player:
+            game.game_state.player.name = player_name
 
     if dev_mode:
         session["dev"] = True
