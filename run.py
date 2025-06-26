@@ -4,6 +4,7 @@
 集成 DeepSeek NLP 命令处理
 """
 
+import json
 import logging
 import os
 import sys
@@ -11,8 +12,10 @@ import time
 from datetime import datetime
 from pathlib import Path
 
+from dotenv import load_dotenv
 from flask import (
     Flask,
+    Response,
     jsonify,
     make_response,
     redirect,
@@ -20,13 +23,9 @@ from flask import (
     request,
     send_from_directory,
     session,
-    url_for,
-    Response,
     stream_with_context,
+    url_for,
 )
-
-import json
-from dotenv import load_dotenv
 
 # 加载 .env 文件中的环境变量
 load_dotenv()
@@ -57,7 +56,8 @@ if str(PROJECT_ROOT) not in sys.path:
 
 # Flask应用配置
 app = Flask(__name__, static_folder="static", template_folder="templates")
-app.secret_key = "xianxia_world_secret_key_2025"
+# 首先尝试从 FLASK_SECRET_KEY 获取密钥, 其次尝试 SECRET_KEY, 最后使用默认值
+app.secret_key = os.getenv("FLASK_SECRET_KEY", os.getenv("SECRET_KEY", "dev_secret"))
 app.config["JSON_AS_ASCII"] = False
 
 # 日志配置
@@ -610,7 +610,9 @@ def process_command():
         # 对话
         target = params.get("target", "")
         if target:
-            result_text = f"你与{target}交谈。\n{target}：少侠好，有什么可以帮助你的吗？"
+            result_text = (
+                f"你与{target}交谈。\n{target}：少侠好，有什么可以帮助你的吗？"
+            )
         else:
             result_text = "附近没有可以交谈的人。"
 
@@ -899,9 +901,9 @@ def export_nlp_metrics():
             # 返回文件
             response = make_response(data)
             response.headers["Content-Type"] = "application/json"
-            response.headers[
-                "Content-Disposition"
-            ] = f'attachment; filename=nlp_metrics_{datetime.now().strftime("%Y%m%d_%H%M%S")}.json'
+            response.headers["Content-Disposition"] = (
+                f'attachment; filename=nlp_metrics_{datetime.now().strftime("%Y%m%d_%H%M%S")}.json'
+            )
             return response
 
         finally:
