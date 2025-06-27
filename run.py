@@ -9,6 +9,7 @@ import logging
 import os
 import sys
 import time
+from typing import List, Dict
 from datetime import datetime
 from pathlib import Path
 
@@ -565,17 +566,23 @@ def process_command():
     if command_handler == "explore":
         # 执行探索
         location = session.get("location", "青云城")
-        explore_result = exploration_system.explore(location)
 
-        # 将获得的物品加入背包
+        def _add_items_cb(items: List[Dict]):
+            inventory_system.add_items(player_id, items)
+            logger.info("[EXPLORE] inventory_system.add_items called")
+
+        explore_result = exploration_system.explore(
+            location,
+            command_context={"command": user_input, "params": params},
+            inventory_add_cb=_add_items_cb,
+        )
+
         result_text = explore_result["narration"]
         if explore_result["items"]:
-            added_items = inventory_system.add_items(player_id, explore_result["items"])
-            if added_items:
-                items_text = "、".join(
-                    [f"{name}x{qty}" for name, qty in added_items.items()]
-                )
-                result_text += f"\n\n获得物品：{items_text}"
+            items_text = "、".join(
+                [f"{item['name']}x{item['qty']}" for item in explore_result["items"]]
+            )
+            result_text += f"\n\n获得物品：{items_text}"
 
         return jsonify(
             {
