@@ -78,14 +78,26 @@ class InventorySystem:
         
         # 添加到背包
         success = inventory.add(item_name, quantity)
-        
+
+        # 记录当前数量
+        current_qty = inventory.get_quantity(item_name)
+        save_success = False
+
         if success:
-            logger.info(f"玩家 {player_id} 获得物品: {item_name} x{quantity}")
+            logger.info(
+                f"[INVENTORY] 玩家 {player_id} 获得物品: {item_name} x{quantity}"
+            )
             # 自动保存
-            self.save(player_id)
+            save_success = self.save(player_id)
         else:
-            logger.warning(f"玩家 {player_id} 添加物品失败: {item_name} x{quantity}")
-            
+            logger.warning(
+                f"[INVENTORY] 玩家 {player_id} 添加物品失败: {item_name} x{quantity}"
+            )
+
+        logger.debug(
+            f"[INVENTORY] {item_name} 当前数量: {current_qty}, 保存成功: {save_success}"
+        )
+
         return success
     
     def add_items(self, player_id: str, items: List[Dict[str, Any]]) -> Dict[str, int]:
@@ -100,13 +112,19 @@ class InventorySystem:
             成功添加的物品统计
         """
         added = {}
-        
+
         for item_data in items:
             if self.add_item(player_id, item_data):
                 item_name = item_data.get("name", "未知物品")
                 quantity = item_data.get("qty", 1)
                 added[item_name] = added.get(item_name, 0) + quantity
-                
+
+        total_qty = sum(added.values())
+        if added:
+            logger.info(f"[INVENTORY] 批量添加物品，总数: {total_qty}")
+            for name, qty in added.items():
+                logger.debug(f"[INVENTORY] {name} x{qty}")
+
         return added
     
     def remove_item(self, player_id: str, item_name: str, quantity: int = 1) -> bool:
