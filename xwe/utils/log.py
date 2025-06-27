@@ -26,5 +26,11 @@ def configure_logging(log_dir: str, filename: str = "app.log") -> None:
         Path(source).unlink()
 
     handler.rotator = _rotator
+
+    def _namer(dest: str) -> str:  # pragma: no cover - file renaming
+        """添加 .gz 后缀用于轮转文件"""
+        return dest + ".gz"
+
+    handler.namer = _namer
     logging.getLogger().addHandler(handler)
 

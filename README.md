@@ -71,7 +71,7 @@ xianxia_world_engine/
 │   └── js/               # JavaScript文件
 ├── xwe/                   # 核心模块
 ├── saves/                 # 存档文件
-└── logs/                  # 日志文件
+└── logs/                  # 日志文件，自动轮转并生成 `.gz` 压缩包
 ```
 
 ## 功能特点
