@@ -12,13 +12,29 @@
     "test:headed": "playwright test --headed",
     "test:debug": "playwright test --debug",
     "test:report": "playwright show-report",
-    "install:browsers": "playwright install"
+    "test:e2e": "playwright test tests/e2e_full.spec.ts --headed",
+    "test:e2e:all": "playwright test tests/e2e_full.spec.ts tests/e2e_extended.spec.ts --headed",
+    "test:e2e:headless": "playwright test tests/e2e_full.spec.ts tests/e2e_extended.spec.ts",
+    "test:e2e:debug": "playwright test tests/e2e_full.spec.ts --debug",
+    "test:extended": "playwright test tests/e2e_extended.spec.ts --headed",
+    "test:chromium": "playwright test --project=chromium",
+    "test:firefox": "playwright test --project=firefox",
+    "test:webkit": "playwright test --project=webkit",
+    "test:mobile": "playwright test --project=mobile-chrome",
+    "test:verify": "python verify_e2e.py",
+    "test:complete": "./run-all-e2e-tests.sh",
+    "test:complete:headless": "./run-all-e2e-tests.sh --headless",
+    "install:browsers": "playwright install",
+    "install:deps": "playwright install-deps",
+    "postinstall": "playwright install",
+    "serve": "ENABLE_E2E_API=true python run.py",
+    "serve:test": "FLASK_ENV=testing ENABLE_E2E_API=true python run.py"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cssius111/xianxia-world-engine.git"
   },
-  "keywords": [],
+  "keywords": ["game", "xianxia", "cultivation", "text-adventure", "e2e-testing"],
   "author": "",
   "license": "ISC",
   "bugs": {
@@ -27,6 +43,12 @@
   "homepage": "https://github.com/cssius111/xianxia-world-engine#readme",
   "devDependencies": {
     "@playwright/mcp": "^0.0.29",
-    "@playwright/test": "^1.53.1"
+    "@playwright/test": "^1.53.1",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=7.0.0"
   }
 }

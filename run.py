@@ -61,6 +61,24 @@ if str(PROJECT_ROOT) not in sys.path:
 app = create_app()
 logger = logging.getLogger("XianxiaEngine")
 
+# Register additional routes
+try:
+    # Register lore routes
+    from routes.lore import bp as lore_bp
+    app.register_blueprint(lore_bp)
+    logger.info("Lore routes registered")
+except ImportError as e:
+    logger.debug(f"Lore routes not loaded: {e}")
+
+# Register E2E test routes in development/test mode
+if os.getenv('FLASK_ENV') in ['development', 'testing'] or os.getenv('ENABLE_E2E_API') == 'true':
+    try:
+        from routes.api_e2e import register_e2e_routes
+        register_e2e_routes(app)
+        logger.info("E2E test API endpoints enabled")
+    except ImportError as e:
+        logger.debug(f"E2E test routes not loaded: {e}")
+
 # 如果未设置 DEEPSEEK_API_KEY，记录警告
 if not os.environ.get("DEEPSEEK_API_KEY"):
     logger.warning("DEEPSEEK_API_KEY environment variable not set after loading .env")

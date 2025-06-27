@@ -1,0 +1,1484 @@
+{
+  "config": {
+    "configFile": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/playwright.config.ts",
+    "rootDir": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/global-setup.ts",
+    "globalTeardown": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/global-teardown.ts",
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "failures-only",
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "playwright-report",
+          "open": "never"
+        }
+      ],
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/test-results",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/test-results",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/test-results",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "mobile-chrome",
+        "name": "mobile-chrome",
+        "testDir": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.53.1",
+    "workers": 1,
+    "webServer": {
+      "command": "python run.py",
+      "port": 5001,
+      "reuseExistingServer": true,
+      "timeout": 30000,
+      "stdout": "pipe",
+      "stderr": "pipe",
+      "env": {
+        "FLASK_ENV": "development",
+        "FLASK_DEBUG": "False",
+        "PORT": "5001"
+      }
+    }
+  },
+  "suites": [
+    {
+      "title": "e2e_full.spec.ts",
+      "file": "e2e_full.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Xianxia World Engine - Comprehensive E2E Tests",
+          "file": "e2e_full.spec.ts",
+          "line": 44,
+          "column": 6,
+          "specs": [
+            {
+              "title": "1. Web UI 首屏正常渲染",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 0,
+                      "error": {
+                        "message": "TypeError: Cannot read properties of undefined (reading 'request')",
+                        "stack": "TypeError: Cannot read properties of undefined (reading 'request')\n    at adminRequestContext (/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts:33:27)\n    at /Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts:59:24",
+                        "location": {
+                          "file": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts",
+                          "column": 27,
+                          "line": 33
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 31 |\u001b[39m \u001b[90m// Admin request context fixture for bypassing CSRF\u001b[39m\n \u001b[90m 32 |\u001b[39m \u001b[36mconst\u001b[39m adminRequestContext \u001b[33m=\u001b[39m \u001b[36masync\u001b[39m ({ playwright }\u001b[33m:\u001b[39m any)\u001b[33m:\u001b[39m \u001b[33mPromise\u001b[39m\u001b[33m<\u001b[39m\u001b[33mAPIRequestContext\u001b[39m\u001b[33m>\u001b[39m \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 33 |\u001b[39m   \u001b[36mreturn\u001b[39m \u001b[36mawait\u001b[39m playwright\u001b[33m.\u001b[39mrequest\u001b[33m.\u001b[39mnewContext({\n \u001b[90m    |\u001b[39m                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 34 |\u001b[39m     baseURL\u001b[33m:\u001b[39m config\u001b[33m.\u001b[39m\u001b[33mBASE_URL\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 35 |\u001b[39m     extraHTTPHeaders\u001b[33m:\u001b[39m {\n \u001b[90m 36 |\u001b[39m       \u001b[32m'Accept'\u001b[39m\u001b[33m:\u001b[39m \u001b[32m'application/json'\u001b[39m\u001b[33m,\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts",
+                            "column": 27,
+                            "line": 33
+                          },
+                          "message": "TypeError: Cannot read properties of undefined (reading 'request')\n\n\u001b[0m \u001b[90m 31 |\u001b[39m \u001b[90m// Admin request context fixture for bypassing CSRF\u001b[39m\n \u001b[90m 32 |\u001b[39m \u001b[36mconst\u001b[39m adminRequestContext \u001b[33m=\u001b[39m \u001b[36masync\u001b[39m ({ playwright }\u001b[33m:\u001b[39m any)\u001b[33m:\u001b[39m \u001b[33mPromise\u001b[39m\u001b[33m<\u001b[39m\u001b[33mAPIRequestContext\u001b[39m\u001b[33m>\u001b[39m \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 33 |\u001b[39m   \u001b[36mreturn\u001b[39m \u001b[36mawait\u001b[39m playwright\u001b[33m.\u001b[39mrequest\u001b[33m.\u001b[39mnewContext({\n \u001b[90m    |\u001b[39m                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 34 |\u001b[39m     baseURL\u001b[33m:\u001b[39m config\u001b[33m.\u001b[39m\u001b[33mBASE_URL\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 35 |\u001b[39m     extraHTTPHeaders\u001b[33m:\u001b[39m {\n \u001b[90m 36 |\u001b[39m       \u001b[32m'Accept'\u001b[39m\u001b[33m:\u001b[39m \u001b[32m'application/json'\u001b[39m\u001b[33m,\u001b[39m\u001b[0m\n\u001b[2m    at adminRequestContext (/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts:33:27)\u001b[22m\n\u001b[2m    at /Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts:59:24\u001b[22m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts",
+                            "column": 22,
+                            "line": 83
+                          },
+                          "message": "TypeError: Cannot read properties of undefined (reading 'dispose')\n\n\u001b[0m \u001b[90m 81 |\u001b[39m   test\u001b[33m.\u001b[39mafterAll(\u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 82 |\u001b[39m     \u001b[36mawait\u001b[39m context\u001b[33m.\u001b[39mclose()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 83 |\u001b[39m     \u001b[36mawait\u001b[39m apiContext\u001b[33m.\u001b[39mdispose()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 84 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 85 |\u001b[39m\n \u001b[90m 86 |\u001b[39m   test(\u001b[32m'1. Web UI 首屏正常渲染'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\u001b[0m\n\u001b[2m    at /Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts:83:22\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-27T15:22:54.921Z",
+                      "annotations": [],
+                      "attachments": [],
+                      "errorLocation": {
+                        "file": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts",
+                        "column": 27,
+                        "line": 33
+                      }
+                    },
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 0,
+                      "error": {
+                        "message": "TypeError: Cannot read properties of undefined (reading 'request')",
+                        "stack": "TypeError: Cannot read properties of undefined (reading 'request')\n    at adminRequestContext (/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts:33:27)\n    at /Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts:59:24",
+                        "location": {
+                          "file": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts",
+                          "column": 27,
+                          "line": 33
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 31 |\u001b[39m \u001b[90m// Admin request context fixture for bypassing CSRF\u001b[39m\n \u001b[90m 32 |\u001b[39m \u001b[36mconst\u001b[39m adminRequestContext \u001b[33m=\u001b[39m \u001b[36masync\u001b[39m ({ playwright }\u001b[33m:\u001b[39m any)\u001b[33m:\u001b[39m \u001b[33mPromise\u001b[39m\u001b[33m<\u001b[39m\u001b[33mAPIRequestContext\u001b[39m\u001b[33m>\u001b[39m \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 33 |\u001b[39m   \u001b[36mreturn\u001b[39m \u001b[36mawait\u001b[39m playwright\u001b[33m.\u001b[39mrequest\u001b[33m.\u001b[39mnewContext({\n \u001b[90m    |\u001b[39m                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 34 |\u001b[39m     baseURL\u001b[33m:\u001b[39m config\u001b[33m.\u001b[39m\u001b[33mBASE_URL\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 35 |\u001b[39m     extraHTTPHeaders\u001b[33m:\u001b[39m {\n \u001b[90m 36 |\u001b[39m       \u001b[32m'Accept'\u001b[39m\u001b[33m:\u001b[39m \u001b[32m'application/json'\u001b[39m\u001b[33m,\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts",
+                            "column": 27,
+                            "line": 33
+                          },
+                          "message": "TypeError: Cannot read properties of undefined (reading 'request')\n\n\u001b[0m \u001b[90m 31 |\u001b[39m \u001b[90m// Admin request context fixture for bypassing CSRF\u001b[39m\n \u001b[90m 32 |\u001b[39m \u001b[36mconst\u001b[39m adminRequestContext \u001b[33m=\u001b[39m \u001b[36masync\u001b[39m ({ playwright }\u001b[33m:\u001b[39m any)\u001b[33m:\u001b[39m \u001b[33mPromise\u001b[39m\u001b[33m<\u001b[39m\u001b[33mAPIRequestContext\u001b[39m\u001b[33m>\u001b[39m \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 33 |\u001b[39m   \u001b[36mreturn\u001b[39m \u001b[36mawait\u001b[39m playwright\u001b[33m.\u001b[39mrequest\u001b[33m.\u001b[39mnewContext({\n \u001b[90m    |\u001b[39m                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 34 |\u001b[39m     baseURL\u001b[33m:\u001b[39m config\u001b[33m.\u001b[39m\u001b[33mBASE_URL\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 35 |\u001b[39m     extraHTTPHeaders\u001b[33m:\u001b[39m {\n \u001b[90m 36 |\u001b[39m       \u001b[32m'Accept'\u001b[39m\u001b[33m:\u001b[39m \u001b[32m'application/json'\u001b[39m\u001b[33m,\u001b[39m\u001b[0m\n\u001b[2m    at adminRequestContext (/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts:33:27)\u001b[22m\n\u001b[2m    at /Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts:59:24\u001b[22m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts",
+                            "column": 22,
+                            "line": 83
+                          },
+                          "message": "TypeError: Cannot read properties of undefined (reading 'dispose')\n\n\u001b[0m \u001b[90m 81 |\u001b[39m   test\u001b[33m.\u001b[39mafterAll(\u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 82 |\u001b[39m     \u001b[36mawait\u001b[39m context\u001b[33m.\u001b[39mclose()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 83 |\u001b[39m     \u001b[36mawait\u001b[39m apiContext\u001b[33m.\u001b[39mdispose()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 84 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 85 |\u001b[39m\n \u001b[90m 86 |\u001b[39m   test(\u001b[32m'1. Web UI 首屏正常渲染'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\u001b[0m\n\u001b[2m    at /Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts:83:22\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-06-27T15:22:56.137Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/test-results/e2e_full-Xianxia-World-Eng-2380e-e-E2E-Tests-1-Web-UI-首屏正常渲染-chromium-retry1/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts",
+                        "column": 27,
+                        "line": 33
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "26206b9e22468d35096a-32d91d1411780a1383c2",
+              "file": "e2e_full.spec.ts",
+              "line": 86,
+              "column": 7
+            },
+            {
+              "title": "2. 角色创建流程",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-27T15:22:55.774Z",
+                      "annotations": [],
+                      "attachments": []
+                    },
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-06-27T15:22:56.572Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "26206b9e22468d35096a-eec9004b916d57d5e321",
+              "file": "e2e_full.spec.ts",
+              "line": 106,
+              "column": 7
+            },
+            {
+              "title": "3. 异步探索API测试",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-27T15:22:55.775Z",
+                      "annotations": [],
+                      "attachments": []
+                    },
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-06-27T15:22:56.573Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "26206b9e22468d35096a-9fb40bfd6b05fba80b35",
+              "file": "e2e_full.spec.ts",
+              "line": 151,
+              "column": 7
+            },
+            {
+              "title": "4. 状态管理测试",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-27T15:22:55.775Z",
+                      "annotations": [],
+                      "attachments": []
+                    },
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-06-27T15:22:56.573Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "26206b9e22468d35096a-35699074c61fa755a480",
+              "file": "e2e_full.spec.ts",
+              "line": 218,
+              "column": 7
+            },
+            {
+              "title": "5. 缓存机制测试",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-27T15:22:55.775Z",
+                      "annotations": [],
+                      "attachments": []
+                    },
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-06-27T15:22:56.573Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "26206b9e22468d35096a-a9c6f988fb568ce2e7cc",
+              "file": "e2e_full.spec.ts",
+              "line": 300,
+              "column": 7
+            },
+            {
+              "title": "6. 日志轮转测试",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-27T15:22:55.776Z",
+                      "annotations": [],
+                      "attachments": []
+                    },
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-06-27T15:22:56.574Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "26206b9e22468d35096a-417d21fb2cb4e5a0c4a6",
+              "file": "e2e_full.spec.ts",
+              "line": 364,
+              "column": 7
+            },
+            {
+              "title": "Visual: 游戏界面截图",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-27T15:22:55.776Z",
+                      "annotations": [],
+                      "attachments": []
+                    },
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-06-27T15:22:56.574Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "26206b9e22468d35096a-e4d252173a55861eb41a",
+              "file": "e2e_full.spec.ts",
+              "line": 423,
+              "column": 7
+            },
+            {
+              "title": "1. Web UI 首屏正常渲染",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 0,
+                      "error": {
+                        "message": "TypeError: Cannot read properties of undefined (reading 'request')",
+                        "stack": "TypeError: Cannot read properties of undefined (reading 'request')\n    at adminRequestContext (/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts:33:27)\n    at /Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts:59:24",
+                        "location": {
+                          "file": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts",
+                          "column": 27,
+                          "line": 33
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 31 |\u001b[39m \u001b[90m// Admin request context fixture for bypassing CSRF\u001b[39m\n \u001b[90m 32 |\u001b[39m \u001b[36mconst\u001b[39m adminRequestContext \u001b[33m=\u001b[39m \u001b[36masync\u001b[39m ({ playwright }\u001b[33m:\u001b[39m any)\u001b[33m:\u001b[39m \u001b[33mPromise\u001b[39m\u001b[33m<\u001b[39m\u001b[33mAPIRequestContext\u001b[39m\u001b[33m>\u001b[39m \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 33 |\u001b[39m   \u001b[36mreturn\u001b[39m \u001b[36mawait\u001b[39m playwright\u001b[33m.\u001b[39mrequest\u001b[33m.\u001b[39mnewContext({\n \u001b[90m    |\u001b[39m                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 34 |\u001b[39m     baseURL\u001b[33m:\u001b[39m config\u001b[33m.\u001b[39m\u001b[33mBASE_URL\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 35 |\u001b[39m     extraHTTPHeaders\u001b[33m:\u001b[39m {\n \u001b[90m 36 |\u001b[39m       \u001b[32m'Accept'\u001b[39m\u001b[33m:\u001b[39m \u001b[32m'application/json'\u001b[39m\u001b[33m,\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts",
+                            "column": 27,
+                            "line": 33
+                          },
+                          "message": "TypeError: Cannot read properties of undefined (reading 'request')\n\n\u001b[0m \u001b[90m 31 |\u001b[39m \u001b[90m// Admin request context fixture for bypassing CSRF\u001b[39m\n \u001b[90m 32 |\u001b[39m \u001b[36mconst\u001b[39m adminRequestContext \u001b[33m=\u001b[39m \u001b[36masync\u001b[39m ({ playwright }\u001b[33m:\u001b[39m any)\u001b[33m:\u001b[39m \u001b[33mPromise\u001b[39m\u001b[33m<\u001b[39m\u001b[33mAPIRequestContext\u001b[39m\u001b[33m>\u001b[39m \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 33 |\u001b[39m   \u001b[36mreturn\u001b[39m \u001b[36mawait\u001b[39m playwright\u001b[33m.\u001b[39mrequest\u001b[33m.\u001b[39mnewContext({\n \u001b[90m    |\u001b[39m                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 34 |\u001b[39m     baseURL\u001b[33m:\u001b[39m config\u001b[33m.\u001b[39m\u001b[33mBASE_URL\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 35 |\u001b[39m     extraHTTPHeaders\u001b[33m:\u001b[39m {\n \u001b[90m 36 |\u001b[39m       \u001b[32m'Accept'\u001b[39m\u001b[33m:\u001b[39m \u001b[32m'application/json'\u001b[39m\u001b[33m,\u001b[39m\u001b[0m\n\u001b[2m    at adminRequestContext (/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts:33:27)\u001b[22m\n\u001b[2m    at /Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts:59:24\u001b[22m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts",
+                            "column": 22,
+                            "line": 83
+                          },
+                          "message": "TypeError: Cannot read properties of undefined (reading 'dispose')\n\n\u001b[0m \u001b[90m 81 |\u001b[39m   test\u001b[33m.\u001b[39mafterAll(\u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 82 |\u001b[39m     \u001b[36mawait\u001b[39m context\u001b[33m.\u001b[39mclose()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 83 |\u001b[39m     \u001b[36mawait\u001b[39m apiContext\u001b[33m.\u001b[39mdispose()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 84 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 85 |\u001b[39m\n \u001b[90m 86 |\u001b[39m   test(\u001b[32m'1. Web UI 首屏正常渲染'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\u001b[0m\n\u001b[2m    at /Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts:83:22\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-27T15:22:56.942Z",
+                      "annotations": [],
+                      "attachments": [],
+                      "errorLocation": {
+                        "file": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts",
+                        "column": 27,
+                        "line": 33
+                      }
+                    },
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 0,
+                      "error": {
+                        "message": "TypeError: Cannot read properties of undefined (reading 'request')",
+                        "stack": "TypeError: Cannot read properties of undefined (reading 'request')\n    at adminRequestContext (/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts:33:27)\n    at /Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts:59:24",
+                        "location": {
+                          "file": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts",
+                          "column": 27,
+                          "line": 33
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 31 |\u001b[39m \u001b[90m// Admin request context fixture for bypassing CSRF\u001b[39m\n \u001b[90m 32 |\u001b[39m \u001b[36mconst\u001b[39m adminRequestContext \u001b[33m=\u001b[39m \u001b[36masync\u001b[39m ({ playwright }\u001b[33m:\u001b[39m any)\u001b[33m:\u001b[39m \u001b[33mPromise\u001b[39m\u001b[33m<\u001b[39m\u001b[33mAPIRequestContext\u001b[39m\u001b[33m>\u001b[39m \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 33 |\u001b[39m   \u001b[36mreturn\u001b[39m \u001b[36mawait\u001b[39m playwright\u001b[33m.\u001b[39mrequest\u001b[33m.\u001b[39mnewContext({\n \u001b[90m    |\u001b[39m                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 34 |\u001b[39m     baseURL\u001b[33m:\u001b[39m config\u001b[33m.\u001b[39m\u001b[33mBASE_URL\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 35 |\u001b[39m     extraHTTPHeaders\u001b[33m:\u001b[39m {\n \u001b[90m 36 |\u001b[39m       \u001b[32m'Accept'\u001b[39m\u001b[33m:\u001b[39m \u001b[32m'application/json'\u001b[39m\u001b[33m,\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts",
+                            "column": 27,
+                            "line": 33
+                          },
+                          "message": "TypeError: Cannot read properties of undefined (reading 'request')\n\n\u001b[0m \u001b[90m 31 |\u001b[39m \u001b[90m// Admin request context fixture for bypassing CSRF\u001b[39m\n \u001b[90m 32 |\u001b[39m \u001b[36mconst\u001b[39m adminRequestContext \u001b[33m=\u001b[39m \u001b[36masync\u001b[39m ({ playwright }\u001b[33m:\u001b[39m any)\u001b[33m:\u001b[39m \u001b[33mPromise\u001b[39m\u001b[33m<\u001b[39m\u001b[33mAPIRequestContext\u001b[39m\u001b[33m>\u001b[39m \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 33 |\u001b[39m   \u001b[36mreturn\u001b[39m \u001b[36mawait\u001b[39m playwright\u001b[33m.\u001b[39mrequest\u001b[33m.\u001b[39mnewContext({\n \u001b[90m    |\u001b[39m                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 34 |\u001b[39m     baseURL\u001b[33m:\u001b[39m config\u001b[33m.\u001b[39m\u001b[33mBASE_URL\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 35 |\u001b[39m     extraHTTPHeaders\u001b[33m:\u001b[39m {\n \u001b[90m 36 |\u001b[39m       \u001b[32m'Accept'\u001b[39m\u001b[33m:\u001b[39m \u001b[32m'application/json'\u001b[39m\u001b[33m,\u001b[39m\u001b[0m\n\u001b[2m    at adminRequestContext (/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts:33:27)\u001b[22m\n\u001b[2m    at /Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts:59:24\u001b[22m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts",
+                            "column": 22,
+                            "line": 83
+                          },
+                          "message": "TypeError: Cannot read properties of undefined (reading 'dispose')\n\n\u001b[0m \u001b[90m 81 |\u001b[39m   test\u001b[33m.\u001b[39mafterAll(\u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 82 |\u001b[39m     \u001b[36mawait\u001b[39m context\u001b[33m.\u001b[39mclose()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 83 |\u001b[39m     \u001b[36mawait\u001b[39m apiContext\u001b[33m.\u001b[39mdispose()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 84 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 85 |\u001b[39m\n \u001b[90m 86 |\u001b[39m   test(\u001b[32m'1. Web UI 首屏正常渲染'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\u001b[0m\n\u001b[2m    at /Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts:83:22\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-06-27T15:22:58.648Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/test-results/e2e_full-Xianxia-World-Eng-2380e-e-E2E-Tests-1-Web-UI-首屏正常渲染-firefox-retry1/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts",
+                        "column": 27,
+                        "line": 33
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "26206b9e22468d35096a-469866c1f1f29f4c716e",
+              "file": "e2e_full.spec.ts",
+              "line": 86,
+              "column": 7
+            },
+            {
+              "title": "2. 角色创建流程",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-27T15:22:58.246Z",
+                      "annotations": [],
+                      "attachments": []
+                    },
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-06-27T15:22:59.754Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "26206b9e22468d35096a-5cad3c0bcafbee5a0e12",
+              "file": "e2e_full.spec.ts",
+              "line": 106,
+              "column": 7
+            },
+            {
+              "title": "3. 异步探索API测试",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-27T15:22:58.246Z",
+                      "annotations": [],
+                      "attachments": []
+                    },
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-06-27T15:22:59.754Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "26206b9e22468d35096a-a00834530191531ce27a",
+              "file": "e2e_full.spec.ts",
+              "line": 151,
+              "column": 7
+            },
+            {
+              "title": "4. 状态管理测试",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-27T15:22:58.247Z",
+                      "annotations": [],
+                      "attachments": []
+                    },
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-06-27T15:22:59.754Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "26206b9e22468d35096a-a41a5cea1fa4ea2de727",
+              "file": "e2e_full.spec.ts",
+              "line": 218,
+              "column": 7
+            },
+            {
+              "title": "5. 缓存机制测试",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-27T15:22:58.247Z",
+                      "annotations": [],
+                      "attachments": []
+                    },
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-06-27T15:22:59.754Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "26206b9e22468d35096a-2bb74738e3961ba28abc",
+              "file": "e2e_full.spec.ts",
+              "line": 300,
+              "column": 7
+            },
+            {
+              "title": "6. 日志轮转测试",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-27T15:22:58.247Z",
+                      "annotations": [],
+                      "attachments": []
+                    },
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-06-27T15:22:59.754Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "26206b9e22468d35096a-76365fcd2502260746a4",
+              "file": "e2e_full.spec.ts",
+              "line": 364,
+              "column": 7
+            },
+            {
+              "title": "Visual: 游戏界面截图",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-27T15:22:58.247Z",
+                      "annotations": [],
+                      "attachments": []
+                    },
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-06-27T15:22:59.755Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "26206b9e22468d35096a-a9efb91667021503f418",
+              "file": "e2e_full.spec.ts",
+              "line": 423,
+              "column": 7
+            },
+            {
+              "title": "1. Web UI 首屏正常渲染",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 0,
+                      "error": {
+                        "message": "TypeError: Cannot read properties of undefined (reading 'request')",
+                        "stack": "TypeError: Cannot read properties of undefined (reading 'request')\n    at adminRequestContext (/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts:33:27)\n    at /Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts:59:24",
+                        "location": {
+                          "file": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts",
+                          "column": 27,
+                          "line": 33
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 31 |\u001b[39m \u001b[90m// Admin request context fixture for bypassing CSRF\u001b[39m\n \u001b[90m 32 |\u001b[39m \u001b[36mconst\u001b[39m adminRequestContext \u001b[33m=\u001b[39m \u001b[36masync\u001b[39m ({ playwright }\u001b[33m:\u001b[39m any)\u001b[33m:\u001b[39m \u001b[33mPromise\u001b[39m\u001b[33m<\u001b[39m\u001b[33mAPIRequestContext\u001b[39m\u001b[33m>\u001b[39m \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 33 |\u001b[39m   \u001b[36mreturn\u001b[39m \u001b[36mawait\u001b[39m playwright\u001b[33m.\u001b[39mrequest\u001b[33m.\u001b[39mnewContext({\n \u001b[90m    |\u001b[39m                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 34 |\u001b[39m     baseURL\u001b[33m:\u001b[39m config\u001b[33m.\u001b[39m\u001b[33mBASE_URL\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 35 |\u001b[39m     extraHTTPHeaders\u001b[33m:\u001b[39m {\n \u001b[90m 36 |\u001b[39m       \u001b[32m'Accept'\u001b[39m\u001b[33m:\u001b[39m \u001b[32m'application/json'\u001b[39m\u001b[33m,\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts",
+                            "column": 27,
+                            "line": 33
+                          },
+                          "message": "TypeError: Cannot read properties of undefined (reading 'request')\n\n\u001b[0m \u001b[90m 31 |\u001b[39m \u001b[90m// Admin request context fixture for bypassing CSRF\u001b[39m\n \u001b[90m 32 |\u001b[39m \u001b[36mconst\u001b[39m adminRequestContext \u001b[33m=\u001b[39m \u001b[36masync\u001b[39m ({ playwright }\u001b[33m:\u001b[39m any)\u001b[33m:\u001b[39m \u001b[33mPromise\u001b[39m\u001b[33m<\u001b[39m\u001b[33mAPIRequestContext\u001b[39m\u001b[33m>\u001b[39m \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 33 |\u001b[39m   \u001b[36mreturn\u001b[39m \u001b[36mawait\u001b[39m playwright\u001b[33m.\u001b[39mrequest\u001b[33m.\u001b[39mnewContext({\n \u001b[90m    |\u001b[39m                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 34 |\u001b[39m     baseURL\u001b[33m:\u001b[39m config\u001b[33m.\u001b[39m\u001b[33mBASE_URL\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 35 |\u001b[39m     extraHTTPHeaders\u001b[33m:\u001b[39m {\n \u001b[90m 36 |\u001b[39m       \u001b[32m'Accept'\u001b[39m\u001b[33m:\u001b[39m \u001b[32m'application/json'\u001b[39m\u001b[33m,\u001b[39m\u001b[0m\n\u001b[2m    at adminRequestContext (/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts:33:27)\u001b[22m\n\u001b[2m    at /Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts:59:24\u001b[22m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts",
+                            "column": 22,
+                            "line": 83
+                          },
+                          "message": "TypeError: Cannot read properties of undefined (reading 'dispose')\n\n\u001b[0m \u001b[90m 81 |\u001b[39m   test\u001b[33m.\u001b[39mafterAll(\u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 82 |\u001b[39m     \u001b[36mawait\u001b[39m context\u001b[33m.\u001b[39mclose()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 83 |\u001b[39m     \u001b[36mawait\u001b[39m apiContext\u001b[33m.\u001b[39mdispose()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 84 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 85 |\u001b[39m\n \u001b[90m 86 |\u001b[39m   test(\u001b[32m'1. Web UI 首屏正常渲染'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\u001b[0m\n\u001b[2m    at /Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts:83:22\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-27T15:23:00.130Z",
+                      "annotations": [],
+                      "attachments": [],
+                      "errorLocation": {
+                        "file": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts",
+                        "column": 27,
+                        "line": 33
+                      }
+                    },
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 0,
+                      "error": {
+                        "message": "TypeError: Cannot read properties of undefined (reading 'request')",
+                        "stack": "TypeError: Cannot read properties of undefined (reading 'request')\n    at adminRequestContext (/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts:33:27)\n    at /Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts:59:24",
+                        "location": {
+                          "file": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts",
+                          "column": 27,
+                          "line": 33
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 31 |\u001b[39m \u001b[90m// Admin request context fixture for bypassing CSRF\u001b[39m\n \u001b[90m 32 |\u001b[39m \u001b[36mconst\u001b[39m adminRequestContext \u001b[33m=\u001b[39m \u001b[36masync\u001b[39m ({ playwright }\u001b[33m:\u001b[39m any)\u001b[33m:\u001b[39m \u001b[33mPromise\u001b[39m\u001b[33m<\u001b[39m\u001b[33mAPIRequestContext\u001b[39m\u001b[33m>\u001b[39m \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 33 |\u001b[39m   \u001b[36mreturn\u001b[39m \u001b[36mawait\u001b[39m playwright\u001b[33m.\u001b[39mrequest\u001b[33m.\u001b[39mnewContext({\n \u001b[90m    |\u001b[39m                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 34 |\u001b[39m     baseURL\u001b[33m:\u001b[39m config\u001b[33m.\u001b[39m\u001b[33mBASE_URL\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 35 |\u001b[39m     extraHTTPHeaders\u001b[33m:\u001b[39m {\n \u001b[90m 36 |\u001b[39m       \u001b[32m'Accept'\u001b[39m\u001b[33m:\u001b[39m \u001b[32m'application/json'\u001b[39m\u001b[33m,\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts",
+                            "column": 27,
+                            "line": 33
+                          },
+                          "message": "TypeError: Cannot read properties of undefined (reading 'request')\n\n\u001b[0m \u001b[90m 31 |\u001b[39m \u001b[90m// Admin request context fixture for bypassing CSRF\u001b[39m\n \u001b[90m 32 |\u001b[39m \u001b[36mconst\u001b[39m adminRequestContext \u001b[33m=\u001b[39m \u001b[36masync\u001b[39m ({ playwright }\u001b[33m:\u001b[39m any)\u001b[33m:\u001b[39m \u001b[33mPromise\u001b[39m\u001b[33m<\u001b[39m\u001b[33mAPIRequestContext\u001b[39m\u001b[33m>\u001b[39m \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 33 |\u001b[39m   \u001b[36mreturn\u001b[39m \u001b[36mawait\u001b[39m playwright\u001b[33m.\u001b[39mrequest\u001b[33m.\u001b[39mnewContext({\n \u001b[90m    |\u001b[39m                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 34 |\u001b[39m     baseURL\u001b[33m:\u001b[39m config\u001b[33m.\u001b[39m\u001b[33mBASE_URL\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 35 |\u001b[39m     extraHTTPHeaders\u001b[33m:\u001b[39m {\n \u001b[90m 36 |\u001b[39m       \u001b[32m'Accept'\u001b[39m\u001b[33m:\u001b[39m \u001b[32m'application/json'\u001b[39m\u001b[33m,\u001b[39m\u001b[0m\n\u001b[2m    at adminRequestContext (/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts:33:27)\u001b[22m\n\u001b[2m    at /Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts:59:24\u001b[22m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts",
+                            "column": 22,
+                            "line": 83
+                          },
+                          "message": "TypeError: Cannot read properties of undefined (reading 'dispose')\n\n\u001b[0m \u001b[90m 81 |\u001b[39m   test\u001b[33m.\u001b[39mafterAll(\u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 82 |\u001b[39m     \u001b[36mawait\u001b[39m context\u001b[33m.\u001b[39mclose()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 83 |\u001b[39m     \u001b[36mawait\u001b[39m apiContext\u001b[33m.\u001b[39mdispose()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 84 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 85 |\u001b[39m\n \u001b[90m 86 |\u001b[39m   test(\u001b[32m'1. Web UI 首屏正常渲染'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\u001b[0m\n\u001b[2m    at /Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts:83:22\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-06-27T15:23:00.899Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/test-results/e2e_full-Xianxia-World-Eng-2380e-e-E2E-Tests-1-Web-UI-首屏正常渲染-mobile-chrome-retry1/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/tests/e2e_full.spec.ts",
+                        "column": 27,
+                        "line": 33
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "26206b9e22468d35096a-329e43e5b674bba716f3",
+              "file": "e2e_full.spec.ts",
+              "line": 86,
+              "column": 7
+            },
+            {
+              "title": "2. 角色创建流程",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-27T15:23:00.523Z",
+                      "annotations": [],
+                      "attachments": []
+                    },
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-06-27T15:23:01.427Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "26206b9e22468d35096a-783572406a102b908b87",
+              "file": "e2e_full.spec.ts",
+              "line": 106,
+              "column": 7
+            },
+            {
+              "title": "3. 异步探索API测试",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-27T15:23:00.523Z",
+                      "annotations": [],
+                      "attachments": []
+                    },
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-06-27T15:23:01.428Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "26206b9e22468d35096a-d27a5a3ac5eb2dd375fa",
+              "file": "e2e_full.spec.ts",
+              "line": 151,
+              "column": 7
+            },
+            {
+              "title": "4. 状态管理测试",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-27T15:23:00.523Z",
+                      "annotations": [],
+                      "attachments": []
+                    },
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-06-27T15:23:01.428Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "26206b9e22468d35096a-71705795038a8067d616",
+              "file": "e2e_full.spec.ts",
+              "line": 218,
+              "column": 7
+            },
+            {
+              "title": "5. 缓存机制测试",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-27T15:23:00.523Z",
+                      "annotations": [],
+                      "attachments": []
+                    },
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-06-27T15:23:01.428Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "26206b9e22468d35096a-7a0bf1b512254a48d163",
+              "file": "e2e_full.spec.ts",
+              "line": 300,
+              "column": 7
+            },
+            {
+              "title": "6. 日志轮转测试",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-27T15:23:00.523Z",
+                      "annotations": [],
+                      "attachments": []
+                    },
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-06-27T15:23:01.428Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "26206b9e22468d35096a-8ffb873f746009f13d92",
+              "file": "e2e_full.spec.ts",
+              "line": 364,
+              "column": 7
+            },
+            {
+              "title": "Visual: 游戏界面截图",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-27T15:23:00.524Z",
+                      "annotations": [],
+                      "attachments": []
+                    },
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-06-27T15:23:01.428Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "26206b9e22468d35096a-fbd66032cad1e782cc98",
+              "file": "e2e_full.spec.ts",
+              "line": 423,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "Performance Tests",
+          "file": "e2e_full.spec.ts",
+          "line": 450,
+          "column": 6,
+          "specs": [
+            {
+              "title": "API响应时间测试",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-27T15:22:55.776Z",
+                      "annotations": [],
+                      "attachments": []
+                    },
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-06-27T15:22:56.575Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "26206b9e22468d35096a-5da110bf19042d12d80a",
+              "file": "e2e_full.spec.ts",
+              "line": 451,
+              "column": 7
+            },
+            {
+              "title": "API响应时间测试",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-27T15:22:58.247Z",
+                      "annotations": [],
+                      "attachments": []
+                    },
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-06-27T15:22:59.755Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "26206b9e22468d35096a-6e8ae19faf0e25cf3cc3",
+              "file": "e2e_full.spec.ts",
+              "line": 451,
+              "column": 7
+            },
+            {
+              "title": "API响应时间测试",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-27T15:23:00.524Z",
+                      "annotations": [],
+                      "attachments": []
+                    },
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-06-27T15:23:01.428Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "26206b9e22468d35096a-d92b9dc8c33e7d2c95de",
+              "file": "e2e_full.spec.ts",
+              "line": 451,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-06-27T15:22:54.522Z",
+    "duration": 6916.91,
+    "expected": 0,
+    "skipped": 21,
+    "unexpected": 3,
+    "flaky": 0
+  }
+}

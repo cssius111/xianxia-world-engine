@@ -1,0 +1,9 @@
+{
+  "timestamp": "2025-06-27T15:23:01.438Z",
+  "duration": 6910,
+  "environment": {
+    "node_version": "v22.13.0",
+    "platform": "darwin",
+    "ci": false
+  }
+}
