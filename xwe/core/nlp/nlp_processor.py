@@ -413,7 +413,8 @@ class DeepSeekNLPProcessor:
                 explanation=result.get("explanation", ""),
                 confidence=result.get("confidence", 1.0)
             )
-            
+            logger.debug(f"[NLP] Parsed: {parsed}")
+
             success = True
             return parsed
             
@@ -434,7 +435,8 @@ class DeepSeekNLPProcessor:
                     explanation=fallback_result.get("explanation", "本地回退解析"),
                     confidence=0.5  # 回退解析置信度较低
                 )
-                
+                logger.debug(f"[NLP] Parsed (fallback): {parsed}")
+
                 success = True
                 return parsed
             else:
