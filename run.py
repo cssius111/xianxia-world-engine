@@ -23,6 +23,7 @@ from flask import (
     request,
     send_from_directory,
     session,
+    has_request_context,
     stream_with_context,
     url_for,
 )
@@ -134,6 +135,19 @@ def get_game_instance(session_id):
             game.game_state.player = player
             game.game_state.current_location = "青云城"
             game.game_state.logs = []
+
+            info_dict = {
+                "id": player.id,
+                "name": player.name,
+                "attributes": attrs.to_dict(),
+                "spiritual_root": player.spiritual_root,
+                "inventory": inventory_system.get_inventory_data(
+                    session.get("player_id", player.id)
+                    if has_request_context()
+                    else player.id
+                ),
+            }
+            logger.debug(f"[PLAYER] Initialized: {info_dict}")
 
         game_instances[session_id] = {
             "game": game,
