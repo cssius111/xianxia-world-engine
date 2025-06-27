@@ -5,6 +5,7 @@
 
 import random
 import json
+import asyncio
 from typing import Dict, List, Optional, Tuple, Callable
 from pathlib import Path
 import logging
@@ -22,6 +23,18 @@ class ExplorationSystem:
     def __init__(self):
         """初始化探索系统"""
         self.exploration_data = self._load_exploration_data()
+
+    async def explore_async(
+        self,
+        location: str = "青云城",
+        command_context: Optional[Dict] = None,
+        inventory_add_cb: Optional[Callable[[List[Dict]], None]] = None,
+    ) -> Dict:
+        """异步执行探索"""
+
+        return await asyncio.to_thread(
+            self.explore, location, command_context, inventory_add_cb
+        )
         
     def _load_exploration_data(self) -> Dict:
         """加载探索数据"""

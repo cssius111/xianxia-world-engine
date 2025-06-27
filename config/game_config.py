@@ -31,6 +31,9 @@ class GameConfig:
     cache_size: int = 1000
     max_npcs_in_memory: int = 50
     auto_save_interval: int = 300  # 秒
+    data_cache_ttl: int = 300
+    smart_cache_ttl: int = 300
+    smart_cache_size: int = 128
 
     # 路径设置
     data_path: str | Path | None = "xwe/data"
