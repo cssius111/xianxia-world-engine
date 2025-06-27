@@ -5,7 +5,7 @@
 
 import random
 import json
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple, Callable
 from pathlib import Path
 import logging
 
@@ -105,16 +105,27 @@ class ExplorationSystem:
             ]
         }
     
-    def explore(self, location: str = "青云城") -> Dict:
+    def explore(
+        self,
+        location: str = "青云城",
+        command_context: Optional[Dict] = None,
+        inventory_add_cb: Optional[Callable[[List[Dict]], None]] = None,
+    ) -> Dict:
         """
         执行探索
-        
+
         Args:
             location: 当前位置
-            
+            command_context: 发起探索命令时的上下文信息
+            inventory_add_cb: 处理获得物品的回调
+
         Returns:
             探索结果，包含叙述文本和获得的物品
         """
+        logger.debug(
+            "[EXPLORE] Start exploring '%s' with context: %s", location, command_context
+        )
+
         # 获取当前位置的探索事件
         location_data = self.exploration_data.get("locations", {}).get(location)
         
@@ -126,6 +137,11 @@ class ExplorationSystem:
             
         # 根据权重选择事件
         event = self._weighted_choice(events)
+        logger.debug(
+            "[EXPLORE] Selected event %s, rewards: %s",
+            event.get("id", "unknown") if event else "none",
+            bool(event.get("items")) if event else False,
+        )
         
         if event:
             # 返回统一格式的结果
@@ -134,16 +150,23 @@ class ExplorationSystem:
                 "narration": event["narration"],
                 "items": event.get("items", []),
                 "location": location,
-                "event_id": event.get("id", "unknown")
+                "event_id": event.get("id", "unknown"),
             }
-            
+
             # 记录日志
             if result["items"]:
                 item_names = [f"{item['name']}x{item['qty']}" for item in result["items"]]
-                logger.info(f"探索获得物品: {', '.join(item_names)}")
+                logger.info("[EXPLORE] Reward items: %s", ", ".join(item_names))
+                if inventory_add_cb:
+                    inventory_add_cb(result["items"])
+                    logger.info("[EXPLORE] Inventory add callback invoked")
+                else:
+                    logger.info("[EXPLORE] Inventory add callback not provided")
             else:
-                logger.info("探索无收获")
-                
+                logger.info("[EXPLORE] No reward items")
+                if inventory_add_cb:
+                    logger.info("[EXPLORE] Inventory add callback invoked with empty items")
+
             return result
         else:
             return {
