@@ -28,5 +28,9 @@ backoff==2.2.1  # API调用重试机制
 # 系统性能监控
 psutil==7.0.0
 
+# 测试相关依赖
+pytest==8.1.1
+playwright==1.42.0
+
 # 注意：DeepSeek SDK 需要单独安装
 # pip install deepseek
