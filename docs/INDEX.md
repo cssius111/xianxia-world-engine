@@ -16,6 +16,7 @@
 - [QUICK_START.md](QUICK_START.md) - 快速启动指南
 - [character_design.md](character_design.md) - 角色属性设计
 - [deepseek_nlp_guide.md](deepseek_nlp_guide.md) - DeepSeek NLP 使用说明
+- [cache_settings.md](cache_settings.md) - 缓存与 TTL 设置说明
 - [flask_endpoints.md](flask_endpoints.md) - Flask 端点映射表
 - [test_checklist.md](test_checklist.md) - 测试检查清单
 - [development/](development/) - 开发文档

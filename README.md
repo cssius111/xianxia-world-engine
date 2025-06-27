@@ -92,6 +92,26 @@ xianxia_world_engine/
 - **数据**: JSON文件存储
 - **样式**: 自定义水墨风格主题
 
+## 缓存与 TTL 设置
+
+`config/game_config.py` 提供以下可调参数：
+
+- `data_cache_ttl`：数据文件缓存时间，默认 `300` 秒
+- `smart_cache_ttl`：`SmartCache` 的默认 TTL，默认 `300` 秒
+- `smart_cache_size`：`SmartCache` 缓存上限，默认 `128`
+
+可在代码中修改这些值，例如：
+
+```python
+from config.game_config import config
+
+config.data_cache_ttl = 600
+config.smart_cache_ttl = 60
+config.smart_cache_size = 256
+```
+
+修改后重启游戏即可生效。
+
 ## 贡献指南
 
 欢迎提交 Issue 和 Pull Request！
