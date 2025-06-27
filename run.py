@@ -41,6 +41,7 @@ from xwe.features.ai_personalization import AIPersonalization
 from xwe.features.community_system import CommunitySystem
 from xwe.features.narrative_system import NarrativeSystem
 from xwe.features.technical_ops import TechnicalOps
+from xwe.server.app_factory import create_app
 
 
 def is_dev_request(req) -> bool:
@@ -56,16 +57,8 @@ PROJECT_ROOT = Path(__file__).resolve().parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-# Flask应用配置
-app = Flask(__name__, static_folder="static", template_folder="templates")
-# 首先尝试从 FLASK_SECRET_KEY 获取密钥, 其次尝试 SECRET_KEY, 最后使用默认值
-app.secret_key = os.getenv("FLASK_SECRET_KEY", os.getenv("SECRET_KEY", "dev_secret"))
-app.config["JSON_AS_ASCII"] = False
-
-# 日志配置
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-)
+# 创建应用和日志
+app = create_app()
 logger = logging.getLogger("XianxiaEngine")
 
 # 如果未设置 DEEPSEEK_API_KEY，记录警告

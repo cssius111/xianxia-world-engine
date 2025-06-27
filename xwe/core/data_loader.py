@@ -5,9 +5,11 @@
 
 import json
 import os
+import time
 from pathlib import Path
 from typing import Dict, List, Optional, Any
 import logging
+from config.game_config import config
 
 logger = logging.getLogger(__name__)
 
@@ -19,7 +21,7 @@ class DataLoader:
     从文件系统加载游戏数据
     """
 
-    def __init__(self, data_path: Optional[Path] = None):
+    def __init__(self, data_path: Optional[Path] = None, cache_ttl: Optional[int] = None):
         """
         初始化数据加载器
 
@@ -34,6 +36,8 @@ class DataLoader:
 
         # 缓存已加载的数据
         self._cache: Dict[str, Any] = {}
+        self._timestamps: Dict[str, float] = {}
+        self.cache_ttl = cache_ttl if cache_ttl is not None else config.data_cache_ttl
 
         # 确保数据目录存在
         self.data_path.mkdir(parents=True, exist_ok=True)
@@ -53,7 +57,12 @@ class DataLoader:
         """
         # 检查缓存
         if filename in self._cache:
-            return self._cache[filename]
+            ts = self._timestamps.get(filename, 0)
+            if self.cache_ttl is None or time.time() - ts < self.cache_ttl:
+                return self._cache[filename]
+            else:
+                del self._cache[filename]
+                self._timestamps.pop(filename, None)
 
         filepath = self.data_path / filename
 
@@ -62,6 +71,7 @@ class DataLoader:
                 with open(filepath, "r", encoding="utf-8") as f:
                     data = json.load(f)
                     self._cache[filename] = data
+                    self._timestamps[filename] = time.time()
                     logger.debug(f"成功加载数据文件: {filename}")
                     return data
             else:
@@ -90,6 +100,7 @@ class DataLoader:
 
             # 更新缓存
             self._cache[filename] = data
+            self._timestamps[filename] = time.time()
             logger.debug(f"成功保存数据文件: {filename}")
             return True
         except Exception as e:
