@@ -239,7 +239,7 @@ def build_status_data():
     if destiny is None:
         destiny = session.get("destiny")
 
-    return {
+    status_dict = {
         "player": {
             "name": player_name,
             "attributes": attributes_dict,
@@ -251,6 +251,8 @@ def build_status_data():
         "destiny": destiny,
         "talents": talents,
     }
+    logger.debug("[STATUS] %s", status_dict)
+    return status_dict
 
 
 # 初始化命令路由器（带NLP支持）
@@ -787,7 +789,9 @@ def _get_player_status():
 @app.route("/status")
 def get_status():
     """获取游戏状态"""
-    return jsonify(build_status_data())
+    status_dict = build_status_data()
+    logger.debug("[STATUS] %s", status_dict)
+    return jsonify(status_dict)
 
 
 @app.route("/status/stream")
