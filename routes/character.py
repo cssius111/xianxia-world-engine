@@ -5,12 +5,15 @@
 
 from flask import Blueprint, current_app, jsonify, request, session
 from run import is_dev_request
+import logging
 
 from xwe.core.attributes import CharacterAttributes
 from xwe.core.character import Character, CharacterType
 from xwe.features.random_player_panel import RandomPlayerPanel
 
 bp = Blueprint("character", __name__)
+
+logger = logging.getLogger(__name__)
 
 # 背景加成配置
 BACKGROUND_BONUSES = {
@@ -144,6 +147,10 @@ def create_character():
             character_type=CharacterType.PLAYER,
             attributes=attrs,
         )
+        if player.attributes is attrs:
+            logger.debug("[CHARACTER] 写入属性成功")
+        else:
+            logger.debug("[CHARACTER] 写入属性失败")
 
         # 设置额外数据
         player.extra_data = {
@@ -159,6 +166,22 @@ def create_character():
         destiny = data.get("destiny")
         if destiny is not None:
             player.extra_data["destiny"] = destiny
+
+        logger.info(
+            "[CHARACTER] 创建角色 %s，属性: 根骨=%d 悟性=%d 神识=%d 机缘=%d，灵根=%s，命运=%s",
+            name,
+            constitution,
+            comprehension,
+            spirit,
+            luck,
+            player.spiritual_root,
+            destiny,
+        )
+
+        logger.debug(
+            "[CHARACTER] 保存额外数据键: %s",
+            list(player.extra_data.keys()),
+        )
 
         # 初始化背包和金币
         if hasattr(player, "inventory"):
