@@ -1,0 +1,32 @@
+{
+  "name": "xianxia_world_engine",
+  "version": "1.0.0",
+  "description": "一个基于文本的修仙世界模拟游戏引擎，让玩家体验修仙之旅。",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:report": "playwright show-report",
+    "install:browsers": "playwright install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cssius111/xianxia-world-engine.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cssius111/xianxia-world-engine/issues"
+  },
+  "homepage": "https://github.com/cssius111/xianxia-world-engine#readme",
+  "devDependencies": {
+    "@playwright/mcp": "^0.0.29",
+    "@playwright/test": "^1.53.1"
+  }
+}
