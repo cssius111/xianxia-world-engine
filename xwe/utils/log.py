@@ -18,7 +18,14 @@ def configure_logging(log_dir: str, filename: str = "app.log") -> None:
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 
-    handler = RotatingFileHandler(Path(log_dir) / filename, maxBytes=1024 * 1024, backupCount=5)
+    log_path = Path(log_dir) / filename
+    logger = logging.getLogger()
+
+    for h in logger.handlers:
+        if isinstance(h, RotatingFileHandler) and Path(h.baseFilename) == log_path:
+            return
+
+    handler = RotatingFileHandler(log_path, maxBytes=1024 * 1024, backupCount=5)
 
     def _rotator(source: str, dest: str) -> None:  # pragma: no cover - IO utility
         with open(source, "rb") as sf, gzip.open(dest + ".gz", "wb") as df:
@@ -32,5 +39,5 @@ def configure_logging(log_dir: str, filename: str = "app.log") -> None:
         return dest + ".gz"
 
     handler.namer = _namer
-    logging.getLogger().addHandler(handler)
+    logger.addHandler(handler)
 
