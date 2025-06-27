@@ -76,7 +76,8 @@ module.exports = defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'python -m http.server 5001', // 如果你的服务器启动命令不同，请修改这里
+    // 使用项目自带的运行脚本启动服务器
+    command: 'python run.py',
     port: 5001,
     reuseExistingServer: !process.env.CI,
     timeout: 30000,
