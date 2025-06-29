@@ -1,0 +1,11 @@
+--- a/tests/e2e/e2e_create_character.spec.js
++++ /dev/null
+@@ -1 +0,0 @@
+-[File moved to tests/_legacy/e2e_create_character.spec.js]
+diff --git a/tests/_legacy/e2e_create_character.spec.js b/tests/_legacy/e2e_create_character.spec.js
+new file mode 100644
+index 0000000..0000000
+--- /dev/null
++++ b/tests/_legacy/e2e_create_character.spec.js
+@@ -0,0 +1 @@
++[File moved from tests/e2e/e2e_create_character.spec.js]

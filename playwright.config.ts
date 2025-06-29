@@ -7,6 +7,9 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   testDir: './tests',
   
+  /* Ignore Cypress test files */
+  testIgnore: ['**/e2e/*.spec.js', '**/xiuxian-game.spec.js'],
+  
   /* Maximum time one test can run for */
   timeout: 90_000, // 90 seconds as requested
   

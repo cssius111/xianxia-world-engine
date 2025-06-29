@@ -28,12 +28,22 @@ test.describe.configure({ mode: 'serial' }); // Run tests sequentially
 // Helper to wait for async operations
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
+// Helper to clear session storage
+const clearSession = async (page: Page) => {
+  await page.evaluate(() => {
+    sessionStorage.clear();
+    localStorage.clear();
+  });
+  // Clear cookies
+  const context = page.context();
+  await context.clearCookies();
+};
+
 // Test suite
 test.describe('Xianxia World Engine - Comprehensive E2E Tests', () => {
   let page: Page;
   let context: BrowserContext;
   let logHelper: LogHelper;
-  let apiContext: APIRequestContext;
 
   test.beforeAll(async ({ browser }) => {
     // Initialize log helper
@@ -45,18 +55,12 @@ test.describe('Xianxia World Engine - Comprehensive E2E Tests', () => {
       permissions: ['clipboard-read', 'clipboard-write'],
       acceptDownloads: true,
     });
-    
-    // Add init script to safely clear sessionStorage
-    await context.addInitScript(() => {
-      try { sessionStorage.clear(); } catch { /* ignore */ }
-      try { localStorage.clear(); } catch { /* ignore */ }
-    });
   });
 
   test.beforeEach(async () => {
     page = await context.newPage();
-    // Clear cookies before each test
-    await context.clearCookies();
+    // Clear session before each test
+    await clearSession(page);
   });
 
   test.afterEach(async () => {
