@@ -16,7 +16,7 @@ class ProjectRestructurer:
     def __init__(self, project_root: str):
         self.project_root = Path(project_root)
         self.new_structure = {
-            "data/game_configs": {
+            "xwe/data/game_configs": {
                 "description": "统一的游戏配置文件目录",
                 "subdirs": {
                     "character": "角色相关配置",
@@ -29,7 +29,7 @@ class ProjectRestructurer:
                     "ui": "界面配置",
                 },
             },
-            "data/game_data": {
+            "xwe/data/game_data": {
                 "description": "游戏运行时数据",
                 "subdirs": {
                     "templates": "各类模板文件",
@@ -37,7 +37,7 @@ class ProjectRestructurer:
                     "events": "事件配置",
                 },
             },
-            "data/deprecated": {"description": "废弃但暂时保留的文件", "subdirs": {}},
+            "xwe/data/deprecated": {"description": "废弃但暂时保留的文件", "subdirs": {}},
         }
         self.file_mapping = {}
         self.merge_candidates = []
@@ -136,7 +136,7 @@ class ProjectRestructurer:
 
                     # 特殊处理某些文件
                     if self._should_deprecate(file, str(rel_path)):
-                        target_dir = "data/deprecated"
+                        target_dir = "xwe/data/deprecated"
                     elif category in [
                         "character",
                         "combat",
@@ -146,11 +146,11 @@ class ProjectRestructurer:
                         "world",
                         "npc",
                     ]:
-                        target_dir = f"data/game_configs/{category}"
+                        target_dir = f"xwe/data/game_configs/{category}"
                     elif category in ["events", "data"]:
-                        target_dir = "data/game_data/templates"
+                        target_dir = "xwe/data/game_data/templates"
                     else:
-                        target_dir = "data/game_configs/system"
+                        target_dir = "xwe/data/game_configs/system"
 
                     target_path = self.project_root / target_dir / file
 
@@ -253,7 +253,7 @@ class ProjectRestructurer:
             plan["file_merges"].append(
                 {
                     "files": merge_group["files"],
-                    "target": f"data/game_configs/{self._categorize_file(merge_group['suggested_name'])}/{merge_group['suggested_name']}",
+                    "target": f"xwe/data/game_configs/{self._categorize_file(merge_group['suggested_name'])}/{merge_group['suggested_name']}",
                     "strategy": "manual_review",  # 需要人工审查
                 }
             )
@@ -357,7 +357,7 @@ class ProjectRestructurer:
 
             f.write("## 新目录结构\n\n")
             f.write("```\n")
-            f.write("data/\n")
+            f.write("xwe/data/\n")
             f.write("├── game_configs/      # 游戏配置文件\n")
             f.write("│   ├── character/     # 角色相关\n")
             f.write("│   ├── combat/        # 战斗系统\n")

@@ -56,7 +56,7 @@ print("\n4. 检查项目结构...")
 critical_paths = {
     "templates": "模板目录",
     "static": "静态资源目录",
-    "data/restructured": "数据目录",
+    "xwe/data/restructured": "数据目录",
     "run.py": "启动脚本",
 }
 
@@ -166,7 +166,7 @@ if issues_found:
 
         if any("目录不存在" in issue for issue in issues_found):
             f.write("# 创建缺失的目录\n")
-            for path in ["templates", "static", "data/restructured"]:
+            for path in ["templates", "static", "xwe/data/restructured"]:
                 f.write(f"mkdir -p {path}\n")
             f.write("\n")
 

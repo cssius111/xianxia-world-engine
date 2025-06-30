@@ -41,7 +41,7 @@ required_dirs = [
     "saves",
     "static/audio",
     "templates/modals",
-    "data/restructured",
+    "xwe/data/restructured",
 ]
 
 for dir_path in required_dirs:

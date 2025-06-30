@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}修仙世界引擎{% endblock %}
+
+{% block content %}
+<div id="gameContainer" class="game-container">
+    {% include "components/header.html" %}
+
+    <div class="main-layout">
+        {% include "components/sidebar_v2.html" %}
+        <main id="mainLogArea">
+            {% include "components/narrative_log.html" %}
+            {% include "components/command_input.html" %}
+        </main>
+    </div>
+
+    {% include "components/game_panels.html" %}
+    {% include "components/roll_modal.html" %}
+    {% include "components/welcome_modal_v2.html" %}
+    {% include "components/world_intro.html" %}
+    {% include "components/lore_modal.html" %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/game_main.js') }}"></script>
+<script src="{{ url_for('static', filename='js/game_panels_enhanced.js') }}"></script>
+<script>
+    window.onload = function() {
+        GameUI.init(); // 初始化游戏 UI 功能（绑定日志、指令框、弹窗等）
+        WelcomeSystem.show(); // 启动欢迎界面
+        console.log('🎮 修仙游戏已启动 (增强版)');
+    };
+</script>
+{% endblock %}
