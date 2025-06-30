@@ -104,9 +104,9 @@ rm main_menu.py
 rm start_game.py
 
 # 4. 更新所有导入
-# 将 "from core." 替换为 "from xwe.core."
-# 将 "from event_system" 替换为 "from xwe.events"
-# 将 "data/" 路径替换为 "xwe/data/"
+# 将 "from core." 替换为 "from src.xwe.core."
+# 将 "from event_system" 替换为 "from src.xwe.events"
+# 将 "data/" 路径替换为 "src.xwe.data/"
 ```
 
 ## 📝 代码更新示例
@@ -120,9 +120,9 @@ data_path = "data/items.json"
 
 ### 修改后：
 ```python
-from xwe.core.game_core import GameCore
-from xwe.world.event_system import EventSystem
-data_path = "xwe/data/items.json"
+from src.xwe.core.game_core import GameCore
+from src.xwe.world.event_system import EventSystem
+data_path = "src.xwe.data/items.json"
 ```
 
 ## 🎮 启动游戏

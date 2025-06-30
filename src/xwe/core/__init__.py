@@ -11,19 +11,19 @@ def __getattr__(name):
     
     if name == "GameCore":
         if _game_core is None:
-            from xwe.core.game_core import GameCore as _GameCore
+            from src.xwe.core.game_core import GameCore as _GameCore
             _game_core = _GameCore
         return _game_core
     
     elif name == "Character":
         if _character is None:
-            from xwe.core.character import Character as _Character
+            from src.xwe.core.character import Character as _Character
             _character = _Character
         return _character
     
     elif name == "CultivationSystem":
         if _cultivation_system is None:
-            from xwe.core.cultivation_system import CultivationSystem as _CultivationSystem
+            from src.xwe.core.cultivation_system import CultivationSystem as _CultivationSystem
             _cultivation_system = _CultivationSystem
         return _cultivation_system
     

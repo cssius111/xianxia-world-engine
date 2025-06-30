@@ -1,5 +1,5 @@
 import pytest
-from xwe.features.narrative_system import (
+from src.xwe.features.narrative_system import (
     NarrativeSystem,
     StoryNode,
     StoryPhase,

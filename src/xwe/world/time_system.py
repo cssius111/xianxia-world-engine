@@ -6,7 +6,7 @@ from __future__ import annotations
 from typing import Dict, Optional, TYPE_CHECKING
 
 if TYPE_CHECKING:  # pragma: no cover - used for type hints only
-    from xwe.core.game_core import GameState
+    from src.xwe.core.game_core import GameState
 
 
 class TimeSystem:

@@ -4,9 +4,9 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Callable
 
-from xwe.events import DomainEvent, get_event_bus
-from xwe.services import ServiceContainer
-from xwe.services import ServiceBase
+from src.xwe.events import DomainEvent, get_event_bus
+from src.xwe.services import ServiceContainer
+from src.xwe.services import ServiceBase
 
 
 @dataclass

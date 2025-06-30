@@ -60,18 +60,12 @@ python run.py
 ```
 xianxia_world_engine/
 ├── run.py                  # 主程序入口
-├── templates/              # HTML模板
-│   ├── base.html          # 基础模板
-│   ├── intro_optimized.html    # 角色创建流程
-│   ├── game_enhanced_optimized_v2.html  # 游戏主界面
-│   ├── screens/           # 页面模板
-│   └── components/        # 组件模板
-├── static/                # 静态资源
-│   ├── css/              # 样式文件
-│   └── js/               # JavaScript文件
-├── xwe/                   # 核心模块
-├── saves/                 # 存档文件
-└── logs/                  # 日志文件，自动轮转并生成 `.gz` 压缩包
+├── src/                    # 迁移后的源代码
+│   └── xwe/                # 游戏引擎核心模块
+├── templates/              # HTML 模板
+├── static/                 # 静态资源
+├── tests/                  # 单元测试
+└── docs/                   # 项目文档
 ```
 
 ## 功能特点
@@ -125,3 +119,5 @@ MIT License
 如有问题或建议，请提交 Issue。
 
 更多文档见 [docs/INDEX.md](docs/INDEX.md)。
+项目结构详见 [docs/architecture/project_structure.md](docs/architecture/project_structure.md)，
+开发环境搭建见 [docs/development/setup_guide.md](docs/development/setup_guide.md)。

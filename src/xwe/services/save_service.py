@@ -4,8 +4,8 @@ import json
 from pathlib import Path
 from typing import List
 
-from xwe.services import ServiceBase, ServiceContainer
-from xwe.services.interfaces.save_service import ISaveService, SaveData, SaveInfo, SaveType
+from src.xwe.services import ServiceBase, ServiceContainer
+from src.xwe.services.interfaces.save_service import ISaveService, SaveData, SaveInfo, SaveType
 
 
 class SaveService(ServiceBase["SaveService"], ISaveService):

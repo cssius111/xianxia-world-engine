@@ -310,18 +310,18 @@ def register_services(container: ServiceContainer) -> None:
     注册所有服务
     这个函数应该在应用启动时调用
     """
-    from xwe.services.combat_service import CombatService
-    from xwe.services.command_engine import CommandEngine, ICommandEngine
-    from xwe.services.cultivation_service import CultivationService, ICultivationService
-    from xwe.services.event_dispatcher import EventDispatcher, IEventDispatcher
-    from xwe.services.game_service import GameService, IGameService
-    from xwe.services.interfaces.combat_service import ICombatService
-    from xwe.services.interfaces.player_service import IPlayerService
-    from xwe.services.interfaces.world_service import IWorldService
-    from xwe.services.log_service import ILogService, LogService
-    from xwe.services.player_service import PlayerService
-    from xwe.services.save_service import ISaveService, SaveService
-    from xwe.services.world_service import WorldService
+    from src.xwe.services.combat_service import CombatService
+    from src.xwe.services.command_engine import CommandEngine, ICommandEngine
+    from src.xwe.services.cultivation_service import CultivationService, ICultivationService
+    from src.xwe.services.event_dispatcher import EventDispatcher, IEventDispatcher
+    from src.xwe.services.game_service import GameService, IGameService
+    from src.xwe.services.interfaces.combat_service import ICombatService
+    from src.xwe.services.interfaces.player_service import IPlayerService
+    from src.xwe.services.interfaces.world_service import IWorldService
+    from src.xwe.services.log_service import ILogService, LogService
+    from src.xwe.services.player_service import PlayerService
+    from src.xwe.services.save_service import ISaveService, SaveService
+    from src.xwe.services.world_service import WorldService
 
     # 注册核心服务
     container.register(IGameService, GameService, ServiceLifetime.SINGLETON)
@@ -337,17 +337,17 @@ def register_services(container: ServiceContainer) -> None:
     logger.info("All services registered")
 
 
-from xwe.services.command_engine import ICommandEngine
-from xwe.services.cultivation_service import ICultivationService
-from xwe.services.event_dispatcher import IEventDispatcher
+from src.xwe.services.command_engine import ICommandEngine
+from src.xwe.services.cultivation_service import ICultivationService
+from src.xwe.services.event_dispatcher import IEventDispatcher
 
 # 对外暴露的接口类型，方便统一导入
-from xwe.services.game_service import IGameService
-from xwe.services.interfaces.combat_service import ICombatService
-from xwe.services.interfaces.player_service import IPlayerService
-from xwe.services.interfaces.world_service import IWorldService
-from xwe.services.log_service import ILogService
-from xwe.services.save_service import ISaveService
+from src.xwe.services.game_service import IGameService
+from src.xwe.services.interfaces.combat_service import ICombatService
+from src.xwe.services.interfaces.player_service import IPlayerService
+from src.xwe.services.interfaces.world_service import IWorldService
+from src.xwe.services.log_service import ILogService
+from src.xwe.services.save_service import ISaveService
 
 __all__ = [
     "ServiceLifetime",

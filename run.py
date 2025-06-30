@@ -32,16 +32,16 @@ from flask import (
 # 加载 .env 文件中的环境变量
 load_dotenv()
 
-from xwe.core.command_router import CommandRouter
-from xwe.core.cultivation_system import CultivationSystem
-from xwe.core.data_loader import DataLoader
-from xwe.core.game_core import create_enhanced_game
-from xwe.features import ExplorationSystem, InventorySystem
-from xwe.features.ai_personalization import AIPersonalization
-from xwe.features.community_system import CommunitySystem
-from xwe.features.narrative_system import NarrativeSystem
-from xwe.features.technical_ops import TechnicalOps
-from xwe.server.app_factory import create_app
+from src.xwe.core.command_router import CommandRouter
+from src.xwe.core.cultivation_system import CultivationSystem
+from src.xwe.core.data_loader import DataLoader
+from src.xwe.core.game_core import create_enhanced_game
+from src.xwe.features import ExplorationSystem, InventorySystem
+from src.xwe.features.ai_personalization import AIPersonalization
+from src.xwe.features.community_system import CommunitySystem
+from src.xwe.features.narrative_system import NarrativeSystem
+from src.xwe.features.technical_ops import TechnicalOps
+from src.xwe.server.app_factory import create_app
 
 
 def is_dev_request(req) -> bool:
@@ -52,10 +52,11 @@ def is_dev_request(req) -> bool:
     )
 
 
-# 确保项目根目录在Python路径中
+# 确保 src 目录在 Python 路径中
 PROJECT_ROOT = Path(__file__).resolve().parent
-if str(PROJECT_ROOT) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT))
+SRC_PATH = PROJECT_ROOT / "src"
+if str(SRC_PATH) not in sys.path:
+    sys.path.insert(0, str(SRC_PATH))
 
 # 创建应用和日志
 app = create_app()
@@ -125,8 +126,8 @@ def get_game_instance(session_id):
 
         # 创建默认玩家
         if not game.game_state.player:
-            from xwe.core.attributes import CharacterAttributes
-            from xwe.core.character import Character, CharacterType
+            from src.xwe.core.attributes import CharacterAttributes
+            from src.xwe.core.character import Character, CharacterType
 
             attrs = CharacterAttributes()
             attrs.realm_name = "炼气期"
@@ -899,7 +900,7 @@ def parse_custom_text():
         try:
             import json as pyjson
 
-            from xwe.core.nlp import LLMClient
+            from src.xwe.core.nlp import LLMClient
 
             llm = LLMClient()
             result = llm.chat(text)
@@ -932,7 +933,7 @@ def nlp_monitor():
 def get_nlp_stats():
     """获取NLP统计数据"""
     try:
-        from xwe.core.nlp.monitor import get_nlp_monitor
+        from src.xwe.core.nlp.monitor import get_nlp_monitor
 
         monitor = get_nlp_monitor()
         stats = monitor.get_stats()
@@ -952,7 +953,7 @@ def export_nlp_metrics():
         import os
         import tempfile
 
-        from xwe.core.nlp.monitor import get_nlp_monitor
+        from src.xwe.core.nlp.monitor import get_nlp_monitor
 
         monitor = get_nlp_monitor()
 
@@ -990,7 +991,7 @@ def export_nlp_metrics():
 def get_nlp_config():
     """获取NLP配置"""
     try:
-        from xwe.core.nlp.config import get_nlp_config
+        from src.xwe.core.nlp.config import get_nlp_config
 
         config = get_nlp_config()
 

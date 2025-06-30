@@ -2,7 +2,7 @@ import logging
 from pathlib import Path
 from logging.handlers import RotatingFileHandler
 
-from xwe.utils.log import configure_logging
+from src.xwe.utils.log import configure_logging
 
 
 def test_log_handler_namer(tmp_path):

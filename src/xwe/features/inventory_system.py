@@ -8,7 +8,7 @@ from typing import Dict, List, Optional, Any
 from pathlib import Path
 import logging
 
-from xwe.core.inventory import Inventory
+from src.xwe.core.inventory import Inventory
 
 logger = logging.getLogger(__name__)
 

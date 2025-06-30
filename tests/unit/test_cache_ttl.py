@@ -1,7 +1,7 @@
 import time
 
-from xwe.core.data_loader import DataLoader
-from xwe.core.optimizations.smart_cache import SmartCache
+from src.xwe.core.data_loader import DataLoader
+from src.xwe.core.optimizations.smart_cache import SmartCache
 
 
 def test_data_loader_ttl(tmp_path):

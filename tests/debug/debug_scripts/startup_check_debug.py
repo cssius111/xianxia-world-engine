@@ -41,7 +41,7 @@ required_dirs = [
     "saves",
     "static/audio",
     "templates/modals",
-    "xwe/data/restructured",
+    "src.xwe.data/restructured",
 ]
 
 for dir_path in required_dirs:
@@ -99,9 +99,9 @@ import_tests = [
     ("from game_config import config", "游戏配置"),
     ("from api import register_api", "API注册"),
     ("from routes import character, intel, lore", "路由模块"),
-    ("from xwe.core.game_core import create_enhanced_game", "游戏核心"),
-    ("from xwe.core.attributes import CharacterAttributes", "角色属性"),
-    ("from xwe.core.character import Character, CharacterType", "角色系统"),
+    ("from src.xwe.core.game_core import create_enhanced_game", "游戏核心"),
+    ("from src.xwe.core.attributes import CharacterAttributes", "角色属性"),
+    ("from src.xwe.core.character import Character, CharacterType", "角色系统"),
 ]
 
 for import_statement, description in import_tests:

@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from xwe.services import ServiceBase, ServiceContainer
-from xwe.services.interfaces.combat_service import (
+from src.xwe.services import ServiceBase, ServiceContainer
+from src.xwe.services.interfaces.combat_service import (
     CombatSummary,
     CombatResult,
     ICombatService,

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from xwe.services import ServiceBase, ServiceContainer
-from xwe.services.interfaces.player_service import IPlayerService, PlayerData
+from src.xwe.services import ServiceBase, ServiceContainer
+from src.xwe.services.interfaces.player_service import IPlayerService, PlayerData
 
 
 class PlayerService(ServiceBase["PlayerService"], IPlayerService):

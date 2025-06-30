@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Any
 
-from xwe.services import IService
+from src.xwe.services import IService
 
 
 @dataclass

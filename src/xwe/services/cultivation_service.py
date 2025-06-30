@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from xwe.services import ServiceBase
-from xwe.services.interfaces.cultivation_service import (
+from src.xwe.services import ServiceBase
+from src.xwe.services.interfaces.cultivation_service import (
     BreakthroughInfo,
     CultivationResult,
     CultivationTechnique,
@@ -20,7 +20,7 @@ class CultivationService(ServiceBase["CultivationService"], ICultivationService)
 
     def check_breakthrough(self, player: Any) -> BreakthroughInfo:
         self.logger.debug("Checking breakthrough")
-        from xwe.services.interfaces.cultivation_service import CultivationRealm
+        from src.xwe.services.interfaces.cultivation_service import CultivationRealm
         return BreakthroughInfo(realm=CultivationRealm.MORTAL, possible=False)
 
     def _do_initialize(self) -> None:

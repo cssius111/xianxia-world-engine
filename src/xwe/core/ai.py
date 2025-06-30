@@ -175,7 +175,7 @@ class AIController:
         
     def _decide_attack(self, actor: Any, combat_state: Any) -> Any:
         """决定攻击目标"""
-        from xwe.core.combat import CombatAction, CombatActionType
+        from src.xwe.core.combat import CombatAction, CombatActionType
         
         # 获取敌人列表
         enemies = combat_state.get_enemies(actor)
@@ -196,7 +196,7 @@ class AIController:
         
     def _decide_skill(self, actor: Any, combat_state: Any) -> Any:
         """决定使用技能"""
-        from xwe.core.combat import CombatAction, CombatActionType
+        from src.xwe.core.combat import CombatAction, CombatActionType
         
         if not self.skill_system or not hasattr(actor, "skills"):
             return self._decide_attack(actor, combat_state)
@@ -239,7 +239,7 @@ class AIController:
         
     def _decide_defend(self, actor: Any, combat_state: Any) -> Any:
         """决定防御"""
-        from xwe.core.combat import CombatAction, CombatActionType
+        from src.xwe.core.combat import CombatAction, CombatActionType
         
         return CombatAction(
             action_type=CombatActionType.DEFEND,
@@ -248,7 +248,7 @@ class AIController:
         
     def _decide_wait(self, actor: Any, combat_state: Any) -> Any:
         """决定等待"""
-        from xwe.core.combat import CombatAction, CombatActionType
+        from src.xwe.core.combat import CombatAction, CombatActionType
         
         return CombatAction(
             action_type=CombatActionType.WAIT,

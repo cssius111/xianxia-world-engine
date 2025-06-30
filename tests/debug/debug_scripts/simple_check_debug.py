@@ -24,9 +24,9 @@ print("\n测试基本导入:")
 tests = [
     ("Flask", "from flask import Flask"),
     ("游戏配置", "from game_config import config"),
-    ("角色属性", "from xwe.core.attributes import CharacterAttributes"),
-    ("角色类", "from xwe.core.character import Character"),
-    ("游戏核心", "from xwe.core.game_core import create_enhanced_game"),
+    ("角色属性", "from src.xwe.core.attributes import CharacterAttributes"),
+    ("角色类", "from src.xwe.core.character import Character"),
+    ("游戏核心", "from src.xwe.core.game_core import create_enhanced_game"),
 ]
 
 failed_imports = []

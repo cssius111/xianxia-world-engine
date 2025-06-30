@@ -4,8 +4,8 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Any, Callable, Dict, List
 
-from xwe.services import ServiceBase
-from xwe.services import ServiceContainer
+from src.xwe.services import ServiceBase
+from src.xwe.services import ServiceContainer
 
 
 @dataclass

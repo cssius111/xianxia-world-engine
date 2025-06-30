@@ -13,33 +13,33 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 
-from xwe.core.achievement_system import AchievementSystem
-from xwe.core.ai import AIController
-from xwe.core.attributes import AttributeSystem
-from xwe.core.character import Character, CharacterType
+from src.xwe.core.achievement_system import AchievementSystem
+from src.xwe.core.ai import AIController
+from src.xwe.core.attributes import AttributeSystem
+from src.xwe.core.character import Character, CharacterType
 
 # 导入优化系统
-from xwe.core.chinese_dragon_art import get_dragon_art, get_dragon_for_scene
-from xwe.core.combat import CombatAction, CombatActionType, CombatState, CombatSystem
-from xwe.core.command_parser import CommandParser, CommandType, ParsedCommand
-from xwe.core.command_router import CommandPriority, CommandRouter
-from xwe.core.data_loader import DataLoader
-from xwe.core.immersive_event_system import (
+from src.xwe.core.chinese_dragon_art import get_dragon_art, get_dragon_for_scene
+from src.xwe.core.combat import CombatAction, CombatActionType, CombatState, CombatSystem
+from src.xwe.core.command_parser import CommandParser, CommandType, ParsedCommand
+from src.xwe.core.command_router import CommandPriority, CommandRouter
+from src.xwe.core.data_loader import DataLoader
+from src.xwe.core.immersive_event_system import (
     EventType,
     ImmersiveEventSystem,
     SpecialEventHandler,
 )
-from xwe.core.inventory import Inventory
-from xwe.core.item_system import item_system
-from xwe.core.nlp import NLPProcessor
-from xwe.events.initial_fate import select_initial_fate
+from src.xwe.core.inventory import Inventory
+from src.xwe.core.item_system import item_system
+from src.xwe.core.nlp import NLPProcessor
+from src.xwe.events.initial_fate import select_initial_fate
 
-# from xwe.npc import NPCManager, DialogueSystem, TradingSystem  # 移到使用时导入，避免循环依赖
-from xwe.core.roll_system import CharacterRoller  # 导入Roll系统
-from xwe.core.skills import SkillSystem
-from xwe.core.status_manager import StatusDisplayManager
-from xwe.engine.expression import ExpressionParser
-from xwe.world import AreaType, EventSystem, LocationManager, TimeSystem, WorldMap
+# from src.xwe.npc import NPCManager, DialogueSystem, TradingSystem  # 移到使用时导入，避免循环依赖
+from src.xwe.core.roll_system import CharacterRoller  # 导入Roll系统
+from src.xwe.core.skills import SkillSystem
+from src.xwe.core.status_manager import StatusDisplayManager
+from src.xwe.engine.expression import ExpressionParser
+from src.xwe.world import AreaType, EventSystem, LocationManager, TimeSystem, WorldMap
 
 logger = logging.getLogger(__name__)
 
@@ -137,7 +137,7 @@ class GameCore:
 
         # 初始化NPC系统
         # 局部导入避免循环依赖
-        from xwe.npc import DialogueSystem, NPCManager
+        from src.xwe.npc import DialogueSystem, NPCManager
 
         self.dialogue_system = DialogueSystem()
         self.npc_manager = NPCManager(self.dialogue_system)
@@ -473,14 +473,14 @@ class GameCore:
         world_config = self.data_loader.get_world_config()
 
         # 初始化默认地图
-        from xwe.world.world_map import DEFAULT_MAP_DATA, Region
+        from src.xwe.world.world_map import DEFAULT_MAP_DATA, Region
 
         for region_data in DEFAULT_MAP_DATA["regions"]:
             region = Region.from_dict(region_data)
             self.world_map.add_region(region)
 
         for area_data in DEFAULT_MAP_DATA["areas"]:
-            from xwe.world.world_map import Area
+            from src.xwe.world.world_map import Area
 
             area = Area.from_dict(area_data)
             self.world_map.add_area(area)
@@ -1829,7 +1829,7 @@ def _setup_enhanced_features(game: GameCore) -> None:
         
         # 添加调试信息输出
         import logging
-        logging.getLogger("xwe").setLevel(logging.DEBUG)
+        logging.getLogger("src.xwe.).setLevel(logging.DEBUG)
     
     # 优化性能设置
     if hasattr(game, "config"):

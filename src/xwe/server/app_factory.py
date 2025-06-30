@@ -6,7 +6,7 @@ import os
 from pathlib import Path
 from flask import Flask
 
-from xwe.utils.log import configure_logging
+from src.xwe.utils.log import configure_logging
 
 
 def create_app() -> Flask:

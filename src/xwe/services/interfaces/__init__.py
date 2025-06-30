@@ -6,15 +6,15 @@ from typing import Any
 """
 
 # 已在主services目录的接口
-from xwe.services.command_engine import CommandContext
-from xwe.services.command_engine import CommandResult as CmdResult
-from xwe.services.command_engine import ICommandEngine, ICommandHandler
-from xwe.services.event_dispatcher import EventStatistics, IEventDispatcher
+from src.xwe.services.command_engine import CommandContext
+from src.xwe.services.command_engine import CommandResult as CmdResult
+from src.xwe.services.command_engine import ICommandEngine, ICommandHandler
+from src.xwe.services.event_dispatcher import EventStatistics, IEventDispatcher
 
 # 核心服务接口
-from xwe.services.game_service import CommandResult, GameState, IGameService
-from xwe.services.interfaces.combat_service import ICombatService
-from xwe.services.interfaces.cultivation_service import (
+from src.xwe.services.game_service import CommandResult, GameState, IGameService
+from src.xwe.services.interfaces.combat_service import ICombatService
+from src.xwe.services.interfaces.cultivation_service import (
     BreakthroughInfo,
     CultivationRealm,
     CultivationResult,
@@ -24,11 +24,11 @@ from xwe.services.interfaces.cultivation_service import (
     SpiritualRoot,
     Tribulation,
 )
-from xwe.services.interfaces.player_service import IPlayerService, PlayerData
-from xwe.services.interfaces.save_service import SaveData, SaveInfo, SaveType
-from xwe.services.interfaces.world_service import IWorldService
-from xwe.services.log_service import ILogService, LogEntry, LogFilter, LogLevel
-from xwe.services.save_service import ISaveService
+from src.xwe.services.interfaces.player_service import IPlayerService, PlayerData
+from src.xwe.services.interfaces.save_service import SaveData, SaveInfo, SaveType
+from src.xwe.services.interfaces.world_service import IWorldService
+from src.xwe.services.log_service import ILogService, LogEntry, LogFilter, LogLevel
+from src.xwe.services.save_service import ISaveService
 
 # 导出所有接口
 __all__ = [
