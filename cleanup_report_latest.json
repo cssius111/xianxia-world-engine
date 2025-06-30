@@ -1,0 +1,18 @@
+{
+  "timestamp": "2025-06-30T16:24:47.204149",
+  "cleaned_count": 0,
+  "cleaned_items": [],
+  "skipped_count": 5,
+  "skipped_items": [
+    "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/api_fixes.py",
+    "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/quick_fix.sh",
+    "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/diagnose_optimizations.py",
+    "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/test_optimization_fix.sh",
+    "/Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine/cleanup_report.json"
+  ],
+  "recommendations": [
+    "定期运行此脚本保持项目整洁",
+    "检查skipped_items中的文件是否真的不需要",
+    "考虑将大文件添加到.gitignore"
+  ]
+}
