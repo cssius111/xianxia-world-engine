@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Any
 
-from xwe.services import IService
+from src.xwe.services import IService
 
 
 class IWorldService(IService, ABC):

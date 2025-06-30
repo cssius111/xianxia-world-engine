@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Any
 
-from xwe.services import IService
+from src.xwe.services import IService
 
 
 class CultivationRealm(Enum):

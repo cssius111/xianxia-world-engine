@@ -95,9 +95,9 @@ class ProjectCleaner:
             
         # 检查重复的核心模块
         duplicate_modules = {
-            'core': 'xwe/core',
-            'event_system': 'xwe/events',
-            'data': 'xwe/data',
+            'core': 'src.xwe.core',
+            'event_system': 'src.xwe.events',
+            'data': 'src.xwe.data',
         }
         
         for old_module, new_module in duplicate_modules.items():
@@ -179,12 +179,12 @@ class ProjectCleaner:
         print("\n🔄 更新导入路径...")
         
         replacements = {
-            'from xwe.core.': 'from xwe.core.',
-            'import xwe.core.': 'import xwe.core.',
-            'from xwe.events': 'from xwe.events',
-            'import xwe.events': 'import xwe.events',
-            '"xwe/data/': '"xwe/data/',
-            "'xwe/data/": "'xwe/data/",
+            'from src.xwe.core.': 'from src.xwe.core.',
+            'import src.xwe.core.': 'import src.xwe.core.',
+            'from src.xwe.events': 'from src.xwe.events',
+            'import src.xwe.events': 'import src.xwe.events',
+            '"src.xwe.data/': '"src.xwe.data/',
+            "'src.xwe.data/": "'src.xwe.data/",
         }
         
         # 查找所有Python文件

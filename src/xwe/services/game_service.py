@@ -3,9 +3,9 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
-from xwe.core.game_core import GameState
-from xwe.services import ServiceBase
-from xwe.services import ServiceContainer
+from src.xwe.core.game_core import GameState
+from src.xwe.services import ServiceBase
+from src.xwe.services import ServiceContainer
 
 
 @dataclass

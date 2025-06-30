@@ -72,15 +72,15 @@ class ProjectRefactorer:
 
         # 4. 检查重复的数据文件
         if (self.project_root / "data").exists() and (
-            self.project_root / "xwe/data"
+            self.project_root / "src.xwe.data"
         ).exists():
             # 比较两个data目录的内容
             old_data_files = set((self.project_root / "data").rglob("*.json"))
-            new_data_files = set((self.project_root / "xwe/data").rglob("*.json"))
+            new_data_files = set((self.project_root / "src.xwe.data").rglob("*.json"))
 
             for old_file in old_data_files:
                 rel_path = old_file.relative_to(self.project_root / "data")
-                new_file = self.project_root / "xwe/data" / rel_path
+                new_file = self.project_root / "src.xwe.data" / rel_path
                 if new_file.exists():
                     issues["redundant_data"].append(
                         {
@@ -204,9 +204,9 @@ class ProjectRefactorer:
             {
                 "file": "run.py",
                 "updates": [
-                    ("from xwe.core.", "from xwe.core."),
-                    ("from xwe.events", "from xwe.events"),
-                    ("xwe/data/", "xwe/data/"),
+                    ("from src.xwe.core.", "from src.xwe.core."),
+                    ("from src.xwe.events", "from src.xwe.events"),
+                    ("src.xwe.data/", "src.xwe.data/"),
                 ],
             }
         )
@@ -468,9 +468,9 @@ if __name__ == "__main__":
 
         # 检查是否还有重复的目录
         duplicate_dirs = [
-            ("core", "xwe/core"),
-            ("event_system", "xwe/events"),
-            ("data", "xwe/data"),
+            ("core", "src.xwe.core"),
+            ("event_system", "src.xwe.events"),
+            ("data", "src.xwe.data"),
         ]
 
         for old_dir, new_dir in duplicate_dirs:

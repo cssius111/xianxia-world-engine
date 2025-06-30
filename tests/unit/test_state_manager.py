@@ -1,7 +1,7 @@
 import json
 
-from xwe.core.state.game_state_manager import GameStateManager
-from xwe.core.game_core import GameState
+from src.xwe.core.state.game_state_manager import GameStateManager
+from src.xwe.core.game_core import GameState
 
 
 def test_state_manager(tmp_path):

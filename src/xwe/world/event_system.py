@@ -6,7 +6,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional
 
-from xwe.events import WorldEvent
+from src.xwe.events import WorldEvent
 
 
 @dataclass

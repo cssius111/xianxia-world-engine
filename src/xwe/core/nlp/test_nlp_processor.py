@@ -16,7 +16,7 @@ pytestmark = pytest.mark.skipif(
 project_root = Path(__file__).parent.parent.parent.parent
 sys.path.insert(0, str(project_root))
 
-from xwe.core.nlp.nlp_processor import DeepSeekNLPProcessor, NLPProcessor
+from src.xwe.core.nlp.nlp_processor import DeepSeekNLPProcessor, NLPProcessor
 
 # 配置日志
 logging.basicConfig(

@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import List
 
-from xwe.services import ServiceBase, ServiceContainer
+from src.xwe.services import ServiceBase, ServiceContainer
 
 
 class LogLevel(Enum):

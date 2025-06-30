@@ -55,16 +55,16 @@ test_import("routes.intel", "from routes import intel")
 test_import("routes.lore", "from routes import lore")
 
 # 核心模块
-test_import("xwe.core.cultivation_system", "from xwe.core.cultivation_system import CultivationSystem")
-test_import("xwe.core.game_core", "from xwe.core.game_core import create_enhanced_game")
-test_import("xwe.core.attributes", "from xwe.core.attributes import CharacterAttributes")
-test_import("xwe.core.character", "from xwe.core.character import Character, CharacterType")
+test_import("src.xwe.core.cultivation_system", "from src.xwe.core.cultivation_system import CultivationSystem")
+test_import("src.xwe.core.game_core", "from src.xwe.core.game_core import create_enhanced_game")
+test_import("src.xwe.core.attributes", "from src.xwe.core.attributes import CharacterAttributes")
+test_import("src.xwe.core.character", "from src.xwe.core.character import Character, CharacterType")
 
 # 功能模块
-test_import("xwe.features.ai_personalization", "from xwe.features.ai_personalization import AIPersonalization")
-test_import("xwe.features.community_system", "from xwe.features.community_system import CommunitySystem")
-test_import("xwe.features.narrative_system", "from xwe.features.narrative_system import NarrativeSystem")
-test_import("xwe.features.technical_ops", "from xwe.features.technical_ops import TechnicalOps")
+test_import("src.xwe.features.ai_personalization", "from src.xwe.features.ai_personalization import AIPersonalization")
+test_import("src.xwe.features.community_system", "from src.xwe.features.community_system import CommunitySystem")
+test_import("src.xwe.features.narrative_system", "from src.xwe.features.narrative_system import NarrativeSystem")
+test_import("src.xwe.features.technical_ops", "from src.xwe.features.technical_ops import TechnicalOps")
 
 # 配置模块
 test_import("game_config", "from game_config import config")

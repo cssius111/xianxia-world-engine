@@ -10,7 +10,7 @@ XWE表达式解析器模块
 - 各种具体异常类型
 
 使用示例:
-    >>> from xwe.engine.expression import ExpressionParser
+    >>> from src.xwe.engine.expression import ExpressionParser
     >>> parser = ExpressionParser()
     >>> result = parser.evaluate("2 + 3 * 4")
     >>> print(result)  # 14.0

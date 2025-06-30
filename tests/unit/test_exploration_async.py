@@ -1,6 +1,6 @@
 import asyncio
 
-from xwe.features.exploration_system import ExplorationSystem
+from src.xwe.features.exploration_system import ExplorationSystem
 
 
 async def _run():

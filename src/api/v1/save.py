@@ -9,7 +9,7 @@ from datetime import datetime
 
 from flask import Blueprint, current_app, jsonify, request, session
 
-from xwe.core.game_core import GameState
+from src.xwe.core.game_core import GameState
 
 save_bp = Blueprint("save", __name__)
 

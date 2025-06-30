@@ -7,8 +7,8 @@ import time
 
 from flask import Blueprint, jsonify, request, session
 
-from xwe.core.attributes import CharacterAttributes
-from xwe.core.character import Character, CharacterType
+from src.xwe.core.attributes import CharacterAttributes
+from src.xwe.core.character import Character, CharacterType
 
 player_bp = Blueprint("player", __name__)
 

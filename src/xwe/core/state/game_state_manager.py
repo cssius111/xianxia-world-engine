@@ -9,7 +9,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Optional
 
-from xwe.core.game_core import GameState
+from src.xwe.core.game_core import GameState
 
 
 logger = logging.getLogger(__name__)

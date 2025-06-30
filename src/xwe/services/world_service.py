@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from typing import Any
 
-from xwe.services import ServiceBase, ServiceContainer
-from xwe.services.interfaces.world_service import IWorldService
-from xwe.world.location_manager import LocationManager
+from src.xwe.services import ServiceBase, ServiceContainer
+from src.xwe.services.interfaces.world_service import IWorldService
+from src.xwe.world.location_manager import LocationManager
 
 
 class WorldService(ServiceBase["WorldService"], IWorldService):

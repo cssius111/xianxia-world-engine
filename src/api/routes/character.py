@@ -7,9 +7,9 @@ from flask import Blueprint, current_app, jsonify, request, session
 from run import is_dev_request
 import logging
 
-from xwe.core.attributes import CharacterAttributes
-from xwe.core.character import Character, CharacterType
-from xwe.features.random_player_panel import RandomPlayerPanel
+from src.xwe.core.attributes import CharacterAttributes
+from src.xwe.core.character import Character, CharacterType
+from src.xwe.features.random_player_panel import RandomPlayerPanel
 
 bp = Blueprint("character", __name__)
 

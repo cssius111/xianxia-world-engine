@@ -11,9 +11,9 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any, Dict, List, Optional, Set
 
-from xwe.core.attributes import CharacterAttributes
-from xwe.core.inventory import Inventory
-from xwe.core.status import StatusEffectManager
+from src.xwe.core.attributes import CharacterAttributes
+from src.xwe.core.inventory import Inventory
+from src.xwe.core.status import StatusEffectManager
 
 logger = logging.getLogger(__name__)
 

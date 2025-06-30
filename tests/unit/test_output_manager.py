@@ -1,4 +1,4 @@
-from xwe.core.output import (
+from src.xwe.core.output import (
     ConsoleChannel,
     FileChannel,
     MessageType,

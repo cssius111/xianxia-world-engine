@@ -24,7 +24,7 @@ def diagnose():
     # 2. 尝试直接导入 smart_cache
     print("\n2. 检查 smart_cache 模块...")
     try:
-        from xwe.core.optimizations.smart_cache import SmartCache, CacheableFunction
+        from src.xwe.core.optimizations.smart_cache import SmartCache, CacheableFunction
         print("✓ smart_cache 导入成功")
         # 测试创建实例
         cache = SmartCache()
@@ -36,7 +36,7 @@ def diagnose():
     # 3. 尝试直接导入 expression_jit
     print("\n3. 检查 expression_jit 模块...")
     try:
-        from xwe.core.optimizations.expression_jit import ExpressionJITCompiler, ExpressionBenchmark
+        from src.xwe.core.optimizations.expression_jit import ExpressionJITCompiler, ExpressionBenchmark
         print("✓ expression_jit 导入成功")
         # 测试创建实例
         compiler = ExpressionJITCompiler()
@@ -48,7 +48,7 @@ def diagnose():
     # 4. 检查 __init__.py
     print("\n4. 检查 optimizations.__init__.py...")
     try:
-        import xwe.core.optimizations
+        import src.xwe.core.optimizations
         print("✓ xwe.core.optimizations 导入成功")
         print(f"  - SmartCache: {xwe.core.optimizations.SmartCache}")
         print(f"  - ExpressionJITCompiler: {xwe.core.optimizations.ExpressionJITCompiler}")
@@ -68,7 +68,7 @@ def diagnose():
             spec.loader.exec_module(module)
             return module
         
-        optimizations = _load_module('xwe/core/optimizations/__init__.py', 'optimizations')
+        optimizations = _load_module('src.xwe.core/optimizations/__init__.py', 'optimizations')
         print("✓ 模块加载成功")
         print(f"  - SmartCache: {optimizations.SmartCache}")
         print(f"  - ExpressionJITCompiler: {optimizations.ExpressionJITCompiler}")

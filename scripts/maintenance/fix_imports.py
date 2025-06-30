@@ -44,21 +44,21 @@ class ImportFixer:
         
         # 需要检查的目录
         dirs_to_check = [
-            "xwe",
-            "xwe/core",
-            "xwe/core/state",
-            "xwe/core/optimizations",
-            "xwe/events",
-            "xwe/world",
-            "xwe/services",
-            "xwe/npc",
-            "xwe/data",
-            "xwe/utils",
-            "xwe/systems",
-            "xwe/features",
-            "xwe/metrics",
-            "xwe/engine",
-            "xwe/server",
+            "src.xwe.,
+            "src.xwe.core",
+            "src.xwe.core/state",
+            "src.xwe.core/optimizations",
+            "src.xwe.events",
+            "src.xwe.world",
+            "src.xwe.services",
+            "src.xwe.npc",
+            "src.xwe.data",
+            "src.xwe.utils",
+            "src.xwe.systems",
+            "src.xwe.features",
+            "src.xwe.metrics",
+            "src.xwe.engine",
+            "src.xwe.server",
             "api",
             "api/middleware",
             "api/specs",
@@ -83,7 +83,7 @@ class ImportFixer:
         print("\n🔨 修复已知问题...")
         
         # 1. 确保 initial_fate.py 存在
-        initial_fate_path = self.root / "xwe/events/initial_fate.py"
+        initial_fate_path = self.root / "src.xwe.events/initial_fate.py"
         if not initial_fate_path.exists():
             initial_fate_path.write_text('''def select_initial_fate(player, events=None):
     """选择初始命运节点
@@ -101,10 +101,10 @@ class ImportFixer:
             print("  ✓ 创建 xwe/events/initial_fate.py")
         
         # 2. 修复循环导入 - 修改 xwe/core/__init__.py
-        core_init = self.root / "xwe/core/__init__.py"
+        core_init = self.root / "src.xwe.core/__init__.py"
         if core_init.exists():
             content = core_init.read_text()
-            if "from xwe.core.game_core import GameCore" in content:
+            if "from src.xwe.core.game_core import GameCore" in content:
                 # 使用延迟导入
                 new_content = '''# xwe/core/__init__.py
 """核心模块"""
@@ -119,19 +119,19 @@ def __getattr__(name):
     
     if name == "GameCore":
         if _game_core is None:
-            from xwe.core.game_core import GameCore as _GameCore
+            from src.xwe.core.game_core import GameCore as _GameCore
             _game_core = _GameCore
         return _game_core
     
     elif name == "Character":
         if _character is None:
-            from xwe.core.character import Character as _Character
+            from src.xwe.core.character import Character as _Character
             _character = _Character
         return _character
     
     elif name == "CultivationSystem":
         if _cultivation_system is None:
-            from xwe.core.cultivation_system import CultivationSystem as _CultivationSystem
+            from src.xwe.core.cultivation_system import CultivationSystem as _CultivationSystem
             _cultivation_system = _CultivationSystem
         return _cultivation_system
     
@@ -207,10 +207,10 @@ filterwarnings =
         
         # 尝试导入关键模块
         test_modules = [
-            "xwe.core.game_core",
-            "xwe.core.character", 
-            "xwe.events.initial_fate",
-            "xwe.services.game_service",
+            "src.xwe.core.game_core",
+            "src.xwe.core.character", 
+            "src.xwe.events.initial_fate",
+            "src.xwe.services.game_service",
         ]
         
         failed = []

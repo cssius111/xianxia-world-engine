@@ -18,7 +18,7 @@ try:
     print(" ✅")
     
     print("检查核心模块...", end="", flush=True)
-    from xwe.core.game_core import GameCore
+    from src.xwe.core.game_core import GameCore
     print(" ✅")
     
     print("创建游戏实例...", end="", flush=True)

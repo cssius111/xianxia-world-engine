@@ -63,7 +63,7 @@ def run_nlp_processor():
     print("\n=== 测试 NLP 处理器 ===")
     
     try:
-        from xwe.core.nlp import DeepSeekNLPProcessor
+        from src.xwe.core.nlp import DeepSeekNLPProcessor
         
         # 创建处理器
         processor = DeepSeekNLPProcessor()
@@ -112,7 +112,7 @@ def run_command_router():
     print("\n=== 测试命令路由器 ===")
     
     try:
-        from xwe.core.command_router import CommandRouter
+        from src.xwe.core.command_router import CommandRouter
         
         # 创建路由器
         router = CommandRouter(use_nlp=True)
@@ -147,7 +147,7 @@ def run_monitor():
     print("\n=== 测试性能监控 ===")
     
     try:
-        from xwe.core.nlp.monitor import get_nlp_monitor
+        from src.xwe.core.nlp.monitor import get_nlp_monitor
         
         monitor = get_nlp_monitor()
         print("✅ 性能监控器初始化成功")
