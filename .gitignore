@@ -28,6 +28,8 @@ data/saves/
 logs/
 saves/
 *.log
+cleanup_report.json
+cleanup_report_latest.json
 
 # Node
 node_modules/
