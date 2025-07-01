@@ -15,6 +15,8 @@ pip install -r requirements.txt
 ```bash
 python run.py
 ```
+运行该脚本会自动加载 `api_fixes.py`，注册侧边栏相关 API。如使用自定义启动方
+式，请确保在创建 `Flask` 应用后调用 `register_sidebar_apis(app)`。
 
 ### 3. 访问游戏
 
