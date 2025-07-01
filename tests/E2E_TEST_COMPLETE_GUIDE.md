@@ -94,26 +94,6 @@ if os.getenv('FLASK_ENV') in ['development', 'testing'] or os.getenv('ENABLE_E2E
 
 ### 3. 运行测试
 
-#### 使用增强版脚本（推荐）
-```bash
-# 给脚本执行权限
-chmod +x run-e2e-tests-enhanced.sh
-
-# 运行所有测试（有界面）
-./run-e2e-tests-enhanced.sh
-
-# 只在Chromium中运行
-./run-e2e-tests-enhanced.sh --chromium
-
-# 无界面模式
-./run-e2e-tests-enhanced.sh --headless
-
-# 调试模式
-./run-e2e-tests-enhanced.sh --debug
-
-# 运行特定测试
-./run-e2e-tests-enhanced.sh --grep "角色创建"
-```
 
 #### 直接使用Playwright
 ```bash
@@ -226,7 +206,7 @@ ls test-results/
 
 1. **使用调试模式**
    ```bash
-   ./run-e2e-tests-enhanced.sh --debug
+   npx playwright test tests/e2e_full.spec.ts --debug
    ```
 
 2. **查看测试追踪**
@@ -291,7 +271,7 @@ jobs:
       - name: Run E2E tests
         run: |
           export ENABLE_E2E_API=true
-          ./run-e2e-tests-enhanced.sh --headless
+          npx playwright test tests/e2e_full.spec.ts --headless
           
       - name: Upload test results
         uses: actions/upload-artifact@v3

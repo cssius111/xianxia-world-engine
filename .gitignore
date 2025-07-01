@@ -47,3 +47,6 @@ build/
 *~
 project_snapshot.json
 game_settings.json
+
+# Swift version file
+.swift-version

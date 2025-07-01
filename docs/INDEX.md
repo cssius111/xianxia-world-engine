@@ -5,8 +5,8 @@
 ## 🚀 快速开始
 
 - **[快速开始指南](./QUICK_START.md)** - 5分钟上手游戏
-- **[项目健康报告](../PROJECT_HEALTH_REPORT.md)** - 查看项目当前状态
-- **[测试说明](../TEST_INSTRUCTIONS.md)** - 如何运行测试
+- **[项目健康报告](./reports/PROJECT_HEALTH_REPORT.md)** - 查看项目当前状态
+- **[测试说明](./development/TEST_INSTRUCTIONS.md)** - 如何运行测试
 
 ## 📖 核心文档
 
@@ -28,43 +28,40 @@
 ## 🔧 故障排除
 
 ### 调试指南
-- **[侧边栏调试指南](../SIDEBAR_DEBUG_GUIDE.md)** - 侧边栏问题解决
+- **[侧边栏调试指南](./development/SIDEBAR_DEBUG_GUIDE.md)** - 侧边栏问题解决
 - **[已知问题](./KNOWN_BUGS.md)** - 已知bug和临时解决方案
 - **[测试清单](./test_checklist.md)** - 功能测试检查表
 
 ### 修复报告
-- **[侧边栏修复报告](../SIDEBAR_FIX_REPORT.md)** - 侧边栏功能修复详情
+- **[侧边栏修复报告](./reports/SIDEBAR_FIX_REPORT.md)** - 侧边栏功能修复详情
 - **[端点修复总结](./endpoint_fixes_summary.md)** - API端点修复记录
 - **[角色创建修复](./CHARACTER_CREATION_FIX.md)** - 角色创建问题修复
 
 ## 🤖 高级功能
 
-- **[Agent系统文档](../agent.md)** - 智能体架构和实现
+- **[Agent系统文档](./architecture/agent_system.md)** - 智能体架构和实现
 - **[缓存配置](./cache_settings.md)** - 性能优化和缓存策略
 - **[E2E测试](../tests/E2E_TEST_COMPLETE_GUIDE.md)** - 端到端测试指南
 
 ## 📊 项目报告
 
-- **[项目完成报告](../PROJECT_COMPLETE.md)** - v2.0版本完成情况
-- **[最终报告](../FINAL_REPORT.md)** - 项目总结
-- **[NLP修复](../NLP_FIX.md)** - 自然语言处理修复记录
+- **[项目完成报告](./reports/PROJECT_COMPLETE.md)** - v2.0版本完成情况
+- **[最终报告](./reports/FINAL_REPORT.md)** - 项目总结
+- **[NLP修复](./reports/NLP_FIX.md)** - 自然语言处理修复记录
 
 ## 🛠️ 工具和脚本
 
 ### 启动脚本
 - `start.sh` / `start.bat` - 一键启动游戏
-- `test_sidebar.sh` - 侧边栏功能测试
-- `quick_sidebar_test.py` - API健康检查
 
 ### 开发工具
 - `check_imports.py` - 导入检查工具
-- `verify_fixes.py` - 修复验证脚本
 - `run_tests.py` - 测试运行器
 
 ## 📝 任务管理
 
-- **[任务列表](../tasks.md)** - 当前任务和进度
-- **[TODO列表](../PROJECT_HEALTH_REPORT.md#todo-列表-)** - 待办事项
+- **[任务列表](./tasks.md)** - 当前任务和进度
+- **[TODO列表](./TODO.md)** - 待办事项
 
 ## 🔗 快速链接
 
