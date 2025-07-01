@@ -17,6 +17,12 @@ python run.py
 # 命令行版本
 python main_menu.py
 ```
+## 🛠 初次脚本设置
+```bash
+chmod +x scripts/*.py
+python scripts/dev/gen_character.py
+```
+
 
 ## 🔧 实用工具
 
@@ -29,6 +35,19 @@ python scripts/quick_snapshot.py
 ```bash
 python scripts/test_deepseek_api.py
 ```
+## 📦 安装 NLP 依赖（可选）
+```bash
+pip install backoff
+# 如果需要 DeepSeek SDK:
+pip install deepseek
+```
+
+若拥有 DeepSeek API 密钥，请在 `.env` 中添加：
+```bash
+DEEPSEEK_API_KEY=your_api_key_here
+```
+安装完成后，可直接运行 `python run.py` 启动游戏。
+
 
 ## 📚 文档
 
