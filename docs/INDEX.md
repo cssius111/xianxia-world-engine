@@ -41,7 +41,7 @@
 
 - **[Agent系统文档](./architecture/agent_system.md)** - 智能体架构和实现
 - **[缓存配置](./cache_settings.md)** - 性能优化和缓存策略
-- **[E2E测试](../tests/E2E_TEST_COMPLETE_GUIDE.md)** - 端到端测试指南
+- **[E2E测试](./development/E2E_TEST_COMPLETE_GUIDE.md)** - 端到端测试指南
 
 ## 📊 项目报告
 
