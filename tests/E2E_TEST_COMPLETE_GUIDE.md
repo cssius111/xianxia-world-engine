@@ -78,22 +78,8 @@ npx playwright install
 
 ### 2. 设置E2E路由
 
-运行自动设置脚本：
-```bash
-python3 scripts/setup_e2e.py
-```
-
-或手动在`run.py`中添加（在`app = create_app()`后）：
-```python
-# Register E2E test routes in development/test mode
-if os.getenv('FLASK_ENV') in ['development', 'testing'] or os.getenv('ENABLE_E2E_API') == 'true':
-    try:
-        from routes.api_e2e import register_e2e_routes
-        register_e2e_routes(app)
-        logger.info("E2E test API endpoints enabled")
-    except ImportError as e:
-        logger.debug(f"E2E test routes not loaded: {e}")
-```
+`run.py` 已默认注册 E2E 测试路由，无需额外脚本。只需在开发或测试环境运行，
+或设置 `ENABLE_E2E_API=true` 环境变量即可启用。
 
 ### 3. 运行测试
 
@@ -188,7 +174,7 @@ ls test-results/
    ```
 
 2. **E2E路由未找到**
-   - 确保已运行`scripts/setup_e2e.py`
+   - 确认`run.py`中已包含E2E路由代码（默认启用）
    - 检查`ENABLE_E2E_API=true`环境变量
 
 3. **测试超时**
