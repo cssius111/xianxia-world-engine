@@ -4,7 +4,8 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import List
 
-from src.xwe.services import ServiceBase, ServiceContainer
+from abc import ABC
+from src.xwe.services import IService, ServiceBase, ServiceContainer
 
 
 class LogLevel(Enum):
@@ -25,7 +26,7 @@ class LogFilter:
     level: LogLevel | None = None
 
 
-class ILogService(ServiceBase):
+class ILogService(IService, ABC):
     def log(self, level: LogLevel, message: str) -> None:
         raise NotImplementedError
 

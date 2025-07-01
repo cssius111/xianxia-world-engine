@@ -1829,7 +1829,7 @@ def _setup_enhanced_features(game: GameCore) -> None:
         
         # 添加调试信息输出
         import logging
-        logging.getLogger("src.xwe.).setLevel(logging.DEBUG)
+        logging.getLogger("src.xwe").setLevel(logging.DEBUG)
     
     # 优化性能设置
     if hasattr(game, "config"):

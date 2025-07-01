@@ -501,8 +501,12 @@ def api_roll():
     _sys.path.append(str(Path(__file__).parent))
     import random
 
-    from scripts.gen_character import save_character  # noqa: F401
-    from scripts.gen_character import gen_from_prompt, gen_random, gen_template
+    from scripts.dev.gen_character import save_character  # noqa: F401
+    from scripts.dev.gen_character import (
+        gen_from_prompt,
+        gen_random,
+        gen_template,
+    )
 
     data = request.get_json()
     mode = data.get("mode", "random")

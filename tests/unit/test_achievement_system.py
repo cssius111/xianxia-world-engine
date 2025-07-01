@@ -8,7 +8,7 @@ def _load_module(path, name):
     spec.loader.exec_module(module)  # type: ignore
     return module
 
-ach_module = _load_module('xwe/core/achievement_system.py', 'achievement_system')
+ach_module = _load_module('src/xwe/core/achievement_system.py', 'achievement_system')
 AchievementSystem = ach_module.AchievementSystem
 
 

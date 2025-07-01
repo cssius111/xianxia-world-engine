@@ -2,11 +2,18 @@ import pytest
 from flask import Flask
 import importlib.util
 from pathlib import Path
+import sys
 import werkzeug
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
+
+# Ensure the src directory is in sys.path so modules can find 'config' and others
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+SRC_PATH = PROJECT_ROOT / "src"
+if str(SRC_PATH) not in sys.path:
+    sys.path.insert(0, str(SRC_PATH))
 
 if not hasattr(werkzeug, "__version__"):
     werkzeug.__version__ = "0"
@@ -17,8 +24,8 @@ def _load_module(path, name):
     spec.loader.exec_module(module)  # type: ignore
     return module
 
-game_bp = _load_module('api/v1/game.py', 'game').game_bp
-system_bp = _load_module('api/v1/system.py', 'system').system_bp
+game_bp = _load_module('src/api/v1/game.py', 'game').game_bp
+system_bp = _load_module('src/api/v1/system.py', 'system').system_bp
 
 @pytest.fixture(autouse=True)
 def test_env(monkeypatch):

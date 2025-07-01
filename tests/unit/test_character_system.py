@@ -8,10 +8,12 @@ import pytest
 import sys
 from pathlib import Path
 
-# 添加项目根目录到Python路径
-sys.path.insert(0, str(Path(__file__).parent.parent))
+# 添加项目根目录到 Python 路径，便于导入 scripts 模块
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
-from scripts.gen_character import gen_random, gen_template
+from scripts.dev.gen_character import gen_random, gen_template
 
 
 class TestCharacterGeneration:
