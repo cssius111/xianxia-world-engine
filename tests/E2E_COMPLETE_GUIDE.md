@@ -102,14 +102,7 @@ npx playwright install
 npx playwright install-deps
 ```
 
-### 2. 设置执行权限
-```bash
-chmod +x run-all-e2e-tests.sh
-chmod +x run-e2e-tests.sh
-chmod +x test-e2e-verify.sh
-```
-
-### 3. 运行测试
+### 2. 运行测试
 
 #### 完整测试套件（推荐）
 ```bash
@@ -119,8 +112,6 @@ npm run test:complete
 # 无界面模式（CI/CD 环境）
 npm run test:complete:headless
 
-# 或直接运行脚本
-./run-all-e2e-tests.sh
 ```
 
 #### 单独运行测试
@@ -250,7 +241,7 @@ TTL=300                   # 缓存 TTL（秒）
 
 3. **单独测试某个功能**
    ```bash
-   ./run-all-e2e-tests.sh --test "角色创建流程"
+   npx playwright test -g "角色创建流程"
    ```
 
 4. **保留测试产物**
