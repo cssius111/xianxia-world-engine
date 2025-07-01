@@ -81,12 +81,9 @@ if os.getenv('FLASK_ENV') in ['development', 'testing'] or os.getenv('ENABLE_E2E
         logger.debug(f"E2E test routes not loaded: {e}")
 
 # Register sidebar API fixes
-try:
-    from api_fixes import register_sidebar_apis
-    register_sidebar_apis(app)
-    logger.info("Sidebar API fixes registered")
-except ImportError as e:
-    logger.debug(f"Sidebar API fixes not loaded: {e}")
+from api_fixes import register_sidebar_apis
+register_sidebar_apis(app)
+logger.info("Sidebar API fixes registered")
 
 # 如果未设置 DEEPSEEK_API_KEY，记录警告
 if not os.environ.get("DEEPSEEK_API_KEY"):
