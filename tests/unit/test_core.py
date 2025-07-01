@@ -9,8 +9,8 @@ def _load_module(path, name):
     spec.loader.exec_module(module)  # type: ignore
     return module
 
-CommandRouter = _load_module('xwe/core/command_router.py', 'command_router').CommandRouter
-Inventory = _load_module('xwe/core/inventory.py', 'inventory').Inventory
+CommandRouter = _load_module('src/xwe/core/command_router.py', 'command_router').CommandRouter
+Inventory = _load_module('src/xwe/core/inventory.py', 'inventory').Inventory
 
 
 def test_command_router_move():

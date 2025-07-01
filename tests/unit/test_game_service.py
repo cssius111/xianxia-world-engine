@@ -40,7 +40,7 @@ stub_services.ServiceBase = StubServiceBase
 stub_services.ServiceContainer = StubServiceContainer
 sys.modules['xwe.services'] = stub_services
 
-game_service_module = _load_module('xwe/services/game_service.py', 'xwe.services.game_service')
+game_service_module = _load_module('src/xwe/services/game_service.py', 'xwe.services.game_service')
 GameService = game_service_module.GameService
 CommandResult = game_service_module.CommandResult
 

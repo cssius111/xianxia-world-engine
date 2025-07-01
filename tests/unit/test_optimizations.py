@@ -21,7 +21,7 @@ except ImportError:
         spec.loader.exec_module(module)  # type: ignore
         return module
 
-    optimizations = _load_module('src.xwe.core/optimizations/__init__.py', 'optimizations')
+    optimizations = _load_module('src/xwe/core/optimizations/__init__.py', 'optimizations')
     ExpressionJITCompiler = optimizations.ExpressionJITCompiler
     ExpressionBenchmark = optimizations.ExpressionBenchmark
     SmartCache = optimizations.SmartCache
