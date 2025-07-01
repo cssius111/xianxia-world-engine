@@ -69,6 +69,9 @@
 # 安装Node.js依赖
 npm install
 
+# 安装 Python 依赖
+pip install -r requirements.txt
+
 # 安装Playwright浏览器
 npx playwright install
 ```
