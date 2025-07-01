@@ -49,7 +49,6 @@ class ProjectCleaner:
             'patch1_e2e_full.diff',
             'patch2_move_legacy.diff',
             'test_quick.py',
-            'verify_e2e.py',
             'generated_characters.jsonl',
         ]
         

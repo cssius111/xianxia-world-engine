@@ -21,7 +21,6 @@
     "test:firefox": "playwright test --project=firefox",
     "test:webkit": "playwright test --project=webkit",
     "test:mobile": "playwright test --project=mobile-chrome",
-    "test:verify": "python verify_e2e.py",
     "test:complete": "./run-all-e2e-tests.sh",
     "test:complete:headless": "./run-all-e2e-tests.sh --headless",
     "install:browsers": "playwright install",
