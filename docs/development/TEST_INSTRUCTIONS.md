@@ -5,14 +5,14 @@
 ### 第一步：启动游戏服务器
 在一个终端窗口中运行：
 ```bash
-cd /Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine
+cd /path/to/xianxia-world-engine
 python3 start_web.py
 ```
 
 ### 第二步：运行 Playwright 测试
 在另一个终端窗口中运行：
 ```bash
-cd /Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine
+cd /path/to/xianxia-world-engine
 
 # 安装 Python 依赖
 pip install -r requirements.txt
@@ -42,4 +42,3 @@ npx playwright show-report
 
 ---
 
-现在让我帮你直接运行测试！

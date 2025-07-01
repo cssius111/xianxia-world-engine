@@ -1,11 +1,6 @@
 # E2E 测试快速开始指南
 
-## 1. 设置权限（Linux/Mac）
-```bash
-chmod +x run-e2e-tests.sh
-```
-
-## 2. 安装依赖
+## 1. 安装依赖
 ```bash
 # 安装 Node.js 依赖
 npm install
@@ -17,7 +12,7 @@ pip install -r requirements.txt
 npx playwright install
 ```
 
-## 3. 注册 E2E API 路由
+## 2. 注册 E2E API 路由
 在 `run.py` 文件中，找到 `app = create_app()` 这一行，在其后添加：
 
 ```python
@@ -31,18 +26,18 @@ if os.getenv('FLASK_ENV') in ['development', 'testing'] or os.getenv('ENABLE_E2E
         logger.debug(f"E2E test routes not loaded: {e}")
 ```
 
-## 4. 运行测试
+## 3. 运行测试
 
-### 方法 1：使用测试脚本（推荐）
+### 方法 1：使用 npm 脚本（推荐）
 ```bash
 # 有界面模式
-./run-e2e-tests.sh
-
-# 无界面模式
-./run-e2e-tests.sh --headless
+npm run test:e2e
 
 # 调试模式
-./run-e2e-tests.sh --debug
+npm run test:e2e:debug
+
+# 无界面模式
+npm run test:e2e:headless
 ```
 
 ### 方法 2：手动运行
@@ -54,13 +49,8 @@ ENABLE_E2E_API=true python run.py
 npx playwright test tests/e2e_full.spec.ts --headed
 ```
 
-### 方法 3：使用 npm 脚本
-```bash
-# 确保服务器已启动，然后：
-npm run test:e2e
-```
 
-## 5. 查看测试结果
+## 4. 查看测试结果
 ```bash
 # 查看 HTML 报告
 npx playwright show-report

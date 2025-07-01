@@ -41,19 +41,17 @@ console.log(typeof GamePanels);  // 应该输出 "object"
 - Network标签显示404错误
 
 **解决方案**:
-```python
-# 1. 检查 api_fixes.py 是否被正确导入
-# 在 run.py 中应该有：
-from api_fixes import register_missing_apis
-register_missing_apis(app)
+```bash
+# 检查是否已注册侧边栏 API
+grep -n register_sidebar_apis run.py
 
-# 2. 验证路由注册
-# 添加调试代码到 run.py：
-print("Registered routes:")
-for rule in app.url_map.iter_rules():
-    print(f"  {rule.endpoint}: {rule.rule}")
+# 查看路由
+python - <<'EOF'
+from run import app
+for r in app.url_map.iter_rules():
+    print(r)
+EOF
 ```
-
 ### 问题3: 数据格式错误
 
 **症状**:
