@@ -71,6 +71,14 @@ try:
 except ImportError as e:
     logger.debug(f"Lore routes not loaded: {e}")
 
+try:
+    # Register intel routes
+    from src.api.routes.intel import bp as intel_bp
+    app.register_blueprint(intel_bp)
+    logger.info("Intel routes registered")
+except ImportError as e:
+    logger.debug(f"Intel routes not loaded: {e}")
+
 # Register E2E test routes in development/test mode
 if os.getenv('FLASK_ENV') in ['development', 'testing'] or os.getenv('ENABLE_E2E_API') == 'true':
     try:
