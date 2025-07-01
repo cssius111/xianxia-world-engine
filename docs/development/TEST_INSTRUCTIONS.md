@@ -14,6 +14,9 @@ python3 start_web.py
 ```bash
 cd /Users/chenpinle/Desktop/杂/pythonProject/xianxia_world_engine
 
+# 安装 Python 依赖
+pip install -r requirements.txt
+
 # 安装浏览器（首次运行需要）
 npx playwright install
 

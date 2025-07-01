@@ -29,6 +29,9 @@ chmod +x run-test.sh
 # 1. 安装依赖
 npm install
 
+# 安装 Python 依赖
+pip install -r requirements.txt
+
 # 2. 安装 Playwright 浏览器
 npx playwright install
 
