@@ -25,13 +25,6 @@ python cleanup_duplicates.py
 python restructure_project.py
 ```
 
-### 4. run_cleanup.sh
-快速启动脚本（仅限Mac/Linux）。
-
-```bash
-chmod +x run_cleanup.sh
-./run_cleanup.sh
-```
 
 ## 📋 使用指南
 
