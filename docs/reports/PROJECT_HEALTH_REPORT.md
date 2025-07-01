@@ -72,7 +72,7 @@ typescript           ✅ 类型安全
 - server.log (如果存在)
 
 # 过时的修复脚本
-- api_fixes.py (已集成到主代码)
+- api_fixes.py
 - diagnose_optimizations.py (诊断完成)
 ```
 

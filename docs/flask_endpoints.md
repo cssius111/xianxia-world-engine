@@ -25,6 +25,13 @@
 | `/data/fortune` | `get_fortune_data` | 返回气运数据 |
 | `/data/templates` | `get_templates_data` | 返回角色模板数据 |
 | `/api/parse_custom` | `parse_custom_text` | 使用LLM解析自定义背景 |
+| `/api/cultivation/status` | `cultivation_status` | 获取修炼状态 |
+| `/api/cultivation/start` | `cultivation_start` | 开始修炼 |
+| `/api/achievements` | `achievements` | 获取成就列表 |
+| `/api/map` | `map_data` | 获取地图数据 |
+| `/api/quests` | `quests` | 获取任务数据 |
+| `/api/intel` | `intel` | 获取情报数据 |
+| `/api/player/stats/detailed` | `player_stats_detailed` | 获取详细玩家状态 |
 
 ## 工具路由
 
