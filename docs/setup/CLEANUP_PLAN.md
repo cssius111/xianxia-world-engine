@@ -16,7 +16,7 @@
 - `FINAL_FIX.md`
 - `FINAL_SUMMARY.md`
 - `GIT_COMMIT_MESSAGE.md`
-- `PROJECT_HEALTH_REPORT.md`
+- `../reports/PROJECT_HEALTH_REPORT.md`
 - `RUN_THESE_COMMANDS.txt`
 
 ## ✅ 保留的重要文件

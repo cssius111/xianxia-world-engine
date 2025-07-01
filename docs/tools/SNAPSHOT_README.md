@@ -10,7 +10,7 @@
 - `scripts/quick_snapshot.py` - 简化版快速扫描器
 - `scripts/auto_fix_imports.py` - 自动修复脚本
 - `project_snapshot.json` - 当前项目健康状态快照
-- `PROJECT_HEALTH_REPORT.md` - 人类可读的分析报告
+- `../reports/PROJECT_HEALTH_REPORT.md` - 人类可读的分析报告
 
 ### 2. 使用步骤
 
@@ -95,7 +95,7 @@ python scripts/generate_project_snapshot.py
 cat project_snapshot.json | grep "failed_imports"
 
 # 查看具体错误
-cat PROJECT_HEALTH_REPORT.md
+cat ../reports/PROJECT_HEALTH_REPORT.md
 ```
 
 ## 🛠 故障排除
@@ -108,6 +108,6 @@ cat PROJECT_HEALTH_REPORT.md
 
 ## 📧 需要帮助？
 
-- 查看 `PROJECT_HEALTH_REPORT.md` 获取详细分析
+- 查看 `../reports/PROJECT_HEALTH_REPORT.md` 获取详细分析
 - 运行 `python scripts/auto_fix_imports.py` 自动修复
 - 将 `project_snapshot.json` 提供给 AI 进行深度分析

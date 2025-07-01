@@ -6,7 +6,7 @@
 ## 🔴 紧急任务（本周内完成）
 
 ### 1. 修复侧边栏功能
-- [ ] 运行 `python3 quick_sidebar_test.py` 检查API健康状态
+- [ ] 运行 `npx playwright test tests/e2e/sidebar.spec.ts --headed` 检查API健康状态
 - [ ] 检查 `game_panels_enhanced.js` 是否正确加载
 - [ ] 验证所有API端点返回正确的JSON格式
 - [ ] 修复前端GamePanels对象调用问题
@@ -146,7 +146,7 @@ git commit -m "refactor: 重构前端状态管理"
 
 ## 🤝 需要帮助？
 
-- 查看 [调试指南](./SIDEBAR_DEBUG_GUIDE.md)
+- 查看 [调试指南](./development/SIDEBAR_DEBUG_GUIDE.md)
 - 阅读 [项目文档](./docs/INDEX.md)
 - 运行健康检查脚本
 - 查看错误日志

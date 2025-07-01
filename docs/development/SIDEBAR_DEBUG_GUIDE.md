@@ -7,7 +7,7 @@
 python3 start_web.py
 
 # 2. 运行快速健康检查
-python3 quick_sidebar_test.py
+npx playwright test tests/e2e/sidebar.spec.ts --headed
 
 # 3. 检查浏览器控制台
 # 打开 http://localhost:5001
@@ -237,7 +237,7 @@ grep -i sidebar logs/app.log
    - 浏览器控制台截图
    - Network标签截图
    - `logs/app.log` 最后50行
-   - `python3 quick_sidebar_test.py` 输出
+   - `npx playwright test tests/e2e/sidebar.spec.ts --headed` 输出
 
 2. 创建问题报告：
    - 问题描述

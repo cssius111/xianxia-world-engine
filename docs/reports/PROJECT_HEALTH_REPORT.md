@@ -73,7 +73,6 @@ typescript           ✅ 类型安全
 
 # 过时的修复脚本
 - api_fixes.py (已集成到主代码)
-- quick_fix.sh (临时脚本)
 - diagnose_optimizations.py (诊断完成)
 ```
 
@@ -122,14 +121,11 @@ typescript           ✅ 类型安全
 
 1. **修复侧边栏**
 ```bash
-# 1. 检查API健康状态
-python3 quick_sidebar_test.py
-
-# 2. 查看具体错误
+# 查看错误日志
 tail -f logs/app.log
 
-# 3. 运行集成测试
-./test_sidebar.sh
+# 运行侧边栏相关测试
+npx playwright test tests/e2e/sidebar.spec.ts --headed
 ```
 
 2. **更新项目文档**
