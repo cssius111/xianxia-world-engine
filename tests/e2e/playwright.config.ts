@@ -1,11 +1,12 @@
 import { defineConfig, devices } from '@playwright/test';
+import * as path from 'path';
 
 /**
  * Xianxia World Engine E2E Test Configuration
  * @see https://playwright.dev/docs/test-configuration
  */
 export default defineConfig({
-  testDir: './tests',
+  testDir: './',
   
   /* Ignore Cypress test files */
   testIgnore: ['**/e2e/*.spec.js', '**/xiuxian-game.spec.js'],
@@ -150,10 +151,11 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: {
     // Use the project's run script to start the server
-    command: process.env.CI ? 'python run.py' : 'python run.py',
+    command: process.env.CI ? 'python start_web.py' : 'python start_web.py',
     port: 5001,
     reuseExistingServer: !process.env.CI,
     timeout: 30_000,
+    cwd: path.join(__dirname, '..', '..'),
     // Wait for the server to be ready
     stdout: 'pipe',
     stderr: 'pipe',
@@ -162,14 +164,15 @@ export default defineConfig({
       FLASK_DEBUG: 'False', // Disable debug for testing
       PORT: '5001',
       ENABLE_E2E_API: 'true', // Enable E2E test routes
+      PYTHONPATH: path.join(__dirname, '..', '..', 'src'),
     },
   },
 
   /* Global setup */
-  globalSetup: require.resolve('./tests/global-setup.ts'),
+  globalSetup: require.resolve('../global-setup.ts'),
   
   /* Global teardown */
-  globalTeardown: require.resolve('./tests/global-teardown.ts'),
+  globalTeardown: require.resolve('../global-teardown.ts'),
 
   /* Output folder for test artifacts */
   outputDir: 'test-results/',
