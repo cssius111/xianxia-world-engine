@@ -364,3 +364,32 @@ class CommandRouter:
 
 # 向后兼容的别名
 NLPCommandRouter = CommandRouter
+
+
+def handle_attack(target: str, game: Any) -> Dict[str, Any]:
+    """执行攻击指令并返回战斗日志"""
+    from .combat import CombatSystem  # local import to avoid circular
+    from .character import Character, CharacterType
+    from .attributes import CharacterAttributes
+
+    combat_system: CombatSystem = game.combat_system
+    player = game.game_state.player
+
+    enemy = Character(name=target, character_type=CharacterType.MONSTER,
+                      attributes=CharacterAttributes())
+
+    result = combat_system.attack(player, enemy)
+
+    # 记录战斗日志
+    if hasattr(game.game_state, "logs"):
+        game.game_state.logs.append(result.message)
+
+    return {
+        "success": result.success,
+        "result": result.message,
+        "combat_result": {
+            "damage": result.damage_dealt.get(enemy.id).damage if enemy.id in result.damage_dealt else 0,
+            "target": enemy.name,
+        },
+    }
+

@@ -55,6 +55,15 @@ test.describe('Extended E2E Tests', () => {
         const data = await response.json();
         expect.soft(data.result).toContain('修炼');
       });
+
+      await test.step('测试攻击命令', async () => {
+        const response = await request.post('/command', {
+          data: { command: '攻击 木桩' }
+        });
+        expect.soft(response.ok()).toBeTruthy();
+        const data = await response.json();
+        expect.soft(data.result).toMatch(/木桩/);
+      });
     });
   });
 
