@@ -3,14 +3,13 @@
 实现基于事件的解耦通信机制
 """
 
-import asyncio
 import logging
 import threading
 import time
 from abc import ABC, abstractmethod
 from collections import defaultdict
 from dataclasses import dataclass, field
-from typing import Any, Callable, Dict, List, Optional, Type
+from typing import Any, Callable, Dict, List, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -101,7 +100,7 @@ class EventHandler(IEventHandler):
         try:
             self._do_handle(event)
         except Exception as e:
-            self.logger.error(f"Error handling event {event.type}: {e}")
+            self.logger.error(f"Error handling event {event.type}: {e}", exc_info=True)
 
     def _do_handle(self, event: DomainEvent) -> None:
         """子类实现的处理逻辑"""
@@ -112,7 +111,9 @@ class FunctionEventHandler(EventHandler):
     """函数式事件处理器"""
 
     def __init__(
-        self, handler_func: Callable[[DomainEvent], None], event_types: Optional[List[str]] = None
+        self,
+        handler_func: Callable[[DomainEvent], None],
+        event_types: Optional[List[str]] = None,
     ):
         super().__init__(event_types)
         self.handler_func = handler_func
@@ -186,18 +187,20 @@ class EventBus:
             try:
                 handler.handle(event)
             except Exception as e:
-                self.logger.error(f"Error in sync handler: {e}")
+                self.logger.error("Error in sync handler: %s", e, exc_info=True)
 
         # 处理通配符处理器
         for handler in self._handlers.get("*", []):
             try:
                 handler.handle(event)
             except Exception as e:
-                self.logger.error(f"Error in wildcard handler: {e}")
+                self.logger.error("Error in wildcard handler: %s", e, exc_info=True)
 
     def _publish_async(self, event: DomainEvent) -> None:
         """异步发布事件"""
-        handlers = self._async_handlers.get(event.type, []) + self._async_handlers.get("*", [])
+        handlers = self._async_handlers.get(event.type, []) + self._async_handlers.get(
+            "*", []
+        )
 
         if not handlers:
             return
@@ -208,7 +211,7 @@ class EventBus:
                 try:
                     handler.handle(event)
                 except Exception as e:
-                    self.logger.error(f"Error in async handler: {e}")
+                    self.logger.error("Error in async handler: %s", e, exc_info=True)
 
         thread = threading.Thread(target=run_async, daemon=True)
         thread.start()
@@ -336,7 +339,7 @@ class EventAggregator:
         try:
             self.handler(events)
         except Exception as e:
-            logger.error(f"Error processing event batch: {e}")
+            logger.error("Error processing event batch: %s", e, exc_info=True)
 
 
 # 全局事件总线实例

@@ -9,14 +9,14 @@ import logging
 import os
 import sys
 import time
-from typing import List, Dict
 from datetime import datetime
 from pathlib import Path
+from typing import Dict, List
 
 from dotenv import load_dotenv
 from flask import (
-    Flask,
     Response,
+    has_request_context,
     jsonify,
     make_response,
     redirect,
@@ -24,16 +24,22 @@ from flask import (
     request,
     send_from_directory,
     session,
-    has_request_context,
     stream_with_context,
     url_for,
 )
 
 # 加载 .env 文件中的环境变量
+
 load_dotenv()
 
-from src.xwe.core.command_router import CommandRouter
-from src.xwe.core.command_router import handle_attack
+# 确保 src 目录在 Python 路径中 (在导入任何 src 模块前设置)
+PROJECT_ROOT = Path(__file__).resolve().parent
+SRC_PATH = PROJECT_ROOT / "src"
+if str(SRC_PATH) not in sys.path:
+    sys.path.insert(0, str(SRC_PATH))
+
+from src.config.game_config import config
+from src.xwe.core.command_router import CommandRouter, handle_attack
 from src.xwe.core.cultivation_system import CultivationSystem
 from src.xwe.core.data_loader import DataLoader
 from src.xwe.core.game_core import create_enhanced_game
@@ -43,7 +49,6 @@ from src.xwe.features.community_system import CommunitySystem
 from src.xwe.features.narrative_system import NarrativeSystem
 from src.xwe.features.technical_ops import TechnicalOps
 from src.xwe.server.app_factory import create_app
-from src.config.game_config import config
 
 
 def is_dev_request(req) -> bool:
@@ -54,12 +59,6 @@ def is_dev_request(req) -> bool:
     )
 
 
-# 确保 src 目录在 Python 路径中
-PROJECT_ROOT = Path(__file__).resolve().parent
-SRC_PATH = PROJECT_ROOT / "src"
-if str(SRC_PATH) not in sys.path:
-    sys.path.insert(0, str(SRC_PATH))
-
 # 创建应用和日志
 log_level = logging.DEBUG if config.debug_mode else logging.INFO
 app = create_app(log_level=log_level)
@@ -69,6 +68,7 @@ logger = logging.getLogger("XianxiaEngine")
 try:
     # Register lore routes
     from routes.lore import bp as lore_bp
+
     app.register_blueprint(lore_bp)
     logger.info("Lore routes registered")
 except ImportError as e:
@@ -77,15 +77,20 @@ except ImportError as e:
 try:
     # Register intel routes
     from src.api.routes.intel import bp as intel_bp
+
     app.register_blueprint(intel_bp)
     logger.info("Intel routes registered")
 except ImportError as e:
     logger.debug(f"Intel routes not loaded: {e}")
 
 # Register E2E test routes in development/test mode
-if os.getenv('FLASK_ENV') in ['development', 'testing'] or os.getenv('ENABLE_E2E_API') == 'true':
+if (
+    os.getenv("FLASK_ENV") in ["development", "testing"]
+    or os.getenv("ENABLE_E2E_API") == "true"
+):
     try:
         from routes.api_e2e import register_e2e_routes
+
         register_e2e_routes(app)
         logger.info("E2E test API endpoints enabled")
     except ImportError as e:
@@ -93,6 +98,7 @@ if os.getenv('FLASK_ENV') in ['development', 'testing'] or os.getenv('ENABLE_E2E
 
 # Register sidebar API fixes
 from api_fixes import register_sidebar_apis
+
 register_sidebar_apis(app)
 logger.info("Sidebar API fixes registered")
 
@@ -725,16 +731,20 @@ def process_command():
         instance = get_game_instance(session.get("session_id"))
         game = instance["game"]
         attack_result = handle_attack(target, game)
-        return jsonify({
-            **attack_result,
-            "parsed_command": {"handler": command_handler, "params": params},
-        })
+        return jsonify(
+            {
+                **attack_result,
+                "parsed_command": {"handler": command_handler, "params": params},
+            }
+        )
 
     elif command_handler == "talk":
         # 对话
         target = params.get("target", "")
         if target:
-            result_text = f"你与{target}交谈。\n{target}：少侠好，有什么可以帮助你的吗？"
+            result_text = (
+                f"你与{target}交谈。\n{target}：少侠好，有什么可以帮助你的吗？"
+            )
         else:
             result_text = "附近没有可以交谈的人。"
 
@@ -993,9 +1003,9 @@ def export_nlp_metrics():
             # 返回文件
             response = make_response(data)
             response.headers["Content-Type"] = "application/json"
-            response.headers[
-                "Content-Disposition"
-            ] = f'attachment; filename=nlp_metrics_{datetime.now().strftime("%Y%m%d_%H%M%S")}.json'
+            response.headers["Content-Disposition"] = (
+                f'attachment; filename=nlp_metrics_{datetime.now().strftime("%Y%m%d_%H%M%S")}.json'
+            )
             return response
 
         finally:
