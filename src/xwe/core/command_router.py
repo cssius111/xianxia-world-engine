@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from enum import Enum
 import logging
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("xwe.command_router")
 
 # 尝试导入 NLP 模块（可选）
 try:
@@ -180,9 +180,11 @@ class CommandRouter:
         Returns:
             (命令类型, 参数字典)
         """
+        logger.debug("收到命令文本: %s", input_text)
         context = {"current_context": self.current_context}
         # 如果启用了 NLP 处理器，优先使用
         if self.use_nlp and self.nlp_processor:
+            logger.debug("使用 NLP 路由")
             try:
                 # 使用 NLP 解析
                 parsed = self.nlp_processor.parse(input_text, context=context)
@@ -191,10 +193,10 @@ class CommandRouter:
                 return self._handle_nlp_result(parsed)
 
             except Exception as e:
-                logger.error(f"NLP 处理失败，回退到备用处理: {e}")
+                logger.error(f"NLP 处理失败，回退到备用处理: {e}", exc_info=True)
 
         else:
-            logger.debug("NLP 未启用，使用备用处理器或传统解析")
+            logger.debug("使用传统路由")
 
         # 如果设置了 NLP 回调处理器，优先使用
         if self._nlp_handler:
@@ -210,6 +212,7 @@ class CommandRouter:
                 logger.error(f"备用 NLP 处理器执行失败: {e}")
 
         # 传统路由匹配
+        logger.debug("执行传统路由匹配")
         return self._traditional_route(input_text)
 
     def _handle_nlp_result(self, parsed: ParsedCommand) -> Tuple[str, Dict[str, Any]]:
@@ -241,6 +244,9 @@ class CommandRouter:
                 if isinstance(parsed.args, list) and parsed.args:
                     params.update(parsed.args[0].get("args", {}))
 
+                logger.debug(
+                    "NLP 路由选择处理器 %s，参数 %s", handler, params
+                )
                 return handler, params
 
         # 处理单个命令
@@ -260,8 +266,13 @@ class CommandRouter:
 
         # 根据上下文验证命令是否可用
         if not self._is_command_available_in_context(handler):
+            allowed = set()
+            for route in self.routes:
+                if route.handler == handler:
+                    allowed.update(route.contexts)
             logger.warning(
-                f"命令 {handler} 在当前上下文 {self.current_context} 中不可用"
+                f"命令 {handler} 在当前上下文 {self.current_context} 中不可用，"
+                f"允许的上下文: {', '.join(sorted(allowed))}"
             )
             return "context_error", {
                 "command": handler,
@@ -269,6 +280,7 @@ class CommandRouter:
                 "message": f"命令在当前场景不可用",
             }
 
+        logger.debug("NLP 路由选择处理器 %s，参数 %s", handler, params)
         return handler, params
 
     def _traditional_route(self, input_text: str) -> Tuple[str, Dict[str, Any]]:
@@ -292,9 +304,13 @@ class CommandRouter:
                 # 提取参数
                 params = self._extract_params(input_text, route.pattern)
                 params["raw_text"] = input_text
+                logger.debug(
+                    "传统路由选择处理器 %s，参数 %s", route.handler, params
+                )
                 return route.handler, params
 
         # 默认返回未知命令
+        logger.debug("传统路由未找到匹配处理器，返回未知命令")
         return "unknown", {"raw_text": input_text}
 
     def _is_command_available_in_context(self, handler: str) -> bool:
