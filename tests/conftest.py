@@ -1,11 +1,11 @@
-import pytest
-from flask import Flask
 import importlib.util
-from pathlib import Path
 import sys
+from pathlib import Path
+
+import pytest
 import werkzeug
-import os
 from dotenv import load_dotenv
+from flask import Flask
 
 load_dotenv()
 
@@ -18,14 +18,18 @@ if str(SRC_PATH) not in sys.path:
 if not hasattr(werkzeug, "__version__"):
     werkzeug.__version__ = "0"
 
+
 def _load_module(path, name):
     spec = importlib.util.spec_from_file_location(name, Path(path))
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)  # type: ignore
     return module
 
-game_bp = _load_module('src/api/v1/game.py', 'game').game_bp
-system_bp = _load_module('src/api/v1/system.py', 'system').system_bp
+
+game_bp = _load_module("src/api/v1/game.py", "game").game_bp
+system_bp = _load_module("src/api/v1/system.py", "system").system_bp
+sidebar_bp = _load_module("api_fixes.py", "api_fixes").sidebar_api_bp
+
 
 @pytest.fixture(autouse=True)
 def test_env(monkeypatch):
@@ -38,14 +42,12 @@ def test_env(monkeypatch):
 def app(tmp_path):
     app = Flask(__name__)
     app.secret_key = "test_secret"
-    app.register_blueprint(game_bp, url_prefix='/api/v1/game')
-    app.register_blueprint(system_bp, url_prefix='/api/v1/system')
-    app.config.update(
-        TESTING=True,
-        VERSION="1.0.0",
-        LOG_PATH=str(tmp_path)
-    )
+    app.register_blueprint(game_bp, url_prefix="/api/v1/game")
+    app.register_blueprint(system_bp, url_prefix="/api/v1/system")
+    app.register_blueprint(sidebar_bp, url_prefix="/api")
+    app.config.update(TESTING=True, VERSION="1.0.0", LOG_PATH=str(tmp_path))
     return app
+
 
 @pytest.fixture
 def client(app):
