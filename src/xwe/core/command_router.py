@@ -3,10 +3,10 @@
 根据优先级和上下文路由命令，集成 DeepSeek NLP 处理器（可选）
 """
 
-from typing import Dict, List, Optional, Any, Callable, Tuple, Union
+import logging
 from dataclasses import dataclass
 from enum import Enum
-import logging
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
 logger = logging.getLogger("xwe.command_router")
 
@@ -244,9 +244,7 @@ class CommandRouter:
                 if isinstance(parsed.args, list) and parsed.args:
                     params.update(parsed.args[0].get("args", {}))
 
-                logger.debug(
-                    "NLP 路由选择处理器 %s，参数 %s", handler, params
-                )
+                logger.debug("NLP 路由选择处理器 %s，参数 %s", handler, params)
                 return handler, params
 
         # 处理单个命令
@@ -277,7 +275,7 @@ class CommandRouter:
             return "context_error", {
                 "command": handler,
                 "context": self.current_context,
-                "message": f"命令在当前场景不可用",
+                "message": "命令在当前场景不可用",
             }
 
         logger.debug("NLP 路由选择处理器 %s，参数 %s", handler, params)
@@ -304,13 +302,11 @@ class CommandRouter:
                 # 提取参数
                 params = self._extract_params(input_text, route.pattern)
                 params["raw_text"] = input_text
-                logger.debug(
-                    "传统路由选择处理器 %s，参数 %s", route.handler, params
-                )
+                logger.debug("传统路由选择处理器 %s，参数 %s", route.handler, params)
                 return route.handler, params
 
         # 默认返回未知命令
-        logger.debug("传统路由未找到匹配处理器，返回未知命令")
+        logger.warning("传统路由未找到匹配处理器，返回未知命令")
         return "unknown", {"raw_text": input_text}
 
     def _is_command_available_in_context(self, handler: str) -> bool:
@@ -416,12 +412,17 @@ NLPCommandRouter = CommandRouter
 
 def handle_attack(target: str, game: Any) -> Dict[str, Any]:
     """执行攻击指令并返回战斗日志"""
-    from .combat import CombatSystem  # local import to avoid circular
-    from .character import Character, CharacterType
     from .attributes import CharacterAttributes
+    from .character import Character, CharacterType
+    from .combat import CombatSystem  # local import to avoid circular
 
     combat_system: CombatSystem = game.combat_system
     player = game.game_state.player
+
+    if not target:
+        logger.warning("攻击指令缺少目标")
+    if player is None:
+        logger.warning("无法执行攻击，player 为 None")
 
     enemy = Character(
         name=target,
