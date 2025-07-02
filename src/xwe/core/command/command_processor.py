@@ -3,6 +3,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum, auto
 from typing import List
+import logging
+
+logger = logging.getLogger("xwe.command")
 
 
 @dataclass
@@ -41,7 +44,13 @@ class Middleware:
 
 
 class LoggingMiddleware(Middleware):
-    pass
+    def before_handle(self, ctx: CommandContext) -> None:  # pragma: no cover - simple log
+        logger.debug(f"[Middleware] 即将执行 {ctx.command} args={ctx.args}")
+
+    def after_handle(self, ctx: CommandContext, result: CommandResult) -> None:  # pragma: no cover - simple log
+        logger.debug(
+            f"[Middleware] {ctx.command} 执行结果: {result.success} - {result.message}"
+        )
 
 
 class ValidationMiddleware(Middleware):
@@ -62,9 +71,21 @@ class CommandHandler:
     commands: List[str] = []
 
     def handle(self, ctx: CommandContext) -> CommandResult:  # pragma: no cover - simple placeholder
-        if ctx.command in self.commands:
-            return CommandResult(True, f"Executed {ctx.command}")
-        return CommandResult(False, "")
+        logger.debug(
+            f"[Handler:{self.__class__.__name__}] 接收到命令 {ctx.command} args={ctx.args}"
+        )
+        try:
+            if ctx.command in self.commands:
+                result = CommandResult(True, f"Executed {ctx.command}")
+            else:
+                result = CommandResult(False, "")
+            logger.debug(
+                f"[Handler:{self.__class__.__name__}] 返回: {result.success} - {result.message}"
+            )
+            return result
+        except Exception:
+            logger.exception(f"[Handler:{self.__class__.__name__}] 执行异常")
+            return CommandResult(False, "")
 
 
 class CommandProcessor:

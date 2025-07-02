@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from enum import Enum
 import logging
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("xwe.router")
 
 # 尝试导入 NLP 模块（可选）
 try:
@@ -166,17 +166,22 @@ class CommandRouter:
         Returns:
             (命令类型, 参数字典)
         """
+        logger.info(f"[Router] 收到指令: {input_text}")
+        logger.debug(f"[Router] 当前上下文: {self.current_context}")
         # 如果启用了 NLP 处理器，优先使用
         if self.use_nlp and self.nlp_processor:
             try:
+                logger.debug("[Router] 使用 NLP 解析")
                 # 使用 NLP 解析
                 parsed = self.nlp_processor.parse(
-                    input_text, 
+                    input_text,
                     context={"current_context": self.current_context}
                 )
                 
                 # 处理解析结果
-                return self._handle_nlp_result(parsed)
+                handler, params = self._handle_nlp_result(parsed)
+                logger.info(f"[Router] 路由到 {handler}, 参数: {params}")
+                return handler, params
                 
             except Exception as e:
                 logger.error(f"NLP 处理失败，回退到传统解析: {e}")
@@ -212,7 +217,10 @@ class CommandRouter:
                 # 如果有参数，添加第一个命令的参数
                 if isinstance(parsed.args, list) and parsed.args:
                     params.update(parsed.args[0].get("args", {}))
-                    
+
+                logger.debug(
+                    f"[Router] NLP命令序列首个命令 {first_cmd} -> {handler}, 参数: {params}"
+                )
                 return handler, params
                 
         # 处理单个命令
@@ -237,6 +245,7 @@ class CommandRouter:
                 "message": f"命令在当前场景不可用"
             }
             
+        logger.debug(f"[Router] NLP命令 {command} -> {handler}, 参数: {params}")
         return handler, params
         
     def _traditional_route(self, input_text: str) -> Tuple[str, Dict[str, Any]]:
@@ -254,15 +263,17 @@ class CommandRouter:
             # 检查上下文
             if "*" not in route.contexts and self.current_context not in route.contexts:
                 continue
-                
+
             # 检查模式匹配
             if input_text.lower().startswith(route.pattern.lower()):
                 # 提取参数
                 params = self._extract_params(input_text, route.pattern)
                 params["raw_text"] = input_text
+                logger.debug(f"[Router] 传统匹配到 {route.pattern} -> {route.handler}, 参数: {params}")
                 return route.handler, params
-                
+
         # 默认返回未知命令
+        logger.info(f"[Router] 未识别的指令: {input_text}")
         return "unknown", {"raw_text": input_text}
         
     def _is_command_available_in_context(self, handler: str) -> bool:

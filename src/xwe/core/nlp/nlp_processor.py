@@ -15,7 +15,7 @@ from .llm_client import LLMClient
 from .config import get_nlp_config
 from .monitor import get_nlp_monitor
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("xwe.nlp")
 
 
 @dataclass
@@ -324,16 +324,19 @@ class DeepSeekNLPProcessor:
                             item = " ".join(words[1:])
                             result["args"]["item"] = item
                             
+                    logger.debug(f"[NLP] Fallback matched '{command}' -> {result}")
                     return result
                     
         # 无法识别
-        return {
+        result = {
             "raw": user_input,
             "normalized_command": "未知",
             "intent": "unknown",
             "args": {},
             "explanation": "无法识别命令"
         }
+        logger.debug(f"[NLP] Fallback no match: {result}")
+        return result
         
     def _get_intent_from_command(self, command: str) -> str:
         """根据命令获取意图类别"""
@@ -363,6 +366,7 @@ class DeepSeekNLPProcessor:
         Returns:
             解析后的命令对象
         """
+        logger.info(f"[NLP] 收到用户输入: {user_input}")
         start_time = time.time()
         success = False
         error_msg = None
@@ -416,6 +420,9 @@ class DeepSeekNLPProcessor:
             logger.debug(f"[NLP] Parsed: {parsed}")
 
             success = True
+            logger.info(
+                f"[NLP] 解析结果: command='{parsed.normalized_command}', args={parsed.args}"
+            )
             return parsed
             
         except Exception as e:
@@ -438,6 +445,9 @@ class DeepSeekNLPProcessor:
                 logger.debug(f"[NLP] Parsed (fallback): {parsed}")
 
                 success = True
+                logger.info(
+                    f"[NLP] 回退解析结果: command='{parsed.normalized_command}', args={parsed.args}"
+                )
                 return parsed
             else:
                 raise
