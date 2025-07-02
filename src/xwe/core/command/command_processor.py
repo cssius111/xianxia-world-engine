@@ -3,6 +3,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum, auto
 from typing import List
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -62,9 +65,15 @@ class CommandHandler:
     commands: List[str] = []
 
     def handle(self, ctx: CommandContext) -> CommandResult:  # pragma: no cover - simple placeholder
+        logger.info("Begin handling command '%s' with args=%s", ctx.command, ctx.args)
         if ctx.command in self.commands:
-            return CommandResult(True, f"Executed {ctx.command}")
-        return CommandResult(False, "")
+            result = CommandResult(True, f"Executed {ctx.command}")
+        else:
+            result = CommandResult(False, "")
+        logger.info(
+            "Finished handling command '%s' with success=%s", ctx.command, result.success
+        )
+        return result
 
 
 class CommandProcessor:

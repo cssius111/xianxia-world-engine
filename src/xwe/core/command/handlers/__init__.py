@@ -2,6 +2,10 @@
 基础命令处理器集合
 """
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 from .combat_handler import (
     AttackHandler,
     CombatCommandHandler,
