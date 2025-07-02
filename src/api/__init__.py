@@ -4,7 +4,10 @@ OpenAPI 文档生成器
 """
 
 from flask import Flask, jsonify
-from flask_swagger_ui import get_swaggerui_blueprint
+try:
+    from flask_swagger_ui import get_swaggerui_blueprint
+except Exception:  # noqa: E722 - library may be optional in tests
+    get_swaggerui_blueprint = None
 import os
 
 from .middleware import register_middleware
@@ -31,9 +34,11 @@ def openapi_json():
 
 # 设置 Swagger UI 到 Flask 应用
 def setup_swagger_ui(app):
+    if get_swaggerui_blueprint is None:
+        raise RuntimeError("flask-swagger-ui is not installed")
     swagger_ui = get_swaggerui_blueprint(
-        "/api/docs",  # 文档前端访问路径
-        "/api/openapi.json",  # 文档 JSON 数据源
+        "/api/docs",
+        "/api/openapi.json",
         config={"app_name": "修仙世界引擎 API"},
     )
     app.register_blueprint(swagger_ui, url_prefix="/api/docs")
