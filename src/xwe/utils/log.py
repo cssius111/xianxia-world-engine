@@ -9,12 +9,20 @@ from pathlib import Path
 from logging.handlers import RotatingFileHandler
 
 
-def configure_logging(log_dir: str, filename: str = "app.log") -> None:
-    """配置日志轮转并自动压缩"""
+def configure_logging(
+    log_dir: str, filename: str = "app.log", level: int = logging.INFO
+) -> None:
+    """配置日志轮转并自动压缩
+
+    Args:
+        log_dir: 日志目录
+        filename: 日志文件名
+        level: 日志级别
+    """
 
     Path(log_dir).mkdir(parents=True, exist_ok=True)
     logging.basicConfig(
-        level=logging.INFO,
+        level=level,
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 

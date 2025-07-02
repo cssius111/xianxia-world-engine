@@ -43,6 +43,7 @@ from src.xwe.features.community_system import CommunitySystem
 from src.xwe.features.narrative_system import NarrativeSystem
 from src.xwe.features.technical_ops import TechnicalOps
 from src.xwe.server.app_factory import create_app
+from src.config.game_config import config
 
 
 def is_dev_request(req) -> bool:
@@ -60,7 +61,8 @@ if str(SRC_PATH) not in sys.path:
     sys.path.insert(0, str(SRC_PATH))
 
 # 创建应用和日志
-app = create_app()
+log_level = logging.DEBUG if config.debug_mode else logging.INFO
+app = create_app(log_level=log_level)
 logger = logging.getLogger("XianxiaEngine")
 
 # Register additional routes

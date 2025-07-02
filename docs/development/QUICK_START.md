@@ -10,6 +10,8 @@ pip install -r requirements.txt
 
 # 安装 Playwright 浏览器
 npx playwright install
+# 如果无法联网，可设置环境变量跳过浏览器安装：
+export SKIP_PLAYWRIGHT_INSTALL=1
 ```
 
 ## 2. 注册 E2E API 路由
