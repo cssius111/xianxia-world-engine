@@ -1,6 +1,10 @@
 from flask import Blueprint, jsonify, request
 
+# 蓝图: /api 前缀的侧边栏示例接口
 sidebar_api_bp = Blueprint('sidebar_api', __name__, url_prefix='/api')
+
+# 蓝图: /intel 前缀的简化情报接口，避免依赖完整 API 包
+intel_fix_bp = Blueprint('intel_fix', __name__, url_prefix='/intel')
 
 
 @sidebar_api_bp.get('/cultivation/status')
@@ -131,6 +135,37 @@ def intel():
     return jsonify({"success": True, "data": intel_data})
 
 
+@intel_fix_bp.get('/tips')
+def intel_tips():
+    """返回示例游戏提示"""
+    tips = [
+        {
+            "id": "tip_001",
+            "category": "combat",
+            "content": "战斗时注意敌人的攻击模式，适时防御可以减少伤害",
+        },
+        {
+            "id": "tip_002",
+            "category": "cultivation",
+            "content": "修炼时选择灵气充足的地点可以提高效率",
+        },
+        {
+            "id": "tip_003",
+            "category": "social",
+            "content": "与NPC保持良好关系可以获得特殊任务和物品",
+        },
+        {
+            "id": "tip_004",
+            "category": "exploration",
+            "content": "探索时注意周围环境，隐藏的宝物往往在不起眼的地方",
+        },
+    ]
+    category = request.args.get('category')
+    if category:
+        tips = [t for t in tips if t['category'] == category]
+    return jsonify({"tips": tips})
+
+
 @sidebar_api_bp.get('/player/stats/detailed')
 def player_stats_detailed():
     """返回示例详细玩家状态"""
@@ -148,4 +183,5 @@ def player_stats_detailed():
 def register_sidebar_apis(app):
     """注册侧边栏相关API"""
     app.register_blueprint(sidebar_api_bp)
+    app.register_blueprint(intel_fix_bp)
     return sidebar_api_bp

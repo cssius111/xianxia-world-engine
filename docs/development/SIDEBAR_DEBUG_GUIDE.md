@@ -25,13 +25,10 @@ npx playwright test tests/e2e/sidebar.spec.ts --headed
 
 **解决方案**:
 ```javascript
-// 检查 game_panels_enhanced.js 是否正确加载
 // 在浏览器控制台运行：
 console.log(typeof GamePanels);  // 应该输出 "object"
 
-// 如果是 undefined，检查脚本加载顺序
-// 确保在 HTML 中正确引入：
-<script src="/static/js/game_panels_enhanced.js"></script>
+// 如果是 undefined，检查脚本加载顺序，确认页面已加载相应脚本
 ```
 
 ### 问题2: API 404错误
@@ -156,41 +153,10 @@ chmod +x test_apis.sh
 })();
 ```
 
-### Step 4: 修复脚本
-如果发现问题，运行修复脚本：
+### Step 4: 服务器端检查
 
-```python
-# fix_sidebar.py
-import os
-import json
-
-def check_and_fix_sidebar():
-    """检查并修复侧边栏问题"""
-    
-    # 1. 确保 game_panels_enhanced.js 存在
-    panels_js_path = 'src/web/static/js/game_panels_enhanced.js'
-    if not os.path.exists(panels_js_path):
-        print("❌ game_panels_enhanced.js 不存在")
-        # 这里可以添加创建文件的代码
-    else:
-        print("✅ game_panels_enhanced.js 存在")
-    
-    # 2. 检查 HTML 模板
-    template_path = 'src/web/templates/game_enhanced_optimized_v2.html'
-    if os.path.exists(template_path):
-        with open(template_path, 'r', encoding='utf-8') as f:
-            content = f.read()
-            if 'game_panels_enhanced.js' in content:
-                print("✅ HTML模板正确引用了增强脚本")
-            else:
-                print("❌ HTML模板未引用增强脚本")
-    
-    # 3. 检查API路由
-    # ... 更多检查
-
-if __name__ == '__main__':
-    check_and_fix_sidebar()
-```
+1. 确认在 `run.py` 创建 `Flask` 应用后调用 `register_sidebar_apis(app)`。
+2. 重启服务器并观察终端输出。如果看到 `Sidebar API fixes registered` 日志，则说明补丁已成功加载。
 
 ## 临时解决方案
 
