@@ -11,7 +11,10 @@ except Exception:  # noqa: E722 - library may be optional in tests
 import os
 
 from .middleware import register_middleware
-from .specs.openapi_generator import setup_swagger_ui as setup_openapi_ui
+try:
+    from .specs.openapi_generator import setup_swagger_ui as setup_openapi_ui
+except Exception:  # noqa: E722 - optional dependency may be missing
+    setup_openapi_ui = None
 from .v1 import game_bp, player_bp, save_bp, system_bp
 
 if os.getenv("FLASK_ENV") == "development":
