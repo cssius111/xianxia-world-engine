@@ -19,6 +19,8 @@ pip install -r requirements.txt
 
 # 安装浏览器和系统依赖（首次运行需要）
 npx playwright install --with-deps
+# 如果安装失败，可先执行：
+export SKIP_PLAYWRIGHT_INSTALL=1
 
 # 运行可视化测试
 npx playwright test --headed --project=chromium xiuxian-game.spec.js

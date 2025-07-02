@@ -7,12 +7,13 @@ from pathlib import Path
 from flask import Flask
 
 from src.xwe.utils.log import configure_logging
+import logging
 
 
-def create_app() -> Flask:
+def create_app(log_level: int = logging.INFO) -> Flask:
     """创建并配置 Flask 应用"""
 
-    configure_logging("logs")
+    configure_logging("logs", level=log_level)
 
     # 获取项目根目录
     project_root = Path(__file__).resolve().parent.parent.parent
