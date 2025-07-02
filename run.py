@@ -33,6 +33,7 @@ from flask import (
 load_dotenv()
 
 from src.xwe.core.command_router import CommandRouter
+from src.xwe.core.command_router import handle_attack
 from src.xwe.core.cultivation_system import CultivationSystem
 from src.xwe.core.data_loader import DataLoader
 from src.xwe.core.game_core import create_enhanced_game
@@ -715,6 +716,17 @@ def process_command():
                 "parsed_command": {"handler": command_handler, "params": params},
             }
         )
+
+    elif command_handler == "attack":
+        # 普通攻击
+        target = params.get("target", "")
+        instance = get_game_instance(session.get("session_id"))
+        game = instance["game"]
+        attack_result = handle_attack(target, game)
+        return jsonify({
+            **attack_result,
+            "parsed_command": {"handler": command_handler, "params": params},
+        })
 
     elif command_handler == "talk":
         # 对话

@@ -235,8 +235,31 @@ class CombatSystem:
             combat = self.active_combats[combat_id]
             combat.is_active = False
             del self.active_combats[combat_id]
-            
+
             logger.info(f"战斗结束: {combat_id}")
+
+    def attack(self, attacker: Any, defender: Any) -> CombatResult:
+        """执行一次简单的攻击并返回结果"""
+        # 创建临时战斗状态以复用伤害计算逻辑
+        temp_combat = CombatState(str(uuid.uuid4()))
+        temp_combat.add_participant(attacker, "attacker")
+        temp_combat.add_participant(defender, "defender")
+
+        result = self._execute_attack(attacker, [defender.id], temp_combat)
+
+        damage = result.damage_dealt.get(defender.id)
+        if damage:
+            if damage.is_evaded:
+                result.message = f"{defender.name} 闪避了攻击！"
+            else:
+                dmg_text = f"{damage.damage:.0f}"
+                if damage.is_critical:
+                    dmg_text = f"暴击！{dmg_text}"
+                result.message = f"你对{defender.name}造成了{dmg_text}点伤害"
+        else:
+            result.message = "攻击未能造成伤害"
+
+        return result
             
     def execute_action(self, combat_id: str, action: CombatAction) -> CombatResult:
         """
