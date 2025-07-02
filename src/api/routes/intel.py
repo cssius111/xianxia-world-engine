@@ -5,7 +5,7 @@
 
 from flask import Blueprint, jsonify, request
 
-bp = Blueprint('intel', __name__, url_prefix='/intel')
+bp = Blueprint('intel', __name__, url_prefix='/api/intel')
 
 
 @bp.route('/tips')

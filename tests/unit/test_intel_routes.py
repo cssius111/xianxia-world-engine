@@ -9,7 +9,7 @@ import run
 
 def test_intel_tips_endpoint():
     with run.app.test_client() as client:
-        resp = client.get('/intel/tips')
+        resp = client.get('/api/intel/tips')
         assert resp.status_code == 200
         data = resp.get_json()
         assert 'tips' in data
