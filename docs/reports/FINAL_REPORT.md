@@ -95,6 +95,7 @@ xianxia_world_engine/
 
 2. **roll_modal.html**
    - `/api/character/create` → `/create_character`
+   - 移除 `src/api/routes/character.py` 中的同名接口，避免重复
 
 3. **game_panels.html**
    - `/api/character/info` → `/status`

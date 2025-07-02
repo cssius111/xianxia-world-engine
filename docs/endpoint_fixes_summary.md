@@ -13,6 +13,7 @@
 
 ### 3. roll_modal.html
 - ✅ `/api/character/create` → `/create_character`
+- ✅ 删除 `src/api/routes/character.py` 中的旧接口，统一使用 `run.py` 的 `/create_character`
 
 ### 4. welcome_modal_v2.html
 - ✅ 暂时禁用了存档加载功能，避免调用不存在的 `/load_game`
