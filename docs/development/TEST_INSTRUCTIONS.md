@@ -17,8 +17,8 @@ cd /path/to/xianxia-world-engine
 # 安装 Python 依赖
 pip install -r requirements.txt
 
-# 安装浏览器（首次运行需要）
-npx playwright install
+# 安装浏览器和系统依赖（首次运行需要）
+npx playwright install --with-deps
 
 # 运行可视化测试
 npx playwright test --headed --project=chromium xiuxian-game.spec.js

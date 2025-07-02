@@ -36,11 +36,16 @@ def main():
             print("\n❌ 导入检查失败，请先修复导入错误")
             return 1
     
-    # 2. 运行 pytest（只在 tests 目录）
+    # 2. 安装 Playwright 浏览器及依赖
+    if not run_command("npx playwright install --with-deps", "安装 Playwright 浏览器依赖"):
+        print("\n❌ Playwright 安装失败")
+        return 1
+
+    # 3. 运行 pytest（只在 tests 目录）
     if not run_command("pytest tests/ -v", "运行单元测试"):
         all_passed = False
-    
-    # 3. 生成覆盖率报告（可选）
+
+    # 4. 生成覆盖率报告（可选）
     # run_command("pytest tests/ --cov=xwe --cov-report=html", "生成覆盖率报告")
     
     # 总结
