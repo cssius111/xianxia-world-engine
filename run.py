@@ -38,6 +38,9 @@ SRC_PATH = PROJECT_ROOT / "src"
 if str(SRC_PATH) not in sys.path:
     sys.path.insert(0, str(SRC_PATH))
 
+from logging_config import setup_logging
+setup_logging()
+
 from src.config.game_config import config
 from src.xwe.core.command_router import CommandRouter, handle_attack
 from src.xwe.core.cultivation_system import CultivationSystem
