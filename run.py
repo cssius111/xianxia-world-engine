@@ -125,7 +125,7 @@ game_instances = {}
 status_cache = {}
 
 
-def get_game_instance(session_id):
+def get_game_instance(session_id, initialize_player: bool = True):
     """获取或创建游戏实例"""
     if session_id not in game_instances:
         game_mode = os.getenv("GAME_MODE", "player")
@@ -138,8 +138,8 @@ def get_game_instance(session_id):
         game.community_system = CommunitySystem()
         game.technical_ops = TechnicalOps()
 
-        # 创建默认玩家
-        if not game.game_state.player:
+        # 创建默认玩家（可选）
+        if initialize_player and not game.game_state.player:
             from src.xwe.core.attributes import CharacterAttributes
             from src.xwe.core.character import Character, CharacterType
 
@@ -439,10 +439,42 @@ def create_character():
         # 初始化游戏实例并同步角色名称
         if "session_id" not in session:
             session["session_id"] = str(time.time())
-        instance = get_game_instance(session["session_id"])
+        instance = get_game_instance(session["session_id"], initialize_player=False)
         game = instance["game"]
-        if game.game_state.player:
-            game.game_state.player.name = player_name
+
+        from src.xwe.core.attributes import CharacterAttributes
+        from src.xwe.core.character import Character, CharacterType
+
+        attrs_data = data.get("attributes")
+        attrs = None
+        if attrs_data:
+            attrs = CharacterAttributes.from_dict(attrs_data)
+            for key in [
+                "strength",
+                "constitution",
+                "agility",
+                "intelligence",
+                "willpower",
+                "comprehension",
+                "luck",
+            ]:
+                val = getattr(attrs, key, 0)
+                setattr(attrs, key, max(1, min(10, int(val))))
+            attrs.calculate_derived_attributes()
+
+        if attrs is None:
+            attrs = CharacterAttributes()
+
+        player = Character(
+            id=session.get("player_id", "player"),
+            name=player_name,
+            character_type=CharacterType.PLAYER,
+            attributes=attrs,
+        )
+        game.game_state.player = player
+        game.game_state.current_location = session.get("location", "青云城")
+        game.game_state.logs = []
+        logger.info(f"[PLAYER] attributes set: {attrs.to_dict()}")
 
     if dev_mode:
         session["dev"] = True
