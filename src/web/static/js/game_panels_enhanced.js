@@ -18,6 +18,13 @@ const GamePanels = {
         document.getElementById('panelOverlay').style.display = 'flex';
         document.getElementById(panelId).style.display = 'flex';
         this.currentPanel = panelId;
+        
+        // 保存当前打开的面板到sessionStorage
+        try {
+            sessionStorage.setItem('sidebar:last', panelId);
+        } catch (e) {
+            console.warn('无法保存面板状态:', e);
+        }
 
         // 加载面板数据
         this.loadPanelData(panelId);
@@ -210,38 +217,53 @@ const GamePanels = {
             const response = await fetch('/api/cultivation/status');
             
             if (response.ok) {
-                const result = await response.json();
-                const data = result.data;
+                const data = await response.json();
                 
-                // 更新当前功法
-                document.getElementById('currentTechnique').textContent = data.current_technique;
-                document.getElementById('techniqueProgress').textContent = 
-                    `${data.technique_level}(${data.progress}%)`;
-
-                // 更新功法列表
-                const list = document.getElementById('techniqueList');
-                list.innerHTML = '';
-
-                data.available_techniques.forEach(tech => {
-                    const item = document.createElement('div');
-                    item.className = 'technique-item';
-                    item.innerHTML = `
-                        <span style="color: ${tech.unlocked ? '#4CAF50' : '#666'}">${tech.name}</span> 
-                        - ${tech.level}
-                        ${tech.unlocked ? `(${tech.progress}%)` : '(未解锁)'}
-                    `;
-                    if (tech.unlocked) {
-                        item.style.cursor = 'pointer';
-                        item.onclick = () => this.selectTechnique(tech.id);
+                // 如果有realm和progress字段（新API格式）
+                if (data.realm !== undefined && data.progress !== undefined) {
+                    // 显示境界信息
+                    document.getElementById('currentTechnique').textContent = data.realm;
+                    document.getElementById('techniqueProgress').textContent = 
+                        `进度(${data.progress}%)`;
+                    
+                    // 更新修炼设置
+                    document.getElementById('maxCultivationTime').textContent = data.max_hours || '8';
+                    
+                    // 显示天劫信息（如果有）
+                    if (data.next_tribulation) {
+                        document.getElementById('cultivationWarning').textContent = 
+                            `警告：即将面临${data.next_tribulation.name || '天劫'}`;
                     } else {
-                        item.style.opacity = '0.6';
+                        document.getElementById('cultivationWarning').textContent = data.warning || '';
                     }
-                    list.appendChild(item);
-                });
+                }
+                // 如果有完整的功法信息（兼容旧格式）
+                else if (data.current_technique) {
+                    // 更新当前功法
+                    document.getElementById('currentTechnique').textContent = data.current_technique;
+                    document.getElementById('techniqueProgress').textContent = 
+                        `${data.technique_level || ''}(${data.progress || 0}%)`;
 
-                // 更新修炼设置
-                document.getElementById('maxCultivationTime').textContent = data.max_cultivation_time;
-                document.getElementById('cultivationWarning').textContent = data.warning || data.tips || '';
+                    // 更新功法列表
+                    const list = document.getElementById('techniqueList');
+                    list.innerHTML = '';
+
+                    if (data.techniques) {
+                        data.techniques.forEach(tech => {
+                            const item = document.createElement('div');
+                            item.className = 'technique-item';
+                            item.innerHTML = `
+                                <span style="color: ${tech.color || '#666'}">${tech.name}</span> 
+                                - ${tech.level}
+                            `;
+                            list.appendChild(item);
+                        });
+                    }
+
+                    // 更新修炼设置
+                    document.getElementById('maxCultivationTime').textContent = data.max_hours || '8';
+                    document.getElementById('cultivationWarning').textContent = data.warning || '';
+                }
                 
                 console.log('✅ 修炼数据加载成功');
             } else {
@@ -717,5 +739,21 @@ const GamePanels = {
 
 // 导出到全局
 window.GamePanels = GamePanels;
+
+// 恢复上次打开的面板
+window.addEventListener('DOMContentLoaded', () => {
+    try {
+        const lastPanel = sessionStorage.getItem('sidebar:last');
+        if (lastPanel && document.getElementById(lastPanel)) {
+            // 延迟一下打开，避免页面未完全加载
+            setTimeout(() => {
+                console.log(`恢复上次打开的面板: ${lastPanel}`);
+                GamePanels.showPanel(lastPanel);
+            }, 100);
+        }
+    } catch (e) {
+        console.warn('无法恢复面板状态:', e);
+    }
+});
 
 console.log('✅ 游戏面板系统已加载 (增强版)');

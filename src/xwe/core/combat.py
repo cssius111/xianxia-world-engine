@@ -209,9 +209,10 @@ class CombatSystem:
     处理所有战斗相关的逻辑
     """
     
-    def __init__(self, skill_system: Any = None, expression_parser: Any = None):
+    def __init__(self, skill_system: Any = None, expression_parser: Any = None, heaven_law_engine: Any = None):
         self.skill_system = skill_system
         self.parser = expression_parser
+        self.heaven_law_engine = heaven_law_engine
         self.active_combats: Dict[str, CombatState] = {}
         
     def create_combat(self, combat_id: Optional[str] = None) -> CombatState:
@@ -240,6 +241,23 @@ class CombatSystem:
 
     def attack(self, attacker: Any, defender: Any) -> CombatResult:
         """执行一次简单的攻击并返回结果"""
+        # 创建行动上下文
+        from src.xwe.core.heaven_law_engine import ActionContext
+        ctx = ActionContext()
+        
+        # ⛩ NEW: 天道审判
+        if self.heaven_law_engine:
+            self.heaven_law_engine.enforce(attacker, defender, ctx)
+            if ctx.cancelled:
+                # 处理天雷劫事件
+                result = CombatResult(False, ctx.reason or "天道不容！")
+                for event in ctx.events:
+                    if hasattr(event, 'apply'):
+                        event_msg = event.apply()
+                        result.message += "\n" + event_msg
+                return result
+        
+        # 原有的攻击逻辑
         # 创建临时战斗状态以复用伤害计算逻辑
         temp_combat = CombatState(str(uuid.uuid4()))
         temp_combat.add_participant(attacker, "attacker")

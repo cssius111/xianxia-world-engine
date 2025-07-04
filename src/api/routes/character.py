@@ -4,7 +4,7 @@
 """
 
 from flask import Blueprint, current_app, jsonify, request, session
-from run import is_dev_request
+from src.common.request_utils import is_dev_request
 import logging
 
 from src.xwe.core.attributes import CharacterAttributes
@@ -61,9 +61,15 @@ def get_character_info():
         if "session_id" not in session:
             return jsonify({"success": False, "error": "会话已过期"}), 401
 
-        from run import get_game_instance
-
-        instance = get_game_instance(session["session_id"])
+        # Access game instance through current_app to avoid circular import
+        if hasattr(current_app, 'game_instances'):
+            session_id = session["session_id"]
+            if session_id in current_app.game_instances:
+                instance = current_app.game_instances[session_id]
+            else:
+                return jsonify({"success": False, "error": "游戏实例不存在"}), 404
+        else:
+            return jsonify({"success": False, "error": "游戏系统未初始化"}), 500
         game = instance["game"]
 
         player = game.game_state.player

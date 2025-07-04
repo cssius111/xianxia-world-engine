@@ -27,13 +27,20 @@
     "install:deps": "playwright install-deps",
     "postinstall": "playwright install",
     "serve": "ENABLE_E2E_API=true python run.py",
-    "serve:test": "FLASK_ENV=testing ENABLE_E2E_API=true python run.py"
+    "serve:test": "FLASK_ENV=testing ENABLE_E2E_API=true python run.py",
+    "cl":      "dotenv -e .env -- claude-mcp"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cssius111/xianxia-world-engine.git"
   },
-  "keywords": ["game", "xianxia", "cultivation", "text-adventure", "e2e-testing"],
+  "keywords": [
+    "game",
+    "xianxia",
+    "cultivation",
+    "text-adventure",
+    "e2e-testing"
+  ],
   "author": "",
   "license": "ISC",
   "bugs": {
@@ -44,6 +51,7 @@
     "@playwright/mcp": "^0.0.29",
     "@playwright/test": "^1.53.1",
     "@types/node": "^20.0.0",
+    "dotenv-cli": "^8.0.0",
     "typescript": "^5.0.0"
   },
   "engines": {

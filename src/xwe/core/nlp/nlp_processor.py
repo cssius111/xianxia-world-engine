@@ -242,7 +242,47 @@ class DeepSeekNLPProcessor:
         """
         # 这里可以根据context添加更多上下文信息
         # 例如当前位置、已知NPC、可用物品等
-        return self.prompt_template.format(user_input)
+        
+        # 修复: 安全地处理用户输入，避免KeyError
+        try:
+            # 清理和转义用户输入
+            safe_input = self._sanitize_user_input(user_input)
+            return self.prompt_template.format(safe_input)
+        except (KeyError, ValueError) as e:
+            logger.warning(f"格式化prompt时出错: {e}, 使用字符串替换")
+            # 如果仍然出错，使用更安全的字符串替换
+            safe_input = self._sanitize_user_input(user_input)
+            return self.prompt_template.replace('"{}"', f'"{safe_input}"')
+    
+    def _sanitize_user_input(self, user_input: str) -> str:
+        """
+        清理和转义用户输入，防止格式化错误
+        
+        Args:
+            user_input: 原始用户输入
+            
+        Returns:
+            清理后的用户输入
+        """
+        if not user_input:
+            return ""
+        
+        # 1. 清理空白字符
+        cleaned = str(user_input).strip()
+        
+        # 2. 转义可能导致问题的字符
+        # 转义反斜杠
+        cleaned = cleaned.replace('\\', '\\\\')
+        # 转义双引号
+        cleaned = cleaned.replace('"', '\\"')
+        # 移除或替换控制字符
+        cleaned = re.sub(r'[\x00-\x1f\x7f-\x9f]', ' ', cleaned)
+        
+        # 3. 限制长度防止过长输入
+        if len(cleaned) > 500:
+            cleaned = cleaned[:500] + "..."
+        
+        return cleaned
 
     def _call_deepseek_api(self, prompt: str) -> str:
         """

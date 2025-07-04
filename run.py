@@ -52,14 +52,7 @@ from src.xwe.features.community_system import CommunitySystem
 from src.xwe.features.narrative_system import NarrativeSystem
 from src.xwe.features.technical_ops import TechnicalOps
 from src.xwe.server.app_factory import create_app
-
-
-def is_dev_request(req) -> bool:
-    """检查请求是否开启开发模式"""
-    return (
-        req.args.get("dev") == "true"
-        or str(req.headers.get("dev", "")).lower() == "true"
-    )
+from src.common.request_utils import is_dev_request
 
 
 # 创建应用和日志
@@ -77,14 +70,7 @@ try:
 except ImportError as e:
     logger.debug(f"Lore routes not loaded: {e}")
 
-try:
-    # Register intel routes
-    from src.api.routes.intel import bp as intel_bp
-
-    app.register_blueprint(intel_bp)
-    logger.info("Intel routes registered")
-except ImportError as e:
-    logger.debug(f"Intel routes not loaded: {e}")
+# Note: Intel routes are now registered via register_all_routes to avoid duplication
 
 # Register E2E test routes in development/test mode
 if (
@@ -99,11 +85,11 @@ if (
     except ImportError as e:
         logger.debug(f"E2E test routes not loaded: {e}")
 
-# Register sidebar API fixes
-from api_fixes import register_sidebar_apis
+# Register all API routes (lazy import to avoid circular dependencies)
+from src.api.routes import register_all_routes
 
-register_sidebar_apis(app)
-logger.info("Sidebar API fixes registered")
+register_all_routes(app)
+logger.info("All API routes registered")
 
 # 如果未设置 DEEPSEEK_API_KEY，记录警告
 if not os.environ.get("DEEPSEEK_API_KEY"):
@@ -123,6 +109,9 @@ inventory_system = InventorySystem()
 # ---------------- 游戏实例管理 -----------------
 # Web UI 优化版中提供的多会话支持
 game_instances = {}
+
+# Store game_instances in app context for access in routes
+app.game_instances = game_instances
 
 # 保存上一次发送给每个会话的状态数据，用于Server-Sent Events
 status_cache = {}
@@ -419,7 +408,7 @@ def need_refresh():
 @app.route("/create_character", methods=["POST"])
 def create_character():
     """创建角色"""
-    dev_mode = is_dev_request(request)
+    dev_mode = is_dev_request()
     data = request.get_json()
 
     if data and "name" in data:
@@ -616,7 +605,7 @@ def api_roll():
 @app.route("/command", methods=["POST"])
 def process_command():
     """处理游戏命令（集成NLP）"""
-    dev_mode = is_dev_request(request)
+    dev_mode = is_dev_request()
     data = request.get_json()
     user_input = data.get("text", data.get("command", ""))  # 兼容两种字段名
     player_id = session.get("player_id", "default")

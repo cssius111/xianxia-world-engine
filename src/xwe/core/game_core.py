@@ -24,6 +24,7 @@ from src.xwe.core.combat import CombatAction, CombatActionType, CombatState, Com
 from src.xwe.core.command_parser import CommandParser, CommandType, ParsedCommand
 from src.xwe.core.command_router import CommandPriority, CommandRouter
 from src.xwe.core.data_loader import DataLoader
+from src.xwe.core.heaven_law_engine import HeavenLawEngine
 from src.xwe.core.immersive_event_system import (
     EventType,
     ImmersiveEventSystem,
@@ -122,7 +123,13 @@ class GameCore:
         self.parser = ExpressionParser()
         self.attribute_system = AttributeSystem(self.parser)
         self.skill_system = SkillSystem()
-        self.combat_system = CombatSystem(self.skill_system, self.parser)
+        
+        # 初始化天道法则引擎
+        self.heaven_law_engine = HeavenLawEngine()
+        
+        # 初始化战斗系统（传入天道法则引擎）
+        self.combat_system = CombatSystem(self.skill_system, self.parser, self.heaven_law_engine)
+        
         self.ai_controller = AIController(self.skill_system)
         self.command_parser = CommandParser()
 

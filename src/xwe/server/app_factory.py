@@ -15,10 +15,15 @@ def create_app(log_level: int = logging.INFO) -> Flask:
 
     configure_logging("logs", level=log_level)
 
-    # 获取项目根目录
-    project_root = Path(__file__).resolve().parent.parent.parent
-    static_folder = project_root / "static"
-    template_folder = project_root / "templates"
+    # 获取项目根目录（修复：需要多往上一层才是真正的项目根目录）
+    # __file__ = src/xwe/server/app_factory.py
+    # .parent.parent.parent = src/
+    # .parent.parent.parent.parent = 项目根目录/
+    project_root = Path(__file__).resolve().parent.parent.parent.parent
+    
+    # 模板和静态文件路径 - 指向 src/web/ 目录
+    static_folder = project_root / "src" / "web" / "static"
+    template_folder = project_root / "src" / "web" / "templates"
 
     app = Flask(__name__, 
                 static_folder=str(static_folder), 

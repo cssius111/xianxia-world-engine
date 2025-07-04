@@ -9,7 +9,7 @@ import time
 from pathlib import Path
 from typing import Dict, List, Optional, Any
 import logging
-from config.game_config import config
+from src.config.game_config import config
 
 logger = logging.getLogger(__name__)
 

@@ -15,12 +15,19 @@ pip install -r requirements.txt
 ```bash
 python run.py
 ```
-运行该脚本会自动加载 `api_fixes.py`，注册侧边栏相关 API。如使用自定义启动方
-式，请确保在创建 `Flask` 应用后调用 `register_sidebar_apis(app)`。
 
 ### 3. 访问游戏
 
 打开浏览器访问：http://localhost:5001
+
+## Recent Architecture Changes (v0.3.0)
+
+- **API Consolidation**: Merged `api_fixes.py` into main route handlers
+- **Module Restructuring**: Removed empty `deepseek/__init__.py`, moved AI integration to `src/ai/deepseek_client.py`
+- **Improved Code Organization**: All API routes now follow RESTful conventions under `src/api/routes/`
+
+These changes improve maintainability and reduce code duplication. For migration details,
+see [CHANGELOG.md](./CHANGELOG.md).
 
 ## 游戏流程
 
