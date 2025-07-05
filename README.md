@@ -8,6 +8,7 @@
 
 ```bash
 pip install -r requirements.txt
+pre-commit install
 ```
 
 ### 2. 启动游戏
