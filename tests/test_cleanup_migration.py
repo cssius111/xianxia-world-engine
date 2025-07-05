@@ -17,11 +17,11 @@ def test_redundant_files_removed():
     assert not (project_root / "deepseek" / "__init__.py").exists(), \
         "deepseek/__init__.py should be removed"
     
-    # Verify backup files exist (optional check)
-    assert (project_root / "api_fixes.py.backup").exists(), \
-        "api_fixes.py should be backed up"
-    assert (project_root / "deepseek" / "__init__.py.backup").exists(), \
-        "deepseek/__init__.py should be backed up"
+    # Verify backup files have been removed
+    assert not (project_root / "api_fixes.py.backup").exists(), \
+        "api_fixes.py.backup should be removed"
+    assert not (project_root / "deepseek" / "__init__.py.backup").exists(), \
+        "deepseek/__init__.py.backup should be removed"
 
 
 def test_new_structure_exists():
