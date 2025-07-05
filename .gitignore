@@ -50,5 +50,14 @@ build/
 project_snapshot.json
 game_settings.json
 
+# Legacy debugging files (removed from repository)
+api_fixes.py.backup
+debug_mock_test.py
+debug_routes.py
+print_routes.py
+deepseek/__init__.py.backup
+tests/debug/
+tests/_legacy/
+
 # Swift version file
 .swift-version
