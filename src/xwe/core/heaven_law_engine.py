@@ -62,11 +62,20 @@ class ThunderTribulation(Event):
             
             # Add scorched status effect
             if hasattr(self.actor, 'status_effects'):
-                self.actor.status_effects.append({
-                    'name': 'scorched',
-                    'duration': 10,
-                    'description': '被天雷击中，全属性降低'
-                })
+                from src.xwe.core.status import StatusEffect, StatusType
+                scorched_effect = StatusEffect(
+                    id='scorched',
+                    name='天雷灼伤',
+                    description='被天雷击中，全属性降低',
+                    status_type=StatusType.DEBUFF,
+                    duration=10,
+                    modifiers={
+                        'attack_power': -0.2,  # -20% attack
+                        'defense': -0.2,       # -20% defense
+                        'agility': -0.2        # -20% agility
+                    }
+                )
+                self.actor.status_effects.add_effect(scorched_effect)
         
         messages = {
             "minor": f"{self.actor.name}被一道细小的天雷击中！",

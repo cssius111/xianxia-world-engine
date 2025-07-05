@@ -27,10 +27,28 @@ def test_env(monkeypatch):
 @pytest.fixture
 def app():
     """Create test Flask app."""
-    app = Flask(__name__)
-    app.secret_key = "test_secret"
-    app.config.update(TESTING=True, VERSION="1.0.0")
-    return app
+    # Create a fresh app for testing to avoid conflicts
+    from src.xwe.server.app_factory import create_app
+    from src.api.routes import register_all_routes
+    
+    # Create app
+    test_app = create_app()
+    
+    # Configure for testing
+    test_app.config.update(
+        TESTING=True,
+        VERSION="1.0.0",
+        SECRET_KEY="test_secret",
+        LOG_PATH="logs"
+    )
+    
+    # Initialize game_instances on the app
+    test_app.game_instances = {}
+    
+    # Register all routes
+    register_all_routes(test_app)
+    
+    return test_app
 
 
 @pytest.fixture

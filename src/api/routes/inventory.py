@@ -7,7 +7,8 @@ logger = logging.getLogger(__name__)
 inventory_bp = Blueprint('inventory', __name__, url_prefix='/api/inventory')
 
 
-@inventory_bp.get('/')
+@inventory_bp.route('', methods=['GET'])
+@inventory_bp.route('/', methods=['GET'])
 def get_inventory():
     """
     Get player inventory.

@@ -7,7 +7,8 @@ logger = logging.getLogger(__name__)
 achievements_bp = Blueprint('achievements', __name__, url_prefix='/api/achievements')
 
 
-@achievements_bp.get('/')
+@achievements_bp.route('', methods=['GET'])
+@achievements_bp.route('/', methods=['GET'])
 def list_achievements():
     """
     List all player achievements.
@@ -42,42 +43,44 @@ def list_achievements():
                 game = current_app.game_instances[session_id]['game']
                 if hasattr(game, 'achievement_manager'):
                     achievements = game.achievement_manager.list_player()
-                    return jsonify([a.to_dict() for a in achievements]), 200
+                    achievements_data = [a.to_dict() for a in achievements]
+                    return jsonify({"success": True, "achievements": achievements_data}), 200
     except Exception as e:
         logger.error(f"Error getting achievements from game state: {e}")
     
     # Fallback to default achievements
     achievements_data = [
-        {
-            "id": "ach_001",
-            "name": "初入仙门",
-            "description": "踏上修仙之路",
-            "unlocked": True,
-            "unlock_time": "2025-06-30 10:00",
-            "reward": "铜钱x100",
-            "category": "progress"
-        },
-        {
-            "id": "ach_002",
-            "name": "筑基成功",
-            "description": "突破至筑基期",
-            "unlocked": False,
-            "unlock_time": None,
-            "reward": "丹药x1",
-            "category": "cultivation"
-        },
-        {
-            "id": "ach_003",
-            "name": "斩妖除魔",
-            "description": "击败100只妖兽",
-            "unlocked": False,
-            "unlock_time": None,
-            "reward": "妖兽精血x10",
-            "category": "combat"
-        }
+    {
+    "id": "ach_001",
+    "name": "初入仙门",
+    "description": "踏上修仙之路",
+    "unlocked": True,
+    "unlock_time": "2025-06-30 10:00",
+    "reward": "铜钱x100",
+    "category": "progress"
+    },
+    {
+    "id": "ach_002",
+    "name": "筑基成功",
+    "description": "突破至筑基期",
+    "unlocked": False,
+    "unlock_time": None,
+    "reward": "丹药x1",
+    "category": "cultivation"
+    },
+    {
+    "id": "ach_003",
+    "name": "斩妖除魔",
+    "description": "击败100只妖兽",
+    "unlocked": False,
+    "unlock_time": None,
+    "reward": "妖兽精血x10",
+    "category": "combat"
+    }
     ]
     
-    return jsonify(achievements_data), 200
+    # Return in the format expected by tests
+    return jsonify({"success": True, "achievements": achievements_data}), 200
 
 
 @achievements_bp.get('/achievements/<achievement_id>')

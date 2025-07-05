@@ -39,7 +39,9 @@ if str(SRC_PATH) not in sys.path:
     sys.path.insert(0, str(SRC_PATH))
 
 from logging_config import setup_logging
-setup_logging()
+# 检查是否启用详细日志
+verbose_mode = os.getenv("VERBOSE_LOG", "false").lower() == "true"
+setup_logging(verbose=verbose_mode)
 
 from src.config.game_config import config
 from src.xwe.core.command_router import CommandRouter, handle_attack

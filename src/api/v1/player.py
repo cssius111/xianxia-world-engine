@@ -10,7 +10,7 @@ from flask import Blueprint, jsonify, request, session
 from src.xwe.core.attributes import CharacterAttributes
 from src.xwe.core.character import Character, CharacterType
 
-player_bp = Blueprint("player", __name__)
+player_bp = Blueprint("player_v1", __name__)
 
 
 @player_bp.route("/info", methods=["GET"])

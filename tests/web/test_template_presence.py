@@ -71,9 +71,12 @@ class TestTemplatePresence:
             # Simple test to verify template loader works
             try:
                 # This will raise TemplateNotFound if template folder is wrong
-                template_source, template_filename = app.jinja_loader.get_source(
+                result = app.jinja_loader.get_source(
                     app.jinja_env, 'base.html'
                 )
+                # get_source returns a 3-tuple: (source, filename, uptodate)
+                template_source = result[0]
+                template_filename = result[1]
                 assert template_source is not None, "无法加载基础模板"
                 assert 'base.html' in template_filename, "模板文件名不正确"
             except Exception as e:

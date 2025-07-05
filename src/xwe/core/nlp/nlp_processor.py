@@ -231,7 +231,7 @@ class DeepSeekNLPProcessor:
 
     def build_prompt(self, user_input: str, context: Optional[Dict] = None) -> str:
         """
-        构建prompt
+        构建prompt，包含 Token 长度保护
 
         Args:
             user_input: 用户输入
@@ -247,11 +247,71 @@ class DeepSeekNLPProcessor:
         try:
             # 清理和转义用户输入
             safe_input = self._sanitize_user_input(user_input)
-            return self.prompt_template.format(safe_input)
-        except (KeyError, ValueError) as e:
-            logger.warning(f"格式化prompt时出错: {e}, 使用字符串替换")
-            # 如果仍然出错，使用更安全的字符串替换
-            safe_input = self._sanitize_user_input(user_input)
+            
+            # 构建基础 prompt
+            base_prompt = self.prompt_template.replace('"{}"', f'"{safe_input}"')
+            
+            # Token 长度保护
+            context_limit = self.config.get("context_limit", 4096)  # 默认 4K context
+            reserved_tokens = 200  # 为响应预留的 token
+            max_prompt_tokens = context_limit - reserved_tokens
+            
+            # 简单的 token 估算 (1 token ≈ 4 characters for Chinese)
+            estimated_tokens = len(base_prompt) // 4
+            
+            if estimated_tokens > max_prompt_tokens:
+                logger.warning(
+                    f"Prompt 长度超限: {estimated_tokens} > {max_prompt_tokens} tokens, "
+                    f"将截断历史对话"
+                )
+                
+                # 截断策略：保留核心系统提示和当前用户输入
+                lines = base_prompt.split('\n')
+                essential_lines = []
+                user_input_lines = []
+                
+                # 提取核心部分
+                in_examples = False
+                for line in lines:
+                    if '### 示例：' in line:
+                        in_examples = True
+                        continue
+                    elif f'输入: "{safe_input}"' in line:
+                        in_examples = False
+                        user_input_lines.extend(lines[lines.index(line):])
+                        break
+                    elif not in_examples:
+                        essential_lines.append(line)
+                
+                # 重新组合，保留核心部分
+                truncated_prompt = '\n'.join(essential_lines + user_input_lines)
+                
+                # 再次检查长度
+                if len(truncated_prompt) // 4 > max_prompt_tokens:
+                    # 如果还是太长，使用最小化 prompt
+                    truncated_prompt = f'''你是修仙世界游戏的命令解析器。
+将用户输入转换为JSON格式：
+{{
+  "raw": "<用户输入>",
+  "normalized_command": "<标准命令>",
+  "intent": "<意图>",
+  "args": {{}},
+  "explanation": "<说明>"
+}}
+
+输入: "{safe_input}"
+输出:
+'''
+                
+                logger.info(f"Prompt 已截断至 {len(truncated_prompt) // 4} tokens")
+                return truncated_prompt
+            
+            return base_prompt
+            
+        except Exception as e:
+            logger.warning(f"构建prompt时出错: {e}, 使用回退方案")
+            # 如果仍然出错，使用最安全的回退方案
+            safe_input = self._sanitize_user_input(user_input) or "未知命令"
             return self.prompt_template.replace('"{}"', f'"{safe_input}"')
     
     def _sanitize_user_input(self, user_input: str) -> str:
@@ -267,22 +327,38 @@ class DeepSeekNLPProcessor:
         if not user_input:
             return ""
         
-        # 1. 清理空白字符
-        cleaned = str(user_input).strip()
-        
-        # 2. 转义可能导致问题的字符
-        # 转义反斜杠
-        cleaned = cleaned.replace('\\', '\\\\')
-        # 转义双引号
-        cleaned = cleaned.replace('"', '\\"')
-        # 移除或替换控制字符
-        cleaned = re.sub(r'[\x00-\x1f\x7f-\x9f]', ' ', cleaned)
-        
-        # 3. 限制长度防止过长输入
-        if len(cleaned) > 500:
-            cleaned = cleaned[:500] + "..."
-        
-        return cleaned
+        try:
+            # 1. 确保输入是字符串
+            cleaned = str(user_input).strip()
+            
+            # 2. 移除或替换可能导致问题的字符
+            # 移除控制字符（包括换行符、制表符等）
+            cleaned = re.sub(r'[\x00-\x1f\x7f-\x9f]', ' ', cleaned)
+            
+            # 3. 转义可能导致JSON解析问题的字符
+            # 转义反斜杠
+            cleaned = cleaned.replace('\\', '\\\\')
+            # 转义双引号
+            cleaned = cleaned.replace('"', '\\"')
+            # 移除花括号，防止被误解为格式化占位符
+            cleaned = cleaned.replace('{', '').replace('}', '')
+            
+            # 4. 清理多余的空白字符
+            cleaned = re.sub(r'\s+', ' ', cleaned)
+            
+            # 5. 限制长度防止过长输入
+            if len(cleaned) > 500:
+                cleaned = cleaned[:500] + "..."
+            
+            # 6. 如果清理后为空，返回默认值
+            if not cleaned:
+                cleaned = "未知命令"
+                
+            return cleaned
+            
+        except Exception as e:
+            logger.warning(f"清理用户输入时出错: {e}")
+            return "未知命令"
 
     def _call_deepseek_api(self, prompt: str) -> str:
         """
@@ -459,8 +535,9 @@ class DeepSeekNLPProcessor:
             logger.debug(f"DeepSeek解析耗时: {elapsed:.3f}秒")
 
             # 创建ParsedCommand对象
+            # 确保 raw 始终是用户的原始输入
             parsed = ParsedCommand(
-                raw=result["raw"],
+                raw=user_input,  # 使用原始用户输入而不是 API 返回的值
                 normalized_command=result["normalized_command"],
                 intent=result["intent"],
                 args=result.get("args", {}),

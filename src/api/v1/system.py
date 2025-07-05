@@ -9,7 +9,7 @@ import os
 import psutil
 from flask import Blueprint, current_app, jsonify, request, session
 
-system_bp = Blueprint("system", __name__)
+system_bp = Blueprint("system_v1", __name__)
 
 
 @system_bp.route("/info", methods=["GET"])

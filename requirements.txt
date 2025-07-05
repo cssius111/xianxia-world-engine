@@ -30,6 +30,7 @@ psutil==7.0.0
 
 # 测试相关依赖
 pytest==8.1.1
+pytest-mock==3.14.0
 playwright==1.42.0
 
 # 注意：DeepSeek SDK 需要单独安装

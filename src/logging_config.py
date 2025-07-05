@@ -44,10 +44,18 @@ def _add_handler(logger: logging.Logger, handler: Handler) -> None:
     logger.addHandler(handler)
 
 
-def setup_logging() -> None:
-    """Configure root logger for the application."""
-
-    level = logging.DEBUG if os.getenv("DEBUG_LOG") in {"1", "true", "True"} else logging.INFO
+def setup_logging(verbose: bool = False) -> None:
+    """
+    Configure root logger for the application.
+    
+    Args:
+        verbose: 是否启用详细日志 (DEBUG 级别)
+    """
+    # 检查环境变量和参数
+    debug_env = os.getenv("DEBUG_LOG") in {"1", "true", "True"}
+    verbose_env = os.getenv("VERBOSE_LOG") in {"1", "true", "True"}
+    
+    level = logging.DEBUG if (debug_env or verbose_env or verbose) else logging.INFO
     root = logging.getLogger()
     root.setLevel(level)
 
@@ -76,4 +84,19 @@ def setup_logging() -> None:
     info_file.setLevel(logging.INFO)
     info_file.setFormatter(formatter)
     _add_handler(root, info_file)
-
+    
+    # 优化第三方库日志级别（除非启用详细模式）
+    if not verbose:
+        # 将 backoff 和 urllib3 日志级别设为 ERROR
+        logging.getLogger("backoff").setLevel(logging.ERROR)
+        logging.getLogger("urllib3").setLevel(logging.ERROR)
+        logging.getLogger("urllib3.connectionpool").setLevel(logging.ERROR)
+        logging.getLogger("requests").setLevel(logging.WARNING)
+        
+        # 其他可能噪音较多的库
+        logging.getLogger("werkzeug").setLevel(logging.WARNING)
+        logging.getLogger("flask").setLevel(logging.WARNING)
+    else:
+        # 详细模式下恢复第三方库的正常日志级别
+        logging.getLogger("backoff").setLevel(logging.INFO)
+        logging.getLogger("urllib3").setLevel(logging.INFO)

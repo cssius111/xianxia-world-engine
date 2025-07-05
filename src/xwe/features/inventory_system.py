@@ -127,6 +127,22 @@ class InventorySystem:
 
         return added
     
+    def has_item(self, player_id: str, item_name: str, quantity: int = 1) -> bool:
+        """
+        检查玩家是否拥有指定数量的物品
+        
+        Args:
+            player_id: 玩家ID
+            item_name: 物品名称
+            quantity: 需要的数量
+            
+        Returns:
+            是否拥有足够数量的物品
+        """
+        inventory = self.get_inventory(player_id)
+        current_qty = inventory.get_quantity(item_name)
+        return current_qty >= quantity
+    
     def remove_item(self, player_id: str, item_name: str, quantity: int = 1) -> bool:
         """
         移除物品

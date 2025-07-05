@@ -11,7 +11,7 @@ from flask import Blueprint, current_app, jsonify, request, session
 
 from src.xwe.core.game_core import GameState
 
-save_bp = Blueprint("save", __name__)
+save_bp = Blueprint("save_v1", __name__)
 
 # 存档目录
 SAVE_DIR = "saves"

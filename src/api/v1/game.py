@@ -7,7 +7,7 @@ import time
 
 from flask import Blueprint, current_app, jsonify, request, session
 
-game_bp = Blueprint("game", __name__)
+game_bp = Blueprint("game_v1", __name__)
 
 
 @game_bp.route("/status", methods=["GET"])
