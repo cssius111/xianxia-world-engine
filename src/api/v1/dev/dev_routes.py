@@ -4,7 +4,8 @@
 """
 
 from flask import Blueprint, jsonify, request
-import os
+import flask
+import sys
 
 # 无论环境如何都先创建蓝图，随后再在外部判断是否导出
 dev_bp = Blueprint('dev', __name__)
@@ -14,9 +15,8 @@ dev_bp = Blueprint('dev', __name__)
 def debug_info():
     """获取调试信息"""
     return jsonify({
-        "environment": dict(os.environ),
-        "python_version": "3.10",
-        "flask_version": "2.3.2"
+        "python_version": sys.version.split(" ")[0],
+        "flask_version": flask.__version__
     })
 
 
