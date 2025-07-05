@@ -21,6 +21,7 @@ python main_menu.py
 ```bash
 chmod +x scripts/*.py
 python scripts/dev/gen_character.py
+pre-commit install
 ```
 
 
