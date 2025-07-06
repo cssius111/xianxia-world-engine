@@ -221,7 +221,7 @@ def build_status_data():
     return status_dict
 
 
-# ---------------- Blueprint for basic routes -----------------
+
 
 main_bp = Blueprint("main", __name__)
 
@@ -230,7 +230,10 @@ main_bp = Blueprint("main", __name__)
 def index():
     if session.get("player_created"):
         return redirect(url_for("main.game_screen"))
+
     return redirect(url_for("main.intro_screen"))
+
+    return redirect(url_for("intro_screen"))
 
 
 @main_bp.route("/welcome")
