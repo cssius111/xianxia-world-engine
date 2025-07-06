@@ -61,6 +61,8 @@ class NarrativeSystem:
         
         # 初始化一些基础故事线
         self._init_base_stories()
+        # 初始化事件模板库
+        self._init_event_templates()
         
     def _init_base_stories(self) -> None:
         """初始化基础故事线"""
@@ -106,6 +108,39 @@ class NarrativeSystem:
             ]
         )
         self.story_nodes["main_start"] = start_node
+
+    def _init_event_templates(self) -> None:
+        """初始化事件模板库"""
+        self.event_templates = [
+            {
+                "id": "mysterious_stranger",
+                "name": "神秘来客",
+                "description": "一位神秘的修士出现在你面前...",
+                "choices": ["交谈", "警惕观察", "直接离开"],
+                "weights": {"default": 0.3, "aggressive": 0.2, "curious": 0.3, "cautious": 0.2},
+            },
+            {
+                "id": "ancient_ruins",
+                "name": "古迹发现",
+                "description": "你发现了一处隐藏的古代遗迹...",
+                "choices": ["立即探索", "做好准备再来", "通知他人"],
+                "weights": {"default": 0.2, "curious": 0.5, "cautious": 0.1},
+            },
+            {
+                "id": "moral_dilemma",
+                "name": "道德抉择",
+                "description": "你遇到了一个需要做出艰难选择的情况...",
+                "choices": ["坚持正义", "利益优先", "寻找折中"],
+                "weights": {"default": 0.25, "aggressive": 0.1, "cautious": 0.4},
+            },
+            {
+                "id": "demon_attack",
+                "name": "魔修袭击",
+                "description": "一群魔修突然出现向你袭来...",
+                "choices": ["迎战", "逃跑"],
+                "weights": {"default": 0.25, "aggressive": 0.5, "cautious": 0.2},
+            },
+        ]
         
     def start_story_arc(self, player_id: str, arc_id: str) -> Optional[StoryNode]:
         """
@@ -313,45 +348,58 @@ class NarrativeSystem:
                                   if q.is_completed)
         }
     
-    def generate_story_event(self, context: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    def generate_story_event(
+        self,
+        context: Dict[str, Any],
+        player_style: str = "default",
+        environment: Optional[Dict[str, Any]] = None,
+    ) -> Optional[Dict[str, Any]]:
         """
         根据上下文生成故事事件
-        
+
         Args:
             context: 包含玩家状态、位置等信息的上下文
-            
+            player_style: 玩家行为风格，如"aggressive"、"curious"等
+            environment: 当前环境参数，如{"lingqi": 5, "comprehension": 3}
+
         Returns:
             生成的事件
         """
-        events = [
-            {
-                "id": "mysterious_stranger",
-                "name": "神秘来客",
-                "description": "一位神秘的修士出现在你面前...",
-                "choices": ["交谈", "警惕观察", "直接离开"],
-                "weight": 0.3
-            },
-            {
-                "id": "ancient_ruins",
-                "name": "古迹发现", 
-                "description": "你发现了一处隐藏的古代遗迹...",
-                "choices": ["立即探索", "做好准备再来", "通知他人"],
-                "weight": 0.2
-            },
-            {
-                "id": "moral_dilemma",
-                "name": "道德抉择",
-                "description": "你遇到了一个需要做出艰难选择的情况...",
-                "choices": ["坚持正义", "利益优先", "寻找折中"],
-                "weight": 0.25
-            }
-        ]
-        
-        # 根据权重选择事件
-        weights = [e["weight"] for e in events]
-        chosen_event = random.choices(events, weights=weights)[0]
-        
-        return chosen_event
+        weighted_events = []
+        for tpl in getattr(self, "event_templates", []):
+            weights = tpl.get("weights", {})
+            w = weights.get(player_style, weights.get("default", 0.1))
+            event = {k: v for k, v in tpl.items() if k != "weights"}
+            event["weight"] = w
+            weighted_events.append(event)
+
+        if not weighted_events:
+            return None
+
+        weights = [e["weight"] for e in weighted_events]
+        chosen = random.choices(weighted_events, weights=weights)[0]
+
+        desc = chosen.get("description", "")
+        if environment:
+            env_parts = []
+            qi = environment.get("lingqi")
+            if qi is not None:
+                env_parts.append("灵气充沛" if qi > 5 else "灵气稀薄")
+            comp = environment.get("comprehension")
+            if comp is not None:
+                env_parts.append("悟性提升" if comp > 5 else "悟性受到压制")
+            if env_parts:
+                desc = f"{desc} ({'，'.join(env_parts)})"
+
+        luck = context.get("luck")
+        if luck is not None:
+            if luck > 15:
+                desc += "，你隐约觉得今日气运亨通。"
+            elif luck < 5:
+                desc += "，周围弥漫着一丝不祥。"
+
+        chosen["description"] = desc
+        return chosen
 
 
 @dataclass

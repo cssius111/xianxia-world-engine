@@ -42,13 +42,13 @@ def random_event():
             game = current_app.game_instances[session_id]["game"]
             ns = getattr(game, "narrative_system", None)
             if ns:
-                event = ns.generate_story_event({"style": style})
+                event = ns.generate_story_event({}, player_style=style)
                 return jsonify(event)
     except Exception as e:  # pragma: no cover - fallback
         current_app.logger.error(f"random_event error: {e}")
 
     from src.xwe.features.narrative_system import narrative_system
-    event = narrative_system.generate_story_event({"style": style})
+    event = narrative_system.generate_story_event({}, player_style=style)
     return jsonify(event)
 
 
