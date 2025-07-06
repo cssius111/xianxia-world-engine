@@ -454,6 +454,15 @@ class XianxiaGameController {
                 if (data.player && this.modules.profile) {
                     this.modules.profile.updateProfile(data.player);
                 }
+
+                if (data.inventory) {
+                    const gold = data.inventory.gold || 0;
+                    const goldElem = document.getElementById('status-gold');
+                    if (goldElem) goldElem.textContent = gold;
+                    if (window.GamePanels && typeof GamePanels.loadInventoryData === 'function') {
+                        GamePanels.loadInventoryData();
+                    }
+                }
             } catch (e) {
                 console.error('事件流解析失败:', e);
             }
