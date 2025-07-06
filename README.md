@@ -133,3 +133,5 @@ MIT License
 更多文档见 [docs/INDEX.md](docs/INDEX.md)。
 项目结构详见 [docs/architecture/project_structure.md](docs/architecture/project_structure.md)，
 开发环境搭建见 [docs/development/setup_guide.md](docs/development/setup_guide.md)。
+
+历史修复总结文档已移动至 [docs/reports](docs/reports)。
