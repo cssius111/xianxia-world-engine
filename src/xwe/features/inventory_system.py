@@ -9,6 +9,7 @@ from pathlib import Path
 import logging
 
 from src.xwe.core.inventory import Inventory
+from flask import has_request_context, session
 
 logger = logging.getLogger(__name__)
 
@@ -37,6 +38,25 @@ class InventorySystem:
         
         # 玩家背包缓存
         self.inventories: Dict[str, Inventory] = {}
+
+    def _broadcast_change(self, player_id: str) -> None:
+        """更新 status_cache 以便通过 SSE 推送背包变化。"""
+        try:
+            from src.app import build_status_data, status_cache
+
+            session_id = (
+                session.get("session_id", player_id)
+                if has_request_context()
+                else player_id
+            )
+            data = build_status_data()
+            subset = {
+                "player": data.get("player", {}),
+                "inventory": data.get("inventory", {}),
+            }
+            status_cache[session_id] = subset
+        except Exception as e:  # pragma: no cover - best effort
+            logger.debug(f"广播背包变更失败: {e}")
         
     def get_inventory(self, player_id: str) -> Inventory:
         """
@@ -89,6 +109,7 @@ class InventorySystem:
             )
             # 自动保存
             save_success = self.save(player_id)
+            self._broadcast_change(player_id)
         else:
             logger.warning(
                 f"[INVENTORY] 玩家 {player_id} 添加物品失败: {item_name} x{quantity}"
@@ -162,6 +183,7 @@ class InventorySystem:
             logger.info(f"玩家 {player_id} 移除物品: {item_name} x{quantity}")
             # 自动保存
             self.save(player_id)
+            self._broadcast_change(player_id)
             
         return success
     
