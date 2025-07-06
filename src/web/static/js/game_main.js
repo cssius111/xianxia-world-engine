@@ -184,18 +184,56 @@ const GameUI = {
  */
 const WelcomeSystem = {
     /**
+     * 初始化欢迎页签
+     */
+    initTabs() {
+        const modal = document.getElementById('welcomeModal');
+        if (!modal) return;
+
+        const buttons = modal.querySelectorAll('.welcome-tabs .tab-btn');
+        const sections = modal.querySelectorAll('.tab-section');
+
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const target = btn.dataset.tab;
+
+                buttons.forEach(b => b.classList.toggle('active', b === btn));
+                sections.forEach(sec => {
+                    if (sec.dataset.tab === target) {
+                        sec.classList.add('active');
+                        sec.style.display = 'block';
+                    } else {
+                        sec.classList.remove('active');
+                        sec.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // 默认显示第一个页签
+        sections.forEach(sec => {
+            if (sec.dataset.tab === 'home') {
+                sec.classList.add('active');
+                sec.style.display = 'block';
+            } else {
+                sec.style.display = 'none';
+            }
+        });
+    },
+    /**
      * 显示欢迎界面
      */
     show() {
         // 检查是否是新会话
         const isNewSession = !sessionStorage.getItem('welcomeShown');
-        
+
         if (isNewSession && window.GameLauncher) {
             // 标记已显示
             sessionStorage.setItem('welcomeShown', 'true');
-            
+
             // 显示欢迎页面
             window.GameLauncher.show();
+            this.initTabs();
         }
     }
 };

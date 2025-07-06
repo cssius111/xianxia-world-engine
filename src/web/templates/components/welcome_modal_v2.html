@@ -14,23 +14,47 @@
                 <p class="subtitle-small">一念成仙，一念成魔</p>
             </div>
 
-
-            <div class="welcome-buttons">
-                <button class="welcome-btn welcome-btn-primary icon-star" onclick="GameLauncher.startNewGame()">
-                    <span class="btn-text">开始游戏</span>
-                </button>
-
-                <button class="welcome-btn welcome-btn-secondary icon-book" onclick="GameLauncher.continueGame()">
-                    <span class="btn-text">继续游戏</span>
-                </button>
-
-                <button class="welcome-btn welcome-btn-dev icon-wrench" onclick="GameLauncher.enterDevMode()">
-                    <span class="btn-text">开发者模式</span>
-                </button>
+            <div class="welcome-tabs">
+                <button class="tab-btn active" data-tab="home">首页</button>
+                <button class="tab-btn" data-tab="world">世界观</button>
+                <button class="tab-btn" data-tab="guide">操作指南</button>
             </div>
 
-            <div class="welcome-footer">
-                <p>© 2025 修仙世界引擎 | v1.0.0</p>
+            <div class="tab-section" data-tab="home">
+                <div class="welcome-buttons">
+                    <button class="welcome-btn welcome-btn-primary icon-star" onclick="GameLauncher.startNewGame()">
+                        <span class="btn-text">开始游戏</span>
+                    </button>
+
+                    <button class="welcome-btn welcome-btn-secondary icon-book" onclick="GameLauncher.continueGame()">
+                        <span class="btn-text">继续游戏</span>
+                    </button>
+
+                    <button class="welcome-btn welcome-btn-dev icon-wrench" onclick="GameLauncher.enterDevMode()">
+                        <span class="btn-text">开发者模式</span>
+                    </button>
+                </div>
+
+                <div class="welcome-footer">
+                    <p>© 2025 修仙世界引擎 | v1.0.0</p>
+                </div>
+            </div>
+
+            <div class="tab-section" data-tab="world" style="display: none;">
+                <div class="welcome-info">
+                    <p>九州大地，灵气复苏，万族并立，宗门纷争不止。传说远古仙人留下诸多遗迹，
+                        等待有缘之人探寻。你是否能在乱世之中脱颖而出，踏上长生之路？</p>
+                </div>
+            </div>
+
+            <div class="tab-section" data-tab="guide" style="display: none;">
+                <div class="welcome-guide">
+                    <ul>
+                        <li>通过左侧面板查看角色状态、背包与任务等信息。</li>
+                        <li>在指令框中输入<span>探索</span>、<span>修炼</span>等命令推进剧情。</li>
+                        <li>善用保存功能，避免意外损失进度。</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -127,6 +151,41 @@
 .subtitle-small {
     font-size: 16px !important;
     color: rgba(180, 180, 180, 0.6) !important;
+}
+
+/* 页签区域 */
+.welcome-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.welcome-tabs .tab-btn {
+    flex: 1;
+    padding: 8px 12px;
+    background: rgba(0, 0, 0, 0.4);
+    border: none;
+    color: #ccc;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.welcome-tabs .tab-btn.active {
+    background: rgba(180, 180, 180, 0.3);
+}
+
+.tab-section {
+    display: none;
+}
+
+.tab-section.active {
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .welcome-tabs .tab-btn {
+        font-size: 14px;
+    }
 }
 
 /* 按钮组 */
