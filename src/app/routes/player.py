@@ -10,12 +10,12 @@ from src.common.request_utils import is_dev_request
 
 from .. import (
     build_status_data,
-    command_router,
     get_game_instance,
     inventory_system,
     logger,
     status_cache,
 )
+import src.app as app_module
 
 player_bp = Blueprint("player_ui", __name__)
 
@@ -117,7 +117,7 @@ def get_log():
 
 @player_bp.route("/nlp_cache_info")
 def get_nlp_cache_info():
-    cache_info = command_router.get_nlp_cache_info()
+    cache_info = app_module.command_router.get_nlp_cache_info()
     if cache_info:
         return jsonify({"success": True, "cache_info": cache_info})
     else:
@@ -126,5 +126,5 @@ def get_nlp_cache_info():
 
 @player_bp.route("/clear_nlp_cache", methods=["POST"])
 def clear_nlp_cache():
-    command_router.clear_nlp_cache()
+    app_module.command_router.clear_nlp_cache()
     return jsonify({"success": True, "message": "NLP缓存已清除"})
