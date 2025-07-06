@@ -5,6 +5,7 @@
 
 import json
 import logging
+import os
 import re
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass, asdict
@@ -52,7 +53,8 @@ class DeepSeekNLPProcessor:
 
         # 初始化LLM客户端
         api_key = api_key or self.config.get_api_key()
-        if not api_key:
+        use_mock = os.getenv("USE_MOCK_LLM", "false").lower() == "true"
+        if not api_key and not use_mock:
             raise ValueError(
                 "Missing DEEPSEEK_API_KEY. Please set it in your environment or .env file."
             )

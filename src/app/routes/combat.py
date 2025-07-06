@@ -16,12 +16,12 @@ from flask import Blueprint, jsonify, request, session, Response, stream_with_co
 from .. import (
     exploration_system,
     inventory_system,
-    command_router,
     get_game_instance,
     data_loader,
     handle_attack,
     logger,
 )
+import src.app as app_module
 from src.common.request_utils import is_dev_request
 
 combat_bp = Blueprint("combat", __name__)
@@ -128,7 +128,7 @@ def process_command():
     if dev_mode:
         session["dev"] = True
 
-    command_handler, params = command_router.route_command(user_input)
+    command_handler, params = app_module.command_router.route_command(user_input)
 
     if "explanation" in params:
         logger.info(f"命令解析: {user_input} -> {command_handler} ({params.get('explanation')})")
@@ -254,7 +254,7 @@ def process_command():
         })
 
     elif command_handler == "help":
-        result_text = command_router.get_help_text()
+        result_text = app_module.command_router.get_help_text()
         return jsonify({
             "success": True,
             "result": result_text,

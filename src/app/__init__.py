@@ -30,7 +30,8 @@ from src.logging_config import setup_logging
 load_dotenv()
 
 # Ensure src is on the path
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
+# __file__ is <project_root>/src/app/__init__.py, so parents[2] gives project root
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 SRC_PATH = PROJECT_ROOT / "src"
 if str(SRC_PATH) not in sys.path:
     sys.path.insert(0, str(SRC_PATH))
