@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
-"""
-Simple test script to verify is_dev_request function works.
-"""
+"""Tests for the ``is_dev_request`` helper function."""
 
 import sys
 import os
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+SRC_PATH = PROJECT_ROOT / "src"
+if str(SRC_PATH) not in sys.path:
+    sys.path.insert(0, str(SRC_PATH))
 
 from flask import Flask
 from src.common.request_utils import is_dev_request
@@ -48,3 +51,4 @@ def test_is_dev_request():
 
 if __name__ == "__main__":
     test_is_dev_request()
+

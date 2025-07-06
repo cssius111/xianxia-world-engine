@@ -45,8 +45,8 @@ static_folder = project_root / "src" / "web" / "static"
 ### 新增的文件
 - `tests/web/__init__.py` - 测试包初始化
 - `tests/web/test_template_presence.py` - 模板存在性测试
-- `test_template_paths.py` - 独立验证脚本
-- `test_game_route.py` - 游戏路由测试
+- `tests/manual/test_template_paths.py` - 独立验证脚本
+- `tests/manual/test_game_route.py` - 游戏路由测试
 - `verify_hf002_fixes.py` - 综合验证脚本
 
 ## 🧪 验证方法
@@ -59,16 +59,16 @@ python verify_hf002_fixes.py
 ### 2. 运行单独测试
 ```bash
 # 路径配置测试
-python test_template_paths.py
+python tests/manual/test_template_paths.py
 
 # 游戏路由测试  
-python test_game_route.py
+python tests/manual/test_game_route.py
 
 # 单元测试
 python -m pytest tests/web/test_template_presence.py -v
 
 # 应用启动测试
-python test_app_startup.py
+python tests/manual/test_app_startup.py
 ```
 
 ### 3. 最终验证 - 启动应用
