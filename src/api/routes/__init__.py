@@ -18,6 +18,7 @@ def register_all_routes(app):
     from .map import map_bp
     from .player import player_bp
     from .quests import quests_bp
+    from .onboarding import onboarding_bp
     
     # Register all blueprints
     app.register_blueprint(achievements_bp)
@@ -32,6 +33,7 @@ def register_all_routes(app):
     app.register_blueprint(map_bp)
     app.register_blueprint(player_bp)
     app.register_blueprint(quests_bp)
+    app.register_blueprint(onboarding_bp)
     
     # Register v1 API blueprints
     from ..v1.system import system_bp
