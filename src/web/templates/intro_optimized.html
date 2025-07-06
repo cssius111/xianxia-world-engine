@@ -193,7 +193,7 @@
                     console.log('世界介绍完成，进入游戏主界面');
                     
                     // 跳转到游戏主界面
-                    window.location.href = "{{ url_for('game_screen') }}" + (this.devMode ? '?mode=dev' : '');
+                    window.location.href = "{{ url_for('main.game_screen') }}" + (this.devMode ? '?mode=dev' : '');
                 });
             }
         };
@@ -224,7 +224,7 @@
                 // Ctrl+Shift+G 直接进入游戏
                 if (e.ctrlKey && e.shiftKey && e.key === 'G') {
                     console.log('开发模式：直接进入游戏');
-                    window.location.href = "{{ url_for('game_screen', mode='dev') }}";
+                    window.location.href = "{{ url_for('main.game_screen', mode='dev') }}";
                 }
             });
         }

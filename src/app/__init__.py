@@ -229,7 +229,7 @@ main_bp = Blueprint("main", __name__)
 @main_bp.route("/")
 def index():
     if session.get("player_created"):
-        return redirect(url_for("game_screen"))
+        return redirect(url_for("main.game_screen"))
     return redirect(url_for("intro_screen"))
 
 
