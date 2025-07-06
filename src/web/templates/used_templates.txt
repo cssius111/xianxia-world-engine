@@ -110,3 +110,4 @@ components/welcome_modal.html
 components/welcome_modal_v2.html
 components/roll_modal.html
 components/world_intro.html
+components/event_modal.html

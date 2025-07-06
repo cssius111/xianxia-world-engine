@@ -1,0 +1,79 @@
+<!-- 随机事件模态框 -->
+<div id="eventModal" class="event-modal" style="display:none;">
+    <div class="event-content">
+        <h3 id="eventTitle">事件</h3>
+        <p id="eventDescription"></p>
+        <div id="eventChoices" class="event-choices"></div>
+    </div>
+</div>
+
+<style>
+.event-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 6000;
+}
+
+.event-content {
+    background: #1a1a2e;
+    padding: 20px;
+    border-radius: 8px;
+    color: #e0e0e0;
+    width: 300px;
+    text-align: center;
+}
+
+.event-choices button {
+    margin: 5px;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+</style>
+
+<script>
+const EventModal = {
+    async requestRandom(style = '') {
+        try {
+            const resp = await fetch(`/api/events/random?style=${encodeURIComponent(style)}`);
+            if (!resp.ok) throw new Error('network');
+            const data = await resp.json();
+            this.show(data);
+        } catch (e) {
+            console.error('获取随机事件失败', e);
+        }
+    },
+    show(eventData) {
+        const modal = document.getElementById('eventModal');
+        if (!modal) return;
+        document.getElementById('eventTitle').textContent = eventData.name || eventData.title || '事件';
+        document.getElementById('eventDescription').textContent = eventData.description || '';
+        const choices = document.getElementById('eventChoices');
+        choices.innerHTML = '';
+        (eventData.choices || []).forEach(choice => {
+            const btn = document.createElement('button');
+            btn.textContent = choice;
+            btn.onclick = () => this.handleChoice(choice, eventData);
+            choices.appendChild(btn);
+        });
+        modal.style.display = 'flex';
+    },
+    hide() {
+        const modal = document.getElementById('eventModal');
+        if (modal) modal.style.display = 'none';
+    },
+    handleChoice(choice, eventData) {
+        console.log('选择了', choice, eventData);
+        this.hide();
+    }
+};
+window.EventModal = EventModal;
+</script>
