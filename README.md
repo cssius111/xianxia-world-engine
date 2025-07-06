@@ -15,6 +15,8 @@ pre-commit install
 
 ```bash
 python run.py
+# 如需指定存档或日志目录：
+# python run.py --save-dir my_saves --log-dir my_logs
 ```
 
 ### 3. 访问游戏

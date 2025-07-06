@@ -37,8 +37,8 @@ class GameConfig:
 
     # 路径设置
     data_path: str | Path | None = "xwe/data"
-    save_path: str = "saves"
-    log_path: str = "logs"
+    save_dir: str = "saves"
+    log_dir: str = "logs"
 
     def __post_init__(self):
         """初始化后处理"""
@@ -52,10 +52,11 @@ class GameConfig:
             if not self.data_path.exists():
                 os.makedirs(self.data_path, exist_ok=True)
 
-        # 确保路径存在
-        for path_attr in ["save_path", "log_path"]:
-            path = getattr(self, path_attr)
-            if path and not os.path.exists(path):
+        # 确保目录存在
+        for path_attr in ["save_dir", "log_dir"]:
+            path = Path(getattr(self, path_attr))
+            setattr(self, path_attr, str(path))
+            if not path.exists():
                 os.makedirs(path, exist_ok=True)
 
 
