@@ -7,6 +7,7 @@ from .llm_client import LLMClient
 from .nlp_processor import NLPProcessor, DeepSeekNLPProcessor, ParsedCommand
 from .config import NLPConfig, get_nlp_config, reset_nlp_config
 from .monitor import NLPMonitor, get_nlp_monitor, reset_nlp_monitor
+from . import tool_router
 
 __all__ = [
     'LLMClient',
@@ -18,5 +19,6 @@ __all__ = [
     'reset_nlp_config',
     'NLPMonitor',
     'get_nlp_monitor',
-    'reset_nlp_monitor'
+    'reset_nlp_monitor',
+    'tool_router'
 ]
