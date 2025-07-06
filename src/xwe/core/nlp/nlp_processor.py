@@ -14,6 +14,7 @@ from functools import lru_cache
 from .llm_client import LLMClient
 from .config import get_nlp_config
 from .monitor import get_nlp_monitor
+from . import tool_router
 
 # 专用日志记录器
 logger = logging.getLogger("xwe.nlp")
@@ -678,6 +679,8 @@ class NLPProcessor:
         """解析命令（新增方法）"""
         if self.enabled and self.processor:
             parsed = self.processor.parse(text)
+            # 在成功解析后分派到工具
+            tool_router.dispatch(parsed.normalized_command, parsed.args)
             return asdict(parsed)
         else:
             # 简单的本地解析
