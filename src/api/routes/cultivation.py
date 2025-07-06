@@ -69,16 +69,101 @@ def get_cultivation_status():
 
 @cultivation_bp.post('/start')
 def start_cultivation():
-    """Start cultivation session."""
+    """Start cultivation session with basic checks."""
     data = request.get_json(silent=True) or {}
-    hours = int(data.get('hours', 1))
-    
+    hours = int(data.get("hours", 1))
+
     # Validate hours
     if hours < 1:
         return jsonify({"success": False, "error": "修炼时间至少为1小时"}), 400
     if hours > 8:
         return jsonify({"success": False, "error": "当前体力最多支撑8小时修炼"}), 400
-    
+
+    session_id = session.get("session_id")
+    player = None
+    game = None
+    if hasattr(current_app, "game_instances") and session_id in current_app.game_instances:
+        game = current_app.game_instances[session_id]["game"]
+        player = getattr(game.game_state, "player", None)
+
+    if player and game:
+        required_mana = hours * 5
+        if player.attributes.current_mana < required_mana:
+            return (
+                jsonify({"success": False, "confirm": "灵气不足，是否继续修炼？"}),
+                400,
+            )
+
+        if player.attributes.comprehension < 5:
+            return (
+                jsonify({"success": False, "confirm": "悟性不足，继续修炼收益甚微，确认继续？"}),
+                400,
+            )
+
+        if player.attributes.realm_progress >= 100:
+            return (
+                jsonify({"success": False, "confirm": "已到瓶颈，请突破后再修炼"}),
+                400,
+            )
+
+        player.attributes.current_mana -= required_mana
+        if hasattr(game, "time_system"):
+            try:
+                game.time_system.advance_time(
+                    "cultivate_basic", game.game_state, {"hours": hours}
+                )
+            except Exception as e:  # pragma: no cover - safety
+                logger.error(f"advance_time error: {e}")
+
+        # 环境加成
+        location_bonus = 1.0
+        area = None
+        try:
+            area = game.world_map.get_area(game.game_state.current_location)
+            if area:
+                location_bonus += getattr(area, "danger_level", 0) * 0.05
+        except Exception as e:  # pragma: no cover - optional world map
+            logger.error(f"location bonus error: {e}")
+
+        exp_gained = 0
+        if hasattr(game, "cultivation_system"):
+            exp_gained = game.cultivation_system.calculate_cultivation_exp(
+                player, hours, location_bonus
+            )
+            player.attributes.cultivation_exp += exp_gained
+            req = game.cultivation_system.realm_breakthroughs.get(
+                player.attributes.realm_name, {}
+            )
+            need = req.get("exp_required", 100)
+            player.attributes.realm_progress = min(
+                100.0, player.attributes.cultivation_exp / need * 100
+            )
+
+        event = None
+        try:
+            ns = getattr(game, "narrative_system", None)
+            if ns:
+                event = ns.generate_story_event(
+                    {
+                        "action": "cultivation",
+                        "location": getattr(area, "name", ""),
+                        "hours": hours,
+                    }
+                )
+        except Exception as e:  # pragma: no cover - fallback
+            logger.error(f"generate_story_event error: {e}")
+
+        result = f"你专心修炼了 {hours} 小时，获得 {exp_gained} 修为。"
+        return jsonify(
+            {
+                "success": True,
+                "result": result,
+                "exp_gained": exp_gained,
+                "event": event,
+            }
+        )
+
+    # Fallback simple text when no game instance
     result = f"你专心修炼了 {hours} 小时，感到灵力有所提升。"
     return jsonify({"success": True, "result": result})
 
