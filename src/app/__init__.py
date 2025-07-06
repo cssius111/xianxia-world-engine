@@ -229,14 +229,14 @@ main_bp = Blueprint("main", __name__)
 @main_bp.route("/")
 def index():
     if session.get("player_created"):
-        return redirect(url_for("game_screen"))
-    return redirect(url_for("intro_screen"))
+        return redirect(url_for("main.game_screen"))
+    return redirect(url_for("main.intro_screen"))
 
 
 @main_bp.route("/welcome")
 def welcome():
     cleanup_old_instances()
-    return redirect(url_for("intro_screen"))
+    return redirect(url_for("main.intro_screen"))
 
 
 @main_bp.route("/intro")
@@ -249,8 +249,8 @@ def intro_screen():
 def start_screen():
     dev_mode = request.args.get("mode") == "dev"
     if dev_mode:
-        return redirect(url_for("intro_screen", mode="dev"))
-    return redirect(url_for("intro_screen"))
+        return redirect(url_for("main.intro_screen", mode="dev"))
+    return redirect(url_for("main.intro_screen"))
 
 
 @main_bp.route("/game")
