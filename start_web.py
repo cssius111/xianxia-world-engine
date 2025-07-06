@@ -60,10 +60,15 @@ def main():
     
     # 启动Flask应用
     try:
-        from run import app
+        from src.app import create_app
+        app = create_app()
         app.run(host="0.0.0.0", port=port, debug=True)
     except KeyboardInterrupt:
         print("\n\n👋 游戏服务器已停止")
+    except Exception as e:
+        print(f"\n❌ 启动失败: {e}")
+        import traceback
+        traceback.print_exc()
 
 if __name__ == "__main__":
     main()

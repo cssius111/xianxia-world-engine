@@ -24,7 +24,7 @@ from flask import (
     url_for,
 )
 
-from logging_config import setup_logging
+from src.logging_config import setup_logging
 
 # Load environment variables
 load_dotenv()
@@ -345,7 +345,7 @@ def create_app(log_level: int = log_level) -> Flask:
     app.game_instances = game_instances
 
     try:
-        from routes.lore import bp as lore_bp
+        from .routes.lore import bp as lore_bp
 
         app.register_blueprint(lore_bp)
         logger.info("Lore routes registered")
@@ -357,7 +357,7 @@ def create_app(log_level: int = log_level) -> Flask:
         or os.getenv("ENABLE_E2E_API") == "true"
     ):
         try:
-            from routes.api_e2e import register_e2e_routes
+            from .routes.api_e2e import register_e2e_routes
 
             register_e2e_routes(app)
             logger.info("E2E test API endpoints enabled")
