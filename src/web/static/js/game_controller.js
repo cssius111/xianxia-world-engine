@@ -29,6 +29,9 @@ class XianxiaGameController {
             animationEnabled: true,
             debugMode: false
         };
+
+        this.eventSource = null;
+        this.gameUpdateInterval = null;
         
         this.init();
     }
@@ -432,15 +435,39 @@ class XianxiaGameController {
      */
     updatePlayerStatus() {
         if (!this.gameState.player) return;
-        
+
         // 这里可以添加实时状态更新逻辑
         // 例如：生命值恢复、灵力恢复等
+    }
+
+    /**
+     * 连接事件流
+     */
+    connectEventStream() {
+        if (this.eventSource) {
+            this.eventSource.close();
+        }
+        this.eventSource = new EventSource('/events');
+        this.eventSource.onmessage = (event) => {
+            try {
+                const data = JSON.parse(event.data);
+                if (data.player && this.modules.profile) {
+                    this.modules.profile.updateProfile(data.player);
+                }
+            } catch (e) {
+                console.error('事件流解析失败:', e);
+            }
+        };
+        this.eventSource.onerror = (e) => {
+            console.error('事件流连接失败:', e);
+        };
     }
     
     /**
      * 启动游戏更新
      */
     startGameUpdates() {
+        this.connectEventStream();
         this.gameUpdateInterval = setInterval(() => {
             this.checkForUpdates();
         }, 2000); // 每2秒检查一次更新
@@ -453,6 +480,10 @@ class XianxiaGameController {
         if (this.gameUpdateInterval) {
             clearInterval(this.gameUpdateInterval);
             this.gameUpdateInterval = null;
+        }
+        if (this.eventSource) {
+            this.eventSource.close();
+            this.eventSource = null;
         }
     }
     
