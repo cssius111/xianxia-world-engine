@@ -13,41 +13,67 @@ class CharacterAttributes:
     """角色属性类"""
     
     # 基础属性
-    strength: int = 10          # 力量 - 影响物理攻击
-    constitution: int = 10      # 体质 - 影响生命值和防御
-    agility: int = 10          # 敏捷 - 影响速度和闪避
-    intelligence: int = 10      # 智力 - 影响法术攻击和灵力
-    willpower: int = 10        # 意志 - 影响法术防御和精神抗性
-    comprehension: int = 10    # 悟性 - 影响学习和修炼速度
-    luck: int = 10            # 运气 - 影响暴击和掉落
+    strength_base: int = 10
+    strength_buff: float = 0
+    constitution_base: int = 10
+    constitution_buff: float = 0
+    agility_base: int = 10
+    agility_buff: float = 0
+    intelligence_base: int = 10
+    intelligence_buff: float = 0
+    willpower_base: int = 10
+    willpower_buff: float = 0
+    comprehension_base: int = 10
+    comprehension_buff: float = 0
+    luck_base: int = 10
+    luck_buff: float = 0
     
     # 修炼相关
     realm_name: str = "凡人"   # 境界名称
-    realm_level: int = 0       # 境界等级
-    cultivation_level: int = 0  # 总等级
-    cultivation_exp: int = 0    # 修炼经验
-    max_cultivation: int = 100  # 最大修为值
-    realm_progress: float = 0   # 境界进度
+    realm_level_base: int = 0
+    realm_level_buff: float = 0
+    cultivation_level_base: int = 0
+    cultivation_level_buff: float = 0
+    cultivation_exp_base: int = 0
+    cultivation_exp_buff: float = 0
+    max_cultivation_base: int = 100
+    max_cultivation_buff: float = 0
+    realm_progress_base: float = 0
+    realm_progress_buff: float = 0
     
     # 资源属性
-    current_health: float = 100
-    max_health: float = 100
-    current_mana: float = 50
-    max_mana: float = 50
-    current_stamina: float = 100
-    max_stamina: float = 100
+    current_health_base: float = 100
+    current_health_buff: float = 0
+    max_health_base: float = 100
+    max_health_buff: float = 0
+    current_mana_base: float = 50
+    current_mana_buff: float = 0
+    max_mana_base: float = 50
+    max_mana_buff: float = 0
+    current_stamina_base: float = 100
+    current_stamina_buff: float = 0
+    max_stamina_base: float = 100
+    max_stamina_buff: float = 0
     
     # 战斗属性
-    attack_power: float = 10
-    spell_power: float = 10
-    defense: float = 5
-    magic_resistance: float = 5
-    speed: float = 10
+    attack_power_base: float = 10
+    attack_power_buff: float = 0
+    spell_power_base: float = 10
+    spell_power_buff: float = 0
+    defense_base: float = 5
+    defense_buff: float = 0
+    magic_resistance_base: float = 5
+    magic_resistance_buff: float = 0
+    speed_base: float = 10
+    speed_buff: float = 0
     
     # 其他衍生属性
-    critical_rate: float = 0.05
-    critical_damage: float = 1.5
-    dodge_rate: float = 0.05
+    critical_rate_base: float = 0.05
+    critical_rate_buff: float = 0
+    critical_damage_base: float = 1.5
+    critical_damage_buff: float = 0
+    dodge_rate_base: float = 0.05
+    dodge_rate_buff: float = 0
     
     # 元素抗性
     elemental_resistance: Dict[str, float] = field(default_factory=lambda: {
@@ -57,6 +83,224 @@ class CharacterAttributes:
         "metal": 0,
         "earth": 0
     })
+
+    # ----- 属性访问器 -----
+    @property
+    def strength(self) -> float:
+        return self.strength_base + self.strength_buff
+
+    @strength.setter
+    def strength(self, value: float) -> None:
+        self.strength_base = value
+        self.calculate_derived_attributes()
+
+    @property
+    def constitution(self) -> float:
+        return self.constitution_base + self.constitution_buff
+
+    @constitution.setter
+    def constitution(self, value: float) -> None:
+        self.constitution_base = value
+        self.calculate_derived_attributes()
+
+    @property
+    def agility(self) -> float:
+        return self.agility_base + self.agility_buff
+
+    @agility.setter
+    def agility(self, value: float) -> None:
+        self.agility_base = value
+        self.calculate_derived_attributes()
+
+    @property
+    def intelligence(self) -> float:
+        return self.intelligence_base + self.intelligence_buff
+
+    @intelligence.setter
+    def intelligence(self, value: float) -> None:
+        self.intelligence_base = value
+        self.calculate_derived_attributes()
+
+    @property
+    def willpower(self) -> float:
+        return self.willpower_base + self.willpower_buff
+
+    @willpower.setter
+    def willpower(self, value: float) -> None:
+        self.willpower_base = value
+        self.calculate_derived_attributes()
+
+    @property
+    def comprehension(self) -> float:
+        return self.comprehension_base + self.comprehension_buff
+
+    @comprehension.setter
+    def comprehension(self, value: float) -> None:
+        self.comprehension_base = value
+        self.calculate_derived_attributes()
+
+    @property
+    def luck(self) -> float:
+        return self.luck_base + self.luck_buff
+
+    @luck.setter
+    def luck(self, value: float) -> None:
+        self.luck_base = value
+        self.calculate_derived_attributes()
+
+    @property
+    def realm_level(self) -> float:
+        return self.realm_level_base + self.realm_level_buff
+
+    @realm_level.setter
+    def realm_level(self, value: float) -> None:
+        self.realm_level_base = value
+        self.calculate_derived_attributes()
+
+    @property
+    def cultivation_level(self) -> float:
+        return self.cultivation_level_base + self.cultivation_level_buff
+
+    @cultivation_level.setter
+    def cultivation_level(self, value: float) -> None:
+        self.cultivation_level_base = value
+        self.calculate_derived_attributes()
+
+    @property
+    def cultivation_exp(self) -> float:
+        return self.cultivation_exp_base + self.cultivation_exp_buff
+
+    @cultivation_exp.setter
+    def cultivation_exp(self, value: float) -> None:
+        self.cultivation_exp_base = value
+
+    @property
+    def max_cultivation(self) -> float:
+        return self.max_cultivation_base + self.max_cultivation_buff
+
+    @max_cultivation.setter
+    def max_cultivation(self, value: float) -> None:
+        self.max_cultivation_base = value
+
+    @property
+    def realm_progress(self) -> float:
+        return self.realm_progress_base + self.realm_progress_buff
+
+    @realm_progress.setter
+    def realm_progress(self, value: float) -> None:
+        self.realm_progress_base = value
+
+    @property
+    def current_health(self) -> float:
+        return self.current_health_base + self.current_health_buff
+
+    @current_health.setter
+    def current_health(self, value: float) -> None:
+        self.current_health_base = value
+
+    @property
+    def max_health(self) -> float:
+        return self.max_health_base + self.max_health_buff
+
+    @max_health.setter
+    def max_health(self, value: float) -> None:
+        self.max_health_base = value
+
+    @property
+    def current_mana(self) -> float:
+        return self.current_mana_base + self.current_mana_buff
+
+    @current_mana.setter
+    def current_mana(self, value: float) -> None:
+        self.current_mana_base = value
+
+    @property
+    def max_mana(self) -> float:
+        return self.max_mana_base + self.max_mana_buff
+
+    @max_mana.setter
+    def max_mana(self, value: float) -> None:
+        self.max_mana_base = value
+
+    @property
+    def current_stamina(self) -> float:
+        return self.current_stamina_base + self.current_stamina_buff
+
+    @current_stamina.setter
+    def current_stamina(self, value: float) -> None:
+        self.current_stamina_base = value
+
+    @property
+    def max_stamina(self) -> float:
+        return self.max_stamina_base + self.max_stamina_buff
+
+    @max_stamina.setter
+    def max_stamina(self, value: float) -> None:
+        self.max_stamina_base = value
+
+    @property
+    def attack_power(self) -> float:
+        return self.attack_power_base + self.attack_power_buff
+
+    @attack_power.setter
+    def attack_power(self, value: float) -> None:
+        self.attack_power_base = value
+
+    @property
+    def spell_power(self) -> float:
+        return self.spell_power_base + self.spell_power_buff
+
+    @spell_power.setter
+    def spell_power(self, value: float) -> None:
+        self.spell_power_base = value
+
+    @property
+    def defense(self) -> float:
+        return self.defense_base + self.defense_buff
+
+    @defense.setter
+    def defense(self, value: float) -> None:
+        self.defense_base = value
+
+    @property
+    def magic_resistance(self) -> float:
+        return self.magic_resistance_base + self.magic_resistance_buff
+
+    @magic_resistance.setter
+    def magic_resistance(self, value: float) -> None:
+        self.magic_resistance_base = value
+
+    @property
+    def speed(self) -> float:
+        return self.speed_base + self.speed_buff
+
+    @speed.setter
+    def speed(self, value: float) -> None:
+        self.speed_base = value
+
+    @property
+    def critical_rate(self) -> float:
+        return self.critical_rate_base + self.critical_rate_buff
+
+    @critical_rate.setter
+    def critical_rate(self, value: float) -> None:
+        self.critical_rate_base = value
+
+    @property
+    def critical_damage(self) -> float:
+        return self.critical_damage_base + self.critical_damage_buff
+
+    @critical_damage.setter
+    def critical_damage(self, value: float) -> None:
+        self.critical_damage_base = value
+
+    @property
+    def dodge_rate(self) -> float:
+        return self.dodge_rate_base + self.dodge_rate_buff
+
+    @dodge_rate.setter
+    def dodge_rate(self, value: float) -> None:
+        self.dodge_rate_base = value
     
     def __post_init__(self):
         """初始化后计算衍生属性"""
@@ -214,7 +458,7 @@ class AttributeSystem:
         except:
             return 0
     
-    def apply_buff(self, attributes: CharacterAttributes, 
+    def apply_buff(self, attributes: CharacterAttributes,
                    buff_type: str, value: float, is_percentage: bool = False) -> None:
         """
         应用增益效果
@@ -225,13 +469,17 @@ class AttributeSystem:
             value: 增益值
             is_percentage: 是否是百分比加成
         """
-        if hasattr(attributes, buff_type):
-            current = getattr(attributes, buff_type)
+        buff_attr = f"{buff_type}_buff"
+        if hasattr(attributes, buff_attr):
+            current = getattr(attributes, buff_attr)
             if is_percentage:
-                new_value = current * (1 + value / 100)
+                delta = getattr(attributes, buff_type) * value / 100
+                new_value = current + delta
             else:
                 new_value = current + value
-            setattr(attributes, buff_type, new_value)
+            setattr(attributes, buff_attr, new_value)
+            # 基础属性变化可能影响衍生属性
+            attributes.calculate_derived_attributes()
     
     def calculate_combat_power(self, attributes: CharacterAttributes) -> int:
         """计算战斗力"""
