@@ -50,8 +50,6 @@ class ProjectRefactorer:
 
         # 2. 找出终端相关文件（需要删除）
         terminal_files = [
-            "main_menu.py",
-            "start_game.py",  # 这个调用终端版本
             "ui/",  # 终端UI目录
             "core/player_initializer.py",  # 终端版本的初始化
             "core/state_manager.py",  # 终端版本的状态管理
@@ -478,7 +476,7 @@ if __name__ == "__main__":
                 issues.append(f"❌ {old_dir} 目录仍然存在")
 
         # 检查终端文件是否已删除
-        terminal_files = ["main_menu.py", "ui/"]
+        terminal_files = ["ui/"]
         for file in terminal_files:
             if (self.project_root / file).exists():
                 issues.append(f"❌ 终端文件 {file} 仍然存在")

@@ -16,18 +16,7 @@ python smart_start.py
 - 应用运行时修补
 - 启动 Flask 服务器
 
-### 方案 2：使用修复版启动脚本
-```bash
-python fixed_run.py
-```
-
-### 方案 3：使用 Shell 脚本
-```bash
-chmod +x start_fixed.sh
-./start_fixed.sh
-```
-
-### 方案 4：手动设置环境变量
+### 方案 2：手动设置环境变量
 ```bash
 export DISABLE_NLP=true
 export USE_NLP=false
@@ -38,25 +27,6 @@ python run.py --debug
 
 如果上述方案仍有问题，使用以下诊断工具：
 
-1. **检查端口占用**
-   ```bash
-   python check_ports.py
-   ```
-
-2. **测试最简 Flask**
-   ```bash
-   python test_minimal_flask.py
-   ```
-
-3. **诊断 NLP 模块**
-   ```bash
-   python diagnose_nlp.py
-   ```
-
-4. **快速启动（跳过所有复杂组件）**
-   ```bash
-   python quick_start.py
-   ```
 
 ## 永久修复
 
