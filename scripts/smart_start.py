@@ -11,11 +11,6 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
-print("""
-╔════════════════════════════════════════╗
-║        修仙世界引擎 - 智能启动器       ║
-╚════════════════════════════════════════╝
-""")
 
 # 1. 设置环境变量
 print("1. 配置环境...")
