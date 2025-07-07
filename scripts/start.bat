@@ -60,7 +60,10 @@ echo 按 Ctrl+C 停止服务器
 echo ==========================================
 echo.
 
+REM 获取脚本所在目录
+set SCRIPT_DIR=%~dp0
+
 REM 启动Python服务器
-python run.py
+python "%SCRIPT_DIR%run.py"
 
 pause

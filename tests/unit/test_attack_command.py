@@ -5,7 +5,7 @@ from src.xwe.core.combat import CombatResult
 
 
 def _load_run_module():
-    spec = importlib.util.spec_from_file_location("run", Path("run.py"))
+    spec = importlib.util.spec_from_file_location("run", Path("scripts/run.py"))
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)  # type: ignore
     return module

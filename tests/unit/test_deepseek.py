@@ -2,7 +2,7 @@ import os
 import random
 import pytest
 
-from run import app
+from scripts.run import app
 
 
 COMMANDS = [
