@@ -275,14 +275,6 @@ docker build -t xianxia-world .
 docker run -p 5000:5000 xianxia-world
 ```
 
-### 3. 性能优化检查
-```bash
-# 运行性能测试
-python scripts/performance_test.py
-
-# 检查资源大小
-python scripts/check_bundle_size.py
-```
 
 ---
 
