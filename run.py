@@ -4,6 +4,9 @@
 """
 import sys
 from pathlib import Path
+import threading
+import webbrowser
+from time import sleep
 
 # 确保项目根目录在Python路径中
 PROJECT_ROOT = Path(__file__).resolve().parent
@@ -27,6 +30,7 @@ def main() -> None:
     parser.add_argument("--host", default="127.0.0.1", help="监听地址")
     parser.add_argument("--port", type=int, default=5001, help="端口")
     parser.add_argument("--debug", action="store_true", help="启用调试模式")
+    parser.add_argument("--no-browser", action="store_true", help="启动后不自动打开浏览器")
     args = parser.parse_args()
 
     # 配置目录
@@ -40,6 +44,18 @@ def main() -> None:
 
     # 创建并运行应用
     app = create_app()
+
+    url = f"http://{args.host}:{args.port}/"
+    if args.no_browser:
+        print(f"🖥️  请手动打开 {url}")
+    else:
+        def _open():
+            sleep(1.5)
+            webbrowser.open(url)
+
+        threading.Thread(target=_open, daemon=True).start()
+        print(f"🌐  已在浏览器打开 {url}")
+
     app.run(host=args.host, port=args.port, debug=args.debug)
 
 
