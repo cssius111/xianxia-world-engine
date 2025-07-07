@@ -8,7 +8,6 @@ from src.xwe.core.achievement_system import AchievementSystem
 from src.xwe.core.ai import AIController
 from src.xwe.core.attributes import AttributeSystem
 from src.xwe.core.character import Character, CharacterType
-from src.xwe.core.chinese_dragon_art import get_dragon_for_scene
 from src.xwe.core.combat import CombatAction, CombatActionType, CombatState, CombatSystem
 from src.xwe.core.command_parser import CommandParser, CommandType, ParsedCommand
 from src.xwe.core.command_router import CommandPriority, CommandRouter
@@ -81,7 +80,6 @@ class GameCore(CombatMixin, CultivationMixin):
     def start_new_game(self, player_name: str = "无名侠客") -> None:
         self.running = True
         self.game_state.player = Character(name=player_name, character_type=CharacterType.PLAYER)
-        self.output(get_dragon_for_scene("welcome"))
         self.output("=== 仙侠世界 ===")
 
     def process_command(self, input_text: str) -> None:  # pragma: no cover - placeholder

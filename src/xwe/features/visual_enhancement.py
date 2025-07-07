@@ -6,7 +6,6 @@
 import os
 import sys
 import time
-import random
 from enum import Enum
 from typing import Dict, List, Optional, Tuple
 
@@ -280,68 +279,6 @@ class TextAnimation:
         sys.stdout.flush()
 
 
-class ASCIIArt:
-    """ASCII艺术"""
-    
-    def __init__(self):
-        self.arts = {
-            "sword": """
-       /\\
-      /  \\
-     /    \\
-    /      \\
-   /________\\
-       ||
-       ||
-       ||
-      ====
-            """,
-            "mountain": """
-       /\\
-      /  \\
-     /    \\
-    /  /\\  \\
-   /  /  \\  \\
-  /__/    \\__\\
-            """,
-            "cultivation": """
-     _()_
-    / __ \\
-   | (  ) |
-   | |  | |
-   |_|  |_|
-    \\    /
-     \\  /
-      \\/
-            """,
-            "treasure": """
-     ___
-    /   \\
-   |  $  |
-   |_____|
-   [_____]
-            """,
-            "portal": """
-    .-..-..-.
-   /  ||  ||  \\
-  |   ||  ||   |
-  |   ||  ||   |
-   \\  ||  ||  /
-    '-''-''-'
-            """
-        }
-    
-    def get(self, name: str) -> Optional[str]:
-        """获取ASCII艺术"""
-        return self.arts.get(name)
-    
-    def add(self, name: str, art: str):
-        """添加新的ASCII艺术"""
-        self.arts[name] = art
-    
-    def random(self) -> str:
-        """获取随机ASCII艺术"""
-        return random.choice(list(self.arts.values()))
 
 
 class VisualEffects:
@@ -349,7 +286,6 @@ class VisualEffects:
     
     def __init__(self):
         self.renderer = TextRenderer()
-        self.ascii_art = ASCIIArt()
         self.animations_enabled = True
     
     def enable_animations(self):
