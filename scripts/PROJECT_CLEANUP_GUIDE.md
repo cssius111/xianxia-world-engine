@@ -10,8 +10,6 @@
 
 ### 2. **多个入口点混乱**
 - `run.py` - 简化版Flask应用
-- `start_game.py` - 启动脚本（调用终端版本）
-- `main_menu.py` - 终端主菜单
 - `run.py` - Web UI 入口
 
 ### 3. **架构不一致**
@@ -100,8 +98,6 @@ rm -rf data/
 rm -rf ui/
 
 # 3. 删除终端相关文件
-rm main_menu.py
-rm start_game.py
 
 # 4. 更新所有导入
 # 将 "from core." 替换为 "from src.xwe.core."

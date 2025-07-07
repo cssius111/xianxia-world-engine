@@ -14,8 +14,7 @@
 # Web UI 版本
 python run.py
 
-# 命令行版本
-python main_menu.py
+# 命令行版本 (已移除，统一使用 Web UI)
 ```
 ## 🛠 初次脚本设置
 ```bash
@@ -27,15 +26,7 @@ pre-commit install
 
 ## 🔧 实用工具
 
-### 检查项目健康度
-```bash
-python scripts/quick_snapshot.py
-```
-
-### 测试 API 连接
-```bash
-python scripts/test_deepseek_api.py
-```
+项目提供一些脚本用于诊断和维护，可按需执行。
 ## 📦 安装 NLP 依赖（可选）
 ```bash
 pip install backoff
