@@ -19,10 +19,12 @@ echo "✅ Python 版本："
 python3 --version
 echo ""
 
-# 检查是否在正确的目录
-if [ ! -f "run.py" ]; then
+# 脚本所在目录
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+
+# 检查是否存在 run.py
+if [ ! -f "$SCRIPT_DIR/run.py" ]; then
     echo "❌ 错误：未找到 run.py 文件"
-    echo "请确保在项目根目录下运行此脚本"
     exit 1
 fi
 
@@ -60,4 +62,4 @@ echo "=========================================="
 echo ""
 
 # 启动Python服务器
-python3 run.py
+python3 "$SCRIPT_DIR/run.py"

@@ -9,7 +9,7 @@ import webbrowser
 from time import sleep
 
 # 确保项目根目录在Python路径中
-PROJECT_ROOT = Path(__file__).resolve().parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 

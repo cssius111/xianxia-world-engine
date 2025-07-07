@@ -1,10 +1,12 @@
 import sys
 from pathlib import Path
 
-# Ensure src is in sys.path so run.py can import config and other modules
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'src'))
+# Ensure project root and src are on the path so the entrypoint can import
+project_root = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(project_root))
+sys.path.insert(0, str(project_root / 'src'))
 
-import run
+from scripts import run
 
 
 def test_intel_tips_endpoint():

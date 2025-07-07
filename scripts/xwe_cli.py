@@ -11,7 +11,7 @@ import sys
 from pathlib import Path
 
 # 添加项目根目录到 Python 路径
-PROJECT_ROOT = Path(__file__).parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 from logging_config import setup_logging
@@ -92,7 +92,7 @@ def main():
     # 启动应用
     try:
         # 修改 run.py 中的 setup_logging 调用
-        import run
+        from scripts import run
         
         # 直接调用 main
         run.main()

@@ -785,7 +785,7 @@ setup_logging(verbose=verbose_mode)'''
         """创建 CLI 工具"""
         self.logger.info("🖥️ 创建 CLI 工具...")
         
-        cli_tool_path = PROJECT_ROOT / "xwe_cli.py"
+        cli_tool_path = PROJECT_ROOT / "scripts" / "xwe_cli.py"
         
         # 检查是否已经存在
         if cli_tool_path.exists():
@@ -1107,8 +1107,8 @@ def main():
         print("📖 优化功能使用说明:")
         print("="*60)
         print("1. 使用新的 CLI 工具:")
-        print("   python xwe_cli.py --verbose")
-        print("   python xwe_cli.py --mock-llm --max-retries 5")
+        print("   python scripts/xwe_cli.py --verbose")
+        print("   python scripts/xwe_cli.py --mock-llm --max-retries 5")
         print("")
         print("2. 环境变量配置:")
         print("   export USE_MOCK_LLM=true      # 启用 Mock 模式")

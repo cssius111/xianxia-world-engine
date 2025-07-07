@@ -21,5 +21,8 @@ echo "正在启动服务器..."
 echo "访问地址: http://127.0.0.1:5001"
 echo ""
 
+# 获取脚本所在目录
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+
 # 启动服务器
-python run.py --debug --port 5001
+python "$SCRIPT_DIR/run.py" --debug --port 5001

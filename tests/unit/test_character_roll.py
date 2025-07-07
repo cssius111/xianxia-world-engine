@@ -2,7 +2,7 @@
 """测试角色抽卡API，验证返回的数据结构"""
 
 import json
-from run import app
+from scripts.run import app
 
 
 def roll_api_request():

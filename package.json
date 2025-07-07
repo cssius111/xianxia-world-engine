@@ -26,8 +26,8 @@
     "install:browsers": "playwright install",
     "install:deps": "playwright install-deps",
     "postinstall": "playwright install",
-    "serve": "ENABLE_E2E_API=true python run.py",
-    "serve:test": "FLASK_ENV=testing ENABLE_E2E_API=true python run.py",
+    "serve": "ENABLE_E2E_API=true python scripts/run.py",
+    "serve:test": "FLASK_ENV=testing ENABLE_E2E_API=true python scripts/run.py",
     "cl":      "dotenv -e .env -- claude-mcp"
   },
   "repository": {
