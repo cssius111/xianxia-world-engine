@@ -127,8 +127,6 @@ except KeyboardInterrupt:
 except Exception as e:
     print(f"\n❌ 启动失败: {e}")
     print("\n可能的解决方案：")
-    print("1. 运行 'python quick_start.py' 测试最简版本")
-    print("2. 运行 'python test_minimal_flask.py' 测试 Flask 本身")
-    print("3. 检查日志文件 logs/app.log")
+    print("1. 检查日志文件 logs/app.log")
     import traceback
     traceback.print_exc()

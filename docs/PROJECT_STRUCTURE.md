@@ -12,7 +12,7 @@
 - /static - CSS/JS
 
 ## 启动方式
-1. 控制台: python main_menu.py
+1. 控制台模式已移除
 2. Web: python run.py
 
 ## 测试
