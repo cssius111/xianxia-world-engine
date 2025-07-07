@@ -56,7 +56,7 @@ DEEPSEEK_API_KEY=your_api_key_here
 - `docs/INDEX.md` - 文档索引
 - `docs/api/` - API 相关文档
 - `docs/tools/` - 工具使用说明
-- `docs/setup/` - 安装配置文档
+- `docs/` - 所有文档入口在 `docs/INDEX.md`
 
 ## 🎯 下一步
 
