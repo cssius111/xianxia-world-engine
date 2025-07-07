@@ -16,18 +16,7 @@ python smart_start.py
 - 应用运行时修补
 - 启动 Flask 服务器
 
-### 方案 2：使用修复版启动脚本
-```bash
-python fixed_run.py
-```
-
-### 方案 3：使用 Shell 脚本
-```bash
-chmod +x start_fixed.sh
-./start_fixed.sh
-```
-
-### 方案 4：手动设置环境变量
+### 方案 2：手动设置环境变量
 ```bash
 export DISABLE_NLP=true
 export USE_NLP=false
