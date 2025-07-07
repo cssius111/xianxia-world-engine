@@ -38,25 +38,6 @@ python run.py --debug
 
 如果上述方案仍有问题，使用以下诊断工具：
 
-1. **检查端口占用**
-   ```bash
-   python check_ports.py
-   ```
-
-2. **测试最简 Flask**
-   ```bash
-   python test_minimal_flask.py
-   ```
-
-3. **诊断 NLP 模块**
-   ```bash
-   python diagnose_nlp.py
-   ```
-
-4. **快速启动（跳过所有复杂组件）**
-   ```bash
-   python quick_start.py
-   ```
 
 ## 永久修复
 

@@ -154,12 +154,6 @@ if __name__ == '__main__':
     app.run(port=5002, debug=True)
 '''
     
-    with open('test_server.py', 'w', encoding='utf-8') as f:
-        f.write(test_code)
-    
-    print("✅ 已创建 test_server.py")
-    print("运行命令: python test_server.py")
-    print("然后访问: http://localhost:5002")
 
 def check_logs():
     """检查日志文件"""
@@ -207,14 +201,10 @@ def suggest_fixes():
    
 5. **检查环境变量**:
    - 确保 .env 文件存在
-   - 设置 FLASK_ENV=development
-   - 设置 FLASK_DEBUG=1
+    - 设置 FLASK_ENV=development
+    - 设置 FLASK_DEBUG=1
    
-6. **使用简单服务器测试**:
-   - 运行生成的 test_server.py
-   - 如果测试服务器工作，说明是应用代码问题
-   
-7. **查看完整错误信息**:
+6. **查看完整错误信息**:
    - export FLASK_ENV=development
    - export FLASK_DEBUG=1
    - python run.py

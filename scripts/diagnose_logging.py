@@ -44,6 +44,3 @@ for handler in root_logger.handlers:
     if hasattr(handler, 'baseFilename'):
         print(f"     文件: {handler.baseFilename}")
 
-print("\n4. 测试不使用项目日志配置的 Flask 启动:")
-print("   运行: python test_simple_run.py")
-print("   这会帮助确定是否是日志配置导致的问题")
