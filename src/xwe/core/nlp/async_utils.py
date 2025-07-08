@@ -7,6 +7,9 @@ import asyncio
 from typing import Optional, List, Any, Callable, TypeVar, Coroutine
 from concurrent.futures import ThreadPoolExecutor
 import logging
+import queue
+import time
+import threading
 
 logger = logging.getLogger(__name__)
 
@@ -139,13 +142,34 @@ class AsyncHelper:
             return asyncio.run(coro)
 
 
+class AsyncWrapper:
+    """将同步或异步函数包装为异步可调用对象"""
+
+    def __init__(self, func: Callable[..., T], executor: Optional[ThreadPoolExecutor] = None):
+        self.func = func
+        self._executor = executor or AsyncHelper.create_executor()
+        self._own_executor = executor is None
+
+    async def __call__(self, *args, **kwargs) -> T:
+        if asyncio.iscoroutinefunction(self.func):
+            return await self.func(*args, **kwargs)
+        loop = asyncio.get_event_loop()
+        return await loop.run_in_executor(self._executor, lambda: self.func(*args, **kwargs))
+
+    def cleanup(self) -> None:
+        if self._own_executor and self._executor:
+            self._executor.shutdown(wait=True)
+
+
 class AsyncBatchProcessor:
     """异步批处理器"""
-    
+
     def __init__(
         self,
         process_func: Callable,
         batch_size: int = 10,
+        timeout: float = 1.0,
+        max_concurrent_batches: int = 1,
         max_workers: int = 5
     ):
         """
@@ -158,9 +182,17 @@ class AsyncBatchProcessor:
         """
         self.process_func = process_func
         self.batch_size = batch_size
+        self.timeout = timeout
         self.max_workers = max_workers
+        self.max_concurrent_batches = max_concurrent_batches
         self._is_async = asyncio.iscoroutinefunction(process_func)
-    
+        self._pending: List[Any] = []
+        self._futures: List[asyncio.Future] = []
+        self._lock = asyncio.Lock()
+        self._timer: Optional[asyncio.Task] = None
+        self._semaphore = asyncio.Semaphore(max_concurrent_batches)
+        self._closed = False
+
     async def process_batch(self, items: List[Any]) -> List[Any]:
         """
         处理一批数据
@@ -171,34 +203,146 @@ class AsyncBatchProcessor:
         Returns:
             处理结果列表
         """
-        results = []
-        
-        # 分批处理
-        for i in range(0, len(items), self.batch_size):
-            batch = items[i:i + self.batch_size]
-            
-            if self._is_async:
-                # 异步处理
-                batch_tasks = [self.process_func(item) for item in batch]
-                batch_results = await AsyncHelper.gather_with_limit(
-                    batch_tasks, 
-                    self.max_workers
-                )
-            else:
-                # 同步处理（在线程池中）
-                loop = asyncio.get_event_loop()
-                with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
-                    batch_results = await asyncio.gather(
-                        *[
-                            loop.run_in_executor(executor, self.process_func, item)
-                            for item in batch
-                        ]
-                    )
-            
-            results.extend(batch_results)
-            logger.info(f"批次处理完成: {len(batch)} 项")
-        
+        if self._is_async:
+            results = await self.process_func(items)
+        else:
+            loop = asyncio.get_event_loop()
+            with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
+                results = await loop.run_in_executor(executor, self.process_func, items)
+        logger.info(f"批次处理完成: {len(items)} 项")
         return results
+
+    async def _flush_locked(self) -> None:
+        if not self._pending:
+            return
+
+        items = self._pending
+        futures = self._futures
+        self._pending = []
+        self._futures = []
+        if self._timer:
+            self._timer.cancel()
+            self._timer = None
+
+        async def _process():
+            try:
+                async with self._semaphore:
+                    results = await self.process_batch(items)
+                    for fut, res in zip(futures, results):
+                        if not fut.cancelled():
+                            fut.set_result(res)
+            except Exception as e:  # pragma: no cover - error path
+                for fut in futures:
+                    if not fut.cancelled():
+                        fut.set_exception(e)
+
+        asyncio.create_task(_process())
+
+    def _start_timer(self) -> None:
+        if self.timeout <= 0:
+            return
+        if self._timer and not self._timer.done():
+            return
+
+        async def _timeout():
+            try:
+                await asyncio.sleep(self.timeout)
+                async with self._lock:
+                    await self._flush_locked()
+            except asyncio.CancelledError:
+                pass
+
+        self._timer = asyncio.create_task(_timeout())
+
+    async def add_request(self, item: Any) -> asyncio.Future:
+        if self._closed:
+            raise RuntimeError("processor closed")
+        future = asyncio.get_event_loop().create_future()
+        async with self._lock:
+            self._pending.append(item)
+            self._futures.append(future)
+            if len(self._pending) >= self.batch_size:
+                await self._flush_locked()
+            else:
+                self._start_timer()
+        return future
+
+    async def flush(self) -> None:
+        async with self._lock:
+            await self._flush_locked()
+
+    async def close(self) -> None:
+        self._closed = True
+        await self.flush()
+
+
+class AsyncRequestQueue:
+    """线程安全的请求队列"""
+
+    def __init__(self, max_size: int = 0):
+        self._queue = queue.Queue(maxsize=max_size)
+        self._closed = False
+
+    def put(self, item: Any, block: bool = True, timeout: Optional[float] = None) -> None:
+        if self._closed:
+            raise Exception("queue closed")
+        self._queue.put(item, block=block, timeout=timeout)
+
+    def put_nowait(self, item: Any) -> None:
+        if self._closed:
+            raise Exception("queue closed")
+        self._queue.put_nowait(item)
+
+    def get(self, block: bool = True, timeout: Optional[float] = None) -> Any:
+        return self._queue.get(block=block, timeout=timeout)
+
+    def qsize(self) -> int:
+        return self._queue.qsize()
+
+    def empty(self) -> bool:
+        return self._queue.empty()
+
+    def full(self) -> bool:
+        return self._queue.full()
+
+    def close(self) -> None:
+        self._closed = True
+
+
+class RateLimiter:
+    """简单的异步速率限制器"""
+
+    def __init__(self, calls: int, period: float, burst: Optional[int] = None):
+        self.calls = calls
+        self.period = period
+        self.burst = burst if burst is not None else calls
+        self._lock = threading.Lock()
+        self._tokens = float(self.burst)
+        self._last = time.monotonic()
+
+    async def __aenter__(self):
+        await self.acquire()
+        return self
+
+    async def __aexit__(self, exc_type, exc, tb):
+        return False
+
+    async def acquire(self) -> None:
+        while True:
+            with self._lock:
+                now = time.monotonic()
+                elapsed = now - self._last
+                self._last = now
+                self._tokens = min(self.burst, self._tokens + elapsed * (self.calls / self.period))
+                if self._tokens >= 1:
+                    self._tokens -= 1
+                    return
+            await asyncio.sleep(self.period / self.calls)
+
+    def reset(self) -> None:
+        with self._lock:
+            self._tokens = float(self.burst)
+            self._last = time.monotonic()
 
 
 # 全局执行器管理
