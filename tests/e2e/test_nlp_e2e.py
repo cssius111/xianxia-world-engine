@@ -93,6 +93,7 @@ class TestNLPEndToEnd:
             data = response.get_json()
             assert 'success' in data or 'result' in data
     
+    @pytest.mark.slow
     def test_long_conversation(self, nlp_processor):
         """测试长对话（100+ 轮）"""
         conversation_rounds = 120
@@ -140,6 +141,7 @@ class TestNLPEndToEnd:
                     compression_ratio = compressed_size / original_size if original_size > 0 else 1
                     assert compression_ratio < 0.8  # 至少20%的压缩率
     
+    @pytest.mark.slow
     def test_concurrent_users(self, app):
         """测试并发用户（10+ 并发）"""
         from xwe.core.nlp.nlp_processor import NLPProcessor
@@ -278,6 +280,7 @@ class TestNLPEndToEnd:
             # 应该优雅处理内存错误
             pass
     
+    @pytest.mark.slow
     def test_memory_leak_detection(self, nlp_processor):
         """内存泄漏检测"""
         # 启动内存追踪

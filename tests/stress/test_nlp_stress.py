@@ -88,6 +88,7 @@ class StressTestMetrics:
         return error_types
 
 
+@pytest.mark.slow
 class TestNLPStress:
     """NLP 压力测试"""
     
