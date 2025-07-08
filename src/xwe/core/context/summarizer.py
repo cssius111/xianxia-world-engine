@@ -7,7 +7,10 @@ import json
 import logging
 from typing import List, Optional, Dict, Any
 
-from ..nlp.llm_client import LLMClient
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ..nlp.llm_client import LLMClient
 
 logger = logging.getLogger(__name__)
 
@@ -17,13 +20,17 @@ class ContextSummarizer:
     上下文摘要器 - 使用 LLM 生成简洁的对话摘要
     """
     
-    def __init__(self, llm_client: Optional[LLMClient] = None):
+    def __init__(self, llm_client: Optional["LLMClient"] = None):
         """
         初始化摘要器
         
         Args:
             llm_client: LLM 客户端实例，如果不提供则创建新实例
         """
+        if llm_client is None:
+            from ..nlp.llm_client import LLMClient
+            llm_client = LLMClient()
+
         self.llm_client = llm_client
         self._init_prompts()
         
