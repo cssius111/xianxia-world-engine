@@ -1,0 +1,5 @@
+{
+  "npcs": [
+    {"id": "npc_test", "name": "测试NPC"}
+  ]
+}

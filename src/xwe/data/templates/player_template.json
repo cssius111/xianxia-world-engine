@@ -1,0 +1,9 @@
+{
+  "initial_state": {
+    "name": "测试玩家",
+    "base_attributes": {"strength": 5},
+    "cultivation": {"realm": "凡人", "level": 0}
+  },
+  "initial_skills": [],
+  "initial_items": {}
+}
