@@ -49,6 +49,8 @@ build/
 *~
 project_snapshot.json
 game_settings.json
+tests/reports/*.md
+tests/reports/performance_report.json
 
 # Legacy debugging files (removed from repository)
 api_fixes.py.backup
