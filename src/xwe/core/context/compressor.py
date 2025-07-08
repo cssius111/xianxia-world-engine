@@ -11,7 +11,10 @@ import json
 
 from .memory_block import MemoryBlock
 from .summarizer import ContextSummarizer
-from ..nlp.llm_client import LLMClient
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ..nlp.llm_client import LLMClient
 
 logger = logging.getLogger(__name__)
 
@@ -28,7 +31,7 @@ class ContextCompressor:
     """
     
     def __init__(self,
-                 llm_client: Optional[LLMClient] = None,
+                 llm_client: Optional["LLMClient"] = None,
                  window_size: int = 20,
                  block_size: int = 30,
                  max_memory_blocks: int = 10,
@@ -43,6 +46,10 @@ class ContextCompressor:
             max_memory_blocks: 最大记忆块数量
             enable_compression: 是否启用压缩（用于测试）
         """
+        if llm_client is None:
+            from ..nlp.llm_client import LLMClient
+            llm_client = LLMClient()
+
         self.window_size = window_size
         self.block_size = block_size
         self.max_memory_blocks = max_memory_blocks
@@ -70,6 +77,12 @@ class ContextCompressor:
             f"window={window_size}, block={block_size}, "
             f"max_blocks={max_memory_blocks}"
         )
+
+    def compress(self, messages: List[Dict[str, Any]]) -> str:
+        """一次性压缩给定的消息列表并返回摘要"""
+
+        contents = [m.get("content", "") for m in messages]
+        return self.summarizer.summarize(contents, structured=False)
     
     def append(self, message: str) -> None:
         """

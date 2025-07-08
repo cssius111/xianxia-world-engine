@@ -31,25 +31,28 @@ os.environ['ENABLE_PROMETHEUS'] = 'true'
 def measure_performance():
     """性能测量上下文管理器"""
     process = psutil.Process()
-    
+
     # 开始测量
     start_time = time.time()
     start_cpu = process.cpu_percent()
     start_memory = process.memory_info().rss / 1024 / 1024  # MB
-    
-    yield
-    
-    # 结束测量
-    end_time = time.time()
-    end_cpu = process.cpu_percent()
-    end_memory = process.memory_info().rss / 1024 / 1024  # MB
-    
-    return {
-        'duration': end_time - start_time,
-        'cpu_usage': end_cpu - start_cpu,
-        'memory_delta': end_memory - start_memory,
-        'final_memory': end_memory
-    }
+
+    metrics: Dict[str, Any] = {}
+
+    try:
+        yield metrics
+    finally:
+        # 结束测量
+        end_time = time.time()
+        end_cpu = process.cpu_percent()
+        end_memory = process.memory_info().rss / 1024 / 1024  # MB
+
+        metrics.update({
+            'duration': end_time - start_time,
+            'cpu_usage': end_cpu - start_cpu,
+            'memory_delta': end_memory - start_memory,
+            'final_memory': end_memory
+        })
 
 
 class TestNLPPerformance:
@@ -64,7 +67,7 @@ class TestNLPPerformance:
     @pytest.fixture
     def context_compressor(self):
         """创建上下文压缩器"""
-        from xwe.core.context.context_compressor import ContextCompressor
+        from xwe.core.context import ContextCompressor
         return ContextCompressor()
     
     def test_context_compression_ratio(self, context_compressor):
