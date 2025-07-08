@@ -34,7 +34,20 @@ class NLPConfig:
         "rate_limit": {
             "requests_per_minute": 20,      # 每分钟请求数限制
             "requests_per_hour": 500        # 每小时请求数限制
-        }
+        },
+        # Context Compressor 配置
+        "context_compression": {
+            "enabled": True,                # 是否启用上下文压缩
+            "window_size": 20,              # 滑动窗口大小
+            "block_size": 30,               # 压缩触发阈值
+            "max_memory_blocks": 10,        # 最大记忆块数量
+            "summarization_temperature": 0.3,  # 摘要生成温度
+            "summarization_max_tokens": 150,   # 摘要最大长度
+            "enable_structured_summary": False, # 是否使用结构化摘要
+            "auto_save_memory": False,         # 是否自动保存记忆
+            "memory_save_path": "saves/context_memory.json"  # 记忆保存路径
+        },
+        "context_limit": 4096               # 上下文总长度限制（tokens）
     }
     
     def __init__(self, config_path: Optional[str] = None):

@@ -33,5 +33,8 @@ pytest==8.1.1
 pytest-mock==3.14.0
 playwright==1.42.0
 
+# 监控和指标
+prometheus-flask-exporter==0.23.0
+
 # 注意：DeepSeek SDK 需要单独安装
 # pip install deepseek

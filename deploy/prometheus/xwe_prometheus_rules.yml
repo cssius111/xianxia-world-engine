@@ -1,0 +1,120 @@
+# XianXia World Engine Prometheus 告警和聚合规则
+
+groups:
+  - name: xwe_alerts
+    interval: 30s
+    rules:
+      # NLP 请求延迟告警
+      - alert: HighNLPRequestLatency
+        expr: histogram_quantile(0.95, rate(xwe_nlp_request_seconds_bucket[5m])) > 5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "NLP 请求延迟过高"
+          description: "95分位数的 NLP 请求延迟超过 5 秒，当前值: {{ $value }}秒"
+
+      # NLP 错误率告警
+      - alert: HighNLPErrorRate
+        expr: rate(xwe_nlp_error_total[5m]) > 0.1
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "NLP 错误率过高"
+          description: "NLP 错误率超过 10%，每秒错误数: {{ $value }}"
+
+      # API 调用延迟告警
+      - alert: HighAPILatency
+        expr: xwe_api_call_latency_seconds{quantile="0.9"} > 10
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "外部 API 调用延迟过高"
+          description: "90分位数的 API 调用延迟超过 10 秒，API: {{ $labels.api_name }}"
+
+      # 缓存命中率低告警
+      - alert: LowCacheHitRate
+        expr: |
+          rate(xwe_nlp_cache_hit_total[5m]) / 
+          (rate(xwe_nlp_request_seconds_count[5m]) + 0.001) < 0.3
+        for: 10m
+        labels:
+          severity: info
+        annotations:
+          summary: "NLP 缓存命中率低"
+          description: "缓存命中率低于 30%，当前值: {{ $value }}"
+
+      # 系统资源告警
+      - alert: HighCPUUsage
+        expr: xwe_system_cpu_usage_percent > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "CPU 使用率过高"
+          description: "CPU 使用率超过 80%，当前值: {{ $value }}%"
+
+      - alert: HighMemoryUsage
+        expr: xwe_system_memory_usage_mb > 4096
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "内存使用过高"
+          description: "内存使用超过 4GB，当前值: {{ $value }}MB"
+
+      # 线程池告警
+      - alert: ThreadPoolExhausted
+        expr: xwe_async_request_queue_size > 100
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "异步请求队列过长"
+          description: "异步请求队列长度超过 100，当前值: {{ $value }}"
+
+  - name: xwe_aggregation_rules
+    interval: 30s
+    rules:
+      # 5分钟平均响应时间
+      - record: xwe:nlp_request_duration_5m
+        expr: |
+          histogram_quantile(0.5, 
+            sum(rate(xwe_nlp_request_seconds_bucket[5m])) by (command_type, le)
+          )
+
+      # 5分钟错误率
+      - record: xwe:nlp_error_rate_5m
+        expr: |
+          sum(rate(xwe_nlp_error_total[5m])) by (error_type) /
+          sum(rate(xwe_nlp_request_seconds_count[5m]))
+
+      # 每分钟请求数
+      - record: xwe:requests_per_minute
+        expr: sum(rate(xwe_nlp_request_seconds_count[1m])) * 60
+
+      # Token 使用速率
+      - record: xwe:token_usage_rate_5m
+        expr: sum(rate(xwe_nlp_token_count_sum[5m])) by (model)
+
+      # 命令类型分布
+      - record: xwe:command_distribution_5m
+        expr: |
+          sum(rate(xwe_nlp_request_seconds_count[5m])) by (command_type) /
+          ignoring(command_type) group_left sum(rate(xwe_nlp_request_seconds_count[5m]))
+
+      # 缓存效率
+      - record: xwe:cache_efficiency_5m
+        expr: |
+          sum(rate(xwe_nlp_cache_hit_total[5m])) by (cache_type) /
+          sum(rate(xwe_nlp_request_seconds_count[5m]))
+
+      # 上下文压缩效率
+      - record: xwe:context_compression_rate_5m
+        expr: rate(xwe_context_compression_total[5m])
+
+      # API 调用频率
+      - record: xwe:api_call_rate_5m
+        expr: sum(rate(xwe_api_call_latency_seconds_count[5m])) by (api_name, endpoint)

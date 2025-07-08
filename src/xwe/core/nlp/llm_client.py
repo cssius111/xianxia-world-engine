@@ -3,15 +3,24 @@ DeepSeek API 客户端 - 优化版本
 处理与 DeepSeek API 的通信，支持可配置重试和 Mock 模式
 """
 
+import asyncio
 import functools
 import json
 import logging
 import os
 import re
+from concurrent.futures import ThreadPoolExecutor
 from time import sleep, time
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Union
 
 import requests
+
+# 导入 Prometheus 指标收集器
+try:
+    from ...metrics.prometheus_metrics import get_metrics_collector
+    PROMETHEUS_ENABLED = True
+except ImportError:
+    PROMETHEUS_ENABLED = False
 
 logger = logging.getLogger(__name__)
 
@@ -96,6 +105,41 @@ class LLMClient:
             "Authorization": f"Bearer {self.api_key}",
             "Content-Type": "application/json",
         }
+        
+        # 初始化线程池执行器（用于异步包装）
+        self._executor = ThreadPoolExecutor(
+            max_workers=int(os.getenv("LLM_ASYNC_WORKERS", "5")),
+            thread_name_prefix="llm_async_"
+        )
+        self._executor_initialized = True
+        logger.info(f"LLMClient 线程池初始化完成，工作线程数: {self._executor._max_workers}")
+        
+        # Prometheus 指标收集器
+        self.metrics_collector = None
+        if PROMETHEUS_ENABLED:
+            self.metrics_collector = get_metrics_collector()
+            self.prometheus_enabled = os.getenv('ENABLE_PROMETHEUS', 'true').lower() == 'true'
+            # 更新线程池大小指标
+            if self.prometheus_enabled:
+                self.metrics_collector.update_async_metrics(
+                    thread_pool_size=self._executor._max_workers
+                )
+        else:
+            self.prometheus_enabled = False
+    
+    def __del__(self):
+        """清理资源"""
+        self.cleanup()
+    
+    def cleanup(self):
+        """清理线程池资源"""
+        if hasattr(self, '_executor_initialized') and self._executor_initialized:
+            try:
+                self._executor.shutdown(wait=True, cancel_futures=True)
+                self._executor_initialized = False
+                logger.info("LLMClient 线程池已关闭")
+            except Exception as e:
+                logger.warning(f"关闭线程池时出错: {e}")
 
     def _make_request_with_retry(self, payload: Dict) -> Dict:
         """发送请求的包装方法"""
@@ -261,11 +305,22 @@ class LLMClient:
         Returns:
             API响应
         """
+        start_time = time()
         try:
             response = requests.post(
                 self.api_url, headers=self.headers, json=payload, timeout=self.timeout
             )
             response.raise_for_status()
+            
+            # 记录 API 调用延迟
+            if self.prometheus_enabled and self.metrics_collector:
+                duration = time() - start_time
+                self.metrics_collector.record_api_call(
+                    api_name="deepseek",
+                    endpoint=self.api_url,
+                    duration=duration
+                )
+            
             return response.json()
 
         except requests.exceptions.Timeout:
@@ -348,6 +403,59 @@ class LLMClient:
         except Exception as e:
             logger.error(f"Error calling DeepSeek API: {e}")
             raise
+    
+    async def chat_async(
+        self,
+        prompt: str,
+        temperature: float = 0.0,
+        max_tokens: int = 256,
+        system_prompt: Optional[str] = None,
+    ) -> str:
+        """
+        异步发送聊天请求（线程池包装）
+        
+        Args:
+            prompt: 用户提示
+            temperature: 温度参数（0-1），0表示更确定的输出
+            max_tokens: 最大生成token数
+            system_prompt: 系统提示（可选）
+            
+        Returns:
+            模型响应文本
+            
+        Example:
+            ```python
+            import asyncio
+            
+            async def main():
+                client = LLMClient()
+                response = await client.chat_async("你好")
+                print(response)
+                
+            asyncio.run(main())
+            ```
+        """
+        if not self._executor_initialized:
+            raise RuntimeError("LLMClient 线程池已关闭")
+        
+        loop = asyncio.get_event_loop()
+        
+        # 使用 functools.partial 创建带参数的函数
+        func = functools.partial(
+            self.chat,
+            prompt,
+            temperature=temperature,
+            max_tokens=max_tokens,
+            system_prompt=system_prompt
+        )
+        
+        # 在线程池中执行
+        try:
+            result = await loop.run_in_executor(self._executor, func)
+            return result
+        except Exception as e:
+            logger.error(f"Async chat error: {e}")
+            raise
 
     def chat_with_context(
         self, messages: list, temperature: float = 0.7, max_tokens: int = 256
@@ -386,6 +494,52 @@ class LLMClient:
         except Exception as e:
             logger.error(f"Error in chat_with_context: {e}")
             raise
+    
+    async def chat_with_context_async(
+        self, messages: list, temperature: float = 0.7, max_tokens: int = 256
+    ) -> str:
+        """
+        异步带上下文的聊天（线程池包装）
+        
+        Args:
+            messages: 消息历史列表，格式为 [{"role": "user/assistant/system", "content": "..."}]
+            temperature: 温度参数
+            max_tokens: 最大生成token数
+            
+        Returns:
+            模型响应文本
+            
+        Example:
+            ```python
+            messages = [
+                {"role": "system", "content": "你是一个游戏助手"},
+                {"role": "user", "content": "如何提升境界?"},
+                {"role": "assistant", "content": "需要不断修炼..."},
+                {"role": "user", "content": "具体怎么操作?"}
+            ]
+            response = await client.chat_with_context_async(messages)
+            ```
+        """
+        if not self._executor_initialized:
+            raise RuntimeError("LLMClient 线程池已关闭")
+        
+        loop = asyncio.get_event_loop()
+        
+        # 使用 functools.partial 创建带参数的函数
+        func = functools.partial(
+            self.chat_with_context,
+            messages,
+            temperature=temperature,
+            max_tokens=max_tokens
+        )
+        
+        # 在线程池中执行
+        try:
+            result = await loop.run_in_executor(self._executor, func)
+            return result
+        except Exception as e:
+            logger.error(f"Async chat_with_context error: {e}")
+            raise
 
     def get_embeddings(self, text: str) -> Optional[list]:
         """
@@ -417,4 +571,13 @@ class DeepSeek:
             return {"text": text}
         except Exception as e:
             logger.error(f"Error in legacy chat method: {e}")
+            return {"text": ""}
+    
+    async def chat_async(self, prompt: str) -> Dict[str, Any]:
+        """异步兼容旧接口"""
+        try:
+            text = await self.client.chat_async(prompt)
+            return {"text": text}
+        except Exception as e:
+            logger.error(f"Error in legacy async chat method: {e}")
             return {"text": ""}

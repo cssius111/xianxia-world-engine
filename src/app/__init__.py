@@ -54,6 +54,14 @@ verbose_mode = os.getenv("VERBOSE_LOG", "false").lower() == "true"
 setup_logging(verbose=verbose_mode)
 logger = logging.getLogger("XianxiaEngine")
 
+# 导入 Prometheus 指标
+try:
+    from src.xwe.metrics.prometheus_metrics import init_prometheus_app_metrics, get_metrics_collector
+    PROMETHEUS_ENABLED = True
+except ImportError:
+    PROMETHEUS_ENABLED = False
+    logger.warning("Prometheus metrics not available")
+
 # Global systems and state
 log_level = logging.DEBUG if config.debug_mode else logging.INFO
 
@@ -339,6 +347,52 @@ def create_app(log_level: int = log_level) -> Flask:
 
     app = _create_flask_app(log_level=log_level)
     app.game_instances = game_instances
+    
+    # 初始化 Prometheus 指标
+    if PROMETHEUS_ENABLED and os.getenv('ENABLE_PROMETHEUS', 'true').lower() == 'true':
+        try:
+            prometheus_config = {
+                'metrics_path': '/metrics',
+                'enable_default_metrics': True
+            }
+            metrics = init_prometheus_app_metrics(
+                app, 
+                app_version='1.0.0',
+                app_config=prometheus_config
+            )
+            logger.info("Prometheus metrics initialized successfully")
+            
+            # 初始化系统指标更新
+            metrics_collector = get_metrics_collector()
+            
+            # 添加自定义指标钩子
+            @app.before_request
+            def update_game_metrics():
+                """Update game-related metrics before each request"""
+                if metrics_collector:
+                    metrics_collector.update_game_metrics(
+                        instances=len(game_instances),
+                        players=len([inst for inst in game_instances.values() 
+                                    if inst.get('game', {}).get('game_state', {}).get('player')])
+                    )
+                    
+                    # 更新系统资源指标
+                    try:
+                        import psutil
+                        process = psutil.Process()
+                        cpu_percent = process.cpu_percent(interval=0.1)
+                        memory_mb = process.memory_info().rss / 1024 / 1024
+                        metrics_collector.update_system_metrics(
+                            cpu_percent=cpu_percent,
+                            memory_mb=memory_mb
+                        )
+                    except:
+                        pass
+            
+        except Exception as e:
+            logger.error(f"Failed to initialize Prometheus metrics: {e}")
+    else:
+        logger.info("Prometheus metrics disabled")
 
     try:
         from .routes.lore import bp as lore_bp

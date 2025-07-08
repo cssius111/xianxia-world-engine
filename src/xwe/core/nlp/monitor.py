@@ -10,6 +10,16 @@ from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from collections import deque
 import json
+import os
+
+# 导入 Prometheus 指标收集器
+try:
+    from ...metrics.prometheus_metrics import get_metrics_collector
+    PROMETHEUS_ENABLED = True
+except ImportError:
+    PROMETHEUS_ENABLED = False
+    logger = logging.getLogger(__name__)
+    logger.warning("Prometheus metrics not available")
 
 logger = logging.getLogger(__name__)
 
@@ -54,6 +64,14 @@ class NLPMonitor:
         self.command_stats: Dict[str, int] = {}
         self.handler_stats: Dict[str, int] = {}
         
+        # Prometheus 指标收集器
+        self.metrics_collector = None
+        if PROMETHEUS_ENABLED:
+            self.metrics_collector = get_metrics_collector()
+            self.prometheus_enabled = os.getenv('ENABLE_PROMETHEUS', 'true').lower() == 'true'
+        else:
+            self.prometheus_enabled = False
+        
     def record_request(self, 
                       command: str,
                       handler: str,
@@ -62,7 +80,10 @@ class NLPMonitor:
                       confidence: float = 1.0,
                       use_cache: bool = False,
                       error: Optional[str] = None,
-                      token_count: int = 0) -> None:
+                      token_count: int = 0,
+                      context_compression_enabled: bool = False,
+                      context_compression_ratio: float = 1.0,
+                      **kwargs) -> None:
         """
         记录请求
         
@@ -114,6 +135,20 @@ class NLPMonitor:
             logger.warning(f"NLP请求失败: {command} -> {error}")
         elif duration > 5:  # 慢请求
             logger.warning(f"NLP慢请求: {command} 耗时 {duration:.2f}秒")
+            
+        # 更新 Prometheus 指标
+        if self.prometheus_enabled and self.metrics_collector:
+            self.update_prometheus_metrics(
+                command=command,
+                handler=handler,
+                duration=duration,
+                success=success,
+                token_count=token_count,
+                use_cache=use_cache,
+                error=error,
+                context_compression_enabled=context_compression_enabled,
+                context_compression_ratio=context_compression_ratio
+            )
             
     def get_stats(self) -> Dict[str, Any]:
         """获取统计信息"""
@@ -276,6 +311,71 @@ Token使用量: {stats['total_tokens']}
         """计算每小时请求数"""
         recent = self.get_recent_requests(minutes=60)
         return len(recent)
+    
+    def update_prometheus_metrics(self,
+                                command: str,
+                                handler: str,
+                                duration: float,
+                                success: bool,
+                                token_count: int = 0,
+                                use_cache: bool = False,
+                                error: Optional[str] = None,
+                                context_compression_enabled: bool = False,
+                                context_compression_ratio: float = 1.0,
+                                **kwargs):
+        """
+        更新 Prometheus 指标
+        
+        Args:
+            command: 原始命令
+            handler: 处理器名称
+            duration: 处理时长（秒）
+            success: 是否成功
+            token_count: token使用量
+            use_cache: 是否使用缓存
+            error: 错误信息
+            context_compression_enabled: 是否启用上下文压缩
+            context_compression_ratio: 压缩比
+        """
+        try:
+            # 提取命令类型（简化命令名作为标签）
+            command_type = command.split()[0] if command else "unknown"
+            if len(command_type) > 20:  # 限制标签长度
+                command_type = command_type[:20]
+            
+            # 记录 NLP 请求指标
+            error_type = None
+            if error:
+                error_type = error.split(':')[0] if ':' in error else 'unknown_error'
+                
+            self.metrics_collector.record_nlp_request(
+                command_type=command_type,
+                duration=duration,
+                success=success,
+                token_count=token_count,
+                model="deepseek-chat",  # 可以从配置读取
+                use_cache=use_cache,
+                error_type=error_type
+            )
+            
+            # 记录命令执行时间
+            self.metrics_collector.record_command_execution(
+                command=command_type,
+                handler=handler,
+                duration=duration
+            )
+            
+            # 如果启用了上下文压缩，记录相关指标
+            if context_compression_enabled:
+                # 这里可以从 kwargs 中获取更多信息
+                memory_blocks = kwargs.get('memory_blocks', -1)
+                self.metrics_collector.record_context_compression(
+                    memory_blocks=memory_blocks,
+                    compression_ratio=context_compression_ratio
+                )
+                
+        except Exception as e:
+            logger.error(f"更新 Prometheus 指标失败: {e}")
         
 
 # 全局监控实例

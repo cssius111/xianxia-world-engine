@@ -16,6 +16,7 @@ from .llm_client import LLMClient
 from .config import get_nlp_config
 from .monitor import get_nlp_monitor
 from . import tool_router
+from ..context import ContextCompressor
 
 # 专用日志记录器
 logger = logging.getLogger("xwe.nlp")
@@ -75,8 +76,30 @@ class DeepSeekNLPProcessor:
 
         # 加载prompt模板
         self._init_prompt_template()
+        
+        # 初始化上下文压缩器
+        context_config = self.config.get("context_compression", {})
+        if context_config.get("enabled", True):
+            try:
+                self.context_compressor = ContextCompressor(
+                    llm_client=self.llm,
+                    window_size=context_config.get("window_size", 20),
+                    block_size=context_config.get("block_size", 30),
+                    max_memory_blocks=context_config.get("max_memory_blocks", 10),
+                    enable_compression=True
+                )
+                logger.info("上下文压缩器已启用")
+            except Exception as e:
+                logger.warning(f"初始化上下文压缩器失败: {e}，将使用传统模式")
+                self.context_compressor = None
+        else:
+            self.context_compressor = None
+            logger.info("上下文压缩已禁用")
 
         logger.info(f"DeepSeekNLPProcessor 初始化完成 (缓存大小: {self._cache_size})")
+        
+        # 历史记录（用于不支持压缩时的降级方案）
+        self._conversation_history = []
 
     def _init_cache(self):
         """初始化缓存"""
@@ -234,7 +257,7 @@ class DeepSeekNLPProcessor:
 
     def build_prompt(self, user_input: str, context: Optional[Dict] = None) -> str:
         """
-        构建prompt，包含 Token 长度保护
+        构建prompt，集成上下文压缩功能
 
         Args:
             user_input: 用户输入
@@ -243,23 +266,72 @@ class DeepSeekNLPProcessor:
         Returns:
             完整的prompt
         """
-        # 这里可以根据context添加更多上下文信息
-        # 例如当前位置、已知NPC、可用物品等
+        # 安全地处理用户输入
+        safe_input = self._sanitize_user_input(user_input)
         
-        # 修复: 安全地处理用户输入，避免KeyError
+        # 如果启用了上下文压缩器
+        if self.context_compressor:
+            try:
+                # 将当前输入添加到压缩器
+                self.context_compressor.append(f"用户: {safe_input}")
+                
+                # 获取压缩后的上下文
+                compressed_context = self.context_compressor.get_context()
+                
+                # 构建带上下文的 prompt
+                context_prompt = f"""你是"修仙世界"游戏的命令解析器模块，需要将玩家发来的中文自然语言指令解析为结构化 JSON 格式。
+
+{如果有上下文就显示以下内容}
+=== 对话上下文 ===
+{compressed_context}
+
+=== 当前输入 ===
+输入: "{safe_input}"
+
+请根据上下文和当前输入，输出符合以下格式的 JSON：
+{{
+  "raw": "<玩家原始输入>",
+  "normalized_command": "<标准命令词>",
+  "intent": "<意图类别>",
+  "args": {{
+    // 可选字段，根据指令提取
+  }},
+  "explanation": "<简短解析依据>"
+}}
+
+仅输出 JSON，不要任何多余文本。
+输出:
+"""
+                
+                # 检查长度
+                context_limit = self.config.get("context_limit", 4096)
+                estimated_tokens = len(context_prompt) // 4
+                
+                if estimated_tokens > context_limit - 200:
+                    logger.warning(f"即使压缩后，prompt 仍然过长: {estimated_tokens} tokens")
+                    # 可以进一步处理，但现在先保持简单
+                
+                return context_prompt
+                
+            except Exception as e:
+                logger.warning(f"使用压缩器时出错: {e}，回退到传统模式")
+                # 回退到传统模式
+        
+        # 传统模式（无压缩或压缩失败时）
         try:
-            # 清理和转义用户输入
-            safe_input = self._sanitize_user_input(user_input)
+            # 添加到历史记录
+            self._conversation_history.append(f"用户: {safe_input}")
+            if len(self._conversation_history) > 50:  # 限制历史长度
+                self._conversation_history = self._conversation_history[-30:]
             
             # 构建基础 prompt
             base_prompt = self.prompt_template.replace('"{}"', f'"{safe_input}"')
             
             # Token 长度保护
-            context_limit = self.config.get("context_limit", 4096)  # 默认 4K context
-            reserved_tokens = 200  # 为响应预留的 token
+            context_limit = self.config.get("context_limit", 4096)
+            reserved_tokens = 200
             max_prompt_tokens = context_limit - reserved_tokens
             
-            # 简单的 token 估算 (1 token ≈ 4 characters for Chinese)
             estimated_tokens = len(base_prompt) // 4
             
             if estimated_tokens > max_prompt_tokens:
@@ -268,12 +340,11 @@ class DeepSeekNLPProcessor:
                     f"将截断历史对话"
                 )
                 
-                # 截断策略：保留核心系统提示和当前用户输入
+                # 截断策略
                 lines = base_prompt.split('\n')
                 essential_lines = []
                 user_input_lines = []
                 
-                # 提取核心部分
                 in_examples = False
                 for line in lines:
                     if '### 示例：' in line:
@@ -286,12 +357,9 @@ class DeepSeekNLPProcessor:
                     elif not in_examples:
                         essential_lines.append(line)
                 
-                # 重新组合，保留核心部分
                 truncated_prompt = '\n'.join(essential_lines + user_input_lines)
                 
-                # 再次检查长度
                 if len(truncated_prompt) // 4 > max_prompt_tokens:
-                    # 如果还是太长，使用最小化 prompt
                     truncated_prompt = f'''你是修仙世界游戏的命令解析器。
 将用户输入转换为JSON格式：
 {{
@@ -313,7 +381,6 @@ class DeepSeekNLPProcessor:
             
         except Exception as e:
             logger.warning(f"构建prompt时出错: {e}, 使用回退方案")
-            # 如果仍然出错，使用最安全的回退方案
             safe_input = self._sanitize_user_input(user_input) or "未知命令"
             return self.prompt_template.replace('"{}"', f'"{safe_input}"')
     
@@ -548,6 +615,14 @@ class DeepSeekNLPProcessor:
                 confidence=result.get("confidence", 1.0),
             )
             logger.info(f"Parsed command: {parsed}")
+            
+            # 将系统响应添加到上下文（如果启用了压缩器）
+            if self.context_compressor:
+                response_msg = f"系统: 解析为{parsed.normalized_command}命令 ({parsed.explanation})"
+                self.context_compressor.append(response_msg)
+            elif hasattr(self, '_conversation_history'):
+                response_msg = f"系统: 解析为{parsed.normalized_command}命令"
+                self._conversation_history.append(response_msg)
 
             success = True
             return parsed
@@ -580,6 +655,12 @@ class DeepSeekNLPProcessor:
             # 记录监控数据
             if self.config.get("performance_monitoring", True):
                 duration = time.time() - start_time
+                
+                # 获取压缩器统计（如果可用）
+                context_stats = {}
+                if self.context_compressor:
+                    context_stats = self.context_compressor.get_stats()
+                
                 self.monitor.record_request(
                     command=user_input,
                     handler=(
@@ -590,7 +671,9 @@ class DeepSeekNLPProcessor:
                     confidence=parsed.confidence if "parsed" in locals() else 0,
                     use_cache=use_cache and not use_fallback,
                     error=error_msg,
-                    token_count=0,  # TODO: 实际token计数
+                    token_count=context_stats.get("estimated_total_tokens", 0),
+                    context_compression_enabled=self.context_compressor is not None,
+                    context_compression_ratio=context_stats.get("compression_ratio", 1.0)
                 )
 
     def _validate_result(self, result: Dict) -> bool:
@@ -632,6 +715,72 @@ class DeepSeekNLPProcessor:
                 else 0
             ),
         }
+    
+    def clear_context(self) -> None:
+        """清空上下文压缩器和历史记录"""
+        if self.context_compressor:
+            self.context_compressor.clear()
+            logger.info("上下文压缩器已清空")
+        self._conversation_history.clear()
+        logger.info("对话历史已清空")
+    
+    def get_context_stats(self) -> Dict[str, Any]:
+        """获取上下文压缩器统计信息"""
+        if self.context_compressor:
+            return self.context_compressor.get_stats()
+        else:
+            return {
+                "enabled": False,
+                "conversation_history_length": len(self._conversation_history)
+            }
+    
+    def save_context_memory(self, filepath: str) -> bool:
+        """
+        保存上下文记忆到文件
+        
+        Args:
+            filepath: 保存路径
+            
+        Returns:
+            是否成功
+        """
+        if not self.context_compressor:
+            logger.warning("上下文压缩器未启用")
+            return False
+        
+        try:
+            memory_data = self.context_compressor.export_memory()
+            with open(filepath, 'w', encoding='utf-8') as f:
+                json.dump(memory_data, f, ensure_ascii=False, indent=2)
+            logger.info(f"上下文记忆已保存到 {filepath}")
+            return True
+        except Exception as e:
+            logger.error(f"保存上下文记忆失败: {e}")
+            return False
+    
+    def load_context_memory(self, filepath: str) -> bool:
+        """
+        从文件加载上下文记忆
+        
+        Args:
+            filepath: 加载路径
+            
+        Returns:
+            是否成功
+        """
+        if not self.context_compressor:
+            logger.warning("上下文压缩器未启用")
+            return False
+        
+        try:
+            with open(filepath, 'r', encoding='utf-8') as f:
+                memory_data = json.load(f)
+            self.context_compressor.import_memory(memory_data)
+            logger.info(f"从 {filepath} 加载上下文记忆")
+            return True
+        except Exception as e:
+            logger.error(f"加载上下文记忆失败: {e}")
+            return False
 
 
 # 保持向后兼容
