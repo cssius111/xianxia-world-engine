@@ -1,0 +1,328 @@
+{
+  "multilingual_tests": [
+    {
+      "language": "chinese_simplified",
+      "test_cases": [
+        {
+          "input": "我想查看背包里的物品",
+          "expected_intent": "check_inventory",
+          "expected_entities": []
+        },
+        {
+          "input": "使用回血丹恢复生命值",
+          "expected_intent": "use_item",
+          "expected_entities": ["回血丹"]
+        },
+        {
+          "input": "前往东方的神秘森林探险",
+          "expected_intent": "move",
+          "expected_entities": ["东方", "神秘森林"]
+        },
+        {
+          "input": "与李白对话了解任务详情",
+          "expected_intent": "talk",
+          "expected_entities": ["李白"]
+        }
+      ]
+    },
+    {
+      "language": "chinese_traditional",
+      "test_cases": [
+        {
+          "input": "我想查看揹包裡的物品",
+          "expected_intent": "check_inventory",
+          "expected_entities": []
+        },
+        {
+          "input": "使用回血丹恢復生命值",
+          "expected_intent": "use_item",
+          "expected_entities": ["回血丹"]
+        },
+        {
+          "input": "前往東方的神祕森林探險",
+          "expected_intent": "move",
+          "expected_entities": ["東方", "神祕森林"]
+        },
+        {
+          "input": "與李白對話了解任務詳情",
+          "expected_intent": "talk",
+          "expected_entities": ["李白"]
+        }
+      ]
+    },
+    {
+      "language": "english",
+      "test_cases": [
+        {
+          "input": "check my inventory",
+          "expected_intent": "check_inventory",
+          "expected_entities": []
+        },
+        {
+          "input": "use health potion",
+          "expected_intent": "use_item",
+          "expected_entities": ["health potion"]
+        },
+        {
+          "input": "go to the eastern mysterious forest",
+          "expected_intent": "move",
+          "expected_entities": ["eastern", "mysterious forest"]
+        },
+        {
+          "input": "talk to Master Li about the quest",
+          "expected_intent": "talk",
+          "expected_entities": ["Master Li"]
+        }
+      ]
+    },
+    {
+      "language": "japanese",
+      "test_cases": [
+        {
+          "input": "インベントリを確認する",
+          "expected_intent": "check_inventory",
+          "expected_entities": []
+        },
+        {
+          "input": "回復薬を使う",
+          "expected_intent": "use_item",
+          "expected_entities": ["回復薬"]
+        },
+        {
+          "input": "東の神秘的な森へ行く",
+          "expected_intent": "move",
+          "expected_entities": ["東", "神秘的な森"]
+        },
+        {
+          "input": "李白と話してクエストについて聞く",
+          "expected_intent": "talk",
+          "expected_entities": ["李白"]
+        }
+      ]
+    },
+    {
+      "language": "mixed_chinese_english",
+      "test_cases": [
+        {
+          "input": "use 回血丹 to heal myself",
+          "expected_intent": "use_item",
+          "expected_entities": ["回血丹"]
+        },
+        {
+          "input": "check 背包 for items",
+          "expected_intent": "check_inventory",
+          "expected_entities": []
+        },
+        {
+          "input": "go to 东方森林 for adventure",
+          "expected_intent": "move",
+          "expected_entities": ["东方森林"]
+        },
+        {
+          "input": "与NPC Master Li 对话",
+          "expected_intent": "talk",
+          "expected_entities": ["Master Li"]
+        }
+      ]
+    },
+    {
+      "language": "pinyin",
+      "test_cases": [
+        {
+          "input": "cha kan bei bao",
+          "expected_intent": "check_inventory",
+          "expected_entities": []
+        },
+        {
+          "input": "shi yong hui xue dan",
+          "expected_intent": "use_item",
+          "expected_entities": ["回血丹"]
+        },
+        {
+          "input": "qu dong fang sen lin",
+          "expected_intent": "move",
+          "expected_entities": ["东方", "森林"]
+        },
+        {
+          "input": "he li bai dui hua",
+          "expected_intent": "talk",
+          "expected_entities": ["李白"]
+        }
+      ]
+    },
+    {
+      "language": "colloquial_chinese",
+      "test_cases": [
+        {
+          "input": "看看包里有啥",
+          "expected_intent": "check_inventory",
+          "expected_entities": []
+        },
+        {
+          "input": "嗑个药回血",
+          "expected_intent": "use_item",
+          "expected_entities": ["药"]
+        },
+        {
+          "input": "去东边森林溜达溜达",
+          "expected_intent": "move",
+          "expected_entities": ["东边", "森林"]
+        },
+        {
+          "input": "找老李聊聊天",
+          "expected_intent": "talk",
+          "expected_entities": ["老李"]
+        }
+      ]
+    },
+    {
+      "language": "classical_chinese",
+      "test_cases": [
+        {
+          "input": "欲览囊中之物",
+          "expected_intent": "check_inventory",
+          "expected_entities": []
+        },
+        {
+          "input": "服丹药以疗伤",
+          "expected_intent": "use_item",
+          "expected_entities": ["丹药"]
+        },
+        {
+          "input": "往东方密林而去",
+          "expected_intent": "move",
+          "expected_entities": ["东方", "密林"]
+        },
+        {
+          "input": "与李白君言谈",
+          "expected_intent": "talk",
+          "expected_entities": ["李白"]
+        }
+      ]
+    },
+    {
+      "language": "emoji_mixed",
+      "test_cases": [
+        {
+          "input": "查看背包📦",
+          "expected_intent": "check_inventory",
+          "expected_entities": []
+        },
+        {
+          "input": "使用💊回血",
+          "expected_intent": "use_item",
+          "expected_entities": ["药"]
+        },
+        {
+          "input": "去东方🌲探险",
+          "expected_intent": "move",
+          "expected_entities": ["东方"]
+        },
+        {
+          "input": "和李白💬对话",
+          "expected_intent": "talk",
+          "expected_entities": ["李白"]
+        }
+      ]
+    },
+    {
+      "language": "typo_tolerance",
+      "test_cases": [
+        {
+          "input": "查看揹包",
+          "expected_intent": "check_inventory",
+          "note": "揹 instead of 背"
+        },
+        {
+          "input": "使用回血丹回复生命",
+          "expected_intent": "use_item",
+          "note": "回复 instead of 恢复"
+        },
+        {
+          "input": "前網东方森林",
+          "expected_intent": "move",
+          "note": "網 instead of 往"
+        },
+        {
+          "input": "与李百对话",
+          "expected_intent": "talk",
+          "note": "李百 instead of 李白"
+        }
+      ]
+    },
+    {
+      "language": "dialect_variations",
+      "test_cases": [
+        {
+          "dialect": "cantonese",
+          "input": "睇下背包有咩",
+          "expected_intent": "check_inventory"
+        },
+        {
+          "dialect": "taiwanese",
+          "input": "看看背包有啥物",
+          "expected_intent": "check_inventory"
+        },
+        {
+          "dialect": "sichuan",
+          "input": "看哈背包头有啥子",
+          "expected_intent": "check_inventory"
+        },
+        {
+          "dialect": "northeast",
+          "input": "瞅瞅包里都有啥",
+          "expected_intent": "check_inventory"
+        }
+      ]
+    },
+    {
+      "language": "special_formats",
+      "test_cases": [
+        {
+          "input": "【查看背包】",
+          "expected_intent": "check_inventory",
+          "note": "Command in brackets"
+        },
+        {
+          "input": "/use 回血丹",
+          "expected_intent": "use_item",
+          "note": "Slash command format"
+        },
+        {
+          "input": "!goto 东方森林",
+          "expected_intent": "move",
+          "note": "Exclamation command format"
+        },
+        {
+          "input": "@李白 对话",
+          "expected_intent": "talk",
+          "note": "At-mention format"
+        }
+      ]
+    }
+  ],
+  "test_configurations": {
+    "should_normalize": true,
+    "should_detect_language": true,
+    "fallback_language": "chinese_simplified",
+    "supported_languages": [
+      "chinese_simplified",
+      "chinese_traditional",
+      "english",
+      "japanese"
+    ]
+  },
+  "expected_behaviors": {
+    "unsupported_language": "Fallback to Chinese processing or return language not supported message",
+    "mixed_language": "Extract entities in any language and process intent",
+    "ambiguous_input": "Ask for clarification or use context to disambiguate",
+    "translation_errors": "Graceful degradation without crashing"
+  },
+  "metadata": {
+    "version": "1.0",
+    "total_languages": 12,
+    "total_test_cases": 48,
+    "encoding": "UTF-8",
+    "purpose": "Test multilingual support and robustness"
+  }
+}

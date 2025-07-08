@@ -1,0 +1,315 @@
+{
+  "performance_scenarios": [
+    {
+      "name": "单用户基准测试",
+      "description": "测试单个用户的基本操作性能",
+      "config": {
+        "users": 1,
+        "duration": 60,
+        "think_time": 1
+      },
+      "operations": [
+        {
+          "type": "simple_command",
+          "commands": ["查看状态", "查看背包", "查看地图"],
+          "weight": 40,
+          "expected_response_time_ms": 100
+        },
+        {
+          "type": "exploration",
+          "commands": ["探索周围", "前往东方", "返回"],
+          "weight": 30,
+          "expected_response_time_ms": 200
+        },
+        {
+          "type": "combat",
+          "commands": ["攻击", "使用技能", "防御"],
+          "weight": 20,
+          "expected_response_time_ms": 300
+        },
+        {
+          "type": "complex_query",
+          "commands": ["查看所有可学习的技能并按威力排序"],
+          "weight": 10,
+          "expected_response_time_ms": 500
+        }
+      ]
+    },
+    {
+      "name": "并发用户测试",
+      "description": "测试多用户并发访问",
+      "config": {
+        "users": 100,
+        "ramp_up": 30,
+        "duration": 300,
+        "think_time": [1, 3]
+      },
+      "operations": [
+        {
+          "type": "mixed_commands",
+          "weight": 100,
+          "distribution": "random"
+        }
+      ],
+      "expected_metrics": {
+        "avg_response_time_ms": 500,
+        "p95_response_time_ms": 1000,
+        "p99_response_time_ms": 2000,
+        "error_rate": 0.01
+      }
+    },
+    {
+      "name": "突发流量测试",
+      "description": "模拟突然的流量激增",
+      "phases": [
+        {
+          "name": "预热期",
+          "users": 10,
+          "duration": 60
+        },
+        {
+          "name": "正常期",
+          "users": 50,
+          "duration": 120
+        },
+        {
+          "name": "突发期",
+          "users": 500,
+          "duration": 60
+        },
+        {
+          "name": "恢复期",
+          "users": 50,
+          "duration": 120
+        }
+      ],
+      "success_criteria": {
+        "no_crashes": true,
+        "max_error_rate": 0.05,
+        "recovery_time_seconds": 30
+      }
+    },
+    {
+      "name": "长对话上下文测试",
+      "description": "测试长对话对性能的影响",
+      "config": {
+        "users": 10,
+        "conversation_length": 100,
+        "context_growth_rate": "linear"
+      },
+      "measurements": [
+        {
+          "at_turn": 1,
+          "expected_response_time_ms": 100
+        },
+        {
+          "at_turn": 50,
+          "expected_response_time_ms": 300
+        },
+        {
+          "at_turn": 100,
+          "expected_response_time_ms": 500
+        }
+      ]
+    },
+    {
+      "name": "内存压力测试",
+      "description": "测试内存使用和泄漏",
+      "config": {
+        "duration": 3600,
+        "users": 20,
+        "monitor_interval": 60
+      },
+      "operations": [
+        {
+          "type": "memory_intensive",
+          "commands": [
+            "生成1000个物品的详细描述",
+            "查看最近1000条系统消息",
+            "分析过去24小时的所有交易记录"
+          ]
+        }
+      ],
+      "limits": {
+        "max_memory_mb": 1000,
+        "max_memory_growth_rate_mb_per_hour": 50
+      }
+    },
+    {
+      "name": "API延迟测试",
+      "description": "测试外部API延迟对系统的影响",
+      "config": {
+        "inject_delays": [
+          {
+            "api": "llm",
+            "delay_ms": [100, 500, 1000, 5000],
+            "probability": 0.1
+          }
+        ]
+      },
+      "expected_behavior": {
+        "timeout_handling": true,
+        "fallback_responses": true,
+        "queue_management": true
+      }
+    },
+    {
+      "name": "缓存效率测试",
+      "description": "测试缓存对性能的提升",
+      "phases": [
+        {
+          "name": "冷启动",
+          "cache_enabled": false,
+          "duration": 300
+        },
+        {
+          "name": "缓存预热",
+          "cache_enabled": true,
+          "duration": 300
+        },
+        {
+          "name": "缓存命中",
+          "cache_enabled": true,
+          "duration": 300,
+          "repeat_commands": true
+        }
+      ],
+      "expected_improvement": {
+        "cache_hit_rate": 0.6,
+        "response_time_reduction": 0.7
+      }
+    },
+    {
+      "name": "数据库负载测试",
+      "description": "测试数据库操作的性能",
+      "operations": [
+        {
+          "type": "read_heavy",
+          "queries": [
+            "获取排行榜前100名",
+            "查询玩家详细信息",
+            "获取物品价格历史"
+          ],
+          "weight": 70
+        },
+        {
+          "type": "write_heavy",
+          "queries": [
+            "保存游戏进度",
+            "更新玩家状态",
+            "记录交易日志"
+          ],
+          "weight": 30
+        }
+      ],
+      "connection_pool": {
+        "size": 20,
+        "overflow": 10
+      }
+    },
+    {
+      "name": "上下文压缩性能测试",
+      "description": "测试上下文压缩的性能影响",
+      "test_cases": [
+        {
+          "context_size": 10,
+          "expected_compression_time_ms": 1,
+          "expected_compression_ratio": 0.9
+        },
+        {
+          "context_size": 100,
+          "expected_compression_time_ms": 10,
+          "expected_compression_ratio": 0.6
+        },
+        {
+          "context_size": 1000,
+          "expected_compression_time_ms": 100,
+          "expected_compression_ratio": 0.3
+        }
+      ]
+    },
+    {
+      "name": "异步处理性能测试",
+      "description": "测试异步处理的性能提升",
+      "scenarios": [
+        {
+          "name": "同步处理",
+          "async_enabled": false,
+          "concurrent_requests": 10,
+          "expected_total_time_seconds": 10
+        },
+        {
+          "name": "异步处理",
+          "async_enabled": true,
+          "concurrent_requests": 10,
+          "thread_pool_size": 5,
+          "expected_total_time_seconds": 3
+        }
+      ]
+    },
+    {
+      "name": "错误恢复性能测试",
+      "description": "测试错误情况下的性能",
+      "error_injection": [
+        {
+          "type": "network_timeout",
+          "rate": 0.05,
+          "expected_recovery_time_ms": 100
+        },
+        {
+          "type": "invalid_response",
+          "rate": 0.02,
+          "expected_recovery_time_ms": 50
+        },
+        {
+          "type": "rate_limit",
+          "rate": 0.01,
+          "expected_recovery_time_ms": 1000
+        }
+      ]
+    },
+    {
+      "name": "极限负载测试",
+      "description": "找出系统的极限",
+      "config": {
+        "start_users": 100,
+        "increment_users": 100,
+        "increment_interval": 60,
+        "stop_criteria": {
+          "error_rate": 0.1,
+          "response_time_p99_ms": 5000,
+          "cpu_usage": 0.9
+        }
+      },
+      "measurements": [
+        "max_sustainable_users",
+        "breaking_point_users",
+        "recovery_characteristics"
+      ]
+    }
+  ],
+  "global_settings": {
+    "warmup_duration": 30,
+    "cooldown_duration": 30,
+    "monitoring_interval": 1,
+    "metrics_to_collect": [
+      "response_time",
+      "throughput",
+      "error_rate",
+      "cpu_usage",
+      "memory_usage",
+      "thread_count",
+      "gc_stats"
+    ]
+  },
+  "metadata": {
+    "version": "1.0",
+    "total_scenarios": 12,
+    "estimated_total_duration_hours": 4,
+    "resource_requirements": {
+      "cpu_cores": 4,
+      "memory_gb": 8,
+      "network_bandwidth_mbps": 100
+    }
+  }
+}
