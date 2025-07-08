@@ -36,5 +36,9 @@ playwright==1.42.0
 # 监控和指标
 prometheus-flask-exporter==0.23.0
 
+# 数据分析与绘图（测试使用）
+pandas==2.0.3
+matplotlib==3.7.5
+
 # 注意：DeepSeek SDK 需要单独安装
 # pip install deepseek
