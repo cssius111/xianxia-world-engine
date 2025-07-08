@@ -5,7 +5,7 @@ Prometheus 监控指标定义
 
 import logging
 from typing import Dict, Optional, Any
-from prometheus_client import Counter, Histogram, Gauge, Summary
+from prometheus_client import Counter, Histogram, Gauge, Summary, CollectorRegistry
 from prometheus_flask_exporter import PrometheusMetrics
 import time
 from contextlib import contextmanager
@@ -16,12 +16,16 @@ logger = logging.getLogger(__name__)
 # 指标前缀
 METRIC_PREFIX = "xwe_"
 
+# 独立的指标注册表，避免重复注册
+REGISTRY = CollectorRegistry()
+
 # NLP 请求处理时间（秒）
 nlp_request_seconds = Histogram(
     f'{METRIC_PREFIX}nlp_request_seconds',
     'NLP request processing time in seconds',
     labelnames=['command_type', 'status'],
-    buckets=(0.1, 0.25, 0.5, 1.0, 2.5, 5.0, 10.0)
+    buckets=(0.1, 0.25, 0.5, 1.0, 2.5, 5.0, 10.0),
+    registry=REGISTRY
 )
 
 # NLP Token 使用量
@@ -29,82 +33,95 @@ nlp_token_count = Histogram(
     f'{METRIC_PREFIX}nlp_token_count',
     'Number of tokens used per NLP request',
     labelnames=['model'],
-    buckets=(10, 50, 100, 250, 500, 1000, 2500, 5000)
+    buckets=(10, 50, 100, 250, 500, 1000, 2500, 5000),
+    registry=REGISTRY
 )
 
 # 缓存命中总数
 nlp_cache_hit_total = Counter(
     f'{METRIC_PREFIX}nlp_cache_hit_total',
     'Total number of NLP cache hits',
-    labelnames=['cache_type']
+    labelnames=['cache_type'],
+    registry=REGISTRY
 )
 
 # 上下文压缩次数
 context_compression_total = Counter(
     f'{METRIC_PREFIX}context_compression_total',
-    'Total number of context compressions performed'
+    'Total number of context compressions performed',
+    registry=REGISTRY
 )
 
 # 当前记忆块数量
 context_memory_blocks_gauge = Gauge(
     f'{METRIC_PREFIX}context_memory_blocks_gauge',
-    'Current number of memory blocks in context'
+    'Current number of memory blocks in context',
+    registry=REGISTRY
 )
 
 # 异步线程池大小
 async_thread_pool_size = Gauge(
     f'{METRIC_PREFIX}async_thread_pool_size',
-    'Current size of async thread pool'
+    'Current size of async thread pool',
+    registry=REGISTRY
 )
 
 # 异步请求队列长度
 async_request_queue_size = Gauge(
     f'{METRIC_PREFIX}async_request_queue_size',
-    'Current length of async request queue'
+    'Current length of async request queue',
+    registry=REGISTRY
 )
 
 # NLP 错误计数
 nlp_error_total = Counter(
     f'{METRIC_PREFIX}nlp_error_total',
     'Total number of NLP errors',
-    labelnames=['error_type']
+    labelnames=['error_type'],
+    registry=REGISTRY
 )
 
 # 命令执行时间
 command_execution_seconds = Histogram(
     f'{METRIC_PREFIX}command_execution_seconds',
     'Command execution time in seconds',
-    labelnames=['command', 'handler']
+    labelnames=['command', 'handler'],
+    registry=REGISTRY
 )
 
 # API 调用延迟
 api_call_latency = Summary(
     f'{METRIC_PREFIX}api_call_latency_seconds',
     'External API call latency in seconds',
-    labelnames=['api_name', 'endpoint']
+    labelnames=['api_name', 'endpoint'],
+    registry=REGISTRY
 )
 
 # 游戏实例数量
 game_instances_gauge = Gauge(
     f'{METRIC_PREFIX}game_instances_gauge',
-    'Current number of active game instances'
+    'Current number of active game instances',
+    registry=REGISTRY
 )
 
 # 玩家在线数
 players_online_gauge = Gauge(
     f'{METRIC_PREFIX}players_online_gauge',
-    'Current number of online players'
+    'Current number of online players',
+    registry=REGISTRY
 )
 
 # 系统资源使用
 system_cpu_usage = Gauge(
     f'{METRIC_PREFIX}system_cpu_usage_percent',
-    'System CPU usage percentage'
+    'System CPU usage percentage',
+    registry=REGISTRY
 )
 
 system_memory_usage = Gauge(
     f'{METRIC_PREFIX}system_memory_usage_mb',
-    'System memory usage in MB'
+    'System memory usage in MB',
+    registry=REGISTRY
 )
 
 
@@ -324,6 +341,7 @@ def init_prometheus_app_metrics(app, app_version='1.0.0', app_config=None):
         app,
         group_by='endpoint',
         defaults_prefix=METRIC_PREFIX,
+        registry=REGISTRY,
         excluded_paths=['/static', '/health', '/favicon.ico']
     )
     
