@@ -106,10 +106,13 @@ class TestNLPPerformance:
         ]:
             original_size = len(json.dumps(context, ensure_ascii=False))
             
+            context_compressor.clear()
             with measure_performance() as perf:
-                compressed = context_compressor.compress(context)
-            
-            compressed_size = len(json.dumps(compressed, ensure_ascii=False))
+                for msg in context:
+                    context_compressor.append(msg["content"])
+                compressed_text = context_compressor.get_context()
+
+            compressed_size = len(json.dumps(compressed_text, ensure_ascii=False))
             compression_ratio = compressed_size / original_size if original_size > 0 else 1
             
             test_cases.append({

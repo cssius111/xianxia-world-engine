@@ -134,7 +134,8 @@ class TestNLPEndToEnd:
                 
                 # 验证上下文压缩是否工作
                 if hasattr(nlp_processor, 'context_compressor'):
-                    compressed_size = len(str(nlp_processor.context_compressor.get_compressed_context(context)))
+                    compressed = nlp_processor.context_compressor.get_context()
+                    compressed_size = len(str(compressed))
                     original_size = len(str(context))
                     compression_ratio = compressed_size / original_size if original_size > 0 else 1
                     assert compression_ratio < 0.8  # 至少20%的压缩率

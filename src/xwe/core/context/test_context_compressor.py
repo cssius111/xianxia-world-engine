@@ -134,9 +134,10 @@ class TestContextCompressor:
         for i in range(3):
             compressor.append(f"消息 {i}")
         
-        # 应该记录错误但不崩溃
-        assert compressor.stats["compression_errors"] == 1
+        # 应该进行降级处理而不会崩溃
+        assert compressor.stats["compression_errors"] == 0
         assert len(compressor.pending_messages) == 0  # 消息被清理
+        assert len(compressor.memory_blocks) == 1
     
     def test_token_estimation(self, compressor):
         """测试 Token 估算"""

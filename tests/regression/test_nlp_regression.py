@@ -162,7 +162,7 @@ class TestNLPRegression:
         问题 #006: 上下文压缩导致数据丢失
         修复日期: 2024-02-15
         """
-        from xwe.core.context.context_compressor import ContextCompressor
+        from xwe.core.context import ContextCompressor
         
         compressor = ContextCompressor()
         
@@ -183,7 +183,9 @@ class TestNLPRegression:
             ])
         
         # 压缩
-        compressed = compressor.compress(important_context)
+        for item in important_context:
+            compressor.append(item["content"])
+        compressed = compressor.get_context()
         
         # 验证重要信息被保留
         compressed_str = json.dumps(compressed, ensure_ascii=False)
@@ -310,7 +312,7 @@ class TestNLPRegression:
         
         # 运行性能测试
         from xwe.core.nlp.nlp_processor import NLPProcessor
-        from xwe.core.context.context_compressor import ContextCompressor
+        from xwe.core.context import ContextCompressor
         import psutil
         
         processor = NLPProcessor()
@@ -329,7 +331,10 @@ class TestNLPRegression:
         # 测试压缩率
         test_context = [{"content": f"消息{i}" * 10} for i in range(100)]
         original_size = len(json.dumps(test_context))
-        compressed_size = len(json.dumps(compressor.compress(test_context)))
+        for entry in test_context:
+            compressor.append(entry["content"])
+        compressed_context = compressor.get_context()
+        compressed_size = len(json.dumps(compressed_context))
         current_benchmark['metrics']['compression_ratio'] = compressed_size / original_size
         
         # 测试内存使用
