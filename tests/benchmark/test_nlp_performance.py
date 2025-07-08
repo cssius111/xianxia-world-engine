@@ -55,6 +55,7 @@ def measure_performance():
         })
 
 
+@pytest.mark.slow
 class TestNLPPerformance:
     """NLP 性能基准测试"""
     

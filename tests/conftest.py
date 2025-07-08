@@ -7,6 +7,24 @@ import pytest
 from dotenv import load_dotenv
 from flask import Flask
 
+
+def pytest_addoption(parser):
+    parser.addoption(
+        "--runslow",
+        action="store_true",
+        default=False,
+        help="运行被标记为 slow 的测试",
+    )
+
+
+def pytest_collection_modifyitems(config, items):
+    if config.getoption("--runslow"):
+        return
+    skip_slow = pytest.mark.skip(reason="需要 --runslow 才能运行慢速测试")
+    for item in items:
+        if "slow" in item.keywords:
+            item.add_marker(skip_slow)
+
 load_dotenv()
 
 # Ensure the src directory is in sys.path so modules can find 'config' and others
