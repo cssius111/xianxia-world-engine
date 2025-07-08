@@ -32,6 +32,10 @@ def main():
 
     all_passed = True
 
+    # 安装依赖
+    if not run_command("pip install -r requirements.txt", "安装Python依赖"):
+        return 1
+
     # 1. 检查导入
     if os.path.exists("check_imports.py"):
         if not run_command("python check_imports.py", "检查模块导入"):
@@ -45,9 +49,7 @@ def main():
         "yes",
     }
     if not skip_pw_install:
-        if not run_command(
-            "npx playwright install --with-deps", "安装 Playwright 浏览器依赖"
-        ):
+        if not run_command("npx playwright install --with-deps", "安装 Playwright 浏览器依赖"):
             print("\n⚠️  Playwright 安装失败，继续执行测试")
     else:
         print("跳过 Playwright 安装步骤")
