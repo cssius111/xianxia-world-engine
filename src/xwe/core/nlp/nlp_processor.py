@@ -678,7 +678,7 @@ class DeepSeekNLPProcessor:
 
     def _validate_result(self, result: Dict) -> bool:
         """验证解析结果格式"""
-        required_fields = ["raw", "normalized_command", "intent"]
+        required_fields = ["normalized_command", "intent"]
         return all(field in result for field in required_fields)
 
     def batch_parse(self, inputs: List[str]) -> List[ParsedCommand]:
@@ -785,30 +785,72 @@ class DeepSeekNLPProcessor:
 
 # 保持向后兼容
 class NLPProcessor:
-    """向后兼容的NLP处理器"""
+    """向后兼容的 NLP 处理器包装器"""
 
-    def __init__(self):
-        """向后兼容的 NLPProcessor 初始化"""
+    def __init__(self, use_context_compression: bool = False):
+        """初始化 NLPProcessor
+
+        Args:
+            use_context_compression: 是否启用上下文压缩器
+        """
         config = get_nlp_config()
         api_key = config.get_api_key()
 
-        if config.is_enabled() and config.validate_config():
+        self.processor: Optional[DeepSeekNLPProcessor] = None
+        self.enabled = False
+        self.llm_client: Optional[LLMClient] = None
+        self.context_compressor: Optional[ContextCompressor] = None
+
+        if config.is_enabled() and config.validate_config() and api_key:
             try:
                 self.processor = DeepSeekNLPProcessor(api_key=api_key)
+                if not use_context_compression:
+                    self.processor.context_compressor = None
+                self.llm_client = self.processor.llm
+                self.context_compressor = self.processor.context_compressor
                 self.enabled = True
-            except Exception as e:
+            except Exception as e:  # pragma: no cover - initialization failure
                 logger.error(f"初始化DeepSeekNLPProcessor失败: {e}")
-                self.processor = None
-                self.enabled = False
         else:
-            self.processor = None
-            self.enabled = False
+            logger.warning("\u26a0\ufe0f DeepSeek NLP disabled (missing or invalid API key)")
 
-        if api_key:
-            self.llm = LLMClient(api_key=api_key)
-        else:
-            self.llm = None
-            logger.warning("\u26a0\ufe0f DeepSeek NLP disabled (missing API key)")
+        if self.llm_client is None and api_key:
+            self.llm_client = LLMClient(api_key=api_key)
+
+    def process(self, user_input: Any, context: Optional[List[Dict[str, Any]]] = None) -> Dict[str, Any]:
+        """高层封装，返回 dict 结果"""
+
+        try:
+            text = str(user_input) if user_input is not None else ""
+        except Exception:  # pragma: no cover
+            text = ""
+
+        if not text.strip():
+            return {
+                "raw": text,
+                "normalized_command": text.strip(),
+                "intent": "unknown",
+                "args": {},
+                "explanation": "empty input",
+            }
+
+        if self.processor and self.enabled:
+            try:
+                if self.llm_client is not None:
+                    self.processor.llm = self.llm_client
+                parsed = self.processor.parse(text, context=context)
+                return asdict(parsed)
+            except Exception as e:  # pragma: no cover - error path
+                logger.error(f"处理命令时出错: {e}")
+
+        # 简单回退
+        return {
+            "raw": text,
+            "normalized_command": text,
+            "intent": "unknown",
+            "args": {},
+            "explanation": "NLP disabled",
+        }
 
     def chat(self, prompt: str) -> str:
         """聊天功能"""
