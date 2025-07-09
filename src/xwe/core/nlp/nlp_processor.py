@@ -281,7 +281,7 @@ class DeepSeekNLPProcessor:
                 # 构建带上下文的 prompt
                 context_prompt = f"""你是"修仙世界"游戏的命令解析器模块，需要将玩家发来的中文自然语言指令解析为结构化 JSON 格式。
 
-{如果有上下文就显示以下内容}
+# 如果有上下文，显示以下内容
 === 对话上下文 ===
 {compressed_context}
 
@@ -449,6 +449,18 @@ class DeepSeekNLPProcessor:
             )
 
             logger.debug(f"DeepSeek raw response: {response}")
+            
+            # 检查空响应
+            if not response or response.strip() == '':
+                logger.error("DeepSeek API 返回空响应")
+                # 返回一个默认的 JSON 响应而不是抛出异常
+                return json.dumps({
+                    "raw": prompt.split('"')[-2] if '"' in prompt else "未知命令",
+                    "normalized_command": "未知",
+                    "intent": "unknown",
+                    "args": {},
+                    "explanation": "API返回空响应"
+                })
 
             # 尝试提取JSON部分
             response = response.strip()
@@ -467,11 +479,20 @@ class DeepSeekNLPProcessor:
                 response = match.group(0)
 
             response = response.strip()
+            
+            # 再次检查是否为空
+            if not response:
+                logger.error("处理后的响应为空")
+                raise ValueError("Processed response is empty")
 
             logger.debug(f"DeepSeek sanitized JSON: {response}")
 
             # 验证JSON格式
-            json.loads(response)
+            try:
+                json.loads(response)
+            except json.JSONDecodeError as e:
+                logger.error(f"JSON解析失败: {e}, 响应内容: {response}")
+                raise
 
             return response
 
@@ -817,8 +838,21 @@ class NLPProcessor:
         if self.llm_client is None and api_key:
             self.llm_client = LLMClient(api_key=api_key)
 
-    def process(self, user_input: Any, context: Optional[List[Dict[str, Any]]] = None) -> Dict[str, Any]:
-        """高层封装，返回 dict 结果"""
+    def process(self, user_input: Any, context: Optional[List[Dict[str, Any]]] = None, 
+               max_tokens: Optional[int] = None, temperature: Optional[float] = None,
+               **kwargs) -> Dict[str, Any]:
+        """高层封装，返回 dict 结果
+        
+        Args:
+            user_input: 用户输入
+            context: 上下文信息
+            max_tokens: 最大token数限制
+            temperature: 温度参数
+            **kwargs: 其他参数
+            
+        Returns:
+            解析结果字典
+        """
 
         try:
             text = str(user_input) if user_input is not None else ""

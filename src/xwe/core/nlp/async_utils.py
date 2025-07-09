@@ -289,9 +289,14 @@ class AsyncRequestQueue:
         self._queue.put(item, block=block, timeout=timeout)
 
     def put_nowait(self, item: Any) -> None:
+        """非阻塞放入"""
         if self._closed:
-            raise Exception("queue closed")
-        self._queue.put_nowait(item)
+            raise RuntimeError("Queue is closed")
+        try:
+            self._queue.put_nowait(item)
+        except queue.Full:
+            # 对于测试，返回特定的异常
+            raise queue.Full("Queue is full")
 
     def get(self, block: bool = True, timeout: Optional[float] = None) -> Any:
         return self._queue.get(block=block, timeout=timeout)
@@ -317,8 +322,9 @@ class RateLimiter:
         self.period = period
         self.burst = burst if burst is not None else calls
         self._lock = threading.Lock()
-        self._tokens = float(self.burst)
+        self._tokens = float(self.burst)  # 初始令牌数量
         self._last = time.monotonic()
+        self._rate = float(self.calls) / float(self.period)  # 确保浮点数
 
     async def __aenter__(self):
         await self.acquire()
@@ -327,17 +333,57 @@ class RateLimiter:
     async def __aexit__(self, exc_type, exc, tb):
         return False
 
-    async def acquire(self) -> None:
+    async def acquire(self, timeout: Optional[float] = None) -> bool:
+        """获取令牌
+        
+        Args:
+            timeout: 超时时间（秒）
+            
+        Returns:
+            是否成功获取令牌
+        """
+        start_time = time.monotonic() if timeout is not None else None
+        
         while True:
+            # 尝试获取令牌
+            acquired = False
+            
             with self._lock:
                 now = time.monotonic()
                 elapsed = now - self._last
                 self._last = now
-                self._tokens = min(self.burst, self._tokens + elapsed * (self.calls / self.period))
-                if self._tokens >= 1:
-                    self._tokens -= 1
-                    return
-            await asyncio.sleep(self.period / self.calls)
+                
+                # 根据经过的时间生成新令牌
+                new_tokens = elapsed * self._rate
+                self._tokens = min(float(self.burst), self._tokens + new_tokens)
+                
+                if self._tokens >= 1.0:
+                    self._tokens -= 1.0
+                    acquired = True
+            
+            if acquired:
+                return True
+            
+            # 检查超时
+            if timeout is not None:
+                elapsed_total = time.monotonic() - start_time
+                if elapsed_total >= timeout:
+                    return False
+            
+            # 计算需要等待的时间
+            with self._lock:
+                tokens_needed = 1.0 - self._tokens
+                wait_time = tokens_needed / self._rate if self._rate > 0 else float('inf')
+            
+            # 如果设置了超时，确保不超过剩余时间
+            if timeout is not None:
+                remaining = timeout - (time.monotonic() - start_time)
+                if remaining <= 0:
+                    return False
+                wait_time = min(wait_time, remaining)
+            
+            # 等待一小段时间，避免忙等待
+            await asyncio.sleep(min(wait_time, 0.01))  # 最多等待10ms，然后重新检查
 
     def reset(self) -> None:
         with self._lock:
