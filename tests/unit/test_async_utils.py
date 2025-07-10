@@ -376,27 +376,29 @@ class TestRateLimiter:
         # 应该需要约1秒（前2次立即，后2次等待1秒）
         assert 0.9 < elapsed < 1.5
     
-    @pytest.mark.asyncio
-    async def test_burst_handling(self):
+    def test_burst_handling(self):
         """测试突发处理"""
         limiter = RateLimiter(calls=3, period=1.0, burst=5)
-        
-        # 突发5次应该立即完成
-        start_time = time.time()
-        
-        for i in range(5):
+
+        async def _run():
+            # 突发5次应该立即完成
+            start_time = time.time()
+
+            for _ in range(5):
+                async with limiter:
+                    pass
+
+            burst_time = time.time() - start_time
+            assert burst_time < 0.5  # 应该相对较快
+
+            # 第6次应该被限制
             async with limiter:
                 pass
-        
-        burst_time = time.time() - start_time
-        assert burst_time < 0.5  # 应该相对较快
-        
-        # 第6次应该被限制
-        async with limiter:
-            pass
-        
-        total_time = time.time() - start_time
-        assert total_time >= 1.0  # 需要等待
+
+            total_time = time.time() - start_time
+            assert total_time >= 1.0  # 需要等待
+
+        asyncio.run(_run())
     
     def test_thread_safe(self, rate_limiter):
         """测试线程安全"""
