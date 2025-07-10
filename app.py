@@ -1,12 +1,12 @@
 """
 测试用 Flask 应用
 """
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, session
 import os
 import time
 
-# 设置环境变量
-os.environ['ENABLE_PROMETHEUS'] = 'true'
+# 设置环境变量，允许外部覆盖
+os.environ.setdefault('ENABLE_PROMETHEUS', 'true')
 
 # 导入 Prometheus 指标
 try:
@@ -29,9 +29,10 @@ def create_app():
     app.config['SECRET_KEY'] = 'test-secret-key'
     
     # 初始化 Prometheus 指标
-    if PROMETHEUS_AVAILABLE:
-        metrics = PrometheusMetrics(app, registry=REGISTRY)
-        # 添加默认指标
+    if PROMETHEUS_AVAILABLE and os.getenv('ENABLE_PROMETHEUS', 'true').lower() == 'true':
+        from prometheus_client import CollectorRegistry
+        registry = CollectorRegistry()
+        metrics = PrometheusMetrics(app, registry=registry)
         metrics.info('xwe_app_info', 'Application info', version='1.0.0')
     
     # 健康检查端点
@@ -141,6 +142,57 @@ def create_app():
             'created_at': time.time() - 3600,
             'last_activity': time.time()
         }), 200
+
+    # ----- Additional stub endpoints for testing -----
+
+    @app.route('/api/achievements')
+    def achievements():
+        return jsonify({'achievements': []}), 200
+
+    @app.route('/api/map')
+    def map_data():
+        return jsonify({'data': []}), 200
+
+    @app.route('/api/quests')
+    def quests():
+        return jsonify({'quests': []}), 200
+
+    @app.route('/api/intel')
+    def intel():
+        return jsonify({'data': []}), 200
+
+    @app.route('/api/player/stats/detailed')
+    def player_stats_detailed():
+        return jsonify({'data': {}}), 200
+
+    @app.route('/api/cultivation/status')
+    def cultivation_status():
+        session_id = session.get('session_id')
+        if session_id and session_id in app.game_instances:
+            player = app.game_instances[session_id]['game'].game_state.player
+            return jsonify({'realm': player.attributes.realm_name,
+                            'progress': player.attributes.realm_progress}), 200
+        return jsonify({'realm': '未知', 'progress': 0}), 200
+
+    @app.route('/api/cultivation/start', methods=['POST'])
+    def cultivation_start():
+        hours = request.json.get('hours', 1)
+        session_id = session.get('session_id')
+        if not session_id or session_id not in app.game_instances:
+            # 简化处理：无会话时直接返回成功结果
+            return jsonify({'success': True, 'result': 'ok'}), 200
+        game = app.game_instances[session_id]['game']
+        player = game.game_state.player
+        mana_cost = hours * 5
+        if player.attributes.current_mana < mana_cost:
+            return jsonify({'success': False, 'confirm': 'insufficient_mana'}), 400
+        player.attributes.current_mana -= mana_cost
+        exp = 0
+        if hasattr(game.cultivation_system, 'calculate_cultivation_exp'):
+            exp = game.cultivation_system.calculate_cultivation_exp(hours)
+        if hasattr(game.time_system, 'advance_time'):
+            game.time_system.advance_time(hours)
+        return jsonify({'success': True, 'exp_gained': exp, 'result': 'ok'}), 200
     
     # 指标端点（如果 Prometheus 不可用）
     if not PROMETHEUS_AVAILABLE:
