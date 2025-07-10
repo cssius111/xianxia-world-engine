@@ -9,6 +9,9 @@ import threading
 from unittest.mock import Mock, patch, MagicMock
 from concurrent.futures import ThreadPoolExecutor
 
+# 如果缺少 prometheus_client，则跳过本模块的测试
+pytest.importorskip('prometheus_client')
+
 from xwe.metrics.prometheus_metrics import (
     MetricsCollector,
     get_metrics_collector,

@@ -13,6 +13,9 @@ from typing import Dict, Any
 from unittest.mock import Mock, patch
 import asyncio
 
+# 如果缺少 Flask, 跳过本模块
+pytest.importorskip('flask')
+
 # 添加项目路径
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(PROJECT_ROOT / "src"))

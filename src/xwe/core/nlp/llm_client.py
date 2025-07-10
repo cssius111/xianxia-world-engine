@@ -13,7 +13,10 @@ from concurrent.futures import ThreadPoolExecutor
 from time import sleep, time
 from typing import Any, Dict, Optional, Union
 
-import requests
+try:
+    import requests
+except ImportError:  # pragma: no cover - 环境缺少 requests 时使用占位对象
+    requests = None
 
 # 导入 Prometheus 指标收集器
 try:
@@ -305,6 +308,9 @@ class LLMClient:
         Returns:
             API响应
         """
+        if requests is None:
+            raise ImportError("The 'requests' package is required for network operations")
+
         start_time = time()
         try:
             response = requests.post(

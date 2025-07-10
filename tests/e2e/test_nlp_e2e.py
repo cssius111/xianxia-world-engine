@@ -15,6 +15,9 @@ from typing import List, Dict, Any
 import tracemalloc
 import gc
 
+# 如果缺少 Flask，则跳过整个 E2E 测试模块
+pytest.importorskip('flask')
+
 # 添加项目路径
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
