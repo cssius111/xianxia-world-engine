@@ -3,11 +3,19 @@
 """
 import pytest
 import os
+import sys
+from pathlib import Path
 
 # 设置测试环境变量
 os.environ['USE_MOCK_LLM'] = 'true'
 os.environ['ENABLE_PROMETHEUS'] = 'false'
 os.environ['ENABLE_CONTEXT_COMPRESSION'] = 'true'
+
+# 确保可以导入 src 目录下的 xwe 包
+project_root = Path(__file__).resolve().parents[1]
+src_path = project_root / 'src'
+if str(src_path) not in sys.path:
+    sys.path.insert(0, str(src_path))
 
 # 标记慢速测试
 def pytest_configure(config):

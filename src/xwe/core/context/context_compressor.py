@@ -101,7 +101,7 @@ class ContextCompressor:
         messages = self._deduplicate_messages(valid_messages)
         
         # 如果消息数量较少，直接返回
-        if len(messages) <= self.preserve_recent * 2:
+        if len(messages) <= self.preserve_recent:
             return messages
         
         # 基于策略选择压缩方法
@@ -267,37 +267,17 @@ class ContextCompressor:
             return []
         
         deduplicated = []
-        prev_content = None
-        prev_role = None
-        duplicate_count = 0
-        
-        for i, msg in enumerate(messages):
-            current_content = msg.get('content', '')
-            current_role = msg.get('role', '')
-            
-            # 如果当前消息与上一条完全相同，跳过
-            if current_content == prev_content and current_role == prev_role:
-                duplicate_count += 1
-                # 如果是最后一条消息，需要添加重复计数标记
-                if i == len(messages) - 1 and duplicate_count > 0:
-                    # 在最后一条重复消息上添加标记
-                    deduplicated.append({
-                        'role': current_role,
-                        'content': current_content,
-                        'duplicate_count': duplicate_count + 1  # +1 包含原始消息
-                    })
+        prev1 = None
+        prev2 = None
+
+        for msg in messages:
+            if msg == prev1 or msg == prev2:
                 continue
-            else:
-                # 如果之前有重复，添加标记
-                if duplicate_count > 0 and deduplicated:
-                    last_msg = deduplicated[-1]
-                    last_msg['duplicate_count'] = duplicate_count + 1
-                duplicate_count = 0
-            
+
             deduplicated.append(msg)
-            prev_content = current_content
-            prev_role = current_role
-        
+            prev2 = prev1
+            prev1 = msg
+
         return deduplicated
     
     def _estimate_tokens(self, messages: Any) -> int:
