@@ -8,6 +8,7 @@ from typing import Optional, List, Any, Callable, TypeVar, Coroutine
 from concurrent.futures import ThreadPoolExecutor
 import logging
 import queue
+from collections import deque
 import time
 import threading
 
@@ -322,9 +323,7 @@ class RateLimiter:
         self.period = period
         self.burst = burst if burst is not None else calls
         self._lock = threading.Lock()
-        self._tokens = float(self.burst)  # 初始令牌数量
-        self._last = time.monotonic()
-        self._rate = float(self.calls) / float(self.period)  # 确保浮点数
+        self._timestamps: deque = deque()
 
     async def __aenter__(self):
         await self.acquire()
@@ -343,52 +342,31 @@ class RateLimiter:
             是否成功获取令牌
         """
         start_time = time.monotonic() if timeout is not None else None
-        
+
         while True:
-            # 尝试获取令牌
-            acquired = False
-            
             with self._lock:
                 now = time.monotonic()
-                elapsed = now - self._last
-                self._last = now
-                
-                # 根据经过的时间生成新令牌
-                new_tokens = elapsed * self._rate
-                self._tokens = min(float(self.burst), self._tokens + new_tokens)
-                
-                if self._tokens >= 1.0:
-                    self._tokens -= 1.0
-                    acquired = True
-            
-            if acquired:
-                return True
-            
-            # 检查超时
+                # 移除过期时间戳
+                while self._timestamps and now - self._timestamps[0] > self.period:
+                    self._timestamps.popleft()
+
+                if len(self._timestamps) < self.burst:
+                    self._timestamps.append(now)
+                    return True
+
+                wait_time = self._timestamps[0] + self.period - now
+
             if timeout is not None:
-                elapsed_total = time.monotonic() - start_time
-                if elapsed_total >= timeout:
+                elapsed = time.monotonic() - start_time
+                if elapsed >= timeout:
                     return False
-            
-            # 计算需要等待的时间
-            with self._lock:
-                tokens_needed = 1.0 - self._tokens
-                wait_time = tokens_needed / self._rate if self._rate > 0 else float('inf')
-            
-            # 如果设置了超时，确保不超过剩余时间
-            if timeout is not None:
-                remaining = timeout - (time.monotonic() - start_time)
-                if remaining <= 0:
-                    return False
-                wait_time = min(wait_time, remaining)
-            
-            # 等待一小段时间，避免忙等待
-            await asyncio.sleep(min(wait_time, 0.01))  # 最多等待10ms，然后重新检查
+                wait_time = min(wait_time, timeout - elapsed)
+
+            await asyncio.sleep(max(wait_time, 0))
 
     def reset(self) -> None:
         with self._lock:
-            self._tokens = float(self.burst)
-            self._last = time.monotonic()
+            self._timestamps.clear()
 
 
 # 全局执行器管理

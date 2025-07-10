@@ -377,6 +377,9 @@ class LLMClient:
             )
 
         try:
+            # 在 Mock 模式下模拟网络延迟，使同步调用更接近真实情况
+            if self.use_mock:
+                sleep(0.1)
             # 发送请求（带重试）
             start_time = time()
             response = self._make_request_with_retry(payload)
@@ -438,9 +441,20 @@ class LLMClient:
         if not self._executor_initialized:
             raise RuntimeError("LLMClient 线程池已关闭")
         
+        # 在 Mock 模式下避免线程池开销
+        if self.use_mock:
+            payload = {
+                "model": self.model_name,
+                "messages": [{"role": "user", "content": prompt}],
+                "temperature": temperature,
+                "max_tokens": max_tokens,
+            }
+            response = self._mock_response(payload)
+            content = response.get("choices", [{}])[0].get("message", {}).get("content", "")
+            return content
+
         loop = asyncio.get_event_loop()
-        
-        # 使用 functools.partial 创建带参数的函数
+
         func = functools.partial(
             self.chat,
             prompt,
@@ -448,8 +462,7 @@ class LLMClient:
             max_tokens=max_tokens,
             system_prompt=system_prompt
         )
-        
-        # 在线程池中执行
+
         try:
             result = await loop.run_in_executor(self._executor, func)
             return result
