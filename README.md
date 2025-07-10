@@ -23,6 +23,20 @@ python run.py
 
 打开浏览器访问：http://localhost:5001
 
+### 4. 运行测试
+
+在首次运行测试前，请先安装额外依赖：
+
+```bash
+python fix_dependencies.py
+```
+
+然后执行：
+
+```bash
+python tests/run_tests.py all
+```
+
 ## Recent Architecture Changes (v0.3.0)
 
 - **API Consolidation**: Merged `api_fixes.py` into main route handlers
