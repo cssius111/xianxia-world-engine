@@ -12,7 +12,8 @@ os.environ['ENABLE_CONTEXT_COMPRESSION'] = 'true'
 # 标记慢速测试
 def pytest_configure(config):
     config.addinivalue_line(
-        "markers", "slow: marks tests as slow (deselect with '-m "not slow"')"
+        "markers",
+        "slow: marks tests as slow (deselect with '-m \"not slow\"')"
     )
     config.addinivalue_line(
         "markers", "integration: marks tests as integration tests"
@@ -40,3 +41,24 @@ def pytest_collection_modifyitems(config, items):
         # 标记不稳定的测试
         if "thread_safe" in item.nodeid or "burst_handling" in item.nodeid:
             item.add_marker(pytest.mark.flaky)
+
+
+@pytest.fixture
+def app():
+    """Create and configure a Flask app for tests."""
+    from app import create_app
+
+    # 清理 Prometheus 注册表避免重复注册
+    try:
+        from src.xwe.metrics.prometheus_metrics import REGISTRY
+        for collector in list(REGISTRY._collector_to_names.keys()):
+            try:
+                REGISTRY.unregister(collector)
+            except KeyError:
+                pass
+    except Exception:
+        pass
+
+    flask_app = create_app()
+    flask_app.config.update(TESTING=True, WTF_CSRF_ENABLED=False)
+    return flask_app

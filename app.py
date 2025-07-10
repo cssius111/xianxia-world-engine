@@ -31,8 +31,9 @@ def create_app():
     # 初始化 Prometheus 指标
     if PROMETHEUS_AVAILABLE:
         metrics = PrometheusMetrics(app, registry=REGISTRY)
-        # 添加默认指标
-        metrics.info('xwe_app_info', 'Application info', version='1.0.0')
+        # 添加默认指标（避免重复注册）
+        if REGISTRY.get_sample_value('xwe_app_info') is None:
+            metrics.info('xwe_app_info', 'Application info', version='1.0.0')
     
     # 健康检查端点
     @app.route('/health')
