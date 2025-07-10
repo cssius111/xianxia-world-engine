@@ -1,9 +1,10 @@
 """
 测试用 Flask 应用
 """
-from flask import Flask, jsonify, request, session
+from flask import Flask, jsonify, request, session, Response, stream_with_context
 import os
 import time
+import json
 
 # 设置环境变量，允许外部覆盖
 os.environ.setdefault('ENABLE_PROMETHEUS', 'true')
@@ -193,6 +194,16 @@ def create_app():
         if hasattr(game.time_system, 'advance_time'):
             game.time_system.advance_time(hours)
         return jsonify({'success': True, 'exp_gained': exp, 'result': 'ok'}), 200
+
+    # 实现简单的事件流接口，供测试使用
+    def _generate_events():
+        """Yield a single status payload for SSE tests"""
+        data = {"player": {}, "inventory": {}}
+        yield f"data: {json.dumps(data, ensure_ascii=False)}\n\n"
+
+    @app.route('/events')
+    def events():
+        return Response(stream_with_context(_generate_events()), mimetype='text/event-stream')
     
     # 指标端点（如果 Prometheus 不可用）
     if not PROMETHEUS_AVAILABLE:

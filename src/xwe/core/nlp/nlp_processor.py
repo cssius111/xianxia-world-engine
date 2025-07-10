@@ -682,7 +682,8 @@ class DeepSeekNLPProcessor:
                 if self.context_compressor:
                     context_stats = self.context_compressor.get_stats()
                 
-                self.monitor.record_request(
+                monitor = get_nlp_monitor()
+                monitor.record_request(
                     command=user_input,
                     handler=(
                         parsed.normalized_command if "parsed" in locals() else "unknown"

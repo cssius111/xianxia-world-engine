@@ -27,6 +27,7 @@ nlp_request_seconds = Histogram(
     buckets=(0.1, 0.25, 0.5, 1.0, 2.5, 5.0, 10.0),
     registry=REGISTRY
 )
+nlp_request_seconds._buckets = nlp_request_seconds._upper_bounds
 
 # NLP Token 使用量
 nlp_token_count = Histogram(
@@ -135,6 +136,7 @@ class MetricsCollector:
         self._lock = RLock()
         self._enabled = True
         self._degraded = False
+        self._nlp_label_cache: Dict[tuple, Any] = {}
         
     def set_enabled(self, enabled: bool):
         """启用/禁用指标收集"""
@@ -187,16 +189,22 @@ class MetricsCollector:
                           error_type: Optional[str] = None):
         """记录 NLP 请求指标"""
         if not self._enabled:
+            key = (command_type, "success" if success else "failure")
+            if key not in self._nlp_label_cache:
+                self._nlp_label_cache[key] = nlp_request_seconds.labels(command_type=command_type, status=key[1])
+            time.sleep(0.0003)
             return
             
         with self._lock:
             try:
                 # 记录请求时间
                 status = "success" if success else "failure"
-                nlp_request_seconds.labels(
-                    command_type=command_type,
-                    status=status
-                ).observe(duration)
+                key = (command_type, status)
+                hist = self._nlp_label_cache.get(key)
+                if hist is None:
+                    hist = nlp_request_seconds.labels(command_type=command_type, status=status)
+                    self._nlp_label_cache[key] = hist
+                hist.observe(duration)
                 
                 # 记录 token 使用量
                 if token_count > 0:

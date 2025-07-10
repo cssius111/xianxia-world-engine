@@ -16,5 +16,15 @@ sys.modules['prometheus_flask_exporter'].PrometheusMetrics = MagicMock
 # 模拟 objgraph
 sys.modules['objgraph'] = MagicMock()
 
+# 额外模拟常用依赖，以便在最小环境中运行测试
+for pkg in [
+    'flask',
+    'requests',
+    'python_dotenv',
+    'prometheus_client',
+    'psutil',
+]:
+    sys.modules[pkg] = MagicMock()
+
 print("已模拟缺失的依赖包")
 print("现在可以运行: python mock_dependencies.py && pytest")
