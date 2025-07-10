@@ -345,9 +345,13 @@ def init_prometheus_app_metrics(app, app_version='1.0.0', app_config=None):
         excluded_paths=['/static', '/health', '/favicon.ico']
     )
     
-    # 添加应用信息
-    metrics.info('xwe_app_info', 'XianXia World Engine application info', 
-                 version=app_version)
+    # 添加应用信息（避免重复注册）
+    if REGISTRY.get_sample_value('xwe_app_info') is None:
+        metrics.info(
+            'xwe_app_info',
+            'XianXia World Engine application info',
+            version=app_version
+        )
     
     # 禁用默认指标（如果配置要求）
     if not enable_default_metrics:
