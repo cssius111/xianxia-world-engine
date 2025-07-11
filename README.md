@@ -37,6 +37,15 @@ python fix_dependencies.py
 python tests/run_tests.py all
 ```
 
+### 5. 启用异步模式（可选）
+
+```bash
+export USE_ASYNC_DEEPSEEK=1
+export FLASK_ASYNC_ENABLED=1
+```
+
+详见 [异步模式快速指南](docs/DEEPSEEK_ASYNC_QUICKSTART.md)。
+
 ## Recent Architecture Changes (v0.3.0)
 
 - **API Consolidation**: Merged `api_fixes.py` into main route handlers
