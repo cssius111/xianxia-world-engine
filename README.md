@@ -51,6 +51,8 @@ export FLASK_ASYNC_ENABLED=1
 - **API Consolidation**: Merged `api_fixes.py` into main route handlers
 - **Module Restructuring**: Removed empty `deepseek/__init__.py`, moved AI integration to `src/ai/deepseek_client.py`
 - **Improved Code Organization**: All API routes now follow RESTful conventions under `src/api/routes/`
+- **DeepSeek Route Unification**: Deprecated `/api/v1/deepseek` blueprint. All
+  DeepSeek endpoints are served from `/api/llm`.
 
 These changes improve maintainability and reduce code duplication. For migration details,
 see [CHANGELOG.md](./CHANGELOG.md).
