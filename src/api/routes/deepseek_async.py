@@ -163,14 +163,54 @@ async def parse_async():
         
         # Use async parse
         result = await client.parse_async(utterance, ctx)
-        
+
         return jsonify(result)
-        
+
     except Exception as e:
         logger.error(f"Parse endpoint error: {e}")
         return jsonify({
             "error": str(e)
         }), 500
+
+
+@deepseek_bp.route('/parse/sync', methods=['POST'])
+def parse_sync():
+    """Sync parse endpoint for backward compatibility."""
+    try:
+        data = request.get_json()
+        if not data or 'utterance' not in data:
+            return jsonify({"error": "Missing required field: utterance"}), 400
+
+        utterance = data.get('utterance', '')
+        context_data = data.get('context', {})
+
+        class Context:
+            def __init__(self, data: Dict[str, Any]):
+                self.scene = data.get('scene', '主城')
+                player_data = data.get('player', {})
+                self.player = type('Player', (), {
+                    'realm': player_data.get('realm', '炼气期')
+                })()
+                self.target_realm = data.get('target_realm', '未知')
+                laws_data = data.get('laws', [])
+                self.laws = []
+                for law in laws_data:
+                    if isinstance(law, dict):
+                        self.laws.append(type('Law', (), {
+                            'enabled': law.get('enabled', True),
+                            'code': law.get('code', '')
+                        })())
+
+        ctx = Context(context_data)
+
+        client = get_default_client()
+        result = client.parse(utterance, ctx)
+
+        return jsonify(result)
+
+    except Exception as e:
+        logger.error(f"Parse sync endpoint error: {e}")
+        return jsonify({"error": str(e)}), 500
 
 
 @deepseek_bp.route('/batch', methods=['POST'])
@@ -289,9 +329,20 @@ def get_status():
 # Helper function to register blueprint
 def register_deepseek_routes(app):
     """Register DeepSeek routes with Flask app.
-    
+
     Args:
         app: Flask application instance
     """
     app.register_blueprint(deepseek_bp)
     logger.info("DeepSeek async routes registered")
+
+    @app.teardown_appcontext
+    async def cleanup_deepseek_client(error=None):
+        """Cleanup DeepSeek async client on teardown."""
+        client = get_default_client()
+        if client._async_client:
+            try:
+                await client.close()
+                logger.info("DeepSeek async client closed on teardown")
+            except Exception as e:  # pragma: no cover - best effort cleanup
+                logger.debug(f"DeepSeek cleanup error: {e}")
