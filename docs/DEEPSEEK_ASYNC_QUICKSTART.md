@@ -25,8 +25,8 @@ export FLASK_ASYNC_ENABLED=1
 ### 3. 快速测试
 
 ```bash
-# 运行快速测试脚本
-python scripts/test_deepseek_async.py
+# 运行异步单元测试
+python scripts/run_async_tests.py
 ```
 
 ### 4. 启动服务

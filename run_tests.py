@@ -27,6 +27,7 @@ TEST_GROUPS = {
         'tests/unit/test_async_utils.py::TestAsyncRequestQueue::test_blocking_operations',
         'tests/unit/test_async_utils.py::TestRateLimiter::test_burst_handling',
         'tests/unit/test_async_utils.py::TestRateLimiter::test_thread_safe',
+        'tests/unit/test_deepseek_async.py',
     ],
     'api': [
         'tests/regression/test_nlp_regression.py::TestNLPRegression::test_api_compatibility',
