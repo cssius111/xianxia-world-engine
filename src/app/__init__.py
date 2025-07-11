@@ -348,6 +348,11 @@ def create_app(log_level: int = log_level) -> Flask:
     app = _create_flask_app(log_level=log_level)
     app.game_instances = game_instances
     
+    # Enable async support if configured
+    if os.getenv('FLASK_ASYNC_ENABLED', '0') == '1':
+        app.config['FLASK_ASYNC_ENABLED'] = True
+        logger.info("Flask async support enabled")
+    
     # 初始化 Prometheus 指标
     if PROMETHEUS_ENABLED and os.getenv('ENABLE_PROMETHEUS', 'true').lower() == 'true':
         try:
@@ -418,6 +423,15 @@ def create_app(log_level: int = log_level) -> Flask:
 
     register_all_routes(app)
     logger.info("All API routes registered")
+    
+    # Register DeepSeek async routes if async is enabled
+    if os.getenv('USE_ASYNC_DEEPSEEK', '0') == '1':
+        try:
+            from src.api.routes.deepseek_async import register_deepseek_routes
+            register_deepseek_routes(app)
+            logger.info("DeepSeek async routes registered")
+        except Exception as e:
+            logger.error(f"Failed to register DeepSeek async routes: {e}")
 
     for directory in ["saves", "logs"]:
         Path(directory).mkdir(parents=True, exist_ok=True)

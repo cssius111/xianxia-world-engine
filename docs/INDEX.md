@@ -41,6 +41,7 @@
 - **[Agent系统文档](./architecture/agent_system.md)** - 智能体架构和实现
 - **[缓存配置](./cache_settings.md)** - 性能优化和缓存策略
 - **[E2E测试](./development/E2E_TEST_COMPLETE_GUIDE.md)** - 端到端测试指南
+- **[异步化改造](./ASYNC_IMPLEMENTATION_README.md)** - DeepSeek API 异步化文档
 
 ## 📊 项目报告
 
@@ -96,7 +97,7 @@
 
 ---
 
-**最后更新**: 2025-06-30  
+**最后更新**: 2025-01-25  
 **维护者**: 修仙世界引擎团队  
 **版本**: v2.0 Enhanced Edition
 
