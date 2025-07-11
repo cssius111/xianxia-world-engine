@@ -35,6 +35,8 @@ python fix_dependencies.py
 
 ```bash
 python tests/run_tests.py all
+# 运行 DeepSeek 异步单元测试
+python scripts/run_async_tests.py
 ```
 
 ### 5. 启用异步模式（可选）
