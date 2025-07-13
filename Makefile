@@ -1,10 +1,9 @@
 # 修仙世界引擎 Makefile
 
-.PHONY: help test test-fast test-nlp test-context test-async fix report coverage clean
+.PHONY: help test test-fast test-nlp test-context test-async report coverage clean
 
 help:
 	@echo "修仙世界引擎 - 可用命令:"
-	@echo "  make fix        - 应用所有修复"
 	@echo "  make test       - 运行所有测试"
 	@echo "  make test-fast  - 运行快速测试"
 	@echo "  make test-nlp   - 运行 NLP 测试"
@@ -14,9 +13,6 @@ help:
 	@echo "  make coverage   - 生成覆盖率报告"
 	@echo "  make clean      - 清理临时文件"
 
-fix:
-	@echo "应用修复..."
-	@python final_fixes.py
 
 test:
 	@echo "运行所有测试..."
@@ -28,19 +24,19 @@ test-fast:
 
 test-nlp:
 	@echo "运行 NLP 测试..."
-	@python run_tests.py nlp
+	@python scripts/maintenance/run_tests.py nlp
 
 test-context:
 	@echo "运行上下文压缩测试..."
-	@python run_tests.py context
+	@python scripts/maintenance/run_tests.py context
 
 test-async:
 	@echo "运行异步工具测试..."
-	@python run_tests.py async
+	@python scripts/maintenance/run_tests.py async
 
 report:
 	@echo "生成测试报告..."
-	@python verify_fixes.py
+	@python scripts/maintenance/validate_fixes.py
 
 coverage:
 	@echo "生成覆盖率报告..."
@@ -58,7 +54,6 @@ clean:
 	@echo "清理完成!"
 
 # 快捷命令
-f: fix
 t: test
 tf: test-fast
 r: report

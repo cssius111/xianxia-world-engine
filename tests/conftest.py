@@ -12,7 +12,7 @@ os.environ['ENABLE_CONTEXT_COMPRESSION'] = 'true'
 # 标记慢速测试
 def pytest_configure(config):
     config.addinivalue_line(
-        "markers", "slow: marks tests as slow (deselect with '-m "not slow"')"
+        "markers", 'slow: marks tests as slow (deselect with \'-m "not slow"\')'
     )
     config.addinivalue_line(
         "markers", "integration: marks tests as integration tests"
