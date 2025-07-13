@@ -236,6 +236,11 @@ main_bp = Blueprint("main", __name__)
 
 @main_bp.route("/")
 def index():
+    if is_dev_request() or request.args.get("mode") == "dev":
+        # Developer mode entry uses the new templates introduced recently
+        return render_template("index.html")
+
+    # Default behaviour redirects to the standard game screen
     return redirect(url_for(".game_screen"))
 
 
@@ -269,8 +274,13 @@ def game_screen():
 
     status = build_status_data()
 
+    template_name = "game_enhanced_optimized_v2.html"
+    if is_dev_request() or request.args.get("mode") == "dev":
+        # Developer mode renders the newly added game.html template
+        template_name = "game.html"
+
     return render_template(
-        "game_enhanced_optimized_v2.html",
+        template_name,
         status=status,
         player=status["player"],
         location=status["location"],
