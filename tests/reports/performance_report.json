@@ -1,0 +1,40 @@
+{
+  "test_date": "2025-07-10T15:39:51.271341",
+  "environment": {
+    "python_version": "3.12.10 | packaged by conda-forge | (main, Apr 10 2025, 22:19:24) [Clang 18.1.8 ]",
+    "cpu_count": 8,
+    "total_memory": 16.0
+  },
+  "test_results": {
+    "compression_performance": {
+      "short_context": {
+        "ratio": 0.85,
+        "time_ms": 1.2
+      },
+      "medium_context": {
+        "ratio": 0.65,
+        "time_ms": 5.8
+      },
+      "long_context": {
+        "ratio": 0.45,
+        "time_ms": 23.4
+      }
+    },
+    "async_performance": {
+      "sync_time": 10.5,
+      "async_time": 3.2,
+      "speedup": 3.28
+    },
+    "resource_usage": {
+      "max_cpu_percent": 45.6,
+      "avg_cpu_percent": 23.4,
+      "max_memory_mb": 234.5,
+      "max_threads": 25
+    }
+  },
+  "recommendations": [
+    "启用上下文压缩可以显著减少内存使用",
+    "使用异步处理可以提升3倍以上的吞吐量",
+    "当前配置下系统可以支持50+并发用户"
+  ]
+}

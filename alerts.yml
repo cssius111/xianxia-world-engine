@@ -1,0 +1,53 @@
+groups:
+  - name: xwe_alerts
+    interval: 30s
+    rules:
+      # QPS 过高告警
+      - alert: HighQPS
+        expr: sum(rate(xwe_flask_http_request_total[1m])) > 100
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "XWE QPS 过高 (当前值: {{ $value }})"
+          description: "XWE 应用的 QPS 超过 100，当前值为 {{ $value }}"
+      
+      # P99 延迟过高告警
+      - alert: HighP99Latency
+        expr: histogram_quantile(0.99, sum(rate(xwe_nlp_request_seconds_bucket[5m])) by (le)) > 3
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "XWE P99 延迟过高 (当前值: {{ $value }}s)"
+          description: "XWE 应用的 P99 延迟超过 3 秒，当前值为 {{ $value }}s"
+      
+      # 错误率过高告警
+      - alert: HighErrorRate
+        expr: sum(rate(xwe_nlp_error_total[5m])) / sum(rate(xwe_nlp_request_seconds_count[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "XWE 错误率过高 (当前值: {{ $value | humanizePercentage }})"
+          description: "XWE 应用的错误率超过 5%，当前值为 {{ $value | humanizePercentage }}"
+      
+      # Token 使用异常告警
+      - alert: AbnormalTokenUsage
+        expr: sum(rate(xwe_nlp_token_count_sum[5m])) > 10000
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Token 使用量异常 (当前速率: {{ $value }}/秒)"
+          description: "LLM Token 使用速率异常升高，当前为 {{ $value }} tokens/秒"
+      
+      # 应用宕机告警
+      - alert: XWEDown
+        expr: up{job="xwe"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "XWE 应用宕机"
+          description: "XWE 应用已经宕机超过 1 分钟"

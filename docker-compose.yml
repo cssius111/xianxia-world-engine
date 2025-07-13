@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5001:5001"
+    environment:
+      - FLASK_ENV=production
+      - USE_ASYNC_DEEPSEEK=1
+    volumes:
+      - ./logs:/app/logs
+      - ./saves:/app/saves
+    restart: unless-stopped
+    networks:
+      - xwe-network
+  
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    networks:
+      - xwe-network
+  
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana_dashboard_xwe.json:/var/lib/grafana/dashboards/xwe.json
+    networks:
+      - xwe-network
+
+volumes:
+  prometheus_data:
+  grafana_data:
+
+networks:
+  xwe-network:
+    driver: bridge

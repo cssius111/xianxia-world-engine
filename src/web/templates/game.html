@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>修仙世界 - 游戏</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "Microsoft YaHei", "PingFang SC", -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0f0f0f;
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .game-container {
+            display: flex;
+            flex: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            gap: 20px;
+            padding: 20px;
+        }
+        
+        /* 左侧面板 */
+        .sidebar {
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .panel {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .panel h3 {
+            margin-bottom: 15px;
+            color: #4ade80;
+            font-size: 1.2em;
+        }
+        
+        .stat {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .stat:last-child {
+            border-bottom: none;
+        }
+        
+        /* 主游戏区域 */
+        .main-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .game-output {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            overflow-y: auto;
+            font-family: "Courier New", monospace;
+            line-height: 1.8;
+        }
+        
+        .game-text {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-left: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .game-text.system {
+            color: #4ade80;
+            border-left-color: #4ade80;
+        }
+        
+        .game-text.player {
+            color: #60a5fa;
+            border-left-color: #60a5fa;
+        }
+        
+        .game-text.npc {
+            color: #fbbf24;
+            border-left-color: #fbbf24;
+        }
+        
+        .game-text.combat {
+            color: #f87171;
+            border-left-color: #f87171;
+        }
+        
+        /* 输入区域 */
+        .input-area {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .command-input {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        #commandInput {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 12px;
+            border-radius: 5px;
+            font-size: 1.1em;
+        }
+        
+        #commandInput:focus {
+            outline: none;
+            border-color: #4ade80;
+            box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.2);
+        }
+        
+        .btn {
+            background: #4ade80;
+            border: none;
+            color: #0f0f0f;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: #22c55e;
+            transform: translateY(-2px);
+        }
+        
+        .quick-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .quick-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+        }
+        
+        .quick-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #4ade80;
+        }
+        
+        /* 右侧面板 */
+        .right-sidebar {
+            width: 250px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .inventory-item {
+            padding: 5px;
+            margin: 2px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        
+        /* 动画 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .new-text {
+            animation: fadeIn 0.3s ease;
+        }
+        
+        /* 进度条 */
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4ade80, #22c55e);
+            transition: width 0.3s ease;
+        }
+        
+        /* 加载状态 */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #4ade80;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <!-- 左侧面板 -->
+        <div class="sidebar">
+            <div class="panel">
+                <h3>角色信息</h3>
+                <div class="stat">
+                    <span>名字</span>
+                    <span id="playerName">未知道友</span>
+                </div>
+                <div class="stat">
+                    <span>境界</span>
+                    <span id="playerRealm">凡人</span>
+                </div>
+                <div class="stat">
+                    <span>等级</span>
+                    <span id="playerLevel">1</span>
+                </div>
+                <div class="stat">
+                    <span>生命值</span>
+                    <span id="playerHealth">100/100</span>
+                </div>
+                <div class="stat">
+                    <span>灵力</span>
+                    <span id="playerMana">100/100</span>
+                </div>
+                <div class="stat">
+                    <span>修炼进度</span>
+                    <div style="flex: 1; margin-left: 10px;">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="cultivationProgress" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="panel">
+                <h3>位置信息</h3>
+                <div class="stat">
+                    <span>当前位置</span>
+                    <span id="currentLocation">新手村</span>
+                </div>
+                <div class="stat">
+                    <span>区域</span>
+                    <span id="currentRegion">东域</span>
+                </div>
+                <div class="stat">
+                    <span>时间</span>
+                    <span id="gameTime">第1天</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 主游戏区域 -->
+        <div class="main-area">
+            <div class="game-output" id="gameOutput">
+                <div class="game-text system new-text">
+                    欢迎来到修仙世界！
+                </div>
+                <div class="game-text system">
+                    你是一个刚刚踏入修行之路的凡人，站在新手村的广场上。
+                </div>
+                <div class="game-text system">
+                    输入"帮助"查看可用命令，或使用下方的快捷按钮。
+                </div>
+            </div>
+            
+            <div class="input-area">
+                <div class="command-input">
+                    <input type="text" id="commandInput" placeholder="输入命令..." autofocus>
+                    <button class="btn" onclick="sendCommand()">执行</button>
+                </div>
+                <div class="quick-actions">
+                    <button class="quick-btn" onclick="quickCommand('探索')">探索</button>
+                    <button class="quick-btn" onclick="quickCommand('修炼')">修炼</button>
+                    <button class="quick-btn" onclick="quickCommand('查看状态')">查看状态</button>
+                    <button class="quick-btn" onclick="quickCommand('背包')">背包</button>
+                    <button class="quick-btn" onclick="quickCommand('任务')">任务</button>
+                    <button class="quick-btn" onclick="quickCommand('地图')">地图</button>
+                    <button class="quick-btn" onclick="quickCommand('帮助')">帮助</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 右侧面板 -->
+        <div class="right-sidebar">
+            <div class="panel">
+                <h3>背包</h3>
+                <div id="inventory">
+                    <div class="inventory-item">灵石 x10</div>
+                    <div class="inventory-item">疗伤丹 x5</div>
+                    <div class="inventory-item">辟谷丹 x3</div>
+                </div>
+            </div>
+            
+            <div class="panel">
+                <h3>任务</h3>
+                <div id="quests">
+                    <div class="inventory-item">【主线】初入江湖</div>
+                    <div class="inventory-item">【支线】采集灵草</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let sessionId = null;
+        
+        // 初始化游戏
+        async function initGame() {
+            try {
+                const response = await fetch('/api/game/start', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({player_name: '道友'})
+                });
+                const data = await response.json();
+                sessionId = data.session_id;
+                addGameText('游戏初始化成功！', 'system');
+                updateStatus();
+            } catch (error) {
+                addGameText('游戏初始化失败: ' + error.message, 'system');
+            }
+        }
+        
+        // 发送命令
+        async function sendCommand() {
+            const input = document.getElementById('commandInput');
+            const command = input.value.trim();
+            if (!command) return;
+            
+            input.value = '';
+            addGameText(`> ${command}`, 'player');
+            
+            // 处理本地命令
+            if (command === '帮助') {
+                showHelp();
+                return;
+            }
+            
+            // 发送到服务器
+            try {
+                const response = await fetch('/api/game/command', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        session_id: sessionId,
+                        command: command
+                    })
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    addGameText(data.result || data.message, 'system');
+                } else {
+                    addGameText('命令执行失败: ' + (data.error || '未知错误'), 'system');
+                }
+                
+                // 更新状态
+                updateStatus();
+            } catch (error) {
+                addGameText('网络错误: ' + error.message, 'system');
+            }
+        }
+        
+        // 快捷命令
+        function quickCommand(cmd) {
+            document.getElementById('commandInput').value = cmd;
+            sendCommand();
+        }
+        
+        // 显示帮助
+        function showHelp() {
+            const helpText = `
+可用命令：
+- 探索 [方向] - 探索周围区域
+- 修炼 [小时] - 进行修炼
+- 战斗 [目标] - 与目标战斗
+- 使用 [物品] - 使用物品
+- 查看状态 - 查看详细状态
+- 背包 - 查看背包物品
+- 任务 - 查看当前任务
+- 地图 - 查看地图
+- 交谈 [NPC] - 与NPC交谈
+- 休息 - 恢复状态
+- 保存 - 保存游戏
+- 帮助 - 显示此帮助
+            `.trim();
+            addGameText(helpText, 'system');
+        }
+        
+        // 添加游戏文本
+        function addGameText(text, type = 'system') {
+            const output = document.getElementById('gameOutput');
+            const div = document.createElement('div');
+            div.className = `game-text ${type} new-text`;
+            div.textContent = text;
+            output.appendChild(div);
+            
+            // 滚动到底部
+            output.scrollTop = output.scrollHeight;
+            
+            // 移除动画类
+            setTimeout(() => div.classList.remove('new-text'), 300);
+        }
+        
+        // 更新状态
+        async function updateStatus() {
+            try {
+                // 获取游戏状态
+                const response = await fetch('/api/game/status');
+                const data = await response.json();
+                
+                // 更新UI
+                document.getElementById('playerName').textContent = data.player?.name || '未知道友';
+                document.getElementById('playerLevel').textContent = data.player?.level || '1';
+                document.getElementById('playerHealth').textContent = `${data.health || 100}/100`;
+                document.getElementById('playerMana').textContent = `${data.mana || 100}/100`;
+                document.getElementById('currentLocation').textContent = data.location || '新手村';
+                
+                // 获取修炼状态
+                const cultResponse = await fetch('/api/cultivation/status');
+                const cultData = await cultResponse.json();
+                
+                document.getElementById('playerRealm').textContent = cultData.realm || '凡人';
+                document.getElementById('cultivationProgress').style.width = `${cultData.progress || 0}%`;
+                
+            } catch (error) {
+                console.error('Failed to update status:', error);
+            }
+        }
+        
+        // 监听回车键
+        document.getElementById('commandInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendCommand();
+            }
+        });
+        
+        // 初始化
+        initGame();
+        
+        // 定期更新状态
+        setInterval(updateStatus, 5000);
+    </script>
+</body>
+</html>

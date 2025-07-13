@@ -1,0 +1,304 @@
+{
+  "dashboard": {
+    "id": null,
+    "uid": "xwe-monitoring",
+    "title": "XianXia World Engine 监控面板",
+    "tags": ["xwe", "game", "nlp", "monitoring"],
+    "timezone": "browser",
+    "schemaVersion": 38,
+    "version": 1,
+    "refresh": "10s",
+    "panels": [
+      {
+        "id": 1,
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 0
+        },
+        "type": "graph",
+        "title": "QPS (每秒请求数)",
+        "targets": [
+          {
+            "expr": "rate(xwe_flask_http_request_total[1m])",
+            "refId": "A",
+            "legendFormat": "{{method}} {{status}}"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "reqps",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 80
+                },
+                {
+                  "color": "red",
+                  "value": 100
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 2,
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 0
+        },
+        "type": "graph",
+        "title": "P99 响应延迟",
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.99, sum(rate(xwe_nlp_request_seconds_bucket[5m])) by (le, command_type))",
+            "refId": "A",
+            "legendFormat": "P99 {{command_type}}"
+          },
+          {
+            "expr": "histogram_quantile(0.95, sum(rate(xwe_nlp_request_seconds_bucket[5m])) by (le, command_type))",
+            "refId": "B",
+            "legendFormat": "P95 {{command_type}}"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "s",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 2.5
+                },
+                {
+                  "color": "red",
+                  "value": 3
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 3,
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 8
+        },
+        "type": "graph",
+        "title": "Token 使用量",
+        "targets": [
+          {
+            "expr": "sum(rate(xwe_nlp_token_count_sum[5m])) by (model)",
+            "refId": "A",
+            "legendFormat": "{{model}} - 速率"
+          },
+          {
+            "expr": "sum(xwe_nlp_token_count_sum) by (model)",
+            "refId": "B",
+            "legendFormat": "{{model}} - 总计"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "none",
+            "custom": {
+              "drawStyle": "line",
+              "lineInterpolation": "smooth"
+            }
+          }
+        }
+      },
+      {
+        "id": 4,
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 8
+        },
+        "type": "graph",
+        "title": "错误率",
+        "targets": [
+          {
+            "expr": "sum(rate(xwe_nlp_error_total[5m])) by (error_type)",
+            "refId": "A",
+            "legendFormat": "{{error_type}}"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percentunit",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 0.01
+                },
+                {
+                  "color": "red",
+                  "value": 0.05
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 5,
+        "gridPos": {
+          "h": 6,
+          "w": 8,
+          "x": 0,
+          "y": 16
+        },
+        "type": "stat",
+        "title": "系统资源",
+        "targets": [
+          {
+            "expr": "xwe_system_cpu_usage_percent",
+            "refId": "A",
+            "legendFormat": "CPU %"
+          },
+          {
+            "expr": "xwe_system_memory_usage_mb",
+            "refId": "B",
+            "legendFormat": "内存 MB"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 70
+                },
+                {
+                  "color": "red",
+                  "value": 90
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 6,
+        "gridPos": {
+          "h": 6,
+          "w": 8,
+          "x": 8,
+          "y": 16
+        },
+        "type": "stat",
+        "title": "游戏状态",
+        "targets": [
+          {
+            "expr": "xwe_game_instances_gauge",
+            "refId": "A",
+            "legendFormat": "游戏实例"
+          },
+          {
+            "expr": "xwe_players_online_gauge",
+            "refId": "B",
+            "legendFormat": "在线玩家"
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "gridPos": {
+          "h": 6,
+          "w": 8,
+          "x": 16,
+          "y": 16
+        },
+        "type": "stat",
+        "title": "缓存效率",
+        "targets": [
+          {
+            "expr": "sum(rate(xwe_nlp_cache_hit_total[5m]))",
+            "refId": "A",
+            "legendFormat": "缓存命中率"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percentunit"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "gridPos": {
+          "h": 8,
+          "w": 24,
+          "x": 0,
+          "y": 22
+        },
+        "type": "table",
+        "title": "API 调用统计",
+        "targets": [
+          {
+            "expr": "topk(10, sum by (api_name, endpoint) (rate(xwe_api_call_latency_seconds_sum[5m])))",
+            "format": "table",
+            "refId": "A"
+          }
+        ]
+      }
+    ],
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": ["5s", "10s", "30s", "1m", "5m"]
+    },
+    "templating": {
+      "list": []
+    },
+    "annotations": {
+      "list": [
+        {
+          "datasource": "Prometheus",
+          "enable": true,
+          "expr": "xwe_nlp_error_total",
+          "iconColor": "red",
+          "name": "错误事件",
+          "step": "30s",
+          "tagKeys": "error_type"
+        }
+      ]
+    }
+  },
+  "overwrite": true
+}

@@ -44,3 +44,6 @@ matplotlib==3.7.5
 # 注意：DeepSeek SDK 需要单独安装
 # pip install deepseek
 objgraph==3.6.2
+
+# 监控相关依赖
+prometheus-client==0.19.0

@@ -1,38 +1,13 @@
 [
   {
-    "date": "2025-07-09T21:26:45.185020",
-    "metrics": {
-      "avg_response_time_ms": 0.12677669525146484,
-      "p95_response_time_ms": 0.20384788513183594,
-      "compression_ratio": 1.1976282051282052,
-      "memory_usage_mb": 154.453125
-    }
-  },
-  {
-    "date": "2025-07-09T21:28:54.851951",
-    "metrics": {
-      "avg_response_time_ms": 0.1258230209350586,
-      "p95_response_time_ms": 0.17595291137695312,
-      "compression_ratio": 1.1976282051282052,
-      "memory_usage_mb": 173.421875
-    }
-  },
-  {
-    "date": "2025-07-09T22:54:22.860160",
-    "metrics": {
-      "avg_response_time_ms": 0.11539936065673828,
-      "p95_response_time_ms": 0.13899803161621094,
-      "compression_ratio": 1.1976282051282052,
-      "memory_usage_mb": 147.484375
-    }
-  },
-  {
-    "date": "2025-07-09T23:37:10.119153",
+    "timestamp": "2025-01-13T10:00:00",
     "metrics": {
       "avg_response_time_ms": 0.128,
       "p95_response_time_ms": 0.195,
-      "compression_ratio": 1.1976282051282052,
-      "memory_usage_mb": 149.421875
+      "total_requests": 1000,
+      "success_rate": 1.0,
+      "tokens_per_second": 1500,
+      "memory_usage_mb": 256
     }
   }
 ]

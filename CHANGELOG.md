@@ -1,5 +1,35 @@
 # Changelog
 
+## [0.3.4] - 2025-01-13
+
+### Added
+- 完整的API文档
+- 架构设计文档
+- 开发者指南
+- CI/CD配置 (GitHub Actions, GitLab CI)
+- Docker支持
+- 健康检查端点
+- 性能监控仪表板
+- 缓存机制优化性能
+
+### Fixed
+- 修复所有测试失败 (12个)
+- 修复性能退化问题
+- 修复RateLimiter测试时间期望
+- 修复Prometheus指标内部属性访问
+- 修复多模块协调测试
+
+### Changed
+- 优化测试配置
+- 改进错误处理
+- 增强日志记录
+
+### Security
+- 添加输入验证
+- 增强XSS防护
+
+
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),

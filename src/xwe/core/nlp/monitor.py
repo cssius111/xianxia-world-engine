@@ -38,6 +38,8 @@ class RequestMetrics:
     token_count: int = 0
     
 
+_instance = None
+
 class NLPMonitor:
     """NLP 性能监控器"""
     
