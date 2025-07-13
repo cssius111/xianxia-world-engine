@@ -56,3 +56,9 @@ grafana_data/
 node_modules/
 npm-debug.log
 yarn-error.log
+
+# Generated fix reports
+*fix_report.json
+*validation_results.json
+*test_duration_bar.png
+*_REPORT.md
