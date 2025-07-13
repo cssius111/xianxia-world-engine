@@ -35,6 +35,7 @@ TEST_GROUPS = {
     ],
     'integration': [
         'tests/integration/test_nlp_integration.py::TestNLPIntegration::test_multi_module_coordination',
+        'tests/integration/test_deepseek_async.py',
     ],
     'metrics': [
         # 完整运行 metrics 测试文件，内部会在缺少依赖时自动跳过
