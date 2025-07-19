@@ -9,6 +9,7 @@ from .event_system import EventSystem, WorldEvent
 from .location_manager import LocationManager
 from .time_system import TimeSystem
 from .world_map import Area, AreaType, Region, WorldMap
+from .laws import WorldLaw, load_world_laws
 
 __all__ = [
     "WorldMap",
@@ -19,4 +20,6 @@ __all__ = [
     "EventSystem",
     "WorldEvent",
     "TimeSystem",
+    "WorldLaw",
+    "load_world_laws",
 ]

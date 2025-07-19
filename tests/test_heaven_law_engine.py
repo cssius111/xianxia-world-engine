@@ -7,7 +7,7 @@ from src.xwe.core.heaven_law_engine import HeavenLawEngine, ActionContext, Thund
 from src.xwe.core.character import Character, CharacterType
 from src.xwe.core.attributes import CharacterAttributes
 from src.xwe.core.combat import CombatSystem
-from src.world.laws import WorldLaw
+from src.xwe.world.laws import WorldLaw
 
 
 def create_character(name: str, realm: str) -> Character:
