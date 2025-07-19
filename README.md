@@ -25,10 +25,10 @@ python run.py
 
 ### 4. 运行测试
 
-在首次运行测试前，请先安装额外依赖：
+在首次运行测试前，请确保安装所有依赖：
 
 ```bash
-python fix_dependencies.py
+pip install -r requirements.txt
 ```
 
 然后执行：
@@ -160,7 +160,7 @@ xianxia_world_engine/
    ```
    # 传统命令
    > 攻击 妖兽
-   
+
    # 自然语言
    > 我要攻击那只妖兽
    > 用剑砍它
