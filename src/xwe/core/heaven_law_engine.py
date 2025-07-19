@@ -4,7 +4,7 @@ from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING, Optional, List
 
-from src.world.laws import load_world_laws, WorldLaw
+from src.xwe.world.laws import load_world_laws, WorldLaw
 
 if TYPE_CHECKING:
     from src.xwe.core.character import Character
