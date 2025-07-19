@@ -17,11 +17,11 @@ fi
 if [ "$1" = "--execute" ]; then
     echo "⚠️  警告：将实际删除文件！"
     echo ""
-    python3 scripts/cleanup_project.py --execute
+    python3 scripts/maintenance/cleanup_project.py --execute
 else
     echo "📋 演示模式（不会删除文件）"
     echo ""
-    python3 scripts/cleanup_project.py
+    python3 scripts/maintenance/cleanup_project.py
     echo ""
     echo "💡 提示：使用 './scripts/cleanup_project.sh --execute' 来实际执行清理"
 fi
