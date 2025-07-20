@@ -23,12 +23,12 @@ scrape_configs:
     static_configs:
       - targets: ['host.docker.internal:5000']
     metrics_path: '/metrics'
-    
+
   # Prometheus 自身监控
   - job_name: 'prometheus'
     static_configs:
       - targets: ['localhost:9090']
-  
+
   # Grafana 监控
   - job_name: 'grafana'
     static_configs:

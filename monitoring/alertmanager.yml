@@ -1,6 +1,6 @@
 global:
   resolve_timeout: 5m
-  
+
 route:
   group_by: ['alertname', 'cluster', 'service']
   group_wait: 10s
@@ -11,18 +11,18 @@ route:
   - match:
       severity: critical
     receiver: critical-alerts
-    
+
 receivers:
 - name: 'default'
   webhook_configs:
   - url: 'http://localhost:8080/alerts'
     send_resolved: true
-    
+
 - name: 'critical-alerts'
   webhook_configs:
   - url: 'http://localhost:8080/critical-alerts'
     send_resolved: true
-    
+
 # 如果配置了邮件/Slack/企业微信等，可以在这里添加
 # email_configs:
 # - to: 'sre-team@example.com'

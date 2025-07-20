@@ -23,11 +23,11 @@ check_service() {
     local service_name=$1
     local url=$2
     local expected_code=${3:-200}
-    
+
     TOTAL_CHECKS=$((TOTAL_CHECKS + 1))
-    
+
     printf "检查 %-20s ... " "$service_name"
-    
+
     if response=$(curl -s -o /dev/null -w "%{http_code}" "$url" 2>/dev/null); then
         if [ "$response" = "$expected_code" ]; then
             echo -e "${GREEN}✅ 正常${NC}"
@@ -46,11 +46,11 @@ check_service() {
 # 检查指标函数
 check_metrics() {
     local metric_name=$1
-    
+
     TOTAL_CHECKS=$((TOTAL_CHECKS + 1))
-    
+
     printf "检查指标 %-25s ... " "$metric_name"
-    
+
     if curl -s http://localhost:5000/metrics | grep -q "^$metric_name"; then
         echo -e "${GREEN}✅ 存在${NC}"
         PASSED_CHECKS=$((PASSED_CHECKS + 1))
@@ -113,9 +113,9 @@ echo ""
 echo -e "${YELLOW}5. 配置文件${NC}"
 echo "-------------"
 config_files=(
-    "docker-compose.monitoring.yml"
-    "prometheus.yml"
-    "grafana_dashboard_xwe.json"
+    "monitoring/docker-compose.monitoring.yml"
+    "monitoring/prometheus.yml"
+    "monitoring/grafana_dashboard_xwe.json"
     "toggle_metrics.sh"
 )
 
@@ -166,16 +166,16 @@ fi
 # 提供快速修复建议
 if [ $((TOTAL_CHECKS - PASSED_CHECKS)) -gt 0 ]; then
     echo -e "\n${YELLOW}💡 快速修复建议：${NC}"
-    
+
     if ! check_service "XWE 应用" "http://localhost:5000/health" >/dev/null 2>&1; then
         echo "  - 启动 XWE 应用: ./start_xwe.sh"
     fi
-    
+
     if ! docker ps | grep -E "(prometheus|grafana)" > /dev/null 2>&1; then
-        echo "  - 启动监控栈: docker-compose -f docker-compose.monitoring.yml up -d"
+        echo "  - 启动监控栈: docker-compose -f monitoring/docker-compose.monitoring.yml up -d"
     fi
-    
-    if [ ! -f "grafana_dashboard_xwe.json" ]; then
+
+    if [ ! -f "monitoring/grafana_dashboard_xwe.json" ]; then
         echo "  - 缺少仪表盘配置，请检查文件"
     fi
 fi

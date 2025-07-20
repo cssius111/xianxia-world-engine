@@ -7,7 +7,9 @@ xianxia-world-engine/
 ├── run.py              # 入口脚本
 ├── src/                # 所有源代码
 │   └── xwe/            # 游戏引擎核心模块
+├── monitoring/         # 监控配置
 ├── tests/              # 单元测试
+│   └── performance/    # k6 压力测试
 └── docs/               # 文档
 ```
 

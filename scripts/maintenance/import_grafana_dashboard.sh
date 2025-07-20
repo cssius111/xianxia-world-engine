@@ -4,7 +4,7 @@
 GRAFANA_URL="${GRAFANA_URL:-http://localhost:3000}"
 GRAFANA_USER="${GRAFANA_USER:-admin}"
 GRAFANA_PASSWORD="${GRAFANA_PASSWORD:-admin}"
-DASHBOARD_FILE="grafana_dashboard_xwe.json"
+DASHBOARD_FILE="monitoring/grafana_dashboard_xwe.json"
 
 echo "📊 导入 XWE Grafana 仪表盘..."
 echo "🔗 Grafana URL: $GRAFANA_URL"

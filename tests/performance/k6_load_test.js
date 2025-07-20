@@ -45,16 +45,16 @@ const BASE_URL = __ENV.BASE_URL || 'http://localhost:5000';
 
 // 设置函数：登录并获取会话
 export function setup() {
-  const loginRes = http.post(`${BASE_URL}/api/auth/login`, 
+  const loginRes = http.post(`${BASE_URL}/api/auth/login`,
     JSON.stringify({ username: 'testuser', password: 'testpass' }),
     { headers: { 'Content-Type': 'application/json' } }
   );
-  
+
   const sessionRes = http.post(`${BASE_URL}/api/v1/session`,
     JSON.stringify({ user_id: 'test_user_' + Date.now() }),
     { headers: { 'Content-Type': 'application/json' } }
   );
-  
+
   return {
     token: loginRes.json('token'),
     sessionId: sessionRes.json('session_id'),
@@ -67,11 +67,11 @@ export default function (data) {
   if (Math.random() < 0.7) {
     const command = commands[Math.floor(Math.random() * commands.length)];
     const startTime = Date.now();
-    
+
     const res = http.post(`${BASE_URL}/api/game/command`,
-      JSON.stringify({ 
+      JSON.stringify({
         command: command,
-        session_id: data.sessionId 
+        session_id: data.sessionId
       }),
       {
         headers: {
@@ -81,52 +81,52 @@ export default function (data) {
         tags: { name: 'GameCommand' },
       }
     );
-    
+
     const latency = Date.now() - startTime;
     apiLatency.add(latency);
-    
+
     // 模拟 token 使用量
     const simulatedTokens = 50 + Math.floor(Math.random() * 200);
     tokenUsage.add(simulatedTokens);
-    
+
     const success = check(res, {
       'status is 200': (r) => r.status === 200,
       'response has result': (r) => r.json('result') !== undefined,
       'latency < 2500ms': () => latency < 2500,
     });
-    
+
     errorRate.add(!success);
   }
-  
+
   // 场景2: 查询游戏状态 (20%概率)
   if (Math.random() < 0.2) {
     const statusRes = http.get(`${BASE_URL}/api/game/status`, {
       headers: { 'Authorization': `Bearer ${data.token}` },
       tags: { name: 'GameStatus' },
     });
-    
+
     check(statusRes, {
       'status query success': (r) => r.status === 200,
       'has player info': (r) => r.json('player') !== undefined,
     });
   }
-  
+
   // 场景3: 访问 metrics 端点 (10%概率)
   if (Math.random() < 0.1) {
     const metricsStart = Date.now();
     const metricsRes = http.get(`${BASE_URL}/metrics`, {
       tags: { name: 'MetricsEndpoint' },
     });
-    
+
     metricsLatency.add(Date.now() - metricsStart);
-    
+
     check(metricsRes, {
       'metrics available': (r) => r.status === 200,
       'has prometheus format': (r) => r.body.includes('# HELP'),
       'has xwe metrics': (r) => r.body.includes('xwe_'),
     });
   }
-  
+
   // 模拟真实用户思考时间
   sleep(Math.random() * 3 + 1); // 1-4秒随机延迟
 }
@@ -163,7 +163,7 @@ export function handleSummary(data) {
       '错误率 < 5%': data.metrics.errors.values.rate < 0.05 ? '✅ 通过' : '❌ 失败',
     },
   };
-  
+
   return {
     'stdout': textSummary(data, { indent: ' ', enableColors: true }),
     'summary.json': JSON.stringify(customData, null, 2),
@@ -175,12 +175,12 @@ export function handleSummary(data) {
 function textSummary(data, options) {
   let summary = '\n📊 XWE 压测结果摘要\n';
   summary += '═'.repeat(50) + '\n\n';
-  
+
   summary += `✅ 总请求数: ${data.metrics.http_reqs.values.count}\n`;
   summary += `✅ 成功率: ${(100 - data.metrics.http_req_failed.values.rate * 100).toFixed(2)}%\n`;
   summary += `✅ 平均响应: ${data.metrics.http_req_duration.values.avg.toFixed(0)}ms\n`;
   summary += `✅ P99延迟: ${data.metrics.http_req_duration.values['p(99)'].toFixed(0)}ms\n`;
-  
+
   return summary;
 }
 
