@@ -8,10 +8,9 @@ import functools
 import json
 import logging
 import os
-import re
 from concurrent.futures import ThreadPoolExecutor
 from time import sleep, time
-from typing import Any, Dict, Optional, Union
+from typing import Any, Dict, Optional
 
 try:
     import requests
