@@ -14,20 +14,20 @@ services:
     restart: unless-stopped
     networks:
       - xwe-network
-  
+
   prometheus:
     image: prom/prometheus:latest
     ports:
       - "9090:9090"
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
     networks:
       - xwe-network
-  
+
   grafana:
     image: grafana/grafana:latest
     ports:
@@ -36,7 +36,7 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=admin
     volumes:
       - grafana_data:/var/lib/grafana
-      - ./grafana_dashboard_xwe.json:/var/lib/grafana/dashboards/xwe.json
+      - ./monitoring/grafana_dashboard_xwe.json:/var/lib/grafana/dashboards/xwe.json
     networks:
       - xwe-network
 

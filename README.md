@@ -101,9 +101,9 @@ xianxia_world_engine/
 ├── run.py                  # 主程序入口
 ├── src/                    # 迁移后的源代码
 │   └── xwe/                # 游戏引擎核心模块
-├── templates/              # HTML 模板
-├── static/                 # 静态资源
+├── monitoring/             # 监控配置
 ├── tests/                  # 单元测试
+│   └── performance/        # k6 压力测试
 └── docs/                   # 项目文档
 ```
 
