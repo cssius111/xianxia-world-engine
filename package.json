@@ -26,9 +26,10 @@
     "install:browsers": "playwright install",
     "install:deps": "playwright install-deps",
     "postinstall": "playwright install",
+    "lint": "eslint -c .eslintrc.js . --ext .js,.ts",
     "serve": "ENABLE_E2E_API=true python scripts/run.py",
     "serve:test": "FLASK_ENV=testing ENABLE_E2E_API=true python scripts/run.py",
-    "cl":      "dotenv -e .env -- claude-mcp"
+    "cl": "dotenv -e .env -- claude-mcp"
   },
   "repository": {
     "type": "git",
@@ -51,7 +52,10 @@
     "@playwright/mcp": "^0.0.29",
     "@playwright/test": "^1.53.1",
     "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.37.0",
+    "@typescript-eslint/parser": "^8.37.0",
     "dotenv-cli": "^8.0.0",
+    "eslint": "^8.57.1",
     "typescript": "^5.0.0"
   },
   "engines": {
