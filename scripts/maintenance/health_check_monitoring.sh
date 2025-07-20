@@ -113,9 +113,9 @@ echo ""
 echo -e "${YELLOW}5. 配置文件${NC}"
 echo "-------------"
 config_files=(
-    "monitoring/docker-compose.monitoring.yml"
-    "monitoring/prometheus.yml"
-    "monitoring/grafana_dashboard_xwe.json"
+    "infrastructure/monitoring/docker-compose.monitoring.yml"
+    "infrastructure/monitoring/prometheus.yml"
+    "infrastructure/monitoring/grafana_dashboard_xwe.json"
     "toggle_metrics.sh"
 )
 
@@ -172,10 +172,10 @@ if [ $((TOTAL_CHECKS - PASSED_CHECKS)) -gt 0 ]; then
     fi
 
     if ! docker ps | grep -E "(prometheus|grafana)" > /dev/null 2>&1; then
-        echo "  - 启动监控栈: docker-compose -f monitoring/docker-compose.monitoring.yml up -d"
+        echo "  - 启动监控栈: docker-compose -f infrastructure/monitoring/docker-compose.monitoring.yml up -d"
     fi
 
-    if [ ! -f "monitoring/grafana_dashboard_xwe.json" ]; then
+    if [ ! -f "infrastructure/monitoring/grafana_dashboard_xwe.json" ]; then
         echo "  - 缺少仪表盘配置，请检查文件"
     fi
 fi

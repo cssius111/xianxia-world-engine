@@ -101,7 +101,11 @@ xianxia_world_engine/
 ├── run.py                  # 主程序入口
 ├── src/                    # 迁移后的源代码
 │   └── xwe/                # 游戏引擎核心模块
-├── monitoring/             # 监控配置
+├── infrastructure/
+│   ├── Dockerfile
+│   ├── docker-compose.yml
+│   ├── deploy/             # 部署脚本和配置
+│   └── monitoring/         # 监控配置
 ├── tests/                  # 单元测试
 │   └── performance/        # k6 压力测试
 └── docs/                   # 项目文档

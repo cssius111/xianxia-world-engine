@@ -269,7 +269,7 @@ export FLASK_ENV=production
 ### 2. Docker部署
 ```bash
 # 构建镜像
-docker build -t xianxia-world .
+docker build -f infrastructure/Dockerfile -t xianxia-world infrastructure
 
 # 运行容器
 docker run -p 5000:5000 xianxia-world
