@@ -1,5 +1,6 @@
 stages:
   - test
+  - size_check
   - build
   - deploy
 
@@ -36,6 +37,11 @@ lint:
     - flake8 src/ tests/
     - black --check src/ tests/
     - isort --check-only src/ tests/
+
+git_sizer:
+  stage: size_check
+  script:
+    - git-sizer --critical --threshold=5242880
 
 build:
   stage: build
