@@ -124,4 +124,4 @@ rate(xwe_nlp_cache_hit_total[5m]) / rate(xwe_nlp_request_seconds_count[5m])
 
 详细文档请参考：
 - [监控指南](src/xwe/metrics/MONITORING.md)
-- [Prometheus 规则](deploy/prometheus/xwe_prometheus_rules.yml)
+- [Prometheus 规则](infrastructure/deploy/prometheus/xwe_prometheus_rules.yml)

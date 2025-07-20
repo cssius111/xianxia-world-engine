@@ -313,7 +313,7 @@ CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "app:app"]
 #!/bin/bash
 # deploy.sh
 echo "Starting deployment..."
-docker build -t xianxia-world:latest .
+docker build -f infrastructure/Dockerfile -t xianxia-world:latest infrastructure
 docker push registry.example.com/xianxia-world:latest
 kubectl set image deployment/xianxia-world app=registry.example.com/xianxia-world:latest
 echo "Deployment completed!"

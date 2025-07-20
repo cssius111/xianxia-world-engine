@@ -41,8 +41,8 @@ class TestValidator:
 
         required_files = [
             "setup.py",
-            "Dockerfile",
-            "docker-compose.yml",
+            "infrastructure/Dockerfile",
+            "infrastructure/docker-compose.yml",
             "docs/API.md",
             "docs/ARCHITECTURE.md",
             "docs/DEVELOPER_GUIDE.md",

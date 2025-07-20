@@ -61,7 +61,7 @@
   - 改进建议
 
 ### 9. 部署验证
-- ✅ `deploy/verification_checklist.md` - 部署验证清单
+- ✅ `infrastructure/deploy/verification_checklist.md` - 部署验证清单
   - 环境配置验证
   - API 密钥验证
   - 监控端点检查

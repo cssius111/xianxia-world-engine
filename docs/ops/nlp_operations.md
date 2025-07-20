@@ -93,7 +93,7 @@ CMD ["python", "run.py"]
 部署命令：
 ```bash
 # 构建镜像
-docker build -t xwe-nlp:latest .
+docker build -f infrastructure/Dockerfile -t xwe-nlp:latest infrastructure
 
 # 运行容器
 docker run -d \

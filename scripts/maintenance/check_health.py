@@ -18,7 +18,7 @@ def check_project_health():
     # 检查关键文件
     critical_files = {
         "setup.py": "安装配置",
-        "Dockerfile": "Docker支持",
+        "infrastructure/Dockerfile": "Docker支持",
         "docs/API.md": "API文档",
         "docs/ARCHITECTURE.md": "架构文档",
         "src/xwe/__version__.py": "版本管理",

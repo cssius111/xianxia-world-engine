@@ -38,7 +38,7 @@ echo -e "${GREEN}✅ Python 依赖安装完成${NC}"
 
 # 步骤3：启动监控栈
 echo -e "\n${YELLOW}步骤 3: 启动监控栈${NC}"
-docker-compose -f monitoring/docker-compose.monitoring.yml up -d
+docker-compose -f infrastructure/monitoring/docker-compose.monitoring.yml up -d
 echo -e "${GREEN}✅ Prometheus 和 Grafana 已启动${NC}"
 
 # 步骤4：等待服务就绪
@@ -72,7 +72,7 @@ fi
 
 # 步骤6：导入 Grafana 仪表盘
 echo -e "\n${YELLOW}步骤 6: 导入 Grafana 仪表盘${NC}"
-if [ -f "scripts/maintenance/import_grafana_dashboard.sh" ] && [ -f "monitoring/grafana_dashboard_xwe.json" ]; then
+if [ -f "scripts/maintenance/import_grafana_dashboard.sh" ] && [ -f "infrastructure/monitoring/grafana_dashboard_xwe.json" ]; then
     chmod +x scripts/maintenance/import_grafana_dashboard.sh
     sleep 5
     ./scripts/maintenance/import_grafana_dashboard.sh
@@ -97,5 +97,5 @@ echo -e "  • Prometheus: ${BLUE}http://localhost:9090${NC}"
 echo -e "  • Grafana: ${BLUE}http://localhost:3000${NC} (admin/admin)"
 echo -e "\n${YELLOW}提示:${NC}"
 echo -e "  • 使用 './toggle_metrics.sh status' 查看监控状态"
-echo -e "  • 使用 'docker-compose -f monitoring/docker-compose.monitoring.yml logs -f' 查看日志"
-echo -e "  • 使用 'docker-compose -f monitoring/docker-compose.monitoring.yml down' 停止监控栈"
+echo -e "  • 使用 'docker-compose -f infrastructure/monitoring/docker-compose.monitoring.yml logs -f' 查看日志"
+echo -e "  • 使用 'docker-compose -f infrastructure/monitoring/docker-compose.monitoring.yml down' 停止监控栈"
