@@ -378,17 +378,11 @@ const GameLauncher = {
      * 继续游戏
      */
     continueGame() {
-        // 暂时弹出提示，后续实现存档功能
-        alert('存档功能开发中...');
-        
-        // TODO: 实现存档加载功能
-        /*
         fetch('/load_game', { method: 'POST' })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
                     this.hide();
-                    // 刷新游戏状态
                     if (typeof GameUI !== 'undefined' && GameUI.refreshStatus) {
                         GameUI.refreshStatus();
                     }
@@ -400,7 +394,6 @@ const GameLauncher = {
                 console.error('加载存档失败:', error);
                 alert('加载存档失败');
             });
-        */
     },
 
     /**
