@@ -12,7 +12,7 @@
 1. **启动服务器**
    ```bash
    cd /path/to/xianxia_world_engine
-   python run.py
+   python -m xwe.cli.run_server
    ```
    - [ ] 服务器成功启动
    - [ ] 显示访问地址：http://localhost:5001
@@ -146,11 +146,11 @@
 测试完成后，如发现问题请记录在下方：
 
 ### 发现的问题：
-1. 
-2. 
-3. 
+1.
+2.
+3.
 
 ### 改进建议：
-1. 
-2. 
-3. 
+1.
+2.
+3.

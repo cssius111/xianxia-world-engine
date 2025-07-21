@@ -27,8 +27,8 @@
     "install:deps": "playwright install-deps",
     "postinstall": "playwright install",
     "lint": "eslint -c .eslintrc.js . --ext .js,.ts",
-    "serve": "ENABLE_E2E_API=true python scripts/run.py",
-    "serve:test": "FLASK_ENV=testing ENABLE_E2E_API=true python scripts/run.py",
+    "serve": "ENABLE_E2E_API=true python -m xwe.cli.run_server",
+    "serve:test": "FLASK_ENV=testing ENABLE_E2E_API=true python -m xwe.cli.run_server",
     "cl": "dotenv -e .env -- claude-mcp"
   },
   "repository": {

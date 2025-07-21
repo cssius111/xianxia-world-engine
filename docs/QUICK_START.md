@@ -12,7 +12,7 @@
 
 ```bash
 # Web UI 版本
-python run.py
+python -m xwe.cli.run_server
 
 # 命令行版本 (已移除，统一使用 Web UI)
 ```
@@ -38,7 +38,7 @@ pip install deepseek
 ```bash
 DEEPSEEK_API_KEY=your_api_key_here
 ```
-安装完成后，可直接运行 `python run.py` 启动游戏。
+安装完成后，可直接运行 `python -m xwe.cli.run_server` 启动游戏。
 
 
 ## 📚 文档

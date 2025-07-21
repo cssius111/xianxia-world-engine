@@ -69,7 +69,7 @@ NLP_TIMEOUT=30
 python -m pytest tests/test_nlp_processor.py -v
 
 # 启动服务
-python run.py
+python -m xwe.cli.run_server
 ```
 
 ### Docker 部署
@@ -244,13 +244,13 @@ groups:
         for: 5m
         annotations:
           summary: "NLP 错误率过高"
-          
+
       - alert: LowCacheHitRate
         expr: nlp_cache_hit_rate < 0.5
         for: 10m
         annotations:
           summary: "缓存命中率过低"
-          
+
       - alert: HighAPILatency
         expr: nlp_api_latency_p99 > 1000
         for: 5m

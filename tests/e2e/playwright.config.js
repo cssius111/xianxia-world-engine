@@ -26,16 +26,16 @@ module.exports = defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
-    
+
     /* Take screenshot on failure */
     screenshot: 'only-on-failure',
-    
+
     /* Record video on failure */
     video: 'retain-on-failure',
-    
+
     /* Timeout for each action */
     actionTimeout: 10000,
-    
+
     /* Timeout for navigation */
     navigationTimeout: 30000,
   },
@@ -44,7 +44,7 @@ module.exports = defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { 
+      use: {
         ...devices['Desktop Chrome'],
         // 为修仙游戏优化的设置
         viewport: { width: 1280, height: 720 },
@@ -76,8 +76,8 @@ module.exports = defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    // 使用项目自带的运行脚本启动服务器
-    command: 'python scripts/run.py',
+    // 使用项目自带的运行脚本启动服务器（已改为模块方式）
+    command: 'python -m xwe.cli.run_server',
     port: 5001,
     reuseExistingServer: !process.env.CI,
     timeout: 30000,
@@ -85,7 +85,7 @@ module.exports = defineConfig({
 
   /* Global test timeout */
   timeout: 60000,
-  
+
   /* Expect timeout */
   expect: {
     timeout: 10000

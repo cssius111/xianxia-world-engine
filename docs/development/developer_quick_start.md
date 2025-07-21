@@ -1,7 +1,7 @@
 # 🚀 修仙世界引擎 - 开发者快速上手指南
 
-**适用版本**：v2.0  
-**更新日期**：2025年1月23日  
+**适用版本**：v2.0
+**更新日期**：2025年1月23日
 **阅读时间**：10分钟
 
 ---
@@ -70,7 +70,7 @@ cp .env.example .env
 ### 4. 启动项目
 ```bash
 # 运行开发服务器
-python run.py
+python -m xwe.cli.run_server
 
 # 访问游戏
 # http://localhost:5001/welcome
@@ -161,7 +161,7 @@ export class MyComponent {
     constructor(container) {
         this.container = container;
     }
-    
+
     render() {
         this.container.innerHTML = `
             <div class="my-component">
@@ -212,10 +212,10 @@ npm test
 def test_my_feature():
     # 准备测试数据
     player = Player(name="测试玩家")
-    
+
     # 执行测试
     result = player.level_up()
-    
+
     # 断言结果
     assert player.level == 2
     assert result.success == True

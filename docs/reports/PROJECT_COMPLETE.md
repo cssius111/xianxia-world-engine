@@ -23,7 +23,7 @@ start.bat
 ```bash
 cd /path/to/xianxia_world_engine
 pip install -r requirements.txt  # 安装依赖
-python run.py  # 启动服务器
+python -m xwe.cli.run_server  # 启动服务器
 ```
 
 ## 访问游戏

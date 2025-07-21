@@ -45,7 +45,7 @@ npm run test:e2e:headless
 ### 方法 2：手动运行
 ```bash
 # 1. 启动服务器
-ENABLE_E2E_API=true python run.py
+ENABLE_E2E_API=true python -m xwe.cli.run_server
 
 # 2. 在另一个终端运行测试
 npx playwright test tests/e2e_full.spec.ts --headed

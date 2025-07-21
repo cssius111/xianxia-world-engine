@@ -16,7 +16,7 @@ Flask 应用配置中的 `template_folder` 和 `static_folder` 指向了不存�
 # 修复前
 template_folder = project_root / "templates"
 
-# 修复后  
+# 修复后
 template_folder = project_root / "src" / "web" / "templates"
 ```
 
@@ -61,7 +61,7 @@ python verify_hf002_fixes.py
 # 路径配置测试
 python tests/manual/test_template_paths.py
 
-# 游戏路由测试  
+# 游戏路由测试
 python tests/manual/test_game_route.py
 
 # 单元测试
@@ -73,7 +73,7 @@ python tests/manual/test_app_startup.py
 
 ### 3. 最终验证 - 启动应用
 ```bash
-python run.py
+python -m xwe.cli.run_server
 ```
 然后访问 `http://localhost:5001/game` 应该不再出现 `TemplateNotFound` 错误。
 
@@ -84,7 +84,7 @@ python run.py
 - ❌ Flask 寻找静态文件：`/project_root/static/` （不存在）
 - ❌ 访问 `/game` 路由：`TemplateNotFound: game_enhanced_optimized_v2.html`
 
-### 修复后  
+### 修复后
 - ✅ Flask 寻找模板：`/project_root/src/web/templates/` （存在）
 - ✅ Flask 寻找静态文件：`/project_root/src/web/static/` （存在）
 - ✅ 访问 `/game` 路由：正常渲染 `game_enhanced_optimized_v2.html`
