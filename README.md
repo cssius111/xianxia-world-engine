@@ -14,10 +14,12 @@ pre-commit install
 ### 2. 启动游戏
 
 ```bash
-python run.py
+python -m xwe.cli.run_server
 # 如需指定存档或日志目录：
-# python run.py --save-dir my_saves --log-dir my_logs
+# python -m xwe.cli.run_server --save-dir my_saves --log-dir my_logs
 ```
+
+旧的 `scripts/run.py` 启动脚本仍然可用，但已不再推荐。
 
 ### 3. 访问游戏
 
@@ -98,7 +100,7 @@ see [CHANGELOG.md](./CHANGELOG.md).
 
 ```
 xianxia_world_engine/
-├── run.py                  # 主程序入口
+├── scripts/run.py          # 兼容旧路径的启动脚本（已不推荐）
 ├── src/                    # 迁移后的源代码
 │   └── xwe/                # 游戏引擎核心模块
 ├── infrastructure/

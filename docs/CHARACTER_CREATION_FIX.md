@@ -56,7 +56,7 @@ roll_result = {
 
 ### 1. 启动服务器
 ```bash
-python run.py
+python -m xwe.cli.run_server
 ```
 
 ### 2. 运行测试脚本

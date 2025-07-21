@@ -35,7 +35,7 @@
 start.bat   # Windows
 
 # 方法2：直接运行
-python run.py
+python -m xwe.cli.run_server
 ```
 
 ### 测试流程

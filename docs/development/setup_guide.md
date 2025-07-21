@@ -10,7 +10,7 @@
    ```
 3. 启动游戏：
    ```bash
-   python run.py
+   python -m xwe.cli.run_server
    ```
 
 更多细节参见仓库根目录的 `README.md`。

@@ -4,7 +4,7 @@
 
 ```
 xianxia-world-engine/
-├── run.py              # 入口脚本
+├── scripts/run.py      # 兼容旧路径的启动脚本（已不推荐）
 ├── src/                # 所有源代码
 │   └── xwe/            # 游戏引擎核心模块
 ├── infrastructure/
