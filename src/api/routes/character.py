@@ -4,6 +4,7 @@
 """
 
 from flask import Blueprint, current_app, jsonify, request, session
+from src.app import inventory_system
 from src.common.request_utils import is_dev_request
 import logging
 
@@ -100,9 +101,10 @@ def get_character_info():
 
         # 添加背包信息
         if hasattr(player, "inventory"):
+            inv_data = inventory_system.get_inventory_data(session.get("player_id", player.id))
             character_info["inventory"] = {
-                "gold": getattr(player.inventory, "gold", 0),
-                "items": [],  # TODO: 添加物品列表
+                "gold": inv_data.get("gold", 0),
+                "items": inv_data.get("items", []),
             }
 
         return jsonify({"success": True, "character": character_info})

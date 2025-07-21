@@ -40,3 +40,11 @@ def pytest_collection_modifyitems(config, items):
         # 标记不稳定的测试
         if "thread_safe" in item.nodeid or "burst_handling" in item.nodeid:
             item.add_marker(pytest.mark.flaky)
+
+
+@pytest.fixture
+def app():
+    """Return the Flask app instance for testing."""
+    from scripts import run
+    run.app.config.update(TESTING=True)
+    return run.app

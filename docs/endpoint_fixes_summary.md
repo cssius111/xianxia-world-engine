@@ -40,51 +40,48 @@
 # 保存游戏
 @app.route("/save_game", methods=["POST"])
 def save_game():
-    # TODO: 实现保存逻辑
-    return jsonify({"success": False, "error": "功能开发中"})
+    instance = get_game_instance(session["session_id"])
+    game = instance["game"]
+    if hasattr(game, "technical_ops") and game.technical_ops.save_game(game.game_state):
+        return jsonify({"success": True, "message": "游戏已保存"})
+    return jsonify({"success": False, "error": "保存失败"})
 
 # 加载游戏
 @app.route("/load_game", methods=["POST"])
 def load_game():
-    # TODO: 实现加载逻辑
-    return jsonify({"success": False, "error": "功能开发中"})
+    instance = get_game_instance(session["session_id"])
+    game = instance["game"]
+    if hasattr(game, "technical_ops"):
+        state = game.technical_ops.load_game("autosave")
+        if state:
+            game.game_state = state
+            instance["need_refresh"] = True
+            return jsonify({"success": True, "message": "游戏已加载"})
+    return jsonify({"success": False, "error": "没有找到存档"})
 
 # 情报系统
 @app.route("/api/intel")
 def get_intel():
-    # TODO: 实现情报系统
-    return jsonify({
-        "global": [],
+    return jsonify({"success": True, "data": {
+        "global": [
+            {"id": "intel_001", "title": "秘境开启", "content": "传闻附近将开启古老秘境。", "source": "坊市传闻", "time": "辰时", "importance": "high"}
+        ],
         "personal": []
-    })
+    }})
 
 # 角色详细信息
 @app.route("/api/character/info")
 def get_character_info():
-    # TODO: 实现角色信息获取
-    return jsonify({
-        "success": True,
-        "character": {
-            "name": session.get('player_name', '无名侠客'),
-            "attributes": {
-                "realm_name": "炼气期",
-                "cultivation_level": 0,
-                "max_cultivation": 100,
-                "defense": 5
-            },
-            "extra_data": {
-                "faction": "散修",
-                "constitution": 5,
-                "comprehension": 5,
-                "luck": 5,
-                "lifespan": "100/100",
-                "reputation": 0
-            },
-            "inventory": {
-                "gold": 100
-            }
-        }
-    })
+    instance = get_game_instance(session["session_id"])
+    game = instance["game"]
+    player = game.game_state.player
+    inv = inventory_system.get_inventory_data(session.get("player_id", player.id))
+    return jsonify({"success": True, "character": {
+        "name": player.name,
+        "attributes": player.attributes.to_dict(),
+        "extra_data": getattr(player, "extra_data", {}),
+        "inventory": inv
+    }})
 ```
 
 ## 开发建议
