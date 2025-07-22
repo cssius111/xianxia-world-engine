@@ -17,9 +17,6 @@ simplejson==3.19.1
 requests==2.31.0
 httpx==0.25.0  # 异步HTTP客户端
 
-# 路径处理
-pathlib==1.0.1
-
 # 开发工具（可选）
 flask-cors==4.0.0  # 跨域支持
 
