@@ -9,6 +9,21 @@ tags: [模块]
 
 欢迎来到修仙世界引擎的文档中心！这里包含了项目的所有文档和指南。
 
+```mermaid
+ graph TD
+    QuickStart[QUICK_START.md] --> ProjectStructure[PROJECT_STRUCTURE.md]
+    ProjectStructure --> CharacterDesign[character_design.md]
+    CharacterDesign --> XiuxianDoc[xiuxian_project_doc.md]
+    XiuxianDoc --> NLPGuide[deepseek_nlp_guide.md]
+    QuickStart --> Roadmap[ROADMAP.md]
+    QuickStart --> Health[reports/PROJECT_HEALTH_REPORT.md]
+    QuickStart --> Bugs[KNOWN_BUGS.md]
+    Roadmap --> Tasks[tasks.md]
+    Tasks --> Todo[TODO.md]
+```
+
+**如何阅读此图：** 每个节点表示对应文档，箭头展示了推荐的阅读顺序。若添加新文档，请在图中加入节点并调整关系。
+
 ## 🚀 快速开始
 
 - **[快速开始指南](./QUICK_START.md)** - 5分钟上手游戏
