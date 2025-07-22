@@ -74,6 +74,10 @@
             version: '1.0.0',
             apiBase: ''
         };
+
+        // 开发者模式密码配置
+        window.DEV_PASSWORD = "{{ dev_password }}";
+        window.DEV_PASSWORD_CONFIGURED = {{ 'true' if dev_password else 'false' }};
         
         // 控制台美化
         console.log(

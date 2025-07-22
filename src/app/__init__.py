@@ -357,6 +357,15 @@ def create_app(log_level: int = log_level) -> Flask:
 
     app = _create_flask_app(log_level=log_level)
     app.game_instances = game_instances
+
+    dev_password = os.getenv("DEV_PASSWORD", "")
+    if not dev_password:
+        logger.warning("DEV_PASSWORD environment variable not set; developer mode disabled")
+    app.config["DEV_PASSWORD"] = dev_password
+
+    @app.context_processor
+    def inject_dev_password():
+        return {"dev_password": dev_password}
     
     # Enable async support if configured
     if os.getenv('FLASK_ASYNC_ENABLED', '0') == '1':

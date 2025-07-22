@@ -400,8 +400,12 @@ const GameLauncher = {
      * 进入开发者模式
      */
     enterDevMode() {
+        if (!window.DEV_PASSWORD_CONFIGURED) {
+            alert('服务器未设置DEV_PASSWORD，无法启用开发者模式');
+            return;
+        }
         const password = prompt('请输入开发者密码：');
-        if (password === 'dev123') {  // 可以修改为更安全的密码
+        if (password === window.DEV_PASSWORD) {
             localStorage.setItem('devMode', 'true');
             window.DEV_MODE = true;
 
