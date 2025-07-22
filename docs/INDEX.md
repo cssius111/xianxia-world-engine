@@ -17,7 +17,7 @@
 
 ### 开发指南
 - **[API文档](./api/)** - 接口说明和示例
-- **[Flask端点](./flask_endpoints.md)** - 路由和端点列表
+- **[Flask端点](./archive/2025-07/flask_endpoints.md)** - 路由和端点列表
 
 ### 游戏设计
 - **[角色设计](./character_design.md)** - 角色系统设计
@@ -27,27 +27,27 @@
 ## 🔧 故障排除
 
 ### 调试指南
-- **[侧边栏调试指南](./development/SIDEBAR_DEBUG_GUIDE.md)** - 侧边栏问题解决
+- **[侧边栏调试指南](./archive/2025-07/SIDEBAR_DEBUG_GUIDE.md)** - 侧边栏问题解决
 - **[已知问题](./KNOWN_BUGS.md)** - 已知bug和临时解决方案
 - **[测试清单](./test_checklist.md)** - 功能测试检查表
 
 ### 修复报告
-- **[侧边栏修复报告](./reports/SIDEBAR_FIX_REPORT.md)** - 侧边栏功能修复详情
-- **[端点修复总结](./endpoint_fixes_summary.md)** - API端点修复记录
-- **[角色创建修复](./CHARACTER_CREATION_FIX.md)** - 角色创建问题修复
+- **[侧边栏修复报告](./archive/2025-07/SIDEBAR_FIX_REPORT.md)** - 侧边栏功能修复详情
+- **[端点修复总结](./archive/2025-07/endpoint_fixes_summary.md)** - API端点修复记录
+- **[角色创建修复](./archive/2025-07/CHARACTER_CREATION_FIX.md)** - 角色创建问题修复
 
 ## 🤖 高级功能
 
 - **[Agent系统文档](./architecture/agent_system.md)** - 智能体架构和实现
-- **[缓存配置](./cache_settings.md)** - 性能优化和缓存策略
-- **[E2E测试](./development/E2E_TEST_COMPLETE_GUIDE.md)** - 端到端测试指南
-- **[异步化改造](./ASYNC_IMPLEMENTATION_README.md)** - DeepSeek API 异步化文档
+- **[缓存配置](./archive/2025-07/cache_settings.md)** - 性能优化和缓存策略
+- **[E2E测试](./archive/2025-07/E2E_TEST_COMPLETE_GUIDE.md)** - 端到端测试指南
+- **[异步化改造](./archive/2025-07/ASYNC_IMPLEMENTATION_README.md)** - DeepSeek API 异步化文档
 
 ## 📊 项目报告
 
-- **[项目完成报告](./reports/PROJECT_COMPLETE.md)** - v2.0版本完成情况
-- **[最终报告](./reports/FINAL_REPORT.md)** - 项目总结
-- **[NLP修复](./reports/NLP_FIX.md)** - 自然语言处理修复记录
+- **[项目完成报告](./archive/2025-07/PROJECT_COMPLETE.md)** - v2.0版本完成情况
+- **[最终报告](./archive/2025-07/FINAL_REPORT.md)** - 项目总结
+- **[NLP修复](./archive/2025-07/NLP_FIX.md)** - 自然语言处理修复记录
 
 ## 🛠️ 工具和脚本
 
