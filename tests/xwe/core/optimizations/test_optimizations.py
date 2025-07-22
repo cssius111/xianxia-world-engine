@@ -1,32 +1,13 @@
 import asyncio
 import pytest
 
-# 使用标准导入方式
-try:
-    from src.xwe.core.optimizations import (
-        ExpressionJITCompiler,
-        ExpressionBenchmark,
-        SmartCache,
-        CacheableFunction,
-        AsyncEventSystem
-    )
-except ImportError:
-    # 如果标准导入失败，尝试备用方案
-    import importlib.util
-    from pathlib import Path
-
-    def _load_module(path, name):
-        spec = importlib.util.spec_from_file_location(name, Path(path))
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)  # type: ignore
-        return module
-
-    optimizations = _load_module('src/xwe/core/optimizations/__init__.py', 'optimizations')
-    ExpressionJITCompiler = optimizations.ExpressionJITCompiler
-    ExpressionBenchmark = optimizations.ExpressionBenchmark
-    SmartCache = optimizations.SmartCache
-    CacheableFunction = optimizations.CacheableFunction
-    AsyncEventSystem = optimizations.AsyncEventSystem
+from xwe.core.optimizations import (
+    ExpressionJITCompiler,
+    ExpressionBenchmark,
+    SmartCache,
+    CacheableFunction,
+    AsyncEventSystem,
+)
 
 
 def test_expression_jit_compile():

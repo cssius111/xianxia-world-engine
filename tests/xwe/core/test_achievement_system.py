@@ -1,15 +1,4 @@
-import importlib.util
-from pathlib import Path
-
-
-def _load_module(path, name):
-    spec = importlib.util.spec_from_file_location(name, Path(path))
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)  # type: ignore
-    return module
-
-ach_module = _load_module('src/xwe/core/achievement_system.py', 'achievement_system')
-AchievementSystem = ach_module.AchievementSystem
+from xwe.core.achievement_system import AchievementSystem
 
 
 def test_invalid_achievement_id():
