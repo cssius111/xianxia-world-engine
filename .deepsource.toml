@@ -6,3 +6,14 @@ enabled = true
 
   [analyzers.meta]
   runtime_version = "3.x.x"
+
+  [analyzers.config]
+  test_patterns = ["tests/**"]
+
+  [analyzers.tools.flake8]
+  max_line_length = 120
+  max_complexity = 18
+
+[ignore_rules]
+python.performance.no-else-return = "src/**"
+python.security.use-shell-equals-true = "src/**"

@@ -14,3 +14,19 @@ git push origin main --force-with-lease
 
 请所有协作者遵守此流程，以保持提交历史的整洁。
 
+## 更新 DeepSource 基准
+
+项目使用 [DeepSource](https://deepsource.com/) 进行静态分析。若需要调整
+`.deepsource.toml` 的 `[ignore_rules]` 或其他阈值，请在本地安装 DeepSource
+CLI 并重新生成基准：
+
+```bash
+# 安装 CLI（如未安装）
+pip install deepsource-cli
+
+# 重新计算基准并更新配置
+deepsource-cli reset-baseline
+```
+
+执行完毕后将更新后的 `.deepsource.toml` 提交至仓库，以便团队成员共用同一
+基准。
