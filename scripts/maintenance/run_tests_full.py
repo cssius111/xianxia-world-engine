@@ -59,7 +59,7 @@ def main():
         all_passed = False
 
     # 4. 生成覆盖率报告（可选）
-    # run_command("pytest tests/ --cov=xwe --cov-report=html", "生成覆盖率报告")
+    # run_command("pytest tests/ --cov=src/xwe --cov-report=html", "生成覆盖率报告")
 
     # 总结
     print("\n" + "=" * 60)
