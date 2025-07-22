@@ -73,6 +73,8 @@ data_loader = DataLoader()
 exploration_system = ExplorationSystem()
 inventory_system = InventorySystem()
 command_router: CommandRouter | None = None
+# Flask 应用实例，初始化后赋值
+app: Flask | None = None
 
 game_instances: Dict[str, Dict] = {}
 status_cache: Dict[str, Dict] = {}
