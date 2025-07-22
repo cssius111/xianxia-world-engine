@@ -16,7 +16,7 @@ tags: [模块]
     CharacterDesign --> XiuxianDoc[xiuxian_project_doc.md]
     XiuxianDoc --> NLPGuide[deepseek_nlp_guide.md]
     QuickStart --> Roadmap[ROADMAP.md]
-    QuickStart --> Health[reports/PROJECT_HEALTH_REPORT.md]
+    QuickStart --> Health[archive/2025-07/PROJECT_HEALTH_REPORT.md]
     QuickStart --> Bugs[KNOWN_BUGS.md]
     Roadmap --> Tasks[tasks.md]
     Tasks --> Todo[TODO.md]
@@ -27,7 +27,7 @@ tags: [模块]
 ## 🚀 快速开始
 
 - **[快速开始指南](./QUICK_START.md)** - 5分钟上手游戏
-- **[项目健康报告](./reports/PROJECT_HEALTH_REPORT.md)** - 查看项目当前状态
+- **[项目健康报告](./archive/2025-07/PROJECT_HEALTH_REPORT.md)** - 查看项目当前状态
 - **[测试说明](./development/TEST_INSTRUCTIONS.md)** - 如何运行测试
 
 ## 📖 核心文档
@@ -67,8 +67,8 @@ tags: [模块]
 
 ## 📊 项目报告
 
-- **[项目完成报告](./archive/2025-07/PROJECT_COMPLETE.md)** - v2.0版本完成情况
-- **[最终报告](./archive/2025-07/FINAL_REPORT.md)** - 项目总结
+- **[项目完成报告](./reports/PROJECT_COMPLETE.md)** - v2.0版本完成情况
+- **[最终报告](./reports/FINAL_REPORT.md)** - 项目总结
 - **[NLP修复](./archive/2025-07/NLP_FIX.md)** - 自然语言处理修复记录
 
 ## 🛠️ 工具和脚本
