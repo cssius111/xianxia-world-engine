@@ -48,6 +48,15 @@ python scripts/maintenance/run_tests.py all
 python scripts/run_async_tests.py
 ```
 
+运行测试时，`tests/conftest.py` 会自动设置以下环境变量：
+
+- `USE_MOCK_LLM=true`：使用模拟的 LLM 客户端
+- `ENABLE_PROMETHEUS=true`：启用 Prometheus 指标
+- `ENABLE_CONTEXT_COMPRESSION=true`：启用上下文压缩
+
+若需要执行依赖真实 DeepSeek API 的测试，请额外设置 `DEEPSEEK_API_KEY`。
+某些基准测试依赖 `pandas` 与 `matplotlib`，在缺少这些依赖的环境下会被自动跳过。
+
 ### 5. 启用异步模式（可选）
 
 ```bash
