@@ -113,7 +113,7 @@ see [CHANGELOG.md](./CHANGELOG.md).
 ### 启用开发模式
 
 1. 在开始页面点击"开发者模式"
-2. 输入密码：`dev123`
+2. 输入在 `DEV_PASSWORD` 中设置的密码
 3. 或在地址栏添加 `?dev=true`
 4. 也可以在浏览器控制台执行 `localStorage.setItem('dev', 'true')`
 

@@ -400,19 +400,35 @@ const GameLauncher = {
      * 进入开发者模式
      */
     enterDevMode() {
-        const password = prompt('请输入开发者密码：');
-        if (password === 'dev123') {  // 可以修改为更安全的密码
-            localStorage.setItem('devMode', 'true');
-            window.DEV_MODE = true;
-
-            // 添加开发者控制台
-            this.initDevConsole();
-
-            alert('开发者模式已启用！\n- 按F12查看控制台\n- 所有错误将详细显示\n- 可使用调试命令');
-            this.hide();
-        } else {
-            alert('密码错误！');
+        if (!window.DEV_PASSWORD_CONFIGURED) {
+            alert('服务器未设置DEV_PASSWORD，无法启用开发者模式');
+            return;
         }
+        const password = prompt('请输入开发者密码：');
+        if (!password) {
+            alert('密码不能为空！');
+            return;
+        }
+        fetch('/dev_login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password })
+        })
+            .then(resp => resp.json())
+            .then(data => {
+                if (data.success) {
+                    localStorage.setItem('devMode', 'true');
+                    window.DEV_MODE = true;
+                    this.initDevConsole();
+                    alert('开发者模式已启用！\n- 按F12查看控制台\n- 所有错误将详细显示\n- 可使用调试命令');
+                    this.hide();
+                } else {
+                    alert(data.error || '密码错误！');
+                }
+            })
+            .catch(() => {
+                alert('开发者模式登录失败');
+            });
     },
 
     /**

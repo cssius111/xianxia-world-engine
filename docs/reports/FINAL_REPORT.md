@@ -108,7 +108,7 @@ xianxia_world_engine/
 
 1. **Python版本**：需要 Python 3.7+
 2. **依赖安装**：运行前请安装 `requirements.txt` 中的依赖
-3. **开发模式**：密码是 `dev123`
+3. **开发模式**：密码在环境变量 `DEV_PASSWORD` 中设置
 4. **端口**：默认运行在 5001 端口
 
 ### 后续开发建议
