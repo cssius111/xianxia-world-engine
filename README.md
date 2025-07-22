@@ -21,11 +21,16 @@ pre-commit install
 ### 2. 启动游戏
 
 ```bash
+# 使用提供的脚本
+./scripts/start.sh
+
+# 或手动运行
 python -m xwe.cli.run_server
 # 如需指定存档或日志目录：
 # python -m xwe.cli.run_server --save-dir my_saves --log-dir my_logs
 ```
 
+`scripts/start.sh` 仅负责启动应用，运行前请先完成依赖安装。
 旧的 `scripts/run.py` 启动脚本仍然可用，但已不再推荐。
 
 ### 3. 访问游戏

@@ -38,16 +38,6 @@ for dir in saves logs static/audio static/images; do
 done
 echo ""
 
-# 检查依赖
-echo "📦 检查依赖..."
-if [ -f "requirements.txt" ]; then
-    echo "   安装/更新依赖..."
-    pip3 install -q -r requirements.txt
-    echo "   ✅ 依赖检查完成"
-else
-    echo "   ⚠️  未找到 requirements.txt，跳过依赖检查"
-fi
-echo ""
 
 # 设置环境变量
 export FLASK_ENV=development
