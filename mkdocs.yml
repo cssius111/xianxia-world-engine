@@ -1,0 +1,7 @@
+site_name: Xianxia World Engine Docs
+theme:
+  name: material
+nav:
+  - Home: docs/INDEX.md
+  - Architecture: docs/architecture.md
+  # 其余文档按需添加

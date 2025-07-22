@@ -57,6 +57,19 @@ export FLASK_ASYNC_ENABLED=1
 
 详见 [异步模式快速指南](docs/DEEPSEEK_ASYNC_QUICKSTART.md)。
 
+### 文档构建/预览
+
+项目文档使用 [MkDocs](https://www.mkdocs.org/) 与 `mkdocs-material` 主题。若要在本地查看文档，可执行：
+
+```bash
+pip install mkdocs-material  # 如未安装
+mkdocs serve                 # 本地预览
+# 或生成静态站点
+mkdocs build
+```
+
+预览地址默认是 <http://localhost:8000>。
+
 ## Recent Architecture Changes (v0.3.0)
 
 - **API Consolidation**: Merged `api_fixes.py` into main route handlers
