@@ -4,4 +4,7 @@ theme:
 nav:
   - Home: docs/INDEX.md
   - Architecture: docs/architecture.md
+  - 项目报告:
+      - 项目完成报告: docs/reports/PROJECT_COMPLETE.md
+      - 最终报告: docs/reports/FINAL_REPORT.md
   # 其余文档按需添加
