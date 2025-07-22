@@ -56,7 +56,11 @@ logger = logging.getLogger("XianxiaEngine")
 
 # 导入 Prometheus 指标
 try:
-    from src.xwe.metrics.prometheus_metrics import init_prometheus_app_metrics, get_metrics_collector
+    from src.xwe.metrics.prometheus_metrics import (
+        init_prometheus_app_metrics,
+        get_metrics_collector,
+    )
+
     PROMETHEUS_ENABLED = True
 except ImportError:
     PROMETHEUS_ENABLED = False
@@ -75,6 +79,7 @@ status_cache: Dict[str, Dict] = {}
 
 
 # ---------------- Game instance helpers -----------------
+
 
 def get_game_instance(session_id: str, initialize_player: bool = True):
     """Get or create a game instance."""
@@ -149,7 +154,11 @@ def cleanup_old_instances() -> None:
     current_time = time.time()
     timeout = 3600
 
-    to_remove = [sid for sid, inst in game_instances.items() if current_time - inst["last_update"] > timeout]
+    to_remove = [
+        sid
+        for sid, inst in game_instances.items()
+        if current_time - inst["last_update"] > timeout
+    ]
     for sid in to_remove:
         try:
             instance = game_instances[sid]
@@ -227,8 +236,6 @@ def build_status_data():
     }
     logger.debug("[STATUS] %s", status_dict)
     return status_dict
-
-
 
 
 main_bp = Blueprint("main", __name__)
@@ -332,10 +339,6 @@ def need_refresh():
     return jsonify({"refresh": False, "version": "2025-06-25"})
 
 
-
-
-
-
 # Error handlers
 @main_bp.errorhandler(404)
 def not_found(e):
@@ -351,6 +354,7 @@ def server_error(e):
 
 # ---------------- Application factory -----------------
 
+
 def create_app(log_level: int = log_level) -> Flask:
     """Create and configure the Flask app."""
     global command_router, app
@@ -360,35 +364,38 @@ def create_app(log_level: int = log_level) -> Flask:
 
     dev_password = os.getenv("DEV_PASSWORD", "")
     if not dev_password:
-        logger.warning("DEV_PASSWORD environment variable not set; developer mode disabled")
+        logger.warning(
+            "DEV_PASSWORD environment variable not set; developer mode disabled"
+        )
     app.config["DEV_PASSWORD"] = dev_password
 
     @app.context_processor
     def inject_dev_password():
-        return {"dev_password": dev_password}
-    
+        return {
+            "dev_password": dev_password,
+            "dev_password_configured": bool(dev_password),
+        }
+
     # Enable async support if configured
-    if os.getenv('FLASK_ASYNC_ENABLED', '0') == '1':
-        app.config['FLASK_ASYNC_ENABLED'] = True
+    if os.getenv("FLASK_ASYNC_ENABLED", "0") == "1":
+        app.config["FLASK_ASYNC_ENABLED"] = True
         logger.info("Flask async support enabled")
-    
+
     # 初始化 Prometheus 指标
-    if PROMETHEUS_ENABLED and os.getenv('ENABLE_PROMETHEUS', 'true').lower() == 'true':
+    if PROMETHEUS_ENABLED and os.getenv("ENABLE_PROMETHEUS", "true").lower() == "true":
         try:
             prometheus_config = {
-                'metrics_path': '/metrics',
-                'enable_default_metrics': True
+                "metrics_path": "/metrics",
+                "enable_default_metrics": True,
             }
             metrics = init_prometheus_app_metrics(
-                app, 
-                app_version='1.0.0',
-                app_config=prometheus_config
+                app, app_version="1.0.0", app_config=prometheus_config
             )
             logger.info("Prometheus metrics initialized successfully")
-            
+
             # 初始化系统指标更新
             metrics_collector = get_metrics_collector()
-            
+
             # 添加自定义指标钩子
             @app.before_request
             def update_game_metrics():
@@ -396,23 +403,30 @@ def create_app(log_level: int = log_level) -> Flask:
                 if metrics_collector:
                     metrics_collector.update_game_metrics(
                         instances=len(game_instances),
-                        players=len([inst for inst in game_instances.values() 
-                                    if inst.get('game', {}).get('game_state', {}).get('player')])
+                        players=len(
+                            [
+                                inst
+                                for inst in game_instances.values()
+                                if inst.get("game", {})
+                                .get("game_state", {})
+                                .get("player")
+                            ]
+                        ),
                     )
-                    
+
                     # 更新系统资源指标
                     try:
                         import psutil
+
                         process = psutil.Process()
                         cpu_percent = process.cpu_percent(interval=0.1)
                         memory_mb = process.memory_info().rss / 1024 / 1024
                         metrics_collector.update_system_metrics(
-                            cpu_percent=cpu_percent,
-                            memory_mb=memory_mb
+                            cpu_percent=cpu_percent, memory_mb=memory_mb
                         )
                     except:
                         pass
-            
+
         except Exception as e:
             logger.error(f"Failed to initialize Prometheus metrics: {e}")
     else:
@@ -442,11 +456,12 @@ def create_app(log_level: int = log_level) -> Flask:
 
     register_all_routes(app)
     logger.info("All API routes registered")
-    
+
     # Register DeepSeek async routes if async is enabled
-    if os.getenv('USE_ASYNC_DEEPSEEK', '0') == '1':
+    if os.getenv("USE_ASYNC_DEEPSEEK", "0") == "1":
         try:
             from src.api.routes.deepseek_async import register_deepseek_routes
+
             register_deepseek_routes(app)
             logger.info("DeepSeek async routes registered")
         except Exception as e:
@@ -463,7 +478,9 @@ def create_app(log_level: int = log_level) -> Flask:
         command_router = CommandRouter(use_nlp=False)
 
     if not os.environ.get("DEEPSEEK_API_KEY"):
-        logger.warning("DEEPSEEK_API_KEY environment variable not set after loading .env")
+        logger.warning(
+            "DEEPSEEK_API_KEY environment variable not set after loading .env"
+        )
 
     app.register_blueprint(main_bp)
 

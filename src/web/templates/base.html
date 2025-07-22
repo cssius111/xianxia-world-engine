@@ -75,9 +75,8 @@
             apiBase: ''
         };
 
-        // 开发者模式密码配置
-        window.DEV_PASSWORD = "{{ dev_password }}";
-        window.DEV_PASSWORD_CONFIGURED = {{ 'true' if dev_password else 'false' }};
+        // 开发者模式是否启用
+        window.DEV_PASSWORD_CONFIGURED = {{ 'true' if dev_password_configured else 'false' }};
         
         // 控制台美化
         console.log(

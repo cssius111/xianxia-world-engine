@@ -405,18 +405,30 @@ const GameLauncher = {
             return;
         }
         const password = prompt('请输入开发者密码：');
-        if (password === window.DEV_PASSWORD) {
-            localStorage.setItem('devMode', 'true');
-            window.DEV_MODE = true;
-
-            // 添加开发者控制台
-            this.initDevConsole();
-
-            alert('开发者模式已启用！\n- 按F12查看控制台\n- 所有错误将详细显示\n- 可使用调试命令');
-            this.hide();
-        } else {
-            alert('密码错误！');
+        if (!password) {
+            alert('密码不能为空！');
+            return;
         }
+        fetch('/dev_login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password })
+        })
+            .then(resp => resp.json())
+            .then(data => {
+                if (data.success) {
+                    localStorage.setItem('devMode', 'true');
+                    window.DEV_MODE = true;
+                    this.initDevConsole();
+                    alert('开发者模式已启用！\n- 按F12查看控制台\n- 所有错误将详细显示\n- 可使用调试命令');
+                    this.hide();
+                } else {
+                    alert(data.error || '密码错误！');
+                }
+            })
+            .catch(() => {
+                alert('开发者模式登录失败');
+            });
     },
 
     /**
