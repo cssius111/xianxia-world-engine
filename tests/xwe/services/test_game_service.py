@@ -1,3 +1,4 @@
+import sys
 import types
 
 from xwe.services.game_service import GameService, CommandResult

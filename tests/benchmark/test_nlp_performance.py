@@ -14,8 +14,12 @@ import asyncio
 from pathlib import Path
 from typing import Dict, List, Any
 from contextlib import contextmanager
-import pandas as pd
-import matplotlib.pyplot as plt
+import pytest
+
+# 这些基准测试依赖于 `pandas` 和 `matplotlib`。在缺少这些较重依赖的环境下
+# 运行时将自动跳过整个测试模块，避免在收集阶段出现导入错误。
+pd = pytest.importorskip("pandas")
+plt = pytest.importorskip("matplotlib.pyplot")
 from datetime import datetime
 
 # 添加项目路径
