@@ -1,15 +1,6 @@
-import importlib.util
-from pathlib import Path
-import sys
 import types
 
-
-def _load_module(path, name):
-    spec = importlib.util.spec_from_file_location(name, Path(path))
-    module = importlib.util.module_from_spec(spec)
-    sys.modules[name] = module
-    spec.loader.exec_module(module)  # type: ignore
-    return module
+from xwe.services.game_service import GameService, CommandResult
 
 
 stub_services = types.ModuleType('xwe.services')
@@ -39,10 +30,6 @@ class StubServiceContainer:
 stub_services.ServiceBase = StubServiceBase
 stub_services.ServiceContainer = StubServiceContainer
 sys.modules['xwe.services'] = stub_services
-
-game_service_module = _load_module('src/xwe/services/game_service.py', 'xwe.services.game_service')
-GameService = game_service_module.GameService
-CommandResult = game_service_module.CommandResult
 
 
 class DummyContainer:
