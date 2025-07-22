@@ -1,3 +1,10 @@
+---
+title: 修仙世界引擎 (Xianxia World Engine)
+author: 修仙世界引擎团队
+date: 2025-07-01
+tags: [模块]
+---
+
 # 修仙世界引擎 (Xianxia World Engine)
 
 一个基于文本的修仙世界模拟游戏引擎，让玩家体验修仙之旅。
