@@ -50,7 +50,7 @@ case $choice in
         ;;
     6)
         echo "生成测试覆盖率报告..."
-        pytest --cov=xwe --cov-report=html --cov-report=term
+        pytest --cov=src/xwe --cov-report=html --cov-report=term
         echo "HTML 报告已生成到 htmlcov/index.html"
         ;;
     0)
