@@ -242,6 +242,9 @@
             <a href="/docs" class="btn">查看文档</a>
             <a href="https://github.com/xianxia-team/xianxia-world-engine" class="btn">GitHub</a>
             <a href="/api" class="btn">API测试</a>
+            {% if dev_mode %}
+            <a href="/game?mode=dev" class="btn">开发者入口</a>
+            {% endif %}
         </div>
         
         <footer>
