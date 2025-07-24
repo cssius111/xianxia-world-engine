@@ -21,3 +21,11 @@ def dev_login():
         logger.info("Developer mode enabled via login")
         return jsonify({"success": True})
     return jsonify({"success": False, "error": "Invalid password"}), 401
+
+
+@dev_bp.route("/dev_logout", methods=["POST"])
+def dev_logout():
+    """Disable developer mode by clearing the session flag."""
+    if session.pop("dev", None):
+        logger.info("Developer mode disabled via logout")
+    return jsonify({"success": True})
