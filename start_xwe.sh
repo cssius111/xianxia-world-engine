@@ -6,6 +6,6 @@ export ENABLE_PROMETHEUS=true
 
 echo "🚀 启动 XianXia World Engine..."
 echo "📊 Prometheus 监控已启用"
-echo "📍 访问 http://localhost:5000/metrics 查看指标"
+echo "📍 访问 http://localhost:5001/metrics 查看指标"
 
 python -m xwe.cli.run_server
