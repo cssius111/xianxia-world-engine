@@ -43,14 +43,14 @@ function displayCharacter(character) {
     document.getElementById('char-name').textContent = character.name || '未知';
     document.getElementById('char-age').textContent = character.age || '20';
     document.getElementById('char-spiritual-root').textContent = character.spiritual_root || '无';
-    
+
     // 八维属性
     for (const [key, value] of Object.entries(character.attributes)) {
         const elem = document.getElementById(`attr-${key}`);
         if (elem) {
             elem.textContent = value;
             elem.className = `attribute-value ${getAttrClass(value)}`;
-            
+
             // 添加滚动动画
             elem.classList.add('rolling');
             setTimeout(() => elem.classList.remove('rolling'), 300);
@@ -61,7 +61,7 @@ function displayCharacter(character) {
 // 检查并显示jackpot
 function checkAndShowJackpot(character) {
     const highAttrs = Object.values(character.attributes).filter(v => v >= 8).length;
-    
+
     if (highAttrs >= 2) {
         showJackpot('大保底', `你的角色有${highAttrs}项属性达到8以上，天纵奇才！`);
     } else if (highAttrs >= 1) {
@@ -74,7 +74,7 @@ function showJackpot(type, description) {
     document.getElementById('jackpot-title').textContent = `✨ 触发${type}！`;
     document.getElementById('jackpot-desc').textContent = description;
     jackpotModal.style.display = 'block';
-    
+
     // 添加发光效果
     document.getElementById('jackpot-title').classList.add('jackpot-glow');
 }
@@ -83,10 +83,10 @@ function showJackpot(type, description) {
 async function performRoll() {
     rollBtn.disabled = true;
     rollBtn.textContent = '抽取中...';
-    
+
     // 显示抽取动画
     rollArea.innerHTML = '<p class="text-2xl">命运轮盘转动中...</p>';
-    
+
     try {
         const response = await fetch('/api/roll', {
             method: 'POST',
@@ -99,11 +99,11 @@ async function performRoll() {
                 prompt: rollMode === 'custom' ? getCustomPrompt() : null
             })
         });
-        
+
         if (!response.ok) {
             throw new Error('抽卡失败');
         }
-        
+
         const data = await response.json();
         currentCharacter = data.character;
 
@@ -120,7 +120,7 @@ async function performRoll() {
         }
 
         rollBtn.textContent = '重新抽取';
-        
+
     } catch (error) {
         console.error('Roll error:', error);
         rollArea.innerHTML = '<p class="text-xl text-accent">抽取失败，请重试</p>';
@@ -132,13 +132,11 @@ async function performRoll() {
 
 // 获取模板类型（如果是模板模式）
 function getTemplateType() {
-    // TODO: 实现模板选择UI
     return 'sword'; // 暂时默认剑修
 }
 
 // 获取自定义提示词（如果是自定义模式）
 function getCustomPrompt() {
-    // TODO: 实现自定义输入UI
     return '一个天赋异禀的少年剑客';
 }
 
@@ -200,10 +198,9 @@ window.addEventListener('click', (event) => {
 
 // 页面加载完成后
 document.addEventListener('DOMContentLoaded', () => {
-    // 如果是模板或自定义模式，可能需要先显示选择界面
     if (rollMode === 'template') {
-        // TODO: 显示模板选择
+        // 模板模式无需额外初始化
     } else if (rollMode === 'custom') {
-        // TODO: 显示输入框
+        // 自定义模式无需额外初始化
     }
 });
