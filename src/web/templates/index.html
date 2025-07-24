@@ -238,7 +238,9 @@
         <div class="actions">
             <a href="/game" class="btn primary">开始游戏</a>
             <a href="#" class="btn" onclick="continueGame(); return false;">继续游戏</a>
-            <a href="/game?mode=dev" class="btn">开发者模式</a>
+            <button class="btn" onclick="toggleDevMode()">
+                {{ 'Exit Developer Mode' if dev_mode else 'Developer Mode' }}
+            </button>
             <button class="btn" onclick="openModal('settings')">设置</button>
         </div>
 
@@ -318,6 +320,42 @@
 
         // 每5秒更新一次
         setInterval(fetchHealth, 5000);
+
+        // 开发者模式切换
+        const DEV_PASSWORD_CONFIGURED = {{ 'true' if dev_password_configured else 'false' }};
+        let DEV_MODE = {{ 'true' if dev_mode else 'false' }};
+
+        function toggleDevMode() {
+            if (DEV_MODE) {
+                fetch('/dev_logout', { method: 'POST' })
+                    .then(() => location.reload())
+                    .catch(() => alert('退出失败'));
+                return;
+            }
+            if (!DEV_PASSWORD_CONFIGURED) {
+                alert('服务器未设置DEV_PASSWORD，无法启用开发者模式');
+                return;
+            }
+            const password = prompt('请输入开发者密码:');
+            if (!password) {
+                return;
+            }
+            fetch('/dev_login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password })
+            })
+                .then(resp => resp.json())
+                .then(data => {
+                    if (data.success) {
+                        DEV_MODE = true;
+                        location.reload();
+                    } else {
+                        alert(data.error || '密码错误');
+                    }
+                })
+                .catch(() => alert('开发者模式登录失败'));
+        }
     </script>
 </body>
 </html>
