@@ -20,6 +20,10 @@
     {% include "components/world_intro.html" %}
     {% include "components/lore_modal.html" %}
     {% include "components/event_modal.html" %}
+    {% include "modals/settings.html" %}
+    <div id="modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);overflow:auto;z-index:1000;">
+        <div id="modal-content" style="background:#222;margin:10% auto;padding:20px;border-radius:8px;max-width:600px;color:#ddd;"></div>
+    </div>
 </div>
 {% endblock %}
 
@@ -27,6 +31,22 @@
 <script src="{{ url_for('static', filename='js/game_main.js') }}"></script>
 <script src="{{ url_for('static', filename='js/game_panels_enhanced.js') }}"></script>
 <script>
+    async function openModal(name) {
+        const modal = document.getElementById('modal');
+        const content = document.getElementById('modal-content');
+        modal.style.display = 'block';
+        const resp = await fetch(`/modal/${name}`);
+        content.innerHTML = await resp.text();
+    }
+
+    function closeModal() {
+        document.getElementById('modal').style.display = 'none';
+    }
+
+    function continueGame() {
+        window.location.href = '/continue';
+    }
+
     window.onload = function() {
         GameUI.init(); // 初始化游戏 UI 功能（绑定日志、指令框、弹窗等）
         WelcomeSystem.show(); // 启动欢迎界面

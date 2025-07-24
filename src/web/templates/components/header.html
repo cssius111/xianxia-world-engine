@@ -18,6 +18,7 @@
             <i class="icon-star"></i>
             <span id="playerRealm">{{ player.attributes.realm_name|default('炼气期') }}</span>
         </span>
+        <button class="settings-btn" onclick="openModal('settings')">⚙️</button>
     </div>
 </header>
 
@@ -52,4 +53,11 @@
 .icon-location::before { content: '📍'; }
 .icon-user::before { content: '👤'; }
 .icon-star::before { content: '⭐'; }
+.settings-btn {
+    background: none;
+    border: none;
+    color: #e0e0e0;
+    cursor: pointer;
+    font-size: 18px;
+}
 </style>

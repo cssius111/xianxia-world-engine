@@ -237,11 +237,13 @@
 
         <div class="actions">
             <a href="/game" class="btn primary">开始游戏</a>
+            <a href="#" class="btn" onclick="continueGame(); return false;">继续游戏</a>
             <a href="/api/health" class="btn">健康检查</a>
             <a href="/metrics" class="btn">性能指标</a>
             <a href="/docs" class="btn">查看文档</a>
             <a href="https://github.com/xianxia-team/xianxia-world-engine" class="btn">GitHub</a>
             <a href="/api" class="btn">API测试</a>
+            <button class="btn" onclick="openModal('settings')">设置</button>
             {% if dev_mode %}
             <a href="/game?mode=dev" class="btn">开发者入口</a>
             {% endif %}
@@ -253,7 +255,30 @@
         </footer>
     </div>
 
+    <div id="modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);overflow:auto;z-index:1000;">
+        <div id="modal-content" style="background:#222;margin:10% auto;padding:20px;border-radius:8px;max-width:600px;color:#ddd;"></div>
+    </div>
+
+    {% include "modals/settings.html" %}
+
     <script>
+        // 打开模态框
+        async function openModal(name) {
+            const modal = document.getElementById('modal');
+            const content = document.getElementById('modal-content');
+            modal.style.display = 'block';
+            const resp = await fetch(`/modal/${name}`);
+            content.innerHTML = await resp.text();
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        function continueGame() {
+            window.location.href = '/continue';
+        }
+
         // 获取健康状态
         async function fetchHealth() {
             try {
