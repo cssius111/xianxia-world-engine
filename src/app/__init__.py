@@ -245,12 +245,15 @@ main_bp = Blueprint("main", __name__)
 
 @main_bp.route("/")
 def index():
-    if is_dev_request() or request.args.get("mode") == "dev":
-        # Developer mode entry uses the new templates introduced recently
-        return render_template("index.html")
+    """Landing page with optional developer entry."""
+    dev_mode = is_dev_request() or request.args.get("mode") == "dev"
+    return render_template("index.html", dev_mode=dev_mode)
 
-    # Default behaviour redirects to the standard game screen
-    return redirect(url_for(".game_screen"))
+
+@main_bp.route("/status")
+def status_page():
+    """Simple status page for health checks."""
+    return "ok", 200
 
 
 @main_bp.route("/welcome")
