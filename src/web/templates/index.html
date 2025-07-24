@@ -238,19 +238,12 @@
         <div class="actions">
             <a href="/game" class="btn primary">开始游戏</a>
             <a href="#" class="btn" onclick="continueGame(); return false;">继续游戏</a>
-            <a href="/api/health" class="btn">健康检查</a>
-            <a href="/metrics" class="btn">性能指标</a>
-            <a href="/docs" class="btn">查看文档</a>
-            <a href="https://github.com/xianxia-team/xianxia-world-engine" class="btn">GitHub</a>
-            <a href="/api" class="btn">API测试</a>
+            <a href="/game?mode=dev" class="btn">开发者模式</a>
             <button class="btn" onclick="openModal('settings')">设置</button>
-            {% if dev_mode %}
-            <a href="/game?mode=dev" class="btn">开发者入口</a>
-            {% endif %}
         </div>
 
         <footer>
-            <p>© 2025 修仙世界引擎团队</p>
+            <p>© 2025 修仙世界引擎团队 | <a href="/diagnostics" style="color:#fff;text-decoration:underline;">诊断工具</a></p>
             <p class="version">版本 0.3.4 | <span id="status">运行中</span></p>
         </footer>
     </div>

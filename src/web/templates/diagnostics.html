@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>系统诊断 - 修仙世界引擎</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+        }
+        .actions {
+            display: flex;
+            gap: 20px;
+            margin-top: 40px;
+        }
+        .btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <h1>系统诊断</h1>
+    <div class="actions">
+        <a href="/api/health" class="btn">健康检查</a>
+        <a href="/metrics" class="btn">性能指标</a>
+    </div>
+</body>
+</html>

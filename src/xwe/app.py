@@ -2,14 +2,21 @@
 
 from __future__ import annotations
 
+import json
 import os
 import time
-import json
-import psutil
 from datetime import datetime
+
+import psutil
+from flask import send_from_directory  # noqa: F401
 from flask import (
-    Flask, jsonify, request, session,
-    Response, stream_with_context, render_template, send_from_directory
+    Flask,
+    Response,
+    jsonify,
+    render_template,
+    request,
+    session,
+    stream_with_context,
 )
 
 # 允许通过环境变量打开或关闭 Prometheus
@@ -17,12 +24,14 @@ os.environ.setdefault("ENABLE_PROMETHEUS", "true")
 
 try:
     from prometheus_flask_exporter import PrometheusMetrics
-    from src.xwe.metrics.prometheus_metrics import (
-        nlp_request_seconds,
-        nlp_error_total,
-        command_execution_seconds,
+
+    from src.xwe.metrics.prometheus_metrics import (  # noqa: F401
         REGISTRY,
+        command_execution_seconds,
+        nlp_error_total,
+        nlp_request_seconds,
     )
+
     PROMETHEUS_AVAILABLE = True
 except ImportError:  # pragma: no cover - optional dependency
     PROMETHEUS_AVAILABLE = False
@@ -45,7 +54,10 @@ def create_app(config_name: str | None = None) -> Flask:
     # 存储简单的游戏实例
     app.game_instances = {}
 
-    if PROMETHEUS_AVAILABLE and os.getenv("ENABLE_PROMETHEUS", "true").lower() == "true":
+    if (
+        PROMETHEUS_AVAILABLE
+        and os.getenv("ENABLE_PROMETHEUS", "true").lower() == "true"
+    ):
         from prometheus_client import CollectorRegistry
 
         registry = CollectorRegistry()
@@ -55,6 +67,11 @@ def create_app(config_name: str | None = None) -> Flask:
     @app.route("/")
     def index():
         return render_template("index.html")
+
+    @app.route("/diagnostics")
+    def diagnostics_page():
+        """系统诊断页面"""
+        return render_template("diagnostics.html")
 
     @app.route("/api")
     def api_index():
@@ -144,7 +161,11 @@ def create_app(config_name: str | None = None) -> Flask:
             jsonify(
                 {
                     "status": "healthy",
-                    "components": {"nlp": "healthy", "database": "healthy", "cache": "healthy"},
+                    "components": {
+                        "nlp": "healthy",
+                        "database": "healthy",
+                        "cache": "healthy",
+                    },
                     "timestamp": time.time(),
                 }
             ),
@@ -176,15 +197,23 @@ def create_app(config_name: str | None = None) -> Flask:
         if PROMETHEUS_AVAILABLE:
             start_time = time.time()
             try:
-                result = {"success": True, "result": f"\u6267\u884c\u547d\u4ee4: {command}", "command": command}
-                nlp_request_seconds.labels(command_type="game_command", status="success").observe(
-                    time.time() - start_time
-                )
+                result = {
+                    "success": True,
+                    "result": f"\u6267\u884c\u547d\u4ee4: {command}",
+                    "command": command,
+                }
+                nlp_request_seconds.labels(
+                    command_type="game_command", status="success"
+                ).observe(time.time() - start_time)
             except Exception as e:
                 nlp_error_total.labels(error_type="command_error").inc()
                 result = {"success": False, "error": str(e)}
         else:
-            result = {"success": True, "result": f"\u6267\u884c\u547d\u4ee4: {command}", "command": command}
+            result = {
+                "success": True,
+                "result": f"\u6267\u884c\u547d\u4ee4: {command}",
+                "command": command,
+            }
         return jsonify(result), 200
 
     @app.route("/api/game/status")
@@ -228,7 +257,15 @@ def create_app(config_name: str | None = None) -> Flask:
     def api_command():
         session_id = request.json.get("session_id")
         command = request.json.get("command")
-        return jsonify({"result": f"\u6267\u884c\u547d\u4ee4: {command}", "session_id": session_id}), 200
+        return (
+            jsonify(
+                {
+                    "result": f"\u6267\u884c\u547d\u4ee4: {command}",
+                    "session_id": session_id,
+                }
+            ),
+            200,
+        )
 
     @app.route("/api/v1/session/<session_id>/status")
     def session_status(session_id: str):
@@ -292,8 +329,18 @@ def create_app(config_name: str | None = None) -> Flask:
             jsonify(
                 {
                     "data": [
-                        {"x": 0, "y": 0, "type": "village", "name": "\u65b0\u624b\u6751"},
-                        {"x": 1, "y": 0, "type": "forest", "name": "\u8ff7\u96fe\u68ee\u6797"},
+                        {
+                            "x": 0,
+                            "y": 0,
+                            "type": "village",
+                            "name": "\u65b0\u624b\u6751",
+                        },
+                        {
+                            "x": 1,
+                            "y": 0,
+                            "type": "forest",
+                            "name": "\u8ff7\u96fe\u68ee\u6797",
+                        },
                     ]
                 }
             ),
@@ -311,8 +358,14 @@ def create_app(config_name: str | None = None) -> Flask:
                             "name": "\u521d\u5165\u6c5f\u6e56",
                             "status": "in_progress",
                             "objectives": [
-                                {"text": "\u4e0e\u6751\u957f\u5bf9\u8bdd", "completed": True},
-                                {"text": "\u5b8c\u6210\u7b2c\u4e00\u6b21\u4fee\u7ec3", "completed": False},
+                                {
+                                    "text": "\u4e0e\u6751\u957f\u5bf9\u8bdd",
+                                    "completed": True,
+                                },
+                                {
+                                    "text": "\u5b8c\u6210\u7b2c\u4e00\u6b21\u4fee\u7ec3",
+                                    "completed": False,
+                                },
                             ],
                         }
                     ]
@@ -377,10 +430,15 @@ def create_app(config_name: str | None = None) -> Flask:
     @app.route("/api/cultivation/start", methods=["POST"])
     def cultivation_start():
         hours = request.json.get("hours", 1)
-        session_id = session.get("session_id")
         exp_gained = hours * 10
         return (
-            jsonify({"success": True, "exp_gained": exp_gained, "result": f"\u4fee\u7ec3{hours}\u5c0f\u65f6\uff0c\u83b7\u5f97{exp_gained}\u70b9\u7ecf\u9a8c"}),
+            jsonify(
+                {
+                    "success": True,
+                    "exp_gained": exp_gained,
+                    "result": f"\u4fee\u7ec3{hours}\u5c0f\u65f6\uff0c\u83b7\u5f97{exp_gained}\u70b9\u7ecf\u9a8c",
+                }
+            ),
             200,
         )
 
@@ -394,7 +452,9 @@ def create_app(config_name: str | None = None) -> Flask:
 
     @app.route("/events")
     def events():
-        return Response(stream_with_context(_generate_events()), mimetype="text/event-stream")
+        return Response(
+            stream_with_context(_generate_events()), mimetype="text/event-stream"
+        )
 
     @app.route("/api/metrics")
     def api_metrics():
@@ -413,6 +473,7 @@ def create_app(config_name: str | None = None) -> Flask:
         )
 
     if not PROMETHEUS_AVAILABLE:
+
         @app.route("/metrics")
         def metrics():
             metrics_text = """# HELP xwe_nlp_request_seconds NLP request processing time in seconds
