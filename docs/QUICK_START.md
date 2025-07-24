@@ -26,7 +26,8 @@ python -m xwe.cli.run_server
 ## 🛠 初次脚本设置
 ```bash
 chmod +x scripts/*.py
-python scripts/dev/gen_character.py
+# 可选：生成示例角色（仅限开发调试）
+# python scripts/dev/gen_character.py
 pre-commit install
 ```
 

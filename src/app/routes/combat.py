@@ -89,34 +89,30 @@ def api_roll():
     data = request.get_json()
     mode = data.get("mode", "random")
 
-    from scripts.dev.gen_character import save_character  # noqa: F401
-    from scripts.dev.gen_character import gen_from_prompt, gen_random, gen_template
+    from dataclasses import asdict
+    from src.xwe.core.roll_system import CharacterRoller
 
-    if mode == "random":
-        character = gen_random()
-    elif mode == "template":
-        template_type = data.get("type", "sword")
-        character = gen_template(template_type)
-    elif mode == "custom":
-        prompt = data.get("prompt", "")
-        character = gen_from_prompt(prompt)
-    else:
-        character = gen_random()
+    roller = CharacterRoller()
+    roll_data = roller.roll()
+    character = asdict(roll_data)
 
     backend_attrs = character.get("attributes", {})
     frontend_attrs = {
-        "constitution": backend_attrs.get("constitution", 5),
-        "comprehension": backend_attrs.get("comprehension", 5),
-        "spirit": backend_attrs.get("perception", backend_attrs.get("willpower", 5)),
-        "luck": backend_attrs.get("fortune", backend_attrs.get("opportunity", 5)),
+        "constitution": backend_attrs.get("constitution", backend_attrs.get("\u6839\u9aa8", 5)),
+        "comprehension": backend_attrs.get("comprehension", backend_attrs.get("\u609f\u6027", 5)),
+        "spirit": backend_attrs.get("spirit", backend_attrs.get("\u795e\u8bc6", 5)),
+        "luck": backend_attrs.get("luck", backend_attrs.get("\u673a\u7f18", 5)),
     }
 
-    gender = random.choice(["male", "female"])
+    gender = "male" if character.get("gender") == "\u7537" else "female"
     background = random.choice(["poor", "merchant", "scholar", "martial"])
 
-    destiny_data = data_loader.get_destinies()
-    options = destiny_data.get("destiny_grades", [])
-    destiny = random.choice(options) if options else None
+    destiny = {
+        "name": character.get("destiny"),
+        "rarity": character.get("destiny_rarity"),
+        "description": character.get("destiny_desc"),
+        "effects": character.get("destiny_effects", []),
+    }
 
     roll_result = {
         "name": character.get("name", "无名侠客"),
@@ -124,6 +120,7 @@ def api_roll():
         "background": background,
         "attributes": frontend_attrs,
         "destiny": destiny,
+        "talents": character.get("talents", []),
     }
 
     return jsonify({"success": True, "character": roll_result, "destiny": destiny})
