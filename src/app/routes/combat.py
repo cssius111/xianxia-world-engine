@@ -11,7 +11,18 @@ from datetime import datetime
 from pathlib import Path
 from typing import Dict, List
 
-from flask import Blueprint, jsonify, request, session, Response, stream_with_context, make_response, render_template
+from flask import (
+    Blueprint,
+    jsonify,
+    request,
+    session,
+    Response,
+    stream_with_context,
+    make_response,
+    render_template,
+    redirect,
+    url_for,
+)
 
 from .. import (
     exploration_system,
@@ -313,11 +324,15 @@ def parse_custom_text():
 
 @combat_bp.route("/nlp_monitor")
 def nlp_monitor():
+    if not is_dev_request():
+        return redirect(url_for("main.index"))
     return render_template("nlp_monitor.html")
 
 
 @combat_bp.route("/api/nlp/stats")
 def get_nlp_stats():
+    if not is_dev_request():
+        return jsonify({"success": False, "error": "开发模式未启用"}), 403
     try:
         from src.xwe.core.nlp.monitor import get_nlp_monitor
         monitor = get_nlp_monitor()
@@ -332,6 +347,8 @@ def get_nlp_stats():
 
 @combat_bp.route("/api/nlp/export")
 def export_nlp_metrics():
+    if not is_dev_request():
+        return jsonify({"success": False, "error": "开发模式未启用"}), 403
     try:
         from src.xwe.core.nlp.monitor import get_nlp_monitor
         monitor = get_nlp_monitor()
@@ -356,6 +373,8 @@ def export_nlp_metrics():
 
 @combat_bp.route("/api/nlp/config")
 def get_nlp_config():
+    if not is_dev_request():
+        return jsonify({"success": False, "error": "开发模式未启用"}), 403
     try:
         from src.xwe.core.nlp.config import get_nlp_config
         cfg = get_nlp_config()
