@@ -36,6 +36,7 @@ SRC_PATH = PROJECT_ROOT / "src"
 if str(SRC_PATH) not in sys.path:
     sys.path.insert(0, str(SRC_PATH))
 
+from src.common.request_utils import is_dev_request
 from src.config.game_config import config
 from src.xwe.core.command_router import CommandRouter, handle_attack
 from src.xwe.core.cultivation_system import CultivationSystem
@@ -47,7 +48,6 @@ from src.xwe.features.community_system import CommunitySystem
 from src.xwe.features.narrative_system import NarrativeSystem
 from src.xwe.features.technical_ops import TechnicalOps
 from src.xwe.server.app_factory import create_app as _create_flask_app
-from src.common.request_utils import is_dev_request
 
 # Setup logging
 verbose_mode = os.getenv("VERBOSE_LOG", "false").lower() == "true"
@@ -57,8 +57,8 @@ logger = logging.getLogger("XianxiaEngine")
 # 导入 Prometheus 指标
 try:
     from src.xwe.metrics.prometheus_metrics import (
-        init_prometheus_app_metrics,
         get_metrics_collector,
+        init_prometheus_app_metrics,
     )
 
     PROMETHEUS_ENABLED = True
@@ -380,6 +380,11 @@ def create_app(log_level: int = log_level) -> Flask:
             "dev_password": dev_password,
             "dev_password_configured": bool(dev_password),
         }
+
+    @app.context_processor
+    def inject_dev_mode():
+        """Inject developer mode status into templates."""
+        return {"dev_mode": session.get("dev", False)}
 
     # Enable async support if configured
     if os.getenv("FLASK_ASYNC_ENABLED", "0") == "1":

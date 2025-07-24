@@ -10,7 +10,7 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
@@ -21,35 +21,35 @@
             align-items: center;
             padding: 20px;
         }
-        
+
         .container {
             max-width: 1200px;
             width: 100%;
         }
-        
+
         header {
             text-align: center;
             margin-bottom: 50px;
         }
-        
+
         h1 {
             font-size: 3em;
             margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
-        
+
         .subtitle {
             font-size: 1.2em;
             opacity: 0.9;
         }
-        
+
         .status-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
             margin-bottom: 40px;
         }
-        
+
         .status-card {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
@@ -58,18 +58,18 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
             transition: transform 0.3s ease;
         }
-        
+
         .status-card:hover {
             transform: translateY(-5px);
         }
-        
+
         .status-card h3 {
             margin-bottom: 15px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
-        
+
         .status-indicator {
             width: 12px;
             height: 12px;
@@ -77,41 +77,41 @@
             background: #4ade80;
             box-shadow: 0 0 10px #4ade80;
         }
-        
+
         .status-indicator.warning {
             background: #fbbf24;
             box-shadow: 0 0 10px #fbbf24;
         }
-        
+
         .status-indicator.error {
             background: #f87171;
             box-shadow: 0 0 10px #f87171;
         }
-        
+
         .metrics {
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
-        
+
         .metric {
             display: flex;
             justify-content: space-between;
             padding: 8px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
-        
+
         .metric:last-child {
             border-bottom: none;
         }
-        
+
         .actions {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
             margin-top: 40px;
         }
-        
+
         .btn {
             background: rgba(255, 255, 255, 0.2);
             border: 1px solid rgba(255, 255, 255, 0.3);
@@ -124,37 +124,37 @@
             cursor: pointer;
             font-size: 1.1em;
         }
-        
+
         .btn:hover {
             background: rgba(255, 255, 255, 0.3);
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
-        
+
         .btn.primary {
             background: #4ade80;
             border-color: #4ade80;
             color: #1e3c72;
             font-weight: bold;
         }
-        
+
         .btn.primary:hover {
             background: #22c55e;
         }
-        
+
         footer {
             margin-top: auto;
             padding-top: 40px;
             text-align: center;
             opacity: 0.8;
         }
-        
+
         .version {
             margin-top: 10px;
             font-size: 0.9em;
             opacity: 0.7;
         }
-        
+
         .loading {
             display: inline-block;
             width: 20px;
@@ -164,7 +164,7 @@
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
-        
+
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
@@ -176,7 +176,7 @@
             <h1>🗡️ 修仙世界引擎</h1>
             <p class="subtitle">一个基于文本的修仙世界模拟游戏引擎</p>
         </header>
-        
+
         <div class="status-grid">
             <div class="status-card">
                 <h3>
@@ -187,7 +187,7 @@
                     <div class="loading"></div>
                 </div>
             </div>
-            
+
             <div class="status-card">
                 <h3>
                     <span class="status-indicator"></span>
@@ -212,7 +212,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="status-card">
                 <h3>
                     <span class="status-indicator"></span>
@@ -234,7 +234,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="actions">
             <a href="/game" class="btn primary">开始游戏</a>
             <a href="/api/health" class="btn">健康检查</a>
@@ -246,23 +246,23 @@
             <a href="/game?mode=dev" class="btn">开发者入口</a>
             {% endif %}
         </div>
-        
+
         <footer>
             <p>© 2025 修仙世界引擎团队</p>
             <p class="version">版本 0.3.4 | <span id="status">运行中</span></p>
         </footer>
     </div>
-    
+
     <script>
         // 获取健康状态
         async function fetchHealth() {
             try {
                 const response = await fetch('/api/health');
                 const data = await response.json();
-                
+
                 const indicator = document.getElementById('health-indicator');
                 const metrics = document.getElementById('health-metrics');
-                
+
                 // 更新指示器
                 if (data.status === 'healthy') {
                     indicator.className = 'status-indicator';
@@ -271,7 +271,7 @@
                 } else {
                     indicator.className = 'status-indicator error';
                 }
-                
+
                 // 更新指标
                 let html = '';
                 if (data.checks) {
@@ -286,18 +286,18 @@
                 } else {
                     html = '<div class="metric"><span>状态</span><span>健康</span></div>';
                 }
-                
+
                 metrics.innerHTML = html;
             } catch (error) {
                 console.error('Failed to fetch health:', error);
-                document.getElementById('health-metrics').innerHTML = 
+                document.getElementById('health-metrics').innerHTML =
                     '<div class="metric"><span>错误</span><span>无法连接</span></div>';
             }
         }
-        
+
         // 页面加载时获取健康状态
         fetchHealth();
-        
+
         // 每5秒更新一次
         setInterval(fetchHealth, 5000);
     </script>
