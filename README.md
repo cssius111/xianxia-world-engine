@@ -17,6 +17,8 @@ tags: [模块]
 pip install -r requirements.txt
 pre-commit install
 ```
+其中 `requirements.txt` 已包含 Flask、psutil、httpx 等测试所需的核心依赖，
+请确保在运行测试前正确安装。
 
 ### 2. 启动游戏
 

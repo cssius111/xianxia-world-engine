@@ -14,15 +14,23 @@ os.environ['ENABLE_CONTEXT_COMPRESSION'] = 'true'
 
 # 检查必需的测试依赖
 def check_dependencies():
-    missing = []
-    for module in ("pytest", "playwright"):
-        if importlib.util.find_spec(module) is None:
-            missing.append(module)
+    """检查运行测试所需的 Python 依赖"""
+    required_modules = [
+        "pytest",
+        "playwright",
+        "flask",
+        "psutil",
+        "httpx",
+        "dotenv",
+    ]
+
+    missing = [m for m in required_modules if importlib.util.find_spec(m) is None]
 
     if missing:
         print("缺少测试依赖: " + ", ".join(missing))
-        print("请运行 `pip install -r requirements.txt` ")
-        print("并确保 Node.js 环境已安装且执行 `npm install && npx playwright install --with-deps`")
+        print("请运行 `pip install -r requirements.txt` 安装全部依赖")
+        print("若依赖仍缺失，请检查 Python 环境的激活状态")
+        print("此外需要确保 Node.js 环境已安装并执行 `npm install && npx playwright install --with-deps`")
         sys.exit(1)
 
 # 测试组

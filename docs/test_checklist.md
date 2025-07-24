@@ -3,7 +3,12 @@
 ## 启动前检查
 
 - [ ] Python 3.7+ 已安装
-- [ ] Flask 已安装 (`pip install flask`)
+- [ ] 依赖已安装：
+  - Flask
+  - psutil
+  - httpx
+  - python-dotenv
+  - 安装命令：`pip install -r requirements.txt`
 - [ ] 项目目录结构完整
 - [ ] `.env` 文件已配置（可选）
 
