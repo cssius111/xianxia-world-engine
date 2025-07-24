@@ -287,6 +287,8 @@ def continue_game():
         if state:
             game.game_state = state
             instance["need_refresh"] = True
+        else:
+            return redirect(url_for(".intro_screen"))
 
     return redirect(url_for(".game_screen"))
 
