@@ -36,7 +36,7 @@ export default defineConfig({
   /* Shared settings for all the projects below */
   use: {
     /* Base URL to use in actions like `await page.goto('/')` */
-    baseURL: process.env.BASE_URL || 'http://localhost:5001',
+    baseURL: process.env.BASE_URL || 'http://localhost:5010',
 
     /* Collect trace when retrying the failed test */
     trace: 'on-first-retry',
@@ -151,8 +151,8 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: {
     // Use the project's run script to start the server
-    command: process.env.CI ? 'python start_web.py' : 'python start_web.py',
-    port: 5001,
+    command: process.env.CI ? 'flask --app src.app:create_app run -p 5010' : 'flask --app src.app:create_app run -p 5010',
+    port: 5010,
     reuseExistingServer: !process.env.CI,
     timeout: 30_000,
     cwd: path.join(__dirname, '..', '..'),
@@ -162,7 +162,7 @@ export default defineConfig({
     env: {
       FLASK_ENV: 'development',
       FLASK_DEBUG: 'False', // Disable debug for testing
-      PORT: '5001',
+      PORT: '5010',
       ENABLE_E2E_API: 'true', // Enable E2E test routes
       PYTHONPATH: path.join(__dirname, '..', '..', 'src'),
     },

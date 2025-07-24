@@ -38,6 +38,20 @@ lint:
     - black --check src/ tests/
     - isort --check-only src/ tests/
 
+e2e_playwright:
+  stage: test
+  image: mcr.microsoft.com/playwright/python:v1.53.1
+  script:
+    - pip install -r requirements.txt
+    - npm ci
+    - npx playwright install --with-deps
+    - npx playwright test tests/e2e/character_reroll.spec.ts
+  artifacts:
+    when: always
+    paths:
+      - test-results/
+      - playwright-report/
+
 git_sizer:
   stage: size_check
   script:
