@@ -273,6 +273,24 @@ def start_screen():
     return redirect(url_for(".game_screen"))
 
 
+@main_bp.route("/continue")
+def continue_game():
+    """Load autosave and enter the game."""
+    if "session_id" not in session:
+        session["session_id"] = str(time.time())
+
+    instance = get_game_instance(session["session_id"])
+    game = instance["game"]
+
+    if hasattr(game, "technical_ops"):
+        state = game.technical_ops.load_game("autosave")
+        if state:
+            game.game_state = state
+            instance["need_refresh"] = True
+
+    return redirect(url_for(".game_screen"))
+
+
 @main_bp.route("/game")
 def game_screen():
     if "session_id" not in session:
