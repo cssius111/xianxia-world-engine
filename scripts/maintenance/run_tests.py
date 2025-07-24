@@ -5,11 +5,25 @@
 import subprocess
 import sys
 import os
+import importlib.util
 
 # 设置环境变量
 os.environ['USE_MOCK_LLM'] = 'true'
 os.environ['ENABLE_PROMETHEUS'] = 'true'
 os.environ['ENABLE_CONTEXT_COMPRESSION'] = 'true'
+
+# 检查必需的测试依赖
+def check_dependencies():
+    missing = []
+    for module in ("pytest", "playwright"):
+        if importlib.util.find_spec(module) is None:
+            missing.append(module)
+
+    if missing:
+        print("缺少测试依赖: " + ", ".join(missing))
+        print("请运行 `pip install -r requirements.txt` ")
+        print("并确保 Node.js 环境已安装且执行 `npm install && npx playwright install --with-deps`")
+        sys.exit(1)
 
 # 测试组
 TEST_GROUPS = {
@@ -89,6 +103,7 @@ def run_test_group(group_name):
 
 def main():
     """主函数"""
+    check_dependencies()
     if len(sys.argv) > 1:
         # 运行指定的测试组
         group = sys.argv[1]
