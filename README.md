@@ -45,6 +45,13 @@ python -m xwe.cli.run_server
 pip install -r requirements.txt
 ```
 
+若需执行包含浏览器交互的 E2E 测试，请额外安装 Node 依赖并下载 Playwright 浏览器：
+
+```bash
+npm install
+npx playwright install --with-deps
+```
+
 然后执行：
 
 ```bash
