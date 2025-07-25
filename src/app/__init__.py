@@ -325,12 +325,14 @@ def game_screen():
 
 @main_bp.route("/roll")
 def roll_screen():
-    return render_template("screens/roll_screen.html")
+    """兼容旧路由，重定向至角色创建页面"""
+    return redirect(url_for(".intro_screen"))
 
 
 @main_bp.route("/choose")
 def choose_start():
-    return render_template("screens/choose_start.html")
+    """兼容旧路由，重定向至角色创建页面"""
+    return redirect(url_for(".intro_screen"))
 
 
 @main_bp.route("/modal/<modal_name>")
