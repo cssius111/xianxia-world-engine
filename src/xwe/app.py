@@ -6,6 +6,7 @@ import json
 import os
 import time
 from datetime import datetime
+from pathlib import Path
 
 import psutil
 from flask import send_from_directory  # noqa: F401
@@ -41,10 +42,18 @@ def create_app(config_name: str | None = None) -> Flask:
     """Create and configure the Flask app."""
     env = config_name or os.getenv("FLASK_ENV", "development")
 
+    # Calculate project root relative to this file so that template and
+    # static directories are resolved correctly regardless of the
+    # current working directory.
+    project_root = Path(__file__).resolve().parent.parent.parent
+
+    static_folder = project_root / "src" / "web" / "static"
+    template_folder = project_root / "src" / "web" / "templates"
+
     app = Flask(
         __name__,
-        template_folder="src/web/templates",
-        static_folder="src/web/static",
+        template_folder=str(template_folder),
+        static_folder=str(static_folder),
     )
     app.config["SECRET_KEY"] = "test-secret-key"
 
