@@ -36,7 +36,7 @@ components/welcome_modal.html / welcome_modal_v2.html  [组件]
 - 说明：首次进入游戏的欢迎弹窗
 - 被引用于：intro_optimized.html
 
-components/world_intro.html         [组件]
+lore/index.html         [组件]
 - 说明：世界观故事模态弹窗
 - 被引用于：intro_optimized.html / 游戏内介绍
 
@@ -109,5 +109,5 @@ components/lore_modal.html
 components/welcome_modal.html
 components/welcome_modal_v2.html
 components/roll_modal.html
-components/world_intro.html
+lore/index.html
 components/event_modal.html

@@ -30,7 +30,7 @@
 1. **角色创建** (`/intro`) → intro_optimized.html
    - 自动显示欢迎页面 (welcome_modal_v2.html)
    - 点击"开始游戏"后显示角色创建 (roll_modal.html)
-   - 创建完成后显示世界介绍 (world_intro.html)
+   - 创建完成后显示世界介绍 (lore/index.html)
 2. **游戏主界面** (`/game`) → game_enhanced_optimized_v2.html
 
 ## 待实现的功能
