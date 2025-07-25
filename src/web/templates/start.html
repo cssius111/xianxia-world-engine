@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}修仙世界引擎{% endblock %}
+
+{% block content %}
+    {% include "components/welcome_modal.html" %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        if (window.GameLauncher) {
+            window.GameLauncher.show();
+        } else {
+            const modal = document.getElementById('welcomeModal');
+            if (modal) modal.style.display = 'flex';
+        }
+    });
+</script>
+{% endblock %}

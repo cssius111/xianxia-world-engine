@@ -245,9 +245,16 @@ main_bp = Blueprint("main", __name__)
 
 @main_bp.route("/")
 def index():
-    """Landing page with optional developer entry."""
-    dev_mode = is_dev_request() or request.args.get("mode") == "dev"
-    return render_template("index.html", dev_mode=dev_mode)
+    """Landing page showing welcome modal only."""
+    return render_template("start.html")
+
+
+@main_bp.route("/dev_dashboard")
+def dev_dashboard():
+    """Developer dashboard (original index)."""
+    if not session.get("dev"):
+        return redirect(url_for(".index"))
+    return render_template("index.html", dev_mode=True)
 
 
 @main_bp.route("/status")

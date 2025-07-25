@@ -30,9 +30,11 @@
                         <span class="btn-text">继续游戏</span>
                     </button>
 
+                    {% if not dev_mode %}
                     <button class="welcome-btn welcome-btn-dev icon-wrench" onclick="GameLauncher.enterDevMode()">
                         <span class="btn-text">开发者模式</span>
                     </button>
+                    {% endif %}
                 </div>
 
                 <div class="welcome-footer">
@@ -421,7 +423,7 @@ const GameLauncher = {
                     window.DEV_MODE = true;
                     this.initDevConsole();
                     alert('开发者模式已启用！\n- 按F12查看控制台\n- 所有错误将详细显示\n- 可使用调试命令');
-                    this.hide();
+                    window.location.href = '/dev_dashboard';
                 } else {
                     alert(data.error || '密码错误！');
                 }
