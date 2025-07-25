@@ -26,8 +26,8 @@ def test_template_paths() -> None:
     assert template_path.exists()
     assert static_path.exists()
 
-    main_template = template_path / "game_enhanced_optimized_v2.html"
-    intro_template = template_path / "intro_optimized.html"
+    main_template = template_path / "game.html"
+    intro_template = template_path / "intro.html"
     base_template = template_path / "base.html"
 
     assert main_template.exists()

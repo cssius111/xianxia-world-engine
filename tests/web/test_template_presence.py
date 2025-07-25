@@ -14,13 +14,13 @@ class TestTemplatePresence:
 
     def test_main_template_exists(self):
         """Test that the main game template exists in the correct location."""
-        template_path = Path("src/web/templates/game_enhanced_optimized_v2.html")
+        template_path = Path("src/web/templates/game.html")
         assert template_path.exists(), \
             "主模板缺失会导致 TemplateNotFound 错误"
 
     def test_intro_template_exists(self):
         """Test that the intro template exists."""
-        template_path = Path("src/web/templates/intro_optimized.html")
+        template_path = Path("src/web/templates/intro.html")
         assert template_path.exists(), \
             "角色创建模板缺失"
 
@@ -88,7 +88,7 @@ class TestTemplateContent:
 
     def test_main_template_has_required_blocks(self):
         """Test that the main template has required template blocks."""
-        template_path = Path("src/web/templates/game_enhanced_optimized_v2.html")
+        template_path = Path("src/web/templates/game.html")
         
         if template_path.exists():
             content = template_path.read_text(encoding='utf-8')
@@ -102,7 +102,7 @@ class TestTemplateContent:
 
     def test_intro_template_has_character_creation(self):
         """Test that intro template contains character creation elements."""
-        template_path = Path("src/web/templates/intro_optimized.html")
+        template_path = Path("src/web/templates/intro.html")
         
         if template_path.exists():
             content = template_path.read_text(encoding='utf-8')

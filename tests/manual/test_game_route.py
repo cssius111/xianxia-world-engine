@@ -27,7 +27,7 @@ def test_game_route_template_loading() -> None:
 
     with app.app_context():
         try:
-            template = app.jinja_env.get_template("game_enhanced_optimized_v2.html")
+            template = app.jinja_env.get_template("game.html")
             assert template is not None
         except Exception as exc:
             pytest.fail(f"Template loading failed: {exc}")

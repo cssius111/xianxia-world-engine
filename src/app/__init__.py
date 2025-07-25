@@ -265,7 +265,7 @@ def welcome():
 @main_bp.route("/intro")
 def intro_screen():
     dev_mode = request.args.get("mode") == "dev"
-    return render_template("intro_optimized.html", dev_mode=dev_mode)
+    return render_template("intro.html", dev_mode=dev_mode)
 
 
 @main_bp.route("/start")
@@ -306,7 +306,7 @@ def game_screen():
 
     status = build_status_data()
 
-    template_name = "game_enhanced_optimized_v2.html"
+    template_name = "game.html"
     if is_dev_request() or request.args.get("mode") == "dev":
         # Developer mode renders the newly added game.html template
         template_name = "game.html"
