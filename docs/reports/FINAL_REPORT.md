@@ -71,7 +71,7 @@ xianxia_world_engine/
 │       ├── 📄 game_panels.html   ✅ (已修复)
 │       ├── 📄 welcome_modal_v2.html ✅ (已修复)
 │       ├── 📄 roll_modal.html    ✅ (已修复)
-│       ├── 📄 world_intro.html
+│       ├── 📄 lore/index.html
 │       └── 📄 lore_modal.html    ✅ (新建)
 ├── 📁 static/
 │   ├── 📁 css/
