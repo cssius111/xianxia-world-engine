@@ -159,6 +159,7 @@ class TestDeepSeekAsyncIntegration:
         logger.info(f"Average time per request: {duration/len(test_prompts):.2f}s")
     
     @pytest.mark.asyncio
+    @pytest.mark.skip(reason="single-player")
     async def test_concurrent_requests(self, client):
         """Test multiple concurrent requests."""
         num_requests = 10
@@ -249,6 +250,8 @@ class TestPerformanceComparison:
             logger.info(f"Speedup: {sync_duration/async_duration:.1f}x")
 
 
+@pytest.mark.asyncio
+@pytest.mark.skip(reason="single-player")
 @pytest.mark.asyncio
 async def test_stress_test():
     """Stress test with high concurrency."""

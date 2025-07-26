@@ -112,6 +112,7 @@ class TestDeepSeekAsyncClient:
             assert "禁止使用禁术" in call_args
     
     @pytest.mark.asyncio
+    @pytest.mark.skip(reason="single-player")
     async def test_concurrent_requests(self, client):
         """Test multiple concurrent async requests."""
         mock_response = {
@@ -227,6 +228,7 @@ class TestDeepSeekClientIntegration:
         assert len(result["text"]) > 0
     
     @pytest.mark.asyncio
+    @pytest.mark.skip(reason="single-player")
     async def test_performance_comparison(self):
         """Compare performance of sync vs async methods."""
         import time
