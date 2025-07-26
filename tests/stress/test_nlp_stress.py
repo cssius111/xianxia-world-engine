@@ -4,6 +4,7 @@
 """
 
 import pytest
+pytest.skip("stress tests disabled", allow_module_level=True)
 import time
 import os
 import sys

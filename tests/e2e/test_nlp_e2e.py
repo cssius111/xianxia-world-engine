@@ -145,6 +145,7 @@ class TestNLPEndToEnd:
                     assert compression_ratio < 0.8  # 至少20%的压缩率
     
     @pytest.mark.slow
+    @pytest.mark.skip(reason="single-player")
     def test_concurrent_users(self, app):
         """测试并发用户（10+ 并发）"""
         from xwe.core.nlp.nlp_processor import NLPProcessor

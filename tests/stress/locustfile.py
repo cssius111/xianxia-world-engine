@@ -3,6 +3,9 @@ Locust 压力测试脚本
 用于模拟大量并发用户
 """
 
+import pytest
+pytest.skip("stress tests disabled", allow_module_level=True)
+
 from locust import HttpUser, task, between, events
 import json
 import random

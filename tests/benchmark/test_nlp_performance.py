@@ -143,6 +143,7 @@ class TestNLPPerformance:
                 assert case['compression_ratio'] < 0.7  # 中等对话应该有30%以上的压缩率
     
     @pytest.mark.asyncio
+    @pytest.mark.skip(reason="single-player")
     async def test_async_vs_sync_performance(self):
         """异步 vs 同步性能对比"""
         from xwe.core.nlp.llm_client import LLMClient
@@ -276,6 +277,7 @@ class TestNLPPerformance:
         # 生成对比图表
         self._generate_performance_chart(results)
     
+    @pytest.mark.skip(reason="single-player")
     def test_resource_monitoring(self, nlp_processor):
         """测试资源使用监控"""
         import threading

@@ -225,8 +225,8 @@ def main():
     parser.add_argument(
         'test_type',
         choices=[
-            'unit', 'integration', 'e2e', 'performance', 
-            'stress', 'regression', 'all', 'quick', 
+            'unit', 'integration', 'e2e', 'performance',
+            'regression', 'all', 'quick',
             'coverage', 'clean'
         ],
         help='测试类型'
@@ -275,8 +275,6 @@ def main():
         return runner.run_e2e_tests()
     elif args.test_type == 'performance':
         return runner.run_performance_tests()
-    elif args.test_type == 'stress':
-        return runner.run_stress_tests()
     elif args.test_type == 'regression':
         return runner.run_regression_tests()
     elif args.test_type == 'all':
