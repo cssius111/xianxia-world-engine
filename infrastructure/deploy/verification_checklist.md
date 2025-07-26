@@ -19,7 +19,6 @@
   export DEEPSEEK_API_KEY="your-api-key"
   export ENABLE_PROMETHEUS="true"
   export ENABLE_CONTEXT_COMPRESSION="true"
-  export USE_MOCK_LLM="false"  # 生产环境设为 false
   export XWE_MAX_LLM_RETRIES="3"
   export LLM_ASYNC_WORKERS="5"
   ```
