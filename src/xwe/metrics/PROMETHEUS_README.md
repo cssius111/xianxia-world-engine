@@ -29,7 +29,6 @@ http://localhost:5000/metrics
 ### 环境变量
 
 - `ENABLE_PROMETHEUS`: 设置为 `true` 启用 Prometheus 指标（默认：true）
-- `USE_MOCK_LLM`: 设置为 `true` 使用模拟 LLM（用于测试）
 - `XWE_MAX_LLM_RETRIES`: LLM API 最大重试次数（默认：3）
 - `LLM_ASYNC_WORKERS`: 异步线程池大小（默认：5）
 
