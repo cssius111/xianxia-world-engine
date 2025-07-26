@@ -301,9 +301,8 @@ def main():
 
 
 if __name__ == "__main__":
-    # 设置环境变量
     import os
     os.environ['ENABLE_PROMETHEUS'] = 'true'
-    os.environ['USE_MOCK_LLM'] = 'true'
-    
+    os.environ['DEEPSEEK_API_KEY'] = os.getenv('DEEPSEEK_API_KEY', 'test')
+
     main()

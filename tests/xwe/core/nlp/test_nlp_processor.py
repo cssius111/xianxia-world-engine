@@ -10,7 +10,7 @@ from unittest.mock import Mock, patch, MagicMock
 from typing import Dict, List, Any
 
 # 设置测试环境
-os.environ['USE_MOCK_LLM'] = 'true'
+os.environ['DEEPSEEK_API_KEY'] = 'test'
 os.environ['ENABLE_CONTEXT_COMPRESSION'] = 'true'
 
 from xwe.core.nlp.nlp_processor import NLPProcessor
@@ -136,8 +136,8 @@ class TestNLPProcessor:
             "args": {"param": "value"}
         })
         
-        # 强制使用真实 LLM（非 mock 模式）
-        with patch.dict(os.environ, {'USE_MOCK_LLM': 'false'}):
+        # 使用模拟客户端但需要提供 API key
+        with patch.dict(os.environ, {'DEEPSEEK_API_KEY': 'test'}):
             processor = NLPProcessor()
             processor.llm_client = mock_instance
             

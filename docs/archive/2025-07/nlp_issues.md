@@ -58,8 +58,8 @@ echo "DEEPSEEK_API_KEY=your_api_key_here" >> .env
 # 方法3: 代码中设置
 nlp = DeepSeekNLPProcessor(api_key="your_api_key_here")
 
-# 方法4: 使用模拟模式（开发测试）
-export USE_MOCK_LLM=true
+# 方法4: 设置测试 API 密钥
+export DEEPSEEK_API_KEY=test
 ```
 
 ### Q3: 命令解析失败

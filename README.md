@@ -73,7 +73,7 @@ python scripts/run_async_tests.py
 
 运行测试时，`tests/conftest.py` 会自动设置以下环境变量：
 
-- `USE_MOCK_LLM=true`：使用模拟的 LLM 客户端
+- `DEEPSEEK_API_KEY=test`：测试用 API 密钥
 - `ENABLE_PROMETHEUS=true`：启用 Prometheus 指标
 - `ENABLE_CONTEXT_COMPRESSION=true`：启用上下文压缩
 

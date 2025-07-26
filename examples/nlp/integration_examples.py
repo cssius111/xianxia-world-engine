@@ -550,8 +550,7 @@ def main():
     print("修仙世界引擎 - NLP 集成示例")
     print("=" * 50)
     
-    # 使用模拟模式
-    os.environ["USE_MOCK_LLM"] = "true"
+    os.environ["DEEPSEEK_API_KEY"] = os.getenv("DEEPSEEK_API_KEY", "test")
     
     try:
         example_1_basic_integration()

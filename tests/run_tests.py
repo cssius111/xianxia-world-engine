@@ -21,7 +21,7 @@ class TestRunner:
         
         # 设置环境变量
         os.environ['PYTHONPATH'] = str(self.project_root / 'src')
-        os.environ['USE_MOCK_LLM'] = 'true'
+        os.environ['DEEPSEEK_API_KEY'] = 'test'
         os.environ['ENABLE_PROMETHEUS'] = 'true'
         os.environ['ENABLE_CONTEXT_COMPRESSION'] = 'true'
     

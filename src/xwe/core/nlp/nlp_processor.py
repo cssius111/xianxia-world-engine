@@ -54,8 +54,7 @@ class DeepSeekNLPProcessor:
 
         # 初始化LLM客户端
         api_key = api_key or self.config.get_api_key()
-        use_mock = os.getenv("USE_MOCK_LLM", "false").lower() == "true"
-        if not api_key and not use_mock:
+        if not api_key:
             raise ValueError(
                 "Missing DEEPSEEK_API_KEY. Please set it in your environment or .env file."
             )

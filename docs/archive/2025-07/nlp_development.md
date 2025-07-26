@@ -68,7 +68,7 @@ vim .env.development
 ```bash
 # DeepSeek API（使用测试密钥）
 DEEPSEEK_API_KEY=test_key_for_development
-USE_MOCK_LLM=true  # 开发时使用模拟 LLM
+# 开发时使用测试密钥
 
 # 调试配置
 NLP_DEBUG=true

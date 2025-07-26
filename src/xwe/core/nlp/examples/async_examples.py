@@ -346,8 +346,7 @@ async def main():
 
 
 if __name__ == "__main__":
-    # 设置使用 Mock 模式进行演示
-    os.environ["USE_MOCK_LLM"] = "true"
+    os.environ["DEEPSEEK_API_KEY"] = os.getenv("DEEPSEEK_API_KEY", "test")
     
     # 运行示例
     print("LLMClient 异步功能示例\n")
@@ -356,6 +355,5 @@ if __name__ == "__main__":
     try:
         asyncio.run(main())
     finally:
-        # 清理
-        if "USE_MOCK_LLM" in os.environ:
-            del os.environ["USE_MOCK_LLM"]
+        if "DEEPSEEK_API_KEY" in os.environ:
+            del os.environ["DEEPSEEK_API_KEY"]

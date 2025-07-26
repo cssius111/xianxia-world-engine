@@ -4,7 +4,7 @@
 
 ### 1. test_mock_mode_end_to_end 失败
 
-**问题原因**：在 mock 模式下，`ParsedCommand` 的 `raw` 字段应该保留用户的原始输入，但代码中使用了 API 返回的值。
+**问题原因**：`ParsedCommand` 的 `raw` 字段应该保留用户的原始输入，但代码中使用了 API 返回的值。
 
 **修复方案**：
 - 文件：`src/xwe/core/nlp/nlp_processor.py`

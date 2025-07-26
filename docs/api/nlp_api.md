@@ -179,7 +179,6 @@ stats = monitor.get_stats()
 ### 环境变量
 
 - `DEEPSEEK_API_KEY`: DeepSeek API 密钥
-- `USE_MOCK_LLM`: 是否使用模拟 LLM（用于测试）
 - `NLP_DEBUG`: 启用调试日志
 
 ## 错误码
@@ -324,10 +323,6 @@ except Exception as e:
    print(monitor.get_stats())
    ```
 
-3. **使用模拟模式**:
-   ```bash
-   export USE_MOCK_LLM=true
-   ```
 
 ## 常见问题
 
