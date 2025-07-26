@@ -23,7 +23,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 # 设置测试环境
-os.environ['USE_MOCK_LLM'] = 'true'
+os.environ['DEEPSEEK_API_KEY'] = 'test'
 os.environ['ENABLE_PROMETHEUS'] = 'true'
 os.environ['ENABLE_CONTEXT_COMPRESSION'] = 'true'
 
@@ -388,9 +388,8 @@ class TestSystemIntegration:
     def test_configuration_changes(self):
         """测试配置变更"""
         configs = [
-            {'USE_MOCK_LLM': 'true', 'ENABLE_CONTEXT_COMPRESSION': 'true'},
-            {'USE_MOCK_LLM': 'true', 'ENABLE_CONTEXT_COMPRESSION': 'false'},
-            {'USE_MOCK_LLM': 'false', 'ENABLE_CONTEXT_COMPRESSION': 'true'},
+            {'ENABLE_CONTEXT_COMPRESSION': 'true'},
+            {'ENABLE_CONTEXT_COMPRESSION': 'false'},
         ]
         
         for config in configs:

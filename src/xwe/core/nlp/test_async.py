@@ -22,13 +22,12 @@ class TestLLMClientAsync:
     @pytest.fixture
     def client(self):
         """创建测试客户端"""
-        # 使用 Mock 模式
-        os.environ["USE_MOCK_LLM"] = "true"
-        client = LLMClient()
-        yield client
-        # 清理
-        client.cleanup()
-        del os.environ["USE_MOCK_LLM"]
+        os.environ["DEEPSEEK_API_KEY"] = "test"
+        with patch.object(LLMClient, "chat", return_value="ok"):
+            client = LLMClient()
+            yield client
+            client.cleanup()
+        del os.environ["DEEPSEEK_API_KEY"]
     
     @pytest.mark.asyncio
     async def test_chat_async_basic(self, client):
@@ -247,27 +246,27 @@ class TestIntegrationAsync:
         """测试与 NLPProcessor 的集成"""
         from src.xwe.core.nlp.nlp_processor import DeepSeekNLPProcessor
         
-        # 创建处理器
-        os.environ["USE_MOCK_LLM"] = "true"
+        os.environ["DEEPSEEK_API_KEY"] = "test"
         processor = DeepSeekNLPProcessor()
-        
-        # 异步解析多个命令
-        commands = ["探索", "查看背包", "使用物品"]
-        
-        async def parse_async(cmd):
-            # 模拟异步解析（实际上 parse 是同步的）
-            loop = asyncio.get_event_loop()
-            return await loop.run_in_executor(None, processor.parse, cmd)
-        
-        # 并发解析
-        results = await asyncio.gather(*[parse_async(cmd) for cmd in commands])
-        
-        # 验证结果
-        assert len(results) == 3
-        assert all(r.normalized_command != "未知" for r in results)
+        with patch.object(processor.llm, "chat", return_value='{"normalized_command":"探索","intent":"action","args":{}}'):
+
+            # 异步解析多个命令
+            commands = ["探索", "查看背包", "使用物品"]
+
+            async def parse_async(cmd):
+                # 模拟异步解析（实际上 parse 是同步的）
+                loop = asyncio.get_event_loop()
+                return await loop.run_in_executor(None, processor.parse, cmd)
+
+            # 并发解析
+            results = await asyncio.gather(*[parse_async(cmd) for cmd in commands])
+
+            # 验证结果
+            assert len(results) == 3
+            assert all(r.normalized_command != "未知" for r in results)
         
         # 清理
-        del os.environ["USE_MOCK_LLM"]
+        del os.environ["DEEPSEEK_API_KEY"]
     
     @pytest.mark.asyncio
     async def test_performance_comparison(self):

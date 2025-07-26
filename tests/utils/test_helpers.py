@@ -22,7 +22,7 @@ def setup_test_environment():
     """设置测试环境"""
     # 确保使用测试配置
     os.environ['TESTING'] = 'true'
-    os.environ['USE_MOCK_LLM'] = 'true'
+    os.environ['DEEPSEEK_API_KEY'] = 'test'
     os.environ['ENABLE_PROMETHEUS'] = 'true'
     os.environ['LOG_LEVEL'] = 'WARNING'  # 减少测试输出
     

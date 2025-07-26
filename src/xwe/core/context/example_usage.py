@@ -61,10 +61,7 @@ def example_with_llm():
     print("\n=== 使用 LLM 的示例 ===\n")
     
     # 检查是否有 API key
-    api_key = os.getenv("DEEPSEEK_API_KEY")
-    if not api_key:
-        print("未设置 DEEPSEEK_API_KEY，使用 Mock 模式")
-        os.environ["USE_MOCK_LLM"] = "true"
+    api_key = os.getenv("DEEPSEEK_API_KEY", "test")
     
     # 创建 LLM 客户端
     llm_client = LLMClient(api_key=api_key) if api_key else LLMClient()

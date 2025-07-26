@@ -5,7 +5,7 @@ import pytest
 import os
 
 # 设置测试环境变量
-os.environ['USE_MOCK_LLM'] = 'true'
+os.environ['DEEPSEEK_API_KEY'] = 'test'
 os.environ['ENABLE_PROMETHEUS'] = 'true'
 os.environ['ENABLE_CONTEXT_COMPRESSION'] = 'true'
 

@@ -61,7 +61,6 @@ class LLMClient:
     
     新增功能：
     - 可配置重试次数 (XWE_MAX_LLM_RETRIES)
-    - Mock 模式支持 (USE_MOCK_LLM=true)
     - 改进的错误处理和日志记录
     """
 
@@ -83,16 +82,10 @@ class LLMClient:
             timeout: 请求超时时间（秒）
             debug: 是否启用调试模式
         """
-        # 检查是否启用 Mock 模式
-        self.use_mock = os.getenv("USE_MOCK_LLM", "false").lower() == "true"
-        
-        if self.use_mock:
-            logger.info("🎭 LLM Mock 模式已启用，将跳过网络调用")
-            self.api_key = "mock_key"
-        else:
-            self.api_key = api_key or os.environ.get("DEEPSEEK_API_KEY")
-            if not self.api_key:
-                raise ValueError("DEEPSEEK_API_KEY not found in environment variables")
+        # 读取 API Key
+        self.api_key = api_key or os.environ.get("DEEPSEEK_API_KEY")
+        if not self.api_key:
+            raise ValueError("DEEPSEEK_API_KEY not found in environment variables")
 
         self.api_url = api_url
         self.model_name = model_name
@@ -145,9 +138,6 @@ class LLMClient:
 
     def _make_request_with_retry(self, payload: Dict) -> Dict:
         """发送请求的包装方法"""
-        if self.use_mock:
-            return self._mock_response(payload)
-        
         if HAS_BACKOFF:
             # 使用 backoff 库的高级重试机制
             @backoff.on_exception(
@@ -166,136 +156,6 @@ class LLMClient:
                 return self._make_request(payload)
             return _request()
 
-    def _mock_response(self, payload: Dict) -> Dict:
-        """Mock 响应生成器"""
-        # 从 payload 中提取用户消息
-        messages = payload.get("messages", [])
-        user_message = ""
-        actual_user_input = ""
-        
-        for msg in messages:
-            if msg.get("role") == "user":
-                user_message = msg.get("content", "")
-                # 从 prompt 中提取实际的用户输入
-                # 查找最后一个 "输入:" 标记
-                last_input_idx = user_message.rfind('输入:')
-                if last_input_idx != -1:
-                    # 找到后面的引号内容
-                    start_quote = user_message.find('"', last_input_idx)
-                    if start_quote != -1:
-                        end_quote = user_message.find('"', start_quote + 1)
-                        if end_quote != -1:
-                            actual_user_input = user_message[start_quote + 1:end_quote]
-                break
-        
-        # 如果没有提取到，使用整个用户消息
-        if not actual_user_input:
-            actual_user_input = user_message
-        
-        # 简单的本地解析逻辑
-        mock_responses = {
-            "探索": {
-                "normalized_command": "探索",
-                "intent": "action",
-                "args": {},
-                "explanation": "Mock模式：探索命令"
-            },
-            "修炼": {
-                "normalized_command": "修炼",
-                "intent": "train",
-                "args": {},
-                "explanation": "Mock模式：修炼命令"
-            },
-            "背包": {
-                "normalized_command": "打开背包",
-                "intent": "check",
-                "args": {},
-                "explanation": "Mock模式：背包命令"
-            },
-            "状态": {
-                "normalized_command": "查看状态",
-                "intent": "check",
-                "args": {},
-                "explanation": "Mock模式：状态命令"
-            }
-        }
-        
-        # 尝试匹配用户输入
-        # 先尝试完整匹配
-        exact_matches = {
-            "探索周围环境": {
-                "normalized_command": "探索",
-                "intent": "action",
-                "args": {},
-                "explanation": "Mock模式：探索命令"
-            },
-            "修炼提升实力": {
-                "normalized_command": "修炼",
-                "intent": "train",
-                "args": {},
-                "explanation": "Mock模式：修炼命令"
-            },
-            "查看当前状态": {
-                "normalized_command": "查看状态",
-                "intent": "check",
-                "args": {},
-                "explanation": "Mock模式：状态命令"
-            },
-            "打开背包看看": {
-                "normalized_command": "打开背包",
-                "intent": "check",
-                "args": {},
-                "explanation": "Mock模式：背包命令"
-            }
-        }
-        
-        # 先尝试完整匹配
-        if actual_user_input in exact_matches:
-            response_copy = exact_matches[actual_user_input].copy()
-            response_copy["raw"] = actual_user_input
-            return {
-                "choices": [
-                    {
-                        "message": {
-                            "content": json.dumps(response_copy, ensure_ascii=False)
-                        }
-                    }
-                ]
-            }
-        
-        # 如果没有完整匹配，尝试关键词匹配
-        for keyword, response in mock_responses.items():
-            if keyword in actual_user_input.lower():
-                response_copy = response.copy()
-                response_copy["raw"] = actual_user_input
-                return {
-                    "choices": [
-                        {
-                            "message": {
-                                "content": json.dumps(response_copy, ensure_ascii=False)
-                            }
-                        }
-                    ]
-                }
-        
-        # 默认响应
-        default_response = {
-            "raw": actual_user_input,
-            "normalized_command": "未知",
-            "intent": "unknown",
-            "args": {},
-            "explanation": "Mock模式：未知命令"
-        }
-        
-        return {
-            "choices": [
-                {
-                    "message": {
-                        "content": json.dumps(default_response, ensure_ascii=False)
-                    }
-                }
-            ]
-        }
 
     def _make_request(self, payload: Dict) -> Dict:
         """
@@ -375,25 +235,17 @@ class LLMClient:
             "max_tokens": max_tokens,
         }
 
-        # 记录请求（仅在非 Mock 模式下）
-        if not self.use_mock:
-            logger.debug(
-                f"Sending request to DeepSeek API: {json.dumps(payload, ensure_ascii=False)[:200]}..."
-            )
+        logger.debug(
+            f"Sending request to DeepSeek API: {json.dumps(payload, ensure_ascii=False)[:200]}..."
+        )
 
         try:
-            # 在 Mock 模式下模拟网络延迟，使同步调用更接近真实情况
-            if self.use_mock:
-                sleep(0.1)
             # 发送请求（带重试）
             start_time = time()
             response = self._make_request_with_retry(payload)
             elapsed = time() - start_time
 
-            if self.use_mock:
-                logger.debug(f"Mock response generated in {elapsed:.2f}s")
-            else:
-                logger.debug(f"DeepSeek API response received in {elapsed:.2f}s")
+            logger.debug(f"DeepSeek API response received in {elapsed:.2f}s")
             
             if self.debug:
                 logger.debug(
@@ -446,18 +298,6 @@ class LLMClient:
         if not self._executor_initialized:
             raise RuntimeError("LLMClient 线程池已关闭")
         
-        # 在 Mock 模式下避免线程池开销
-        if self.use_mock:
-            payload = {
-                "model": self.model_name,
-                "messages": [{"role": "user", "content": prompt}],
-                "temperature": temperature,
-                "max_tokens": max_tokens,
-            }
-            response = self._mock_response(payload)
-            content = response.get("choices", [{}])[0].get("message", {}).get("content", "")
-            return content
-
         loop = asyncio.get_event_loop()
 
         func = functools.partial(

@@ -117,8 +117,8 @@ def example_4_error_handling():
     """示例4: 错误处理"""
     print("\n\n=== 示例4: 错误处理 ===\n")
     
-    # 使用模拟模式避免真实 API 调用
-    os.environ["USE_MOCK_LLM"] = "true"
+    # 如果未设置 API key，可在此处指定测试值
+    os.environ["DEEPSEEK_API_KEY"] = os.getenv("DEEPSEEK_API_KEY", "test")
     nlp = DeepSeekNLPProcessor()
     
     # 测试各种异常情况
@@ -215,8 +215,7 @@ def main():
     print("修仙世界引擎 - NLP 基础使用示例")
     print("=" * 50)
     
-    # 设置为使用模拟 LLM（避免需要真实 API key）
-    os.environ["USE_MOCK_LLM"] = "true"
+    os.environ["DEEPSEEK_API_KEY"] = os.getenv("DEEPSEEK_API_KEY", "test")
     
     try:
         example_1_simple_commands()

@@ -22,7 +22,6 @@ def main() -> None:
     parser.add_argument("--verbose", "-v", action="store_true", help="启用详细日志输出 (DEBUG 级别)")
     parser.add_argument("--port", "-p", type=int, default=5001, help="服务器端口 (默认: 5001)")
     parser.add_argument("--debug", action="store_true", help="启用 Flask 调试模式")
-    parser.add_argument("--mock-llm", action="store_true", help="启用 LLM Mock 模式")
     parser.add_argument("--max-retries", type=int, default=3, help="LLM API 最大重试次数 (默认: 3)")
 
     args = parser.parse_args()
@@ -31,8 +30,6 @@ def main() -> None:
         os.environ["VERBOSE_LOG"] = "true"
     if args.debug:
         os.environ["DEBUG"] = "true"
-    if args.mock_llm:
-        os.environ["USE_MOCK_LLM"] = "true"
     if args.max_retries:
         os.environ["XWE_MAX_LLM_RETRIES"] = str(args.max_retries)
 
@@ -46,7 +43,6 @@ def main() -> None:
     logger.info(f"📍 端口: {args.port}")
     logger.info(f"🔧 调试模式: {'启用' if args.debug else '禁用'}")
     logger.info(f"📝 详细日志: {'启用' if args.verbose else '禁用'}")
-    logger.info(f"🎭 Mock 模式: {'启用' if args.mock_llm else '禁用'}")
     logger.info(f"🔄 最大重试: {args.max_retries}")
     print("=" * 60)
 
